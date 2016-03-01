@@ -163,7 +163,8 @@
   (interactive)
   ;;(edebug);
   (let* ((sym (sexp-at-point))
-	 (default (if (and sym (symbolp sym)) (symbol-name sym) nil)))
+	 ;(default (if (and sym (symbolp sym)) (symbol-name sym) nil)))
+	 (default (if (and sym) (prin1-to-string sym) nil)))
     (async-shell-command-no-prompt
      (read-shell-command "Enter grep search: " (concat "grep -Risn " default) ))))
 
