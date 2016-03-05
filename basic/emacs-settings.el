@@ -46,13 +46,18 @@
 (menu-bar-mode -1)
 (tool-bar-mode -1)
 
-(when (>= emacs-major-version 24)
+(when (>= emacs-major-version 24);;add melpa repo
   (require 'package)
   (add-to-list
    'package-archives
    '("melpa" . "http://melpa.org/packages/")
    t)
   (package-initialize))
+
+(column-number-mode);;enable columns
+
+(setq read-file-name-completion-ignore-case t);;case-insensitive fn completion
+;;TODO the same for async-shell-command file names
 
 (provide 'emacs-settings)
 ;;; emacs-settings.el ends here

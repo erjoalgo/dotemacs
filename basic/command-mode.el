@@ -210,6 +210,7 @@
   ("e" "~/.emacs")
   ("E" (join-base-dir "../.emacs-bloated.el"))
   ("C" (join-base-dir "command-mode.el"))
+  ("c" (join-base-dir "command-mode-commands.el"))
   ("b" "~/.bashrc")
   ("a" "~/.bash_aliases")
   ("m" "*Messages*")
@@ -289,7 +290,8 @@
 (ad-activate 'load)
 
 (global-set-key [M-f1] 'goto-last-change)
-(global-set-key [M-Z] 'replace-regexp)
+(global-set-key (kbd "M-Z") 'replace-regexp)
+(global-set-key (kbd "M-z") 'query-replace-regexp)
 (global-set-key [escape] 'exit-recursive-edit)
 (global-set-key [f4] 'keyboard-escape-quit)
 (define-key 'help-command "y" 'find-function);;find source for function-at-point
@@ -313,12 +315,14 @@
 ;;eg "s-f3 K" kills next 3 lines
 (loop for i from 1 to 9
       do
-      (define-key map (kbd (format "<s-f%d>" i))
-	`(lambda ()
-	   (interactive)
-	   (if (eq major-mode isearch-mode)
-	       nil;;TODO?
-	     (setq prefix-arg ,i)))))
+      (loop for map in (list command-mode-map global-map)
+	    do
+	    (define-key map (kbd (format "<s-f%d>" i))
+	      `(lambda ()
+		 (interactive)
+		 (if (eq major-mode isearch-mode)
+		     nil;;TODO?
+		   (setq prefix-arg ,i))))))
 
 ;;this is actually part of command-mode
 ;;make mode-line text very big and easy to read
