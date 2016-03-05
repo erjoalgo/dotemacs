@@ -59,5 +59,7 @@
 (setq read-file-name-completion-ignore-case t);;case-insensitive fn completion
 ;;TODO the same for async-shell-command file names
 
+(unless (server-running-p)
+  (server-start))
 (provide 'emacs-settings)
 ;;; emacs-settings.el ends here
