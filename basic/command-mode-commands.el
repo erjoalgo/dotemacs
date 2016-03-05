@@ -90,7 +90,7 @@
   (move-line-up-mine 1 nil arg))
 
 (defun move-line-up (arg) (interactive "P")
-  (move-line-up-mine))
+  (move-line-up-mine nil nil arg))
 
 (defun move-line-up-mine (&optional down copy n)
   (interactive (list nil nil current-prefix-arg))
@@ -178,6 +178,17 @@
 (defun revert-buffer-no-confirm ()
   "Revert buffer without confirmation."
   (interactive) (revert-buffer t t))
+
+(defun findiregex (directory  regex)
+  (interactive "P\nsenter regex: ")
+  (message directory)
+  (let ((directory
+	 ;(fix_file_name (if (equal t directory) default-directory (if (stringp directory) directory (read-file-name "select directory: ") )))
+	 (expand-file-name default-directory)
+	 ))
+    
+  (start-process "findiregex" "findiregex" "find" directory "-iregex" (format ".*%s.*" regex))
+  (switch-to-buffer "findiregex")))
 
 (provide 'command-mode-commands)
 ;;; command-mode-commands.el ends here
