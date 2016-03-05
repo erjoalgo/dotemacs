@@ -210,6 +210,7 @@
   ("e" "~/.emacs")
   ("E" (join-base-dir "../.emacs-bloated.el"))
   ("C" (join-base-dir "command-mode.el"))
+  ("c" (join-base-dir "command-mode-commands.el"))
   ("b" "~/.bashrc")
   ("a" "~/.bash_aliases")
   ("m" "*Messages*")
@@ -290,6 +291,7 @@
 
 (global-set-key [M-f1] 'goto-last-change)
 (global-set-key (kbd "M-Z") 'replace-regexp)
+(global-set-key (kbd "M-z") 'query-replace-regexp)
 (global-set-key [escape] 'exit-recursive-edit)
 (global-set-key [f4] 'keyboard-escape-quit)
 (define-key 'help-command "y" 'find-function);;find source for function-at-point
