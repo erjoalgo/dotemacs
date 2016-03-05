@@ -180,3 +180,5 @@
 
 (provide 'command-mode-commands)
 ;;; command-mode-commands.el ends here
+(defun sudo-buffer () (interactive)
+       (find-file (concat "/sudo::" (buffer-file-name (current-buffer)))))
