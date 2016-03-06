@@ -190,5 +190,20 @@
   (start-process "findiregex" "findiregex" "find" directory "-iregex" (format ".*%s.*" regex))
   (switch-to-buffer "findiregex")))
 
+(defun gen-new-buffer (&optional name)
+  (generate-new-buffer (generate-new-buffer-name (or name "new-buffer"))))
+
+(defun find-new-buffer  ()
+  (interactive)
+  (let* ((default-directory "/tmp/")
+	 (buff-name (gen-new-buffer)))
+    (switch-to-buffer-other-window buff-name)
+    ;; (switch-to-command-mode)
+    ;; (switch-to-insert-mode)
+    ;; (global-text-scale-higher)
+    ;; (global-text-scale-lower)
+    ;;(other-window 0)
+    (auto-save-mode 1)))
+
 (provide 'command-mode-commands)
 ;;; command-mode-commands.el ends here
