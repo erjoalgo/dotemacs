@@ -115,14 +115,14 @@
       (progn (insert line "\n") (backward-char))
       (goto-char (+ (line-beginning-position) middle)))))
 
-(setq kill-surrounding-sexp-count)
+(setq kill-surrounding-cum-count)
 (defun kill-surrounding-sexp (arg)
   (interactive "P")
-  (setq kill-surrounding-sexp-count
-	(1+ (if (eq last-command 'kill-surrounding-sexp)
-		kill-surrounding-sexp-count 0)))
+  (setq kill-surrounding-cum-count
+	(if (eq last-command 'kill-surrounding-sexp)
+		kill-surrounding-cum-count 0))
   (save-excursion
-    (let* ((n (+ (or arg 1) kill-surrounding-sexp-count -1))
+    (let* ((n (+ (or arg 1) kill-surrounding-cum-count))
 	   (killed (buffer-substring (progn (backward-sexp n) (point))
 				     (progn (forward-sexp n) (point)))))
       (message "killed: %s" killed)
