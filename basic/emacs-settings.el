@@ -25,19 +25,19 @@
 
 
 
-(defvar emacs_backups_dir "~/.emacs-backups")
+(defvar emacs-backups-dir "~/.emacs-backups")
 
 ;;taken from the internet
 (setq
  backup-by-copying t      ; don't clobber symlinks
  backup-directory-alist
- `(("." . ,emacs_backups_dir))    ; don't litter my fs tree
+ `(("." . ,emacs-backups-dir))    ; don't litter my fs tree
  delete-old-versions t
  kept-new-versions 6
  kept-old-versions 2
  version-control t)       ; use versioned backups
 (setq auto-save-file-name-transforms
-      `((".*" ,emacs_backups_dir t)))
+      `((".*" ,emacs-backups-dir t)))
 
 
 (setq apropos-do-all t);;include functions in apropos, not just commands
