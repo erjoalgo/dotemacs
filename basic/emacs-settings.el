@@ -59,7 +59,12 @@
 (setq read-file-name-completion-ignore-case t);;case-insensitive fn completion
 ;;TODO the same for async-shell-command file names
 
+(require 'server)
 (unless (server-running-p)
   (server-start))
+
+;(setq split-window-preferred-function 'split-window-vertically) doesn't work
+(setq split-height-threshold 0)
+
 (provide 'emacs-settings)
 ;;; emacs-settings.el ends here
