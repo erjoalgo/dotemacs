@@ -209,3 +209,17 @@
 ;;; command-mode-commands.el ends here
 (defun sudo-buffer () (interactive)
        (find-file (concat "/sudo::" (buffer-file-name (current-buffer)))))
+
+
+(defun grep-extension (extension pattern)
+  (interactive (list (read-string "enter extension (eg 'js'): ")
+		     (read-string "enter grep pattern: "
+				  (let ((search (sexp-at-point)))
+				    (and search (symbolp search)
+					 (symbol-name search))))))
+  (let ((buff-name "grep-extension"))
+    (start-process buff-name buff-name 
+		 "find"
+		 "-name" (concat "*" extension)
+		 "-exec" "grep" "-Hin" pattern "{}" ";")
+    (switch-to-buffer buff-name)))
