@@ -115,14 +115,14 @@
       (progn (insert line "\n") (backward-char))
       (goto-char (+ (line-beginning-position) middle)))))
 
-(setq kill-surrounding-sexp-count)
+(setq kill-surrounding-cum-count)
 (defun kill-surrounding-sexp (arg)
   (interactive "P")
-  (setq kill-surrounding-sexp-count
-	(1+ (if (eq last-command 'kill-surrounding-sexp)
-		kill-surrounding-sexp-count 0)))
+  (setq kill-surrounding-cum-count
+	(if (eq last-command 'kill-surrounding-sexp)
+		kill-surrounding-cum-count 0))
   (save-excursion
-    (let* ((n (+ (or arg 1) kill-surrounding-sexp-count -1))
+    (let* ((n (+ (or arg 1) kill-surrounding-cum-count))
 	   (killed (buffer-substring (progn (backward-sexp n) (point))
 				     (progn (forward-sexp n) (point)))))
       (message "killed: %s" killed)
@@ -203,3 +203,19 @@
 
 (provide 'command-mode-commands)
 ;;; command-mode-commands.el ends here
+(defun sudo-buffer () (interactive)
+       (find-file (concat "/sudo::" (buffer-file-name (current-buffer)))))
+
+
+(defun grep-extension (extension pattern)
+  (interactive (list (read-string "enter extension (eg 'js'): ")
+		     (read-string "enter grep pattern: "
+				  (let ((search (sexp-at-point)))
+				    (and search (symbolp search)
+					 (symbol-name search))))))
+  (let ((buff-name "grep-extension"))
+    (start-process buff-name buff-name 
+		 "find"
+		 "-name" (concat "*" extension)
+		 "-exec" "grep" "-Hin" pattern "{}" ";")
+    (switch-to-buffer buff-name)))

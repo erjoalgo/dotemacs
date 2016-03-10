@@ -24,5 +24,9 @@
 (setq user-mail-address "erjoalgo@gmail.com"
       user-full-name "Ernesto Alfonso")
 
+(load-file (f-join emacs-top "misc-temp.el"))
+
+;;todo hostname-specific settings
+(setq proxy-mode-proxy "http://proxy-src.research.ge.com:8080")
+(require 'proxy-mode)
 (require 'plusx)
-(load-file (f-join "~/repos/dotemacs/misc-temp.el"))
