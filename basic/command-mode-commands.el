@@ -182,13 +182,9 @@
 (defun findiregex (directory  regex)
   (interactive "P\nsenter regex: ")
   (message directory)
-  (let ((directory
-	 ;(fix_file_name (if (equal t directory) default-directory (if (stringp directory) directory (read-file-name "select directory: ") )))
-	 (expand-file-name default-directory)
-	 ))
-    
-  (start-process "findiregex" "findiregex" "find" directory "-iregex" (format ".*%s.*" regex))
-  (switch-to-buffer "findiregex")))
+  (let ((directory (expand-file-name default-directory)))
+    (start-process "findiregex" "findiregex" "find" directory "-iregex" (format ".*%s.*" regex))
+    (switch-to-buffer "findiregex")))
 
 (defun gen-new-buffer (&optional name)
   (generate-new-buffer (generate-new-buffer-name (or name "new-buffer"))))
