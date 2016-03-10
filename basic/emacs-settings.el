@@ -56,6 +56,7 @@
 
 (column-number-mode);;enable columns
 
+(setq vc-follow-symlinks t)
 (setq read-file-name-completion-ignore-case t);;case-insensitive fn completion
 ;;TODO the same for async-shell-command file names
 
