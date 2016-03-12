@@ -296,6 +296,7 @@
 (global-set-key [f4] 'keyboard-escape-quit)
 (define-key 'help-command "y" 'find-function);;find source for function-at-point
 (global-set-key [s-backspace] (string-insert-command "`"))
+(global-set-key (kbd "s-SPC") (string-insert-command ", "))
 
 (loop for map in (list global-map command-mode-map)
       do (define-key map [f5] (lambda ()
@@ -311,18 +312,20 @@
   (set-temporary-overlay-map global-map))
 
 
-;;installs s-f[1-9] command-repeat prefixes
-;;eg "s-f3 K" kills next 3 lines
-(loop for i from 1 to 9
-      do
-      (loop for map in (list command-mode-map global-map)
-	    do
-	    (define-key map (kbd (format "<s-f%d>" i))
-	      `(lambda ()
-		 (interactive)
-		 (if (eq major-mode isearch-mode)
-		     nil;;TODO?
-		   (setq prefix-arg ,i))))))
+(defun define-sfn-prefix-args-to-map (kmap)
+  "installs s-f[1-9] command-repeat prefixes
+  eg s-f3 K kills next 3 lines"
+  (loop for i from 1 to 9 do
+	(define-key kmap (kbd (format "<s-f%d>" i))
+	  `(lambda () (interactive)
+	     (setf prefix-arg ,i)))))
+
+
+(mapc 'define-sfn-prefix-args-to-map
+      (list command-mode-map global-map))
+      ;(list command-mode-map global-map isearch-mode-map))
+
+
 
 ;;this is actually part of command-mode
 ;;make mode-line text very big and easy to read

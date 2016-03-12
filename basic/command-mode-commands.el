@@ -203,7 +203,7 @@
 (require 'f)
 (defun grep-extension (extension pattern clear-buffer)
   (interactive (list (read-string "enter extension (eg 'js'): "
-				  (f-ext (buffer-file-name (current-buffer))))
+				  (f-ext (or (buffer-file-name (current-buffer)) "")))
 		     (read-string "enter grep pattern: "
 				  (let ((search (sexp-at-point)))
 				    (and search (symbolp search)
