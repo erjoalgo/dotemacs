@@ -1,7 +1,7 @@
 
 ;;find .emacs's real location
-(split-string (shell-command-to-string "dirname $(readlink ~/.emacs)")
-	      nil nil "[[:space:]]+");;trim trailing newline
+(setq emacs-top (car (split-string (shell-command-to-string "dirname $(readlink ~/.emacs)")
+	      nil nil "[[:space:]]+")));;trim trailing newline
 ;;add libs, basic to load-path
 (add-to-list 'load-path (concat emacs-top "/libs"))
 (add-to-list 'load-path (concat emacs-top "/basic"))

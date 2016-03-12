@@ -208,7 +208,7 @@
     (curry (if (member fn '("*Messages*" "*scratch*" "*slime-repl sbcl*"))
 	       'switch-to-buffer 'find-file) fn))
   ("e" "~/.emacs")
-  ("E" (join-base-dir "../.emacs-bloated.el"))
+  ("E" "~/repos/emacs-dirty/.emacs-bloated.el")
   ("C" (join-base-dir "command-mode.el"))
   ("c" (join-base-dir "command-mode-commands.el"))
   ("b" "~/.bashrc")
@@ -335,7 +335,11 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(mode-line ((t (:background "dark gray" :foreground "white" :box (:line-width -1 :style released-button) :weight normal :height 3.0 :width extra-expanded))))
- '(mode-line-inactive ((t (:inherit mode-line :background "grey90" :foreground "grey20" :box (:line-width -1 :color "grey75") :weight light :height 1.1 :width normal)))))
+ '(mode-line-inactive ((t (:inherit mode-line :background "grey90" :foreground "grey20" :box (:line-width -1 :color "grey75") :weight light :height 1.1 :width normal))))
+ ;(set-face-attribute 'region nil :background "green")
+'(region ((t :background "#666" :foreground "#ffffff")))
+ )
+
 
 
 
