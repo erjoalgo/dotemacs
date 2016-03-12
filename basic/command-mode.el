@@ -333,10 +333,10 @@
  ;; If there is more than one, they won't work right.
  '(mode-line ((t (:background "dark gray" :foreground "white" :box (:line-width -1 :style released-button) :weight normal :height 3.0 :width extra-expanded))))
  '(mode-line-inactive ((t (:inherit mode-line :background "grey90" :foreground "grey20" :box (:line-width -1 :color "grey75") :weight light :height 1.1 :width normal))))
- 
  ;(set-face-attribute 'region nil :background "green")
- (set-face-attribute 'region nil :background "#666" :foreground "#ffffff")
+'(region ((t :background "#666" :foreground "#ffffff")))
  )
+
 
 
 
