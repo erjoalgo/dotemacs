@@ -241,7 +241,7 @@
   ("e" my-eval-defun)
   ("E" (lambda () (interactive)(eval-defun t)))
   ("x" execute-extended-command)
-  ("X" sudo_buffer)
+  ("X" sudo-buffer)
   (";" eval-expression)
   ("m" switch_to_planner)
   ("M" (lambda () (interactive) (call-interactively 'man)))
