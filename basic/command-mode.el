@@ -219,7 +219,7 @@
   ("M" (concat "/var/mail/" (getenv "USER")))
   ("x" (concat  "~/repos/stumpwm/xmodmap/.xmodmaprc"))
   ("y" (concat stumpwm_dir ".my_startups.sh"))
-  ;("s" "/sudo::/var/log/syslog")
+  ("S" "/sudo::/var/log/syslog")
   ("v" (concat stumpwm_dir "keynavs/.keynavrc"))
   ("w" "~/repos/stumpwm/.stumpwmrc")
   ;;("c" "/sudo::/etc/anacrontab")
@@ -340,6 +340,7 @@
 '(region ((t :background "#666" :foreground "#ffffff")))
  )
 
+(load-theme 'wombat);;this theme is nice. text easy to read, dark background
 
 
 
