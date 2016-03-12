@@ -219,7 +219,7 @@
   ("M" (concat "/var/mail/" (getenv "USER")))
   ("x" (concat  "~/repos/stumpwm/xmodmap/.xmodmaprc"))
   ("y" (concat stumpwm_dir ".my_startups.sh"))
-  ;("s" "/sudo::/var/log/syslog")
+  ("S" "/sudo::/var/log/syslog")
   ("v" (concat stumpwm_dir "keynavs/.keynavrc"))
   ("w" "~/repos/stumpwm/.stumpwmrc")
   ;;("c" "/sudo::/etc/anacrontab")
@@ -241,7 +241,7 @@
   ("e" my-eval-defun)
   ("E" (lambda () (interactive)(eval-defun t)))
   ("x" execute-extended-command)
-  ("X" sudo_buffer)
+  ("X" sudo-buffer)
   (";" eval-expression)
   ("m" switch_to_planner)
   ("M" (lambda () (interactive) (call-interactively 'man)))
@@ -337,6 +337,7 @@
 '(region ((t :background "#666" :foreground "#ffffff")))
  )
 
+(load-theme 'wombat);;this theme is nice. text easy to read, dark background
 
 
 
