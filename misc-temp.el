@@ -1,4 +1,5 @@
 ;;minibuffer-local-map
+(load-file (f-join emacs-top "in-progress/python_buttons.el"))
 (elisp_install_buttons read-expression-map)
 (add-hook 'emacs-lisp-mode-hook 'elisp_install_buttons)
 (add-hook 'ielm-mode-hook 'elisp_install_buttons)
