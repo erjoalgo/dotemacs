@@ -194,28 +194,31 @@
   (let* ((default-directory "/tmp/")
 	 (buff-name (gen-new-buffer)))
     (switch-to-buffer-other-window buff-name)
-    ;; (switch-to-command-mode)
-    ;; (switch-to-insert-mode)
-    ;; (global-text-scale-higher)
-    ;; (global-text-scale-lower)
-    ;;(other-window 0)
     (auto-save-mode 1)))
 
-(provide 'command-mode-commands)
-;;; command-mode-commands.el ends here
 (defun sudo-buffer () (interactive)
        (find-file (concat "/sudo::" (buffer-file-name (current-buffer)))))
 
 
-(defun grep-extension (extension pattern)
-  (interactive (list (read-string "enter extension (eg 'js'): ")
+(require 'f)
+(defun grep-extension (extension pattern clear-buffer)
+  (interactive (list (read-string "enter extension (eg 'js'): "
+				  (f-ext (buffer-file-name (current-buffer))))
 		     (read-string "enter grep pattern: "
 				  (let ((search (sexp-at-point)))
 				    (and search (symbolp search)
-					 (symbol-name search))))))
+					 (symbol-name search))))
+		     nil))
   (let ((buff-name "grep-extension"))
+    (when clear-buffer
+      (switch-to-buffer buff-name)
+      (erase-buffer))
+    
     (start-process buff-name buff-name 
 		 "find"
 		 "-name" (concat "*" extension)
 		 "-exec" "grep" "-Hin" pattern "{}" ";")
     (switch-to-buffer buff-name)))
+
+(provide 'command-mode-commands)
+;;; command-mode-commands.el ends here
