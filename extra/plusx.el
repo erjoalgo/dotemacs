@@ -53,7 +53,7 @@
 
 (defun plusx (fn &optional link-bin-p)
   (interactive (list (buffer-file-name (current-buffer))
-		     (y-or-n-p "add symlink? ")))
+		     nil))
   (plusx-maybe-insert-interpreter-line)
   (shell-command (format "chmod +x '%s'" fn))
   
@@ -65,6 +65,10 @@
 	       (not (file-exists-p bin-link)))
       (message "creating symlink for %s" fn)
       (shell-command (format "ln -s %s %s" fn bin-link)))))
+
+(defun plusx-and-link (fn)
+  (plusx fn))
+
 
 (provide 'plusx)
 ;;; plusx.el ends here
