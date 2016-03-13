@@ -5,5 +5,6 @@
 (add-hook 'ielm-mode-hook 'elisp_install_buttons)
 (add-hook 'slime-repl-mode-hook 'elisp_install_buttons)
 
-(add-to-list 'load-path (f-join (getenv "GOPATH")
-				"src/github.com/golang/lint/misc/emacs"))
+(when (getenv "GOPATH")
+  (add-to-list 'load-path (f-join (getenv "GOPATH")
+				"src/github.com/golang/lint/misc/emacs")))
