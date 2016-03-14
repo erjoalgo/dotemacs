@@ -215,7 +215,7 @@
   ("a" "~/.bash_aliases")
   ("m" "*Messages*")
   ("s" "*scratch*")
-  ("t" (join-base-dir "python_buttons.el"))
+  ("t" (f-join emacs-top "in-progress" "python_buttons.el"))
   ("M" (concat "/var/mail/" (getenv "USER")))
   ("x" (concat  "~/repos/stumpwm/xmodmap/.xmodmaprc"))
   ("y" (concat stumpwm_dir ".my_startups.sh"))
