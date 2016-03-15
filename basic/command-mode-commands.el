@@ -197,7 +197,10 @@
     (auto-save-mode 1)))
 
 (defun sudo-buffer () (interactive)
-       (find-file (concat "/sudo::" (buffer-file-name (current-buffer)))))
+       (let ((pos (point)))
+	 (find-file (concat "/sudo::" (buffer-file-name (current-buffer))))
+	 (goto-char pos)))
+
 
 
 (require 'f)
