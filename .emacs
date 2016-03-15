@@ -33,3 +33,11 @@
 (setq proxy-mode-proxy "http://proxy-src.research.ge.com:8080")
 (require 'proxy-mode)
 (require 'plusx)
+
+(defun load-file-safe (fn)
+  (condition-case ex (load fn)
+    ('error (message "WARNING: unable to load %s:\n %s" fn ex))))
+
+(loop with top = (f-join emacs-top "settings")
+      for fn in (directory-files top) do
+      (load-file-safe (f-join top fn)))

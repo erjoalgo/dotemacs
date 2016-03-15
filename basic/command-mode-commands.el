@@ -179,12 +179,13 @@
   "Revert buffer without confirmation."
   (interactive) (revert-buffer t t))
 
-(defun findiregex (directory  regex)
+(defun find-iregex (directory  regex)
   (interactive "P\nsenter regex: ")
   (message directory)
   (let ((directory (expand-file-name default-directory)))
     (start-process "findiregex" "findiregex" "find" directory "-iregex" (format ".*%s.*" regex))
-    (switch-to-buffer "findiregex")))
+    (switch-to-buffer "findiregex")
+    (beginning-of-buffer)))
 
 (defun gen-new-buffer (&optional name)
   (generate-new-buffer (generate-new-buffer-name (or name "new-buffer"))))
@@ -197,7 +198,10 @@
     (auto-save-mode 1)))
 
 (defun sudo-buffer () (interactive)
-       (find-file (concat "/sudo::" (buffer-file-name (current-buffer)))))
+       (let ((pos (point)))
+	 (find-file (concat "/sudo::" (buffer-file-name (current-buffer))))
+	 (goto-char pos)))
+
 
 
 (require 'f)
