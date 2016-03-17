@@ -198,11 +198,16 @@
     (auto-save-mode 1)))
 
 (defun sudo-buffer () (interactive)
-       (let ((pos (point)))
-	 (find-file (concat "/sudo::" (buffer-file-name (current-buffer))))
-	 (goto-char pos)))
-
-
+       (let ((curr-fn (if (eq major-mode 'dired-mode)
+			  dired-directory
+			(buffer-file-name (current-buffer))))
+	     (sudo-prefix ))
+	 
+	 (unless (s-starts-with-p "/sudo" curr-fn)
+	   (let ((pos (point)))
+	     (find-file (concat "/sudo::" curr-fn))
+	     (goto-char pos)))))
+       
 
 (require 'f)
 (defun grep-extension (extension pattern clear-buffer)
