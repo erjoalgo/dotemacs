@@ -334,13 +334,20 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(mode-line ((t (:background "dark gray" :foreground "white" :box (:line-width -1 :style released-button) :weight normal :height 3.0 :width extra-expanded))))
+ '(mode-line ((t (:background "dark gray" :foreground "white" :box (:line-width -1 :style released-button) :weight normal :height 2.0 :width extra-expanded))))
  '(mode-line-inactive ((t (:inherit mode-line :background "grey90" :foreground "grey20" :box (:line-width -1 :color "grey75") :weight light :height 1.1 :width normal))))
  ;(set-face-attribute 'region nil :background "green")
 '(region ((t :background "#666" :foreground "#ffffff")))
  )
 
-(load-theme 'wombat);;this theme is nice. text easy to read, dark background
+(let ((current-hour
+       (third (decode-time (current-time)))))
+  (when (or (> current-hour 17)
+	    (< current-hour 9))
+    ;;this theme is nice. text easy to read, dark background
+    ;;only load at night?
+    (load-theme 'wombat)))
+
 
 
 
