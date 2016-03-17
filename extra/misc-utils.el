@@ -10,3 +10,9 @@
   (interactive)
   (recover-this-file);;TODO ignore prompt
   (diff-buffer-with-file))
+
+
+(defun shell-command-of-region (a b)
+  (interactive "r")
+  ;(shell-command-to-string (buffer-substring a b))
+  (async-shell-command (buffer-substring a b)))
