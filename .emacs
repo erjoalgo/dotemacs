@@ -8,7 +8,8 @@
   ;;find .emacs's real location
   (string-trim (shell-command-to-string "dirname $(readlink ~/.emacs)")))
 
-(defvar hostname (string-trim (shell-command-to-string "hostname")))
+(defvar hostname
+  (string-trim (shell-command-to-string "hostname")))
 
 
 ;;for legalese
