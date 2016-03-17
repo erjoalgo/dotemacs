@@ -25,15 +25,15 @@
 
 (defvar *scroll-amount* nil )
 (setq *scroll-amount* 8)
-(defun scroll-down-keep-cursor ()
+(defun scroll-down-keep-cursor (arg)
    ;; Scroll the text one line down while keeping the cursor
-  (interactive)
-   (scroll-down-command (- *scroll-amount*)))
+  (interactive "P")
+  (scroll-down-command (- (* *scroll-amount* (or arg 1)))))
 
-(defun scroll-up-keep-cursor ()
+(defun scroll-up-keep-cursor (arg)
    ;; Scroll the text one line up while keeping the cursor
-  (interactive)
-  (scroll-up-command (- *scroll-amount*)))
+  (interactive "P")
+  (scroll-up-command (- (* *scroll-amount* (or arg 1)))))
 (setq scroll-error-top-bottom t)
 
 (defun find-file-at-point-cmd ()
@@ -198,11 +198,16 @@
     (auto-save-mode 1)))
 
 (defun sudo-buffer () (interactive)
-       (let ((pos (point)))
-	 (find-file (concat "/sudo::" (buffer-file-name (current-buffer))))
-	 (goto-char pos)))
-
-
+       (let ((curr-fn (if (eq major-mode 'dired-mode)
+			  dired-directory
+			(buffer-file-name (current-buffer))))
+	     (sudo-prefix ))
+	 
+	 (unless (s-starts-with-p "/sudo" curr-fn)
+	   (let ((pos (point)))
+	     (find-file (concat "/sudo::" curr-fn))
+	     (goto-char pos)))))
+       
 
 (require 'f)
 (defun grep-extension (extension pattern clear-buffer)

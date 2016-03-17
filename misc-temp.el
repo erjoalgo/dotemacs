@@ -9,3 +9,11 @@
   (add-to-list 'load-path (f-join (getenv "GOPATH")
 				"src/github.com/golang/lint/misc/emacs")))
 (elisp_install_buttons read-expression-map)
+
+(defun upcase-last ()
+  (interactive)
+  (save-excursion
+    (upcase-region (point)
+		 (progn
+		   (backward-sexp)
+		   (point)))))
