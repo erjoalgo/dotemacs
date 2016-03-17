@@ -6,3 +6,8 @@
 	 collect (loop for fn in (directory-files dir) thereis
 		       (and (string= program fn)
 			    (f-join dir fn))))))
+
+(defun recover-this-file-and-diff ()
+  (interactive)
+  (recover-this-file);;TODO ignore prompt
+  (diff-buffer-with-file))
