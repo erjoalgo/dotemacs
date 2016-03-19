@@ -251,7 +251,8 @@
   ("n" find-new-buffer)
   ("f" find-file-other-window)
   ("D" (lambda () (interactive)(call-interactively 'pdb)))
-  ("g" grep-search-default)
+  ;("g" grep-search-default)
+  ("g" grep-extension)
   ("u" universal-argument)
   ([f2] call-last-kbd-macro)
   ("z" airmacs_read_key)
@@ -283,6 +284,8 @@
     (let ((mykeys (assq mode-symbol minor-mode-map-alist)))
       (assq-delete-all mode-symbol minor-mode-map-alist)
       (add-to-list 'minor-mode-map-alist mykeys))))
+
+(define-key global-map [f2] 'other-window)
 
 ;;not sure this is necessary
 (defadvice load (after give-my-keybindings-priority)
