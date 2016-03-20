@@ -120,13 +120,24 @@
   (interactive "P")
   (setq kill-surrounding-cum-count
 	(if (eq last-command 'kill-surrounding-sexp)
-		kill-surrounding-cum-count 0))
+	    kill-surrounding-cum-count 0))
   (save-excursion
     (let* ((n (+ (or arg 1) kill-surrounding-cum-count))
-	   (killed (buffer-substring (progn (backward-sexp n) (point))
-				     (progn (forward-sexp n) (point)))))
+	   (at-beginning-of-sexp (at-beginning-of-sexp))
+	   (killed (buffer-substring
+		    (progn (backward-sexp
+			    (- n (if at-beginning-of-sexp 1 0)))
+			    (point))
+		    (progn (forward-sexp n) (point)))))
       (message "killed: %s" killed)
       (kill-new killed))))
+
+(defun at-beginning-of-sexp ()
+  (save-excursion (= (point)
+		     (progn (forward-sexp 1)
+			    (backward-sexp 1)
+			    (point)))))
+
 
 (defun then-cycle-window (fun) (interactive)
 	 `(lambda () (interactive)
@@ -250,6 +261,12 @@
 	 (message "killed: %s" fn)
 	 fn))
 
+(defun message-current-buffer-process ()
+  (interactive)
+  (let ((proc (get-buffer-process (current-buffer))))
+    (if proc
+	(message "%s" (process-command proc))
+      (message "buffer has no process"))))
 
 (provide 'command-mode-commands)
 ;;; command-mode-commands.el ends here
