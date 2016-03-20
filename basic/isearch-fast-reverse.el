@@ -19,11 +19,15 @@
 ;; along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 ;;; Commentary:
-;;Make switching directions in isearch mode faster. Go to previous item with a single keystroke.
+;;Make switching directions in isearch mode faster. 
+;;Changes:
 ;;Make regexp search default
+;;Reverse directions and get next match in a single keystroke.
 ;;Bind forward search, reverse search to f3, M-f3
 ;;Esc to exit isearch at current position
 ;;f4 to cancel isearch and return to original, pre-search position
+;;for consistency, exiting while on isearch-forward will move point to beginning of match
+;;In dired, RET automatically opens file/directory at point
 
 
 ;;; Code:
@@ -59,10 +63,10 @@
 
 (defadvice isearch-exit (before dired-search-maybe-follow activate)
   (when (and (eq major-mode 'dired-mode)
-	     (or
-	      (equal (this-command-keys) "")
-	      (equal (this-command-keys) [return])))
-    (dired-find-file)))
+	     (member (this-command-keys) '("" [return])))
+    (dired-find-file))
+  (when isearch-forward
+    (goto-char isearch-other-end)))
 
 (defadvice isearch-forward-regexp (around force-case-fold activate)
   (let* ((case-fold-search t))
