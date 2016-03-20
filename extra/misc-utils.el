@@ -48,11 +48,19 @@
       (insert "    ")
       (next-logical-line))))
   
-(defun elisp-tab ()
-  "Indent or complete."
-  ;;based on ielm-tab
+(defun lnabs (source &optional prompt)
+  (interactive "fEnter soft link source: ")
+  (let* ((source (expand-file-name source))
+	 (base (f-filename source))
+	 (destination (read-file-name "enter destination: " nil base nil nil nil ))
+	 (command (format "ln -sf %s %s" source (expand-file-name destination))))
+    (when (or (not prompt) (y-or-n-p command))
+      (shell-command command))))
+
+(defun message-current-buffer-process ()
   (interactive)
-  (if (or (eq (preceding-char) ?\n)
-          (eq (char-syntax (preceding-char)) ?\s))
-      (indent-for-tab-command)
-    (completion-at-point)))
+  (let ((proc (get-buffer-process (current-buffer))))
+    (if proc
+	(message "%s" (process-command proc))
+      (message "buffer has no process"))))
+
