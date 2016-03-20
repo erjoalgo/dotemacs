@@ -244,5 +244,12 @@
 		     "grep" "-RHins" pattern dir))
     (switch-to-buffer buff-name)))
 
+(defun kill-current-buffer-filename ()(interactive)
+       (let ((fn (buffer-file-name (current-buffer))))
+	 (kill-new fn)
+	 (message "killed: %s" fn)
+	 fn))
+
+
 (provide 'command-mode-commands)
 ;;; command-mode-commands.el ends here
