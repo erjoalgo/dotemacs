@@ -228,6 +228,7 @@
   ("7" "~/repos/unix_utils")
   ("8" "~/repos/starter/data/packages")
   ("9" "~/programs")
+  ("o" "~/repos/dotemacs/org/notes.org")
   )
 
 (define-key-tuples-macro
@@ -245,7 +246,7 @@
   ("x" execute-extended-command)
   ("X" sudo-buffer)
   (";" eval-expression)
-  ("m" switch_to_planner)
+  ;;("m" switch_to_planner)
   ("M" (lambda () (interactive) (call-interactively 'man)))
   ("a" async-shell-command)
   ("v" revert-buffer-no-confirm)
@@ -264,12 +265,12 @@
   ("W" slime-connect-stumpwm)
   ("S" goto-slime-buffer)
   ("t" untarprogram)
-  ("r" (lambda () (interactive) (start-process (current-buffer-name) nil (current-buffer-name))))
+  ("r" replace-regexp)
   ("R" erc-autologin)
   ("A" (lambda () (interactive) (switch-to-buffer (get-buffer-by-regex "\\*Async Shell Command\\*"))))
   ;;("k" wiki)
   ("k" goto-slime-buffer)
-  ("o" goto-inbox)
+  ("o" gnus-goto-inbox)
   ("0" open-google-calendar)
   ;("P" (lambda () (interactive)(message "point is %d" (point))))
   ;; ("b" matlab-shell)
@@ -289,10 +290,10 @@
 
 (define-key global-map [f2] 'other-window)
 
-;;not sure this is necessary
-(defadvice load (after give-my-keybindings-priority)
-  (force-mode-first 'command-mode))
-(ad-activate 'load)
+(add-hook 'after-load-functions
+	  '(lambda (something)
+	     (force-mode-first 'command-mode)))
+
 
 (global-set-key [M-f1] 'goto-last-change)
 (global-set-key (kbd "M-Z") 'replace-regexp)
@@ -300,6 +301,7 @@
 (global-set-key [escape] 'exit-recursive-edit)
 (global-set-key [f4] 'keyboard-escape-quit)
 (define-key 'help-command "y" 'find-function);;find source for function-at-point
+(define-key 'help-command "A" 'apropos-variable)
 (global-set-key [s-backspace] (string-insert-command "`"))
 (global-set-key (kbd "s-SPC") (string-insert-command ", "))
 
