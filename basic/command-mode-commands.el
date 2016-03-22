@@ -105,7 +105,8 @@
 	(progn (delete-region a b)
 	       (when (not (equal (point) (point-max))) (delete-char 1))))
       (if down
-	  (if (equal (point-max) (point))
+	  (if (progn (end-of-line)
+		     (equal (point-max) (point)))
 		(progn (open-line 1)
 		       (forward-char))
 	      (forward-line))
@@ -119,10 +120,10 @@
 (defun kill-surrounding-sexp (arg)
   (interactive "P")
   (setq kill-surrounding-cum-count
-	(if (eq last-command 'kill-surrounding-sexp)
-	    kill-surrounding-cum-count 0))
+	(1+ (if (eq last-command 'kill-surrounding-sexp)
+	     kill-surrounding-cum-count 0)))
   (save-excursion
-    (let* ((n (+ (or arg 1) kill-surrounding-cum-count))
+    (let* ((n (+ (or arg 1) -1 kill-surrounding-cum-count))
 	   (at-beginning-of-sexp (at-beginning-of-sexp))
 	   (killed (buffer-substring
 		    (progn (backward-sexp
@@ -130,13 +131,20 @@
 			    (point))
 		    (progn (forward-sexp n) (point)))))
       (message "killed: %s" killed)
-      (kill-new killed))))
+      (kill-new killed)
+      (set-clipboard killed))))
+
+(defun set-clipboard (x)
+  (x-set-selection 'CLIPBOARD x)
+  (x-set-selection nil x))
 
 (defun at-beginning-of-sexp ()
-  (save-excursion (= (point)
+  (condition-case ex
+      (save-excursion (= (point)
 		     (progn (forward-sexp 1)
 			    (backward-sexp 1)
-			    (point)))))
+			    (point))))
+      ('error nil )))
 
 
 (defun then-cycle-window (fun) (interactive)
@@ -236,7 +244,7 @@
       (and (not (string= "" ext)) ext)
       pattern
       (expand-file-name dir)
-      nil)))
+      t)))
   
   (let ((buff-name "grep-extension"))
 
@@ -249,7 +257,7 @@
 		       "find"
 		       dir
 		       "-name" (concat "*" extension)
-		       "-exec" "grep" "-Hin" pattern "{}" ";")
+		       "-exec" "grep" "-Hins" pattern "{}" ";")
       
       (start-process buff-name buff-name
 		     "grep" "-RHins" pattern dir))
