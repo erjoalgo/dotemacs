@@ -14,5 +14,13 @@
 
 (defun shell-command-of-region (a b)
   (interactive "r")
-  ;(shell-command-to-string (buffer-substring a b))
-  (async-shell-command (buffer-substring a b)))
+  ;;(shell-command-to-string (buffer-substring a b))
+  (let ((cmd (buffer-substring a b)))
+    (async-shell-command cmd)))
+
+
+(defun shell-command-of-current-line ()
+  (interactive)
+  (shell-command-of-region
+   (line-beginning-position)
+   (line-end-position)))
