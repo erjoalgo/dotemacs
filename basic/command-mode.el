@@ -234,10 +234,12 @@
   open-interpreter-map
   nil 
   ("s" (lambda (arg)(interactive "P")(eshell arg)))
-  ("p"  (lambda () (interactive)(call-interactively 'run-python)(switch-to-buffer (get-buffer-by-regex "*Python*")))) 
+  ("p"  (lambda () (interactive)(call-interactively 'run-python)(switch-to-buffer (get-buffer-by-regex "*Python*"))))
+  ("P"  message-current-buffer-process) 
   ;;("p" 'run-python)
   ("i" ielm)
   ("c" music-player-play-songs)
+  ("c" kill-current-buffer-filename)
   ("e" my-eval-defun)
   ("E" (lambda () (interactive)(eval-defun t)))
   ("x" execute-extended-command)
@@ -251,7 +253,8 @@
   ("n" find-new-buffer)
   ("f" find-file-other-window)
   ("D" (lambda () (interactive)(call-interactively 'pdb)))
-  ("g" grep-search-default)
+  ;("g" grep-search-default)
+  ("g" grep-extension)
   ("u" universal-argument)
   ([f2] call-last-kbd-macro)
   ("z" airmacs_read_key)
@@ -268,7 +271,7 @@
   ("k" goto-slime-buffer)
   ("o" goto-inbox)
   ("0" open-google-calendar)
-  ("P" (lambda () (interactive)(message "point is %d" (point))))
+  ;("P" (lambda () (interactive)(message "point is %d" (point))))
   ;; ("b" matlab-shell)
   ;; ("B"  run-octave)
   ("b" run-or-switch-to-matlab-or-octave)
@@ -283,6 +286,8 @@
     (let ((mykeys (assq mode-symbol minor-mode-map-alist)))
       (assq-delete-all mode-symbol minor-mode-map-alist)
       (add-to-list 'minor-mode-map-alist mykeys))))
+
+(define-key global-map [f2] 'other-window)
 
 ;;not sure this is necessary
 (defadvice load (after give-my-keybindings-priority)

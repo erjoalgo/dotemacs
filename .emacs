@@ -1,32 +1,15 @@
-(unless (fboundp 'string-trim)  
-  (defun string-trim (string)
-    (let* ((regex "\\`[ \n\t\r]*\\(\\(.\\|\n\\)*?\\)[ \n\t\r]*\\'"))
-      (string-match regex string)
-      (match-string 1 string))))
-
 (defvar emacs-top
   ;;find .emacs's real location
-  (string-trim (shell-command-to-string "dirname $(readlink ~/.emacs)")))
+  (file-name-directory (file-truename "~/.emacs")))
 
-(defvar hostname
-  (string-trim (shell-command-to-string "hostname")))
+(dolist (dir '("libs" "basic" "extra"))
+  (add-to-list 'load-path
+	       (concat emacs-top dir)))
 
-
-;;for legalese
-(setq user-mail-address "erjoalgo@gmail.com"
-      user-full-name "Ernesto Alfonso")
-
-;;add libs, basic to load-path
-(add-to-list 'load-path (concat emacs-top "/libs"))
-
-
-(add-to-list 'load-path (concat emacs-top "/basic"))
-(add-to-list 'load-path (concat emacs-top "/extra"))
-
-(require 'f);; python-like os.path for emacs lisp
-(require 'goto-last-change);; jump to last buffer edit location. like eclipse alt+left
-(require 'quick-yes);; auto-say "yes RET" to annoying yes prompts
-;;(require 'help-fns+);; describe keymap
+(require 'f)
+(require 'goto-last-change)
+(require 'quick-yes)
+;;(require 'help-fns+)
 
 (require 'cl-lib)
 (require 'cl)
@@ -39,9 +22,8 @@
 (require 'emacs-settings)
 
 
-(load-file (f-join emacs-top "misc-temp.el"))
-
-;;todo hostname-specific settings
+(load-file
+ (f-join emacs-top "misc-temp.el"))
 
 (require 'proxy-mode)
 (require 'plusx)

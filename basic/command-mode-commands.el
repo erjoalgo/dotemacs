@@ -120,13 +120,24 @@
   (interactive "P")
   (setq kill-surrounding-cum-count
 	(if (eq last-command 'kill-surrounding-sexp)
-		kill-surrounding-cum-count 0))
+	    kill-surrounding-cum-count 0))
   (save-excursion
     (let* ((n (+ (or arg 1) kill-surrounding-cum-count))
-	   (killed (buffer-substring (progn (backward-sexp n) (point))
-				     (progn (forward-sexp n) (point)))))
+	   (at-beginning-of-sexp (at-beginning-of-sexp))
+	   (killed (buffer-substring
+		    (progn (backward-sexp
+			    (- n (if at-beginning-of-sexp 1 0)))
+			    (point))
+		    (progn (forward-sexp n) (point)))))
       (message "killed: %s" killed)
       (kill-new killed))))
+
+(defun at-beginning-of-sexp ()
+  (save-excursion (= (point)
+		     (progn (forward-sexp 1)
+			    (backward-sexp 1)
+			    (point)))))
+
 
 (defun then-cycle-window (fun) (interactive)
 	 `(lambda () (interactive)
@@ -200,8 +211,7 @@
 (defun sudo-buffer () (interactive)
        (let ((curr-fn (if (eq major-mode 'dired-mode)
 			  dired-directory
-			(buffer-file-name (current-buffer))))
-	     (sudo-prefix ))
+			(buffer-file-name (current-buffer)))))
 	 
 	 (unless (s-starts-with-p "/sudo" curr-fn)
 	   (let ((pos (point)))
@@ -210,24 +220,57 @@
        
 
 (require 'f)
-(defun grep-extension (extension pattern clear-buffer)
-  (interactive (list (read-string "enter extension (eg 'js'): "
-				  (f-ext (or (buffer-file-name (current-buffer)) "")))
-		     (read-string "enter grep pattern: "
-				  (let ((search (sexp-at-point)))
-				    (and search (symbolp search)
-					 (symbol-name search))))
-		     nil))
+(defun grep-extension (extension pattern dir &optional clear-buffer)
+  ;;TODO colored output
+  (interactive
+   (let* ((pattern (read-string
+		    "enter grep pattern: "
+		    (let ((search (sexp-at-point)))
+		      (and search (symbolp search)
+			   (symbol-name search)))))
+	  (ext (read-string
+		"enter extension (eg 'js'): "
+		(f-ext (or (buffer-file-name (current-buffer)) ""))))
+	  (dir (read-directory-name "enter directory: ")))
+     (list
+      (and (not (string= "" ext)) ext)
+      pattern
+      (expand-file-name dir)
+      nil)))
+  
   (let ((buff-name "grep-extension"))
+
     (when clear-buffer
       (switch-to-buffer buff-name)
       (erase-buffer))
     
-    (start-process buff-name buff-name 
-		 "find"
-		 "-name" (concat "*" extension)
-		 "-exec" "grep" "-Hin" pattern "{}" ";")
+    (if extension
+	(start-process buff-name buff-name 
+		       "find"
+		       dir
+		       "-name" (concat "*" extension)
+		       "-exec" "grep" "-Hin" pattern "{}" ";")
+      
+      (start-process buff-name buff-name
+		     "grep" "-RHins" pattern dir))
     (switch-to-buffer buff-name)))
+
+(defun kill-current-buffer-filename ()(interactive)
+       (let ((fn
+	      (replace-regexp-in-string
+	       "^/sudo:root@.*?:" ""
+	      (buffer-file-name (current-buffer)))))
+	 
+	 (kill-new fn)
+	 (message "killed: %s" fn)
+	 fn))
+
+(defun message-current-buffer-process ()
+  (interactive)
+  (let ((proc (get-buffer-process (current-buffer))))
+    (if proc
+	(message "%s" (process-command proc))
+      (message "buffer has no process"))))
 
 (provide 'command-mode-commands)
 ;;; command-mode-commands.el ends here
