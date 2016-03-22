@@ -1,4 +1,6 @@
-(defun my-org-mode-settings ()
+
+(with-eval-after-load 'org
+  '
   (define-key org-mode-map (kbd "M-]") 'org-metaright);;promote
   (define-key org-mode-map (kbd "M-[") 'org-metaleft);;demote
   (define-key org-mode-map (kbd "RET") 'org-meta-return);;insert new
@@ -11,10 +13,9 @@
     'org-deadline)
   
   (setq org-blank-before-new-entry
-	;don't add extra newlines
+					;don't add extra newlines
 	'((heading . nil)
 	  (plain-list-item . nil))
 	;;don't cut the current line
-	org-M-RET-may-split-line '((default . nil ))))
-
-(eval-after-load 'org 'my-org-mode-settings)
+	org-M-RET-may-split-line '((default . nil )))
+  )
