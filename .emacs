@@ -32,6 +32,16 @@
   (condition-case ex (load fn)
     ('error (message "WARNING: unable to load %s:\n %s" fn ex))))
 
-(loop with top = (f-join emacs-top "settings")
-      for fn in (directory-files top) do
-      (load-file-safe (f-join top fn)))
+
+(loop with top = (f-join emacs-top "libs-dirs")
+      for lib-dir in (directory-files top)
+      as fn = (f-join top lib-dir)
+      if (file-directory-p fn)  do
+      (add-to-list 'load-path fn))
+
+(dolist (dir '("settings" "sensitive"))
+  (loop with top = (f-join emacs-top dir)
+	for fn in (directory-files top)
+	as fn = (f-join top fn)
+	if (file-regular-p fn) do
+	(load-file-safe fn)))
