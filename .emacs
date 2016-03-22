@@ -22,9 +22,9 @@
 (require 'emacs-settings)
 
 
-(load-file
- (f-join emacs-top "misc-temp.el")
- (f-join emacs-top "extra" "misc-utils.el"))
+(mapc 'load-file
+      (list (f-join emacs-top "misc-temp.el")
+	    (f-join emacs-top "extra" "misc-utils.el")))
 
 (require 'proxy-mode)
 (require 'plusx)
