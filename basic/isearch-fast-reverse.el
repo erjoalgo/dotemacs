@@ -61,11 +61,12 @@
 (add-hook 'isearch-mode-end-hook (lambda () (setq isearch-reverse-direction-p nil)))
 
 
+;;TODO turn into hooks?
 (defadvice isearch-exit (before dired-search-maybe-follow activate)
   (when (and (eq major-mode 'dired-mode)
 	     (member (this-command-keys) '("" [return])))
     (dired-find-file))
-  (when isearch-forward
+  (when (and isearch-forward isearch-other-end)
     (goto-char isearch-other-end)))
 
 (defadvice isearch-forward-regexp (around force-case-fold activate)
