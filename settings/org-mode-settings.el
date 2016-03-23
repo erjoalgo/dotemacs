@@ -1,6 +1,4 @@
-
 (with-eval-after-load 'org
-  '
   (define-key org-mode-map (kbd "M-]") 'org-metaright);;promote
   (define-key org-mode-map (kbd "M-[") 'org-metaleft);;demote
   (define-key org-mode-map (kbd "RET") 'org-meta-return);;insert new
@@ -18,4 +16,11 @@
 	  (plain-list-item . nil))
 	;;don't cut the current line
 	org-M-RET-may-split-line '((default . nil )))
+
+  (setq org-startup-folded nil)
   )
+
+(defvar notes-file
+  (f-join emacs-top "org" "notes.org"))
+(when (file-exists-p notes-file)
+  (find-file notes-file))
