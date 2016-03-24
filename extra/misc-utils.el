@@ -18,9 +18,15 @@
 (defun shell-command-of-region (a b)
   "compare to shell-command-on-region"
   (interactive "r")
-  ;(shell-command-to-string (buffer-substring a b))
-  (async-shell-command (buffer-substring a b)))
+  (let ((cmd (buffer-substring a b)))
+    (async-shell-command cmd)))
 
+(defun shell-command-of-current-line ()
+  (interactive)
+  (shell-command-of-region
+   (line-beginning-position)
+   (line-end-position)))
+  
 (defun lnabs (source &optional prompt)
   (interactive "fEnter soft link source: ")
   (let* ((source (expand-file-name source))
@@ -48,6 +54,3 @@
     (reverse (sort-key files (lambda (fn)
 		  (let ((attrs (file-attributes (f-join dir fn))))
 		    (nth 6 attrs)))))))
-
-  
-		  
