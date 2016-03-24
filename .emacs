@@ -40,9 +40,11 @@
       if (file-directory-p fn)  do
       (add-to-list 'load-path fn))
 
-(dolist (dir '("settings" "sensitive"))
-  (loop with top = (f-join emacs-top dir)
-	for fn in (directory-files top)
-	as fn = (f-join top fn)
-	if (file-regular-p fn) do
-	(load-file-safe fn)))
+(loop for dir in '("settings" "sensitive")
+      as top = (f-join emacs-top dir)
+      if (file-exists-p top) do
+      (loop when (file-exists-p top)
+	    for fn in (directory-files top)
+	    as fn = (f-join top fn)
+	    if (file-regular-p fn) do
+	    (load-file-safe fn)))
