@@ -21,3 +21,11 @@
 		 (progn
 		   (backward-sexp)
 		   (point)))))
+
+
+(defun firefox-new-tab-sh (url &optional unknown-arg)
+  (let ((new-tab "new-tab"))
+    (start-process new-tab new-tab
+		 "firefox-new-tab.sh"
+		 url)))
+(setq browse-url-browser-function 'firefox-new-tab-sh)
