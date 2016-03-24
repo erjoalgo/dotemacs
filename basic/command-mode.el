@@ -38,12 +38,16 @@
     0 "-CM" command-mode-map)
 (define-globalized-minor-mode global-command-mode command-mode command-mode)
 
+(defvar *command-mode-color-on* "dark green")
+(defvar *command-mode-color-off* "dark gray")
+
 (defun command-mode-hook-add-color ()
   "add a visual indicator of current mode"
-  (let ((color (if command-mode "dark green" "dark gray")))
+  (let ((color (if command-mode *command-mode-color-on* *command-mode-color-off*)))
   ;(let ((color (if command-mode "dark blue" "dark gray")))
 	(set-face-background 'mode-line color)
 	(set-cursor-color color)))
+
 (add-hook 'command-mode-hook 'command-mode-hook-add-color)
 
 (defun global-command-mode-toggle ()
@@ -202,6 +206,7 @@
 ;(fset 'join-base-dir (curry 'f-join basic-top))
 (fset 'join-base-dir (curry 'concat "~/repos/dotemacs/basic/"))
 
+;;TODO load this from a tsv file
 (define-key-tuples-macro
   open-init-files-map
   (lambda (fn) (interactive) 
@@ -218,7 +223,7 @@
   ("t" (f-join emacs-top "in-progress" "python_buttons.el"))
   ("M" (concat "/var/mail/" (getenv "USER")))
   ("x" (concat  "~/repos/stumpwm/xmodmap/.xmodmaprc"))
-  ("y" (concat stumpwm_dir ".my_startups.sh"))
+  ;;("y" (concat stumpwm_dir ".my_startups.sh"))
   ("S" "/sudo::/var/log/syslog")
   ("v" (concat stumpwm_dir "keynavs/.keynavrc"))
   ("w" "~/repos/stumpwm/.stumpwmrc")
@@ -229,16 +234,19 @@
   ("8" "~/repos/starter/data/packages")
   ("9" "~/programs")
   ("o" "~/repos/dotemacs/org/notes.org")
+  ("O" "~/org/poc.org")
   )
 
 (define-key-tuples-macro
   open-interpreter-map
   nil 
   ("s" (lambda (arg)(interactive "P")(eshell arg)))
-  ("p"  (lambda () (interactive)(call-interactively 'run-python)(switch-to-buffer (get-buffer-by-regex "*Python*"))))
+  ("p"  (lambda () (interactive)(call-interactively 'run-python)
+	  (switch-to-buffer (get-buffer-by-regex "*Python*"))))
   ("P"  message-current-buffer-process) 
   ;;("p" 'run-python)
   ("i" ielm)
+  ("I" load-dark-theme-toggle)
   ("c" music-player-play-songs)
   ("c" kill-current-buffer-filename)
   ("e" my-eval-defun)
@@ -261,8 +269,8 @@
   ("z" airmacs_read_key)
   ("l" alert)
   ;;("w" switch-to-slime-repl)
-  ("w" sbcl-slime)
-  ("W" slime-connect-stumpwm)
+  ("w" slime-sbcl)
+  ("W" slime-stumpwm)
   ("S" goto-slime-buffer)
   ("t" untarprogram)
   ("r" replace-regexp)
@@ -344,8 +352,20 @@
  '(mode-line ((t (:background "dark gray" :foreground "white" :box (:line-width -1 :style released-button) :weight normal :height 2.0 :width extra-expanded))))
  '(mode-line-inactive ((t (:inherit mode-line :background "grey90" :foreground "grey20" :box (:line-width -1 :color "grey75") :weight light :height 1.1 :width normal))))
  ;(set-face-attribute 'region nil :background "green")
-'(region ((t :background "#666" :foreground "#ffffff")))
- )
+'(region ((t :background "#666" :foreground "#ffffff"))))
+
+(defun load-dark-theme-toggle ()
+  (interactive)
+  (let ((dark-theme 'wombat))
+    (if (custom-theme-enabled-p dark-theme)
+	(progn
+	  (disable-theme dark-theme)
+	  (setf *command-mode-color-on* "dark green"
+		*command-mode-color-off* "dark gray"))
+      (progn
+	(load-theme dark-theme)
+	  (setf *command-mode-color-on* "light green"
+		*command-mode-color-off* "light gray")))))
 
 (let ((current-hour
        (third (decode-time (current-time)))))
