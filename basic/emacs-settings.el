@@ -72,6 +72,7 @@
 (show-paren-mode t)
 (setf show-paren-delay 0)
 
+(setq enable-local-variables :safe)
 
 (provide 'emacs-settings)
 ;;; emacs-settings.el ends here
