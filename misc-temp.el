@@ -23,6 +23,18 @@
 		   (backward-sexp)
 		   (point)))))
 
+(defun bash-identifier-current-line  ()
+  (let ((line
+	(buffer-substring-no-properties
+	 (point)
+	 (line-beginning-position))))
+    (and
+     (string-match
+      "\\(^[^=]+\\)="
+      line)
+     (match-string 1 line))))
+
+
 
 (defun firefox-new-tab-sh (url &optional unknown-arg)
   (let ((new-tab "new-tab"))
