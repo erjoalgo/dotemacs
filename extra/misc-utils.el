@@ -19,6 +19,7 @@
   "compare to shell-command-on-region"
   (interactive "r")
   (let ((cmd (buffer-substring a b)))
+    (message "cmd is: %s" cmd)
     (async-shell-command cmd)))
 
 (defun shell-command-of-current-line ()
