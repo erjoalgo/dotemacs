@@ -146,6 +146,7 @@
 
   ("3" find-file-at-point-cmd);;originally C-x f
   ("4" switch-to-buffer);;originally C-x b
+  ("5" (lambda () (interactive) (find-file-under-dir-completing-read "~/repos")))
   
   
   ("s" save-buffer);;originally C-x s
@@ -197,6 +198,12 @@
 
 
 
+(defun find-file-under-dir-completing-read (dir)
+  ;;(read-file-name "repo: " "~/repos/")
+  (find-file (f-join dir
+		     (completing-read (concat dir ": ")
+				      (directory-files dir)))))
+    
 (defun curry (fun &rest fixed-args)
   `(lambda (&rest args)
      ,(when (commandp fun) '(interactive))
