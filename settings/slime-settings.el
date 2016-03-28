@@ -1,9 +1,9 @@
 (require 'f)
 (add-to-list 'load-path
 	      ;;(f-join emacs-top "libs" "slime-2.17"))
-	      ;;stumpwm's swank only works with 2.14
+	      ;;stumpwm's swank only works with 2.14...TODO
 	     (f-join emacs-top "libs" "slime-2.14"))
-(setq inferior-lisp-program "sbcl")
+(setq inferior-lisp-program "/usr/bin/sbcl")
 (setq slime-contribs '(slime-fancy))
 
 (defun find-buffer-by-starts-with (prefix)
@@ -17,7 +17,8 @@
   (interactive)
   (require 'slime)
   (let* ((slime-sbcl-buffer-name "*slime-repl sbcl")
-	 (slime-sbcl-buffer (find-buffer-by-starts-with slime-sbcl-buffer-name)))
+	 (slime-sbcl-buffer
+	  (find-buffer-by-starts-with slime-sbcl-buffer-name)))
 
     (if slime-sbcl-buffer
 	(switch-to-buffer slime-sbcl-buffer)
@@ -38,10 +39,11 @@
 	(slime-connect "localhost" *stumpwm-swank-port*)))))
 
 (defun slime-stumpwm-connection-hook ()
-  (message "on slime-connected-hook new")
-  ;;(edebug)
   '(slime-interactive-eval
     "(swank:set-package \"STUMPWM\")")
-  (slime-repl-set-package "STUMPWM"))
+  (when (and slime-buffer-connection
+	     (= *stumpwm-swank-port*
+	   (second (process-contact slime-buffer-connection))))
+    (slime-repl-set-package "STUMPWM")))
 
   
