@@ -33,10 +33,15 @@
     (if slime-stumpwm-buffer
 	(switch-to-buffer slime-stumpwm-buffer)
       (progn
-	(slime-connect "localhost" *stumpwm-swank-port*)
 	(add-hook 'slime-connected-hook
-		  (lambda () )
-		  '(slime-interactive-eval
-		    "(swank:set-package \"STUMPWM\")"))))))
+		  'slime-stumpwm-connection-hook)
+	(slime-connect "localhost" *stumpwm-swank-port*)))))
+
+(defun slime-stumpwm-connection-hook ()
+  (message "on slime-connected-hook new")
+  ;;(edebug)
+  '(slime-interactive-eval
+    "(swank:set-package \"STUMPWM\")")
+  (slime-repl-set-package "STUMPWM"))
 
   
