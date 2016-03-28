@@ -59,25 +59,29 @@
   (kill-whole-line arg)
   (back-to-indentation))
 
+(defmacro toggle-bool (sym)
+  `(setf ,sym (not ,sym)))
+
 (defun my-move-beginning-of-line ()
   ;;TODO use mode-hook-initialized variables
   (interactive)
   (cond
-      ((string-match ".*eshell" (buffer-name (current-buffer)))
+      ((eq major-mode 'eshell-mode)
        (eshell-bol))
       
-      ((eq 'slime-repl-mode major-mode)
+      ((eq major-mode 'slime-repl-mode)
        (beginning-of-line))
-      ((string-match ".*slime-repl sbcl.*" (buffer-name (current-buffer)))
-       (move-past-prompt "STUMPWM> "))
+      
       ;;((string-match "[*]R[*]" (buffer-name (current-buffer)))
       ((eq major-mode 'inferior-ess-mode)
        (move-past-prompt "^> " t))
+      
       ((equal last-command 'my-move-beginning-of-line)
        (if my-move-beginning-of-line-toggle
 	   (move-beginning-of-line nil )
 	 (back-to-indentation))
-       (toggle 'my-move-beginning-of-line-toggle))
+       (toggle-bool my-move-beginning-of-line-toggle))
+      
       (t (setq my-move-beginning-of-line-toggle t) (back-to-indentation))))
 
 (defun copy-line-up (arg) (interactive "P")
