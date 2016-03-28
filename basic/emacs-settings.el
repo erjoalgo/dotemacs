@@ -74,5 +74,8 @@
 
 (setq enable-local-variables :safe)
 
+(put 'erase-buffer 'disabled nil)
+
+
 (provide 'emacs-settings)
 ;;; emacs-settings.el ends here
