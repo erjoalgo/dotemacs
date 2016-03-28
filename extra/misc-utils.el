@@ -29,7 +29,16 @@
    (line-end-position)))
   
 (defun lnabs (source &optional prompt)
-  (interactive "fEnter soft link source: ")
+  ;;(interactive "fEnter soft link source: ")
+  (interactive (list
+		(let ((initial (and (eq major-mode 'dired-mode)
+				    (dired-file-name-at-point)
+				    (f-filename
+				     (dired-file-name-at-point)))))
+		  
+		  (read-file-name
+		   "Enter soft link source: "
+		   nil initial t initial))))
   (let* ((source (expand-file-name source))
 	 (base (f-filename source))
 	 (destination (read-file-name "enter destination: " nil base nil nil nil ))
@@ -55,3 +64,17 @@
     (reverse (sort-key files (lambda (fn)
 		  (let ((attrs (file-attributes (f-join dir fn))))
 		    (nth 6 attrs)))))))
+
+(defun read-symbol-completing (prompt &optional default)
+  (intern
+   (completing-read prompt obarray nil nil (and default (symbol-name default)))))
+
+(defun add-file-local-variable-mode (mode)
+  (interactive (list
+		(if (eq major-mode 'fundamental-mode)
+		    (read-symbol-completing "enter mode: " major-mode)
+		  major-mode)))
+  (add-file-local-variable 'mode mode)
+  (when (eq major-mode 'fundamental-mode)
+    (funcall mode)))
+  
