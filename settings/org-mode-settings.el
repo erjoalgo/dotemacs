@@ -8,9 +8,9 @@
   (define-key org-mode-map (kbd "RET") 'org-meta-return);;insert new
 					;use C-j to add text
   
-  (define-key org-mode-map (kbd "s-t")
+  (define-key org-mode-map (kbd "s-1")
     (lambda () (interactive) (org-todo 1)));;tag TODO
-  (define-key org-mode-map (kbd "s-T")
+  (define-key org-mode-map (kbd "s-2")
     (lambda () (interactive) (org-todo 2)));;tag DONE
   (define-key org-mode-map (kbd "s-d")
     'org-deadline)
@@ -29,5 +29,14 @@
 
 (defvar notes-file
   (f-join emacs-top "org" "notes.org"))
+
 (when (file-exists-p notes-file)
-  (find-file notes-file))
+  (find-file notes-file)
+  (push notes-file org-agenda-files))
+
+(defvar *org-todo-first-todo-line-number* 3)
+(defun org-todo-promote-top ()
+  (interactive)
+  (save-excursion
+    (move-line-up (- (line-number-at-pos) *org-todo-first-todo-line-number*))))
+(define-key org-agenda-mode-map (kbd "s-q") 'org-todo-promote-top)
