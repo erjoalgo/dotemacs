@@ -319,6 +319,7 @@
 (define-key 'help-command "A" 'apropos-variable)
 (global-set-key [s-backspace] (string-insert-command "`"))
 (global-set-key (kbd "s-SPC") (string-insert-command ", "))
+(global-set-key (kbd "<C-f11>") 'eval-buffer)
 
 (loop for map in (list global-map command-mode-map)
       do (define-key map [f5] (lambda ()
