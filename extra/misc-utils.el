@@ -72,9 +72,10 @@
 (defun add-file-local-variable-mode (mode)
   (interactive (list
 		(if (eq major-mode 'fundamental-mode)
-		    (read-symbol-completing "enter mode: " major-mode)
+		    (read-symbol-completing "enter mode: ")
 		  major-mode)))
-  (add-file-local-variable 'mode mode)
+  ;;first load mode to set the right comment-start
   (when (eq major-mode 'fundamental-mode)
-    (funcall mode)))
+    (funcall mode))
+  (add-file-local-variable 'mode mode))
   
