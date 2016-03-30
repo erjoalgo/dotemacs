@@ -30,7 +30,7 @@
 	 (line-beginning-position))))
     (and
      (string-match
-      "\\(^[^=]+\\)="
+      "^[[:space:]]*\\([^=]+\\)="
       line)
      (match-string 1 line))))
 

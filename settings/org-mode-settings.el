@@ -4,6 +4,10 @@
   
   (define-key org-mode-map (kbd "M-]") 'org-metaright);;promote
   (define-key org-mode-map (kbd "M-[") 'org-metaleft);;demote
+
+
+  (define-key org-mode-map (kbd "C-M-]") 'org-demote-subtree);;promote
+  (define-key org-mode-map (kbd "C-M-[") 'org-promote-subtree);;demote
   
   (define-key org-mode-map (kbd "RET") 'org-meta-return);;insert new
 					;use C-j to add text
