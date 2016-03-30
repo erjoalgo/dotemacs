@@ -39,4 +39,5 @@
   (interactive)
   (save-excursion
     (move-line-up (- (line-number-at-pos) *org-todo-first-todo-line-number*))))
-(define-key org-agenda-mode-map (kbd "s-q") 'org-todo-promote-top)
+(with-eval-after-load 'org-agenda
+  (define-key org-agenda-mode-map (kbd "s-q") 'org-todo-promote-top))
