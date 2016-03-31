@@ -12,6 +12,9 @@
       
       (if (not (file-exists-p goimports-path))
 	  (message "WARNING: go or go lint not installed (go get github.com/golang/lint)")
-	(setf gofmt-command goimports-path)))))
+	(setf gofmt-command goimports-path)
+	(add-hook 'before-save-hook #'gofmt-before-save)))))
 
-(add-to-list 'auto-mode-alist '("[.]go$" . go-mode))
+;(add-to-list 'auto-mode-alist '("[.]go$" . go-mode))
+;;(autoload 'go-mode "go-mode" "go mode" t)
+(require 'go-mode-autoloads)
