@@ -11,7 +11,7 @@
 	(add-to-list 'load-path go-lint-path))
       
       (if (not (file-exists-p goimports-path))
-	  (message "WARNING: go or go lint not installed (go get github.com/golang/lint)")
+	  (message "WARNING: goimports not found (go get github.com/golang/lint)")
 	(setf gofmt-command goimports-path)
 	(add-hook 'before-save-hook #'gofmt-before-save)))))
 
