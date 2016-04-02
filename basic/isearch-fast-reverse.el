@@ -27,7 +27,7 @@
 ;;Esc to exit isearch at current position
 ;;f4 to cancel isearch and return to original, pre-search position
 ;;for consistency, exiting while on isearch-forward will move point to beginning of match
-;;In dired, RET automatically opens file/directory at point
+;;In dired or gnus, RET automatically opens file/directory at point
 
 
 ;;; Code:
@@ -62,23 +62,28 @@
 
 
 ;;TODO turn into hooks?
-(defadvice isearch-exit (before dired-search-maybe-follow activate)
-  (when (and (eq major-mode 'dired-mode)
-	     (member (this-command-keys) '("" [return])))
-    (dired-find-file))
-  (when (and isearch-forward isearch-other-end)
-    (goto-char isearch-other-end)))
+
 
 (defadvice isearch-forward-regexp (around force-case-fold activate)
   (let* ((case-fold-search t))
     ad-do-it))
 
+
 (defadvice isearch-reverse-exit (after dired-search-maybe-follow activate)
-  (when (and (eq major-mode 'dired-mode)
-	     (or
-	      (equal (this-command-keys) "")
-	      (equal (this-command-keys) [return])))
-    (dired-find-file)))
+  (isearch-ret-maybe-passthrough))
+
+(defadvice isearch-exit (before dired-search-maybe-follow activate)
+  (isearch-ret-maybe-passthrough)
+  (when (and isearch-forward isearch-other-end)
+    (goto-char isearch-other-end)))
+
+
+(defun isearch-ret-maybe-passthrough ()
+  (when (member (this-command-keys) '([return] ""))
+    (case major-mode
+      ('dired-mode (dired-find-file))
+      ('gnus-summary-mode (gnus-summary-scroll-up nil)))))
+
 
 (provide 'isearch-fast-reverse)
 ;;; isearch-fast-reverse.el ends here
