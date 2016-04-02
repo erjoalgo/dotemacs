@@ -203,15 +203,11 @@
   (interactive) (revert-buffer t t))
 
 (defun find-iregex (directory  regex)
-  ;;(interactive "P\nsenter regex: ")
-  (interactive (list default-directory
-		     (read-string "enter regex: " (symbol-name-at-point))))
-  (let ((directory (expand-file-name directory))
-	(buff-name "findiregex"))
-    (start-process buff-name buff-name
-		   "find" directory "-iregex"
-		   (format ".*%s.*" regex))
-    (switch-to-buffer buff-name)
+  (interactive "P\nsenter regex: ")
+  (message directory)
+  (let ((directory (expand-file-name default-directory)))
+    (start-process "findiregex" "findiregex" "find" directory "-iregex" (format ".*%s.*" regex))
+    (switch-to-buffer "findiregex")
     (beginning-of-buffer)))
 
 (defun gen-new-buffer (&optional name)
@@ -237,21 +233,25 @@
 
 (require 'f)
 (defcustom grep-extension-prompt-dir nil "whether to prompt for directory")
-
 (defun grep-extension (extension pattern dir &optional clear-buffer)
   ;;TODO colored output
   (interactive
    (let* ((pattern
-	   (let ((default (car kill-ring)))
+	   (let ((default (car kill-ring))
+		 (symbol-at-point
+		  (let ((search (sexp-at-point)))
+		    (and search (symbolp search)
+			 (symbol-name search)))))
+	     
 	     (read-string
-	      (format "enter grep pattern: (default '%s'): " default)
-	      (symbol-name-at-point)
+	      (format "enter grep pattern: (default %s): " default)
+	      symbol-at-point
 	      nil default)))
 	  
 	  (ext (read-string
 		"enter extension (eg 'js'): "
 		(f-ext (or (buffer-file-name (current-buffer)) ""))))
-	  (dir (if (or grep-extension-prompt-dir current-prefix-arg)
+	  (dir (if grep-extension-prompt-dir
 		   (read-directory-name "enter directory: ")
 		 default-directory)))
      (list
@@ -276,13 +276,6 @@
       (start-process buff-name buff-name
 		     "grep" "-RHins" pattern dir))
     (switch-to-buffer buff-name)))
-
-(defun symbol-name-at-point ()
-  (let ((sexp (sexp-at-point)))
-    (when (and (consp sexp) (eq 'quote (car sexp)))
-      (setf sexp (cadr sexp)))
-    (and sexp (symbolp sexp)
-	 (symbol-name sexp))))
 
 (defun kill-current-buffer-filename ()(interactive)
        (let ((fn
