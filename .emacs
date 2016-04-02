@@ -1,6 +1,7 @@
 (defvar emacs-top
   ;;find .emacs's real location
-  (file-name-directory (file-truename "~/.emacs")))
+  (concat (expand-file-name ".") "/"))
+;  (file-name-directory (file-truename "~ealfonso/.emacs")))
 
 (dolist (dir '("libs" "basic" "extra"))
   (add-to-list 'load-path
@@ -31,7 +32,8 @@
 
 (defun load-file-safe (fn)
   (condition-case ex (load fn)
-    ('error (message "WARNING: unable to load %s:\n %s" fn ex))))
+    ('error
+     (message "WARNING: unable to load %s:\n %s" fn ex))))
 
 
 (loop with top = (f-join emacs-top "libs-dirs")
