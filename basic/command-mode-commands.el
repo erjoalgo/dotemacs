@@ -236,11 +236,18 @@
 (defun grep-extension (extension pattern dir &optional clear-buffer)
   ;;TODO colored output
   (interactive
-   (let* ((pattern (read-string
-		    "enter grep pattern: "
-		    (let ((search (sexp-at-point)))
+   (let* ((pattern
+	   (let ((default (car kill-ring))
+		 (symbol-at-point
+		  (let ((search (sexp-at-point)))
 		      (and search (symbolp search)
 			   (symbol-name search)))))
+	     
+	   (read-string
+	    (format "enter grep pattern: (default '%s'): " default)
+	    symbol-at-point
+	    nil default)))
+	  
 	  (ext (read-string
 		"enter extension (eg 'js'): "
 		(f-ext (or (buffer-file-name (current-buffer)) ""))))

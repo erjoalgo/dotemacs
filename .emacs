@@ -36,11 +36,12 @@
      (message "WARNING: unable to load %s:\n %s" fn ex))))
 
 
-(loop with top = (f-join emacs-top "libs-dirs")
-      for lib-dir in (directory-files top)
-      as fn = (f-join top lib-dir)
-      if (file-directory-p fn)  do
-      (add-to-list 'load-path fn))
+(dolist (top-base '("libs-submodules" "libs-dirs"))
+  (loop with top = (f-join emacs-top top-base)
+	for lib-dir in (directory-files top)
+	as fn = (f-join top lib-dir)
+	if (file-directory-p fn)  do
+	(add-to-list 'load-path fn)))
 
 (loop for dir in '("settings" "sensitive")
       as top = (f-join emacs-top dir)
