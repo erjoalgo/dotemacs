@@ -232,7 +232,7 @@
   ("x" (concat  "~/repos/stumpwm/xmodmap/.xmodmaprc"))
   ;;("y" (concat stumpwm_dir ".my_startups.sh"))
   ("S" "/sudo::/var/log/syslog")
-  ("v" (concat stumpwm_dir "keynavs/.keynavrc"))
+  ("v" "~/repos/stumpwm/keynavs/.keynavrc")
   ("w" "~/repos/stumpwm/.stumpwmrc")
   ;;("c" "/sudo::/etc/anacrontab")
   ;;("C" "/sudo::/etc/crontab")
@@ -241,8 +241,7 @@
   ("8" "~/repos/starter/data/packages")
   ("9" "~/programs")
   ("o" "~/repos/dotemacs/org/notes.org")
-  ("O" "~/org/poc.org")
-  )
+  ("O" "~/org/poc.org"))
 
 (define-key-tuples-macro
   open-interpreter-map
@@ -267,10 +266,10 @@
   ("v" revert-buffer-no-confirm)
   ("y" (lambda () (interactive) async-shell-command "youtube_browser.py" ))
   ("n" find-new-buffer)
-  ("f" find-file-other-window)
   ("D" (lambda () (interactive)(call-interactively 'pdb)))
   ;("g" grep-search-default)
   ("g" grep-extension)
+  ("f" find-iregex)
   ("u" universal-argument)
   ([f2] call-last-kbd-macro)
   ("z" airmacs_read_key)
