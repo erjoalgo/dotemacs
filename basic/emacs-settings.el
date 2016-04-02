@@ -70,11 +70,20 @@
 (setq inhibit-startup-screen t)
 
 (show-paren-mode t)
+(setf show-paren-style 'expression)
 (setf show-paren-delay 0)
 
 (setq enable-local-variables :safe)
 
 (put 'erase-buffer 'disabled nil)
+
+;;probably only one is necessary
+(add-hook 'Man-mode-hook 'visual-line-mode)
+
+(when (string-match "GNU Emacs 23.*" (emacs-version))
+  ;;split window right
+  (fset 'split-window-right 'split-window-horizontally)
+  (fset 'split-window-below 'split-window-horizontally))
 
 
 (provide 'emacs-settings)
