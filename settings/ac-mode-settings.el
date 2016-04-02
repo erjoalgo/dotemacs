@@ -1,28 +1,24 @@
-(require 'auto-complete)
 
-(require 'auto-complete-config)
 
-(ac-config-default)
-
-(loop for i from 1 upto 9 
-      as key = (kbd (format "s-%s" i))
-      as sym = (intern (format "ac-complete-select-%d" i)) do
-      (fset sym `(lambda () (interactive)
-		   (if (ac-menu-live-p)
-		       (if (popup-select ac-menu ,(1- i))
-			   (ac-complete)
-			 (error "something failed in goto completion"))
-		     (error "ac menu not live"))))
-      do
-      (define-key ac-completing-map key sym))
+(setf ac-number-candidates-p t)
+(setf ac-complete-select-nth-kdb-fun
+      (lambda (i) (kbd (format "s-%d" i))))
 
 
 ;;(setf ac-delay .005)
 (setf ac-delay 0)
 (setf ac-auto-show-menu 0)
 
+;;start when first character typed, don't wait until 2nd
 (setf ac-auto-start 1)
 
 
-(add-hook 'c-mode-common-hook 'ac-cc-mode-setup)
-(add-hook 'c-mode-common-hook 'ac-cc-mode-setup)
+(require 'auto-complete)
+
+
+(require 'auto-complete-config)
+(ac-config-default)
+
+;;command-mode and goto-last-change
+(define-key ac-completing-map [f1] nil )
+(define-key ac-completing-map [M-f1] nil )
