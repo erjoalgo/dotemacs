@@ -22,3 +22,5 @@
 ;;command-mode and goto-last-change
 (define-key ac-completing-map [f1] nil )
 (define-key ac-completing-map [M-f1] nil )
+
+(defalias 'acmode 'auto-complete-mode)
