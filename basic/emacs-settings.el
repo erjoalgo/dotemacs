@@ -77,7 +77,6 @@
 
 (put 'erase-buffer 'disabled nil)
 
-;;probably only one is necessary
 (add-hook 'Man-mode-hook 'visual-line-mode)
 
 (when (string-match "GNU Emacs 23.*" (emacs-version))
