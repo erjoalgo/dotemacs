@@ -236,10 +236,7 @@
   ("w" "~/repos/stumpwm/.stumpwmrc")
   ;;("c" "/sudo::/etc/anacrontab")
   ;;("C" "/sudo::/etc/crontab")
-  ("r" "~/repos")
-  ("7" "~/repos/unix_utils")
   ("8" "~/repos/starter/data/packages")
-  ("9" "~/programs")
   ("o" "~/repos/dotemacs/org/notes.org")
   ("O" "~/org/poc.org"))
 
@@ -247,14 +244,16 @@
   open-interpreter-map
   nil 
   ("s" (lambda (arg)(interactive "P")(eshell arg)))
-  ("p"  (lambda () (interactive)(call-interactively 'run-python)
-	  (switch-to-buffer (get-buffer-by-regex "*Python*"))))
+  ("p"  (lambda () (interactive)
+	  (let ((python-buffer (get-buffer "*Python*")))
+	    (if python-buffer (switch-to-buffer python-buffer)
+	      (call-interactively 'run-python)))))
   ("P"  message-current-buffer-process) 
   ;;("p" 'run-python)
   ("i" ielm)
   ("I" load-dark-theme-toggle)
   ("c" music-player-play-songs)
-  ("c" kill-current-buffer-filename)
+  ("C" kill-current-buffer-filename)
   ("e" my-eval-defun)
   ("E" (lambda () (interactive)(eval-defun t)))
   ("x" execute-extended-command)
@@ -264,7 +263,6 @@
   ("M" (lambda () (interactive) (call-interactively 'man)))
   ("a" async-shell-command)
   ("v" revert-buffer-no-confirm)
-  ("y" (lambda () (interactive) async-shell-command "youtube_browser.py" ))
   ("n" find-new-buffer)
   ("D" (lambda () (interactive)(call-interactively 'pdb)))
   ;("g" grep-search-default)
@@ -280,18 +278,17 @@
   ("S" goto-slime-buffer)
   ("t" untarprogram)
   ("r" replace-regexp)
-  ("R" erc-autologin)
+  ("R" query-replace-regexp)
+  ;("R" erc-autologin)
   ("A" (lambda () (interactive) (switch-to-buffer (get-buffer-by-regex "\\*Async Shell Command\\*"))))
   ;;("k" wiki)
-  ("k" goto-slime-buffer)
   ("o" gnus-goto-inbox)
   ("0" open-google-calendar)
   ;("P" (lambda () (interactive)(message "point is %d" (point))))
   ;; ("b" matlab-shell)
   ;; ("B"  run-octave)
   ("b" run-or-switch-to-matlab-or-octave)
-  ("B" run-or-switch-to-matlab-or-octave)
-  )
+  ("B" run-or-switch-to-matlab-or-octave))
 
 
 ;;http://stackoverflow.com/questions/683425/globally-override-key-binding-in-emacs/5340797#5340797
@@ -310,8 +307,7 @@
 
 
 (global-set-key [M-f1] 'goto-last-change)
-(global-set-key (kbd "M-Z") 'replace-regexp)
-(global-set-key (kbd "M-z") 'query-replace-regexp)
+
 (global-set-key [escape] 'exit-recursive-edit)
 (global-set-key [f4] 'keyboard-escape-quit)
 (define-key 'help-command "y" 'find-function);;find source for function-at-point

@@ -47,3 +47,4 @@
     (slime-repl-set-package "STUMPWM")))
 
   
+(add-hook 'lisp-mode-hook 'slime-mode)
