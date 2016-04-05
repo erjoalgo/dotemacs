@@ -147,6 +147,7 @@
   ("3" find-file-at-point-cmd);;originally C-x f
   ("4" switch-to-buffer);;originally C-x b
   ("5" (lambda () (interactive) (find-file-under-dir-completing-read "~/repos")))
+  ("6" (lambda () (interactive) (find-file-under-dir-completing-read (f-join emacs-top "org"))))
   
   
   ("s" save-buffer);;originally C-x s
