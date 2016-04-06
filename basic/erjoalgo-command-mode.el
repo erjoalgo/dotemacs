@@ -1,4 +1,4 @@
-;;; command-mode.el --- 
+;;; erjoalgo-command-mode.el --- 
 
 ;; Copyright (C) 2016  Ernesto Alfonso <erjoalgo@gmail.com>
 
@@ -27,37 +27,38 @@
 
 ;;; Code:
 
-(defvar command-mode-map (make-sparse-keymap))
+(defvar erjoalgo-command-mode-map (make-sparse-keymap))
 
 ;;sub maps
 (defvar open-init-files-map (make-sparse-keymap))
 (defvar open-interpreter-map (make-sparse-keymap))
 
-(define-minor-mode command-mode
+(define-minor-mode erjoalgo-command-mode
     "command mode"
-    0 "-CM" command-mode-map)
-(define-globalized-minor-mode global-command-mode command-mode command-mode)
+    0 "-CM" erjoalgo-command-mode-map)
+(define-globalized-minor-mode global-erjoalgo-command-mode erjoalgo-command-mode erjoalgo-command-mode)
 
-(defvar *command-mode-color-on* "dark green")
-(defvar *command-mode-color-off* "dark gray")
+(defvar *erjoalgo-command-mode-color-on* "dark green")
+(defvar *erjoalgo-command-mode-color-off* "dark gray")
 
-(defun command-mode-hook-add-color ()
+(defun erjoalgo-command-mode-hook-add-color ()
   "add a visual indicator of current mode"
-  (let ((color (if command-mode *command-mode-color-on* *command-mode-color-off*)))
-  ;(let ((color (if command-mode "dark blue" "dark gray")))
+  (let ((color (if erjoalgo-command-mode *erjoalgo-command-mode-color-on* *erjoalgo-command-mode-color-off*)))
+  ;(let ((color (if erjoalgo-command-mode "dark blue" "dark gray")))
 	(set-face-background 'mode-line color)
 	(set-cursor-color color)))
 
-(add-hook 'command-mode-hook 'command-mode-hook-add-color)
+(add-hook 'erjoalgo-command-mode-hook 'erjoalgo-command-mode-hook-add-color)
 
-(defun global-command-mode-toggle ()
+(defun global-erjoalgo-command-mode-toggle ()
   (interactive)
-  (global-command-mode (if command-mode 0 1)))
+  (setf prefix-arg current-prefix-arg)
+  (global-erjoalgo-command-mode (if erjoalgo-command-mode 0 1)))
 
 
 
-(define-key global-map [f1] 'global-command-mode-toggle)
-(define-key global-map [f12] 'global-command-mode-toggle)
+(define-key global-map [f1] 'global-erjoalgo-command-mode-toggle)
+(define-key global-map [f12] 'global-erjoalgo-command-mode-toggle)
 
 '(defun define-key-tuples (kbd-cmd-tuples &optional kmap)
   (unless kmap (setq kmap (make-sparse-keymap)))
@@ -83,7 +84,7 @@
 
 ;;to change, simply add/remove bindings, then eval the sexp, ie x e
 (define-key-tuples-macro
-  command-mode-map
+  erjoalgo-command-mode-map
   nil
   
   ("1" scroll-up-keep-cursor);;originally M-v
@@ -186,15 +187,15 @@
   ("i" one-char-insert-mode)
   
   ("h" (lambda (arg) (interactive "P")
-	 "with prefix arg, keep command-mode while on help-command map
-	  ie for inspecting command-mode bindings
+	 "with prefix arg, keep erjoalgo-command-mode while on help-command map
+	  ie for inspecting erjoalgo-command-mode bindings
 	  ie u h k g
 	  g runs the command goto-line, which is an interactive compiled Lisp..."
 	 (set-temporary-overlay-map 'help-command)
 	 (unless arg
-	   (global-command-mode 0))))
+	   (global-erjoalgo-command-mode 0))))
   
-  ([f1] global-command-mode-toggle);; f1 toggle command mode
+  ([f1] global-erjoalgo-command-mode-toggle);; f1 toggle command mode
   )
 
 
@@ -222,8 +223,8 @@
 	       'switch-to-buffer 'find-file) fn))
   ("e" "~/.emacs")
   ("E" "~/repos/emacs-dirty/.emacs-bloated.el")
-  ("C" (join-base-dir "command-mode.el"))
-  ("c" (join-base-dir "command-mode-commands.el"))
+  ("C" (join-base-dir "erjoalgo-command-mode.el"))
+  ("c" (join-base-dir "erjoalgo-command-mode-commands.el"))
   ("b" "~/.bashrc")
   ("a" "~/.bash_aliases")
   ("m" "*Messages*")
@@ -304,7 +305,7 @@
 
 (add-hook 'after-load-functions
 	  '(lambda (something)
-	     (force-mode-first 'command-mode)))
+	     (force-mode-first 'erjoalgo-command-mode)))
 
 
 (global-set-key [M-f1] 'goto-last-change)
@@ -317,7 +318,7 @@
 (global-set-key (kbd "s-SPC") (string-insert-command ", "))
 (global-set-key (kbd "<C-f11>") 'eval-buffer)
 
-(loop for map in (list global-map command-mode-map)
+(loop for map in (list global-map erjoalgo-command-mode-map)
       do (define-key map [f5] (lambda ()
 			      (interactive)
 			      (insert "(")
@@ -341,12 +342,12 @@
 
 
 (mapc 'define-sfn-prefix-args-to-map
-      (list command-mode-map global-map))
-      ;(list command-mode-map global-map isearch-mode-map))
+      (list erjoalgo-command-mode-map global-map))
+      ;(list erjoalgo-command-mode-map global-map isearch-mode-map))
 
 
 
-;;this is actually part of command-mode
+;;this is actually part of erjoalgo-command-mode
 ;;make mode-line text very big and easy to read
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -364,12 +365,12 @@
     (if (custom-theme-enabled-p dark-theme)
 	(progn
 	  (disable-theme dark-theme)
-	  (setf *command-mode-color-on* "dark green"
-		*command-mode-color-off* "dark gray"))
+	  (setf *erjoalgo-command-mode-color-on* "dark green"
+		*erjoalgo-command-mode-color-off* "dark gray"))
       (progn
 	(load-theme dark-theme)
-	  (setf *command-mode-color-on* "light green"
-		*command-mode-color-off* "light gray")))))
+	  (setf *erjoalgo-command-mode-color-on* "light green"
+		*erjoalgo-command-mode-color-off* "light gray")))))
 
 (let ((current-hour
        (third (decode-time (current-time)))))
@@ -383,20 +384,20 @@
 
 
 
-;;automatically disable command-mode when entering minibuffer
+;;automatically disable erjoalgo-command-mode when entering minibuffer
 ;;on minibuffer-exit, enable it if it was originally on
-(defvar was-in-command-mode-before-minibuf)
+(defvar was-in-erjoalgo-command-mode-before-minibuf)
 (add-hook 'minibuffer-setup-hook
-	  (lambda () (setq was-in-command-mode-before-minibuf command-mode)
-	    (global-command-mode 0)))
+	  (lambda () (setq was-in-erjoalgo-command-mode-before-minibuf erjoalgo-command-mode)
+	    (global-erjoalgo-command-mode 0)))
 
 (add-hook 'minibuffer-exit-hook
 	  (lambda ()
-	    (when (eq was-in-command-mode-before-minibuf t)
-	      (global-command-mode 1))))
+	    (when (eq was-in-erjoalgo-command-mode-before-minibuf t)
+	      (global-erjoalgo-command-mode 1))))
 
-(global-command-mode 1)
+(global-erjoalgo-command-mode 1)
 
 (require 'command-mode-commands);;maybe should not be separate package
-(provide 'command-mode)
-;;; command-mode.el ends here
+(provide 'erjoalgo-command-mode)
+;;; erjoalgo-command-mode.el ends here

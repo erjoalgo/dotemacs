@@ -15,7 +15,7 @@
 (require 'cl-lib)
 (require 'cl)
 
-(require 'command-mode)
+(require 'erjoalgo-command-mode)
 (require 'zoom-global)
 (require 'isearch-fast-reverse)
 
