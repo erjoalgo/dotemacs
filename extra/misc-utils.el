@@ -22,7 +22,13 @@
     (message "cmd is: %s" cmd)
     (async-shell-command cmd)))
 
+(defun shell-command-of-buffer ()
+  "like shell-command-of-region"
+  (interactive)
+  (shell-command-of-region (point-min) (point-max)))
+
 (defun shell-command-of-current-line ()
+  "like shell-command-of-region"
   (interactive)
   (shell-command-of-region
    (line-beginning-position)
@@ -98,3 +104,5 @@
 			(buffer-name next-buff))
 	       (recursive-edit))
 	finally (message "done checking buffers")))
+
+
