@@ -313,7 +313,6 @@
 (global-set-key [escape] 'exit-recursive-edit)
 (global-set-key [f4] 'keyboard-escape-quit)
 (define-key 'help-command "y" 'find-function);;find source for function-at-point
-(define-key 'help-command "A" 'apropos-variable)
 (global-set-key [s-backspace] (string-insert-command "`"))
 (global-set-key (kbd "s-SPC") (string-insert-command ", "))
 (global-set-key (kbd "<C-f11>") 'eval-buffer)
@@ -325,6 +324,22 @@
 			      (recursive-edit)
 			      (insert ")"))))
 
+
+;;apropos
+(define-key 'help-command "A" 'apropos-variable)
+;;TODO remove this hackery
+(defun add-one-time-hook (hook fun)
+	 (let ((fun-sym (gensym)))
+	   (fset fun-sym `(lambda ()
+			   (funcall ,fun)
+			   (remove-hook ,hook ,fun-sym)))
+	   (add-hook hook fun-sym)))
+(add-hook 'apropos-mode-hook
+	  (lambda ()
+	    (add-one-time-hook
+	     'post-command-hook
+	     (lambda ()
+	       (select-window (get-buffer-window "*Apropos*"))))))
 
 (defun one-char-insert-mode ()
   "insert the next char as text"
