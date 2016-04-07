@@ -6,6 +6,7 @@
 	nconc (loop for c from a upto b collect c)))
 
 (defvar *genpass-alnum* (genpass-ranges-to-bag "azAZ09"))
+(defvar *genpass-num* (genpass-ranges-to-bag "09"))
 (defvar *genpass-special-chars* (genpass-ranges-to-bag "!/:@"))
 (defvar *genpass-default-len* 13)
 
