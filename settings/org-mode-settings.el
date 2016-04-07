@@ -46,4 +46,6 @@
 (with-eval-after-load 'org-agenda
   (define-key org-agenda-mode-map (kbd "s-q") 'org-todo-promote-top))
 
+
 (setf search-invisible nil)
+(setf org-hide-leading-stars t)
