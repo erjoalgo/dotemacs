@@ -411,6 +411,7 @@
 	    (when (eq was-in-erjoalgo-command-mode-before-minibuf t)
 	      (global-erjoalgo-command-mode 1))))
 
+(add-hook 'sldb-mode-hook (lambda () (erjoalgo-command-mode 0)))
 (global-erjoalgo-command-mode 1)
 
 (require 'command-mode-commands);;maybe should not be separate package
