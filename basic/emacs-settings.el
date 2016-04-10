@@ -85,5 +85,9 @@
   (fset 'split-window-below 'split-window-horizontally))
 
 
+(add-to-list 'auto-mode-alist '("\\.cs$" . java-mode))
+(add-to-list 'auto-mode-alist '("\\.graphml$" . nxml-mode))
+(add-to-list 'auto-mode-alist '("[.]y$" . bison-mode))
+
 (provide 'emacs-settings)
 ;;; emacs-settings.el ends here
