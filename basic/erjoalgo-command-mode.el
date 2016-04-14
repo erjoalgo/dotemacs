@@ -235,7 +235,7 @@
   ;;("y" (concat stumpwm_dir ".my_startups.sh"))
   ("S" "/sudo::/var/log/syslog")
   ("v" "~/repos/stumpwm/keynavs/.keynavrc")
-  ("w" "~/repos/stumpwm/.stumpwmrc")
+  ("w" "~/repos/stumpwm/lisp/.stumpwmrc")
   ;;("c" "/sudo::/etc/anacrontab")
   ;;("C" "/sudo::/etc/crontab")
   ("8" "~/repos/starter/data/packages")

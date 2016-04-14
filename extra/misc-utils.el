@@ -78,12 +78,17 @@
 (defun add-file-local-variable-mode (mode)
   (interactive (list
 		(if (eq major-mode 'fundamental-mode)
-		    (read-symbol-completing "enter mode: ")
-		  major-mode)))
+		    (read-symbol-completing "enter mode: "))))
   ;;first load mode to set the right comment-start
-  (when (eq major-mode 'fundamental-mode)
-    (funcall mode))
-  (add-file-local-variable 'mode mode))
+  (funcall mode)
+  (let ((mode-sans-mode
+	 (let ((mode-name (symbol-name mode)))
+	   (string-match
+				"\\(.*\\)-mode"
+				mode-name)
+	   (intern (match-string 1 mode-name)))))
+    (add-file-local-variable 'mode mode-sans-mode)))
+
   
 
 (defun check-unsaved-buffers ()
