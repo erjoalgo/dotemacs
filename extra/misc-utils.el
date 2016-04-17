@@ -52,6 +52,37 @@
     (when (or (not prompt) (y-or-n-p command))
       (shell-command command))))
 
+(defvar *shred-rec-default-times* 10)
+(defun shred-rec (fn &optional shred-times)
+  ;;(interactive "fEnter soft link source: ")
+  (interactive (list
+		(if (and
+		     (eq major-mode 'dired-mode)
+		     (dired-file-name-at-point))
+		    (f-filename
+		     (dired-file-name-at-point))
+		  (read-file-name "enter fn to shred: "))))
+  (unless shred-times
+    (setf shred-times *shred-rec-default-times*))
+  (y-or-n-p (format "confirm shred %s: " fn))
+  (let ((shred-times-string (int-to-string shred-times)))
+    
+  (if (file-directory-p fn)
+      (and (y-or-n-p (format "confirm recursive shred of %s: " fn))
+	   (progn
+	     (start-process "rec-shred" "rec-shred" "find" fn "-type" "f"
+			  "-exec" "shred" "-zufn" 
+			  shred-times-string "{}" ";")
+	     (start-process "rec-shred" "rec-shred" "find" fn "-depth" "-type" "d"
+			  "-exec" "rmdir" "{}" ";")))
+    (start-process "shred" "shred" "shred" "-zufn"
+		 shred-times-string fn)))
+  (when (eq major-mode 'dired-mode)
+    (revert-buffer)))
+
+		 
+  
+
 (cl-defun sort-key (list key &key descending (pred '<))
   (let* ((sorted-tuples (sort (mapcar (lambda (el)
 				(cons el (funcall key el)))
