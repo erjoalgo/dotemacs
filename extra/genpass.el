@@ -8,6 +8,7 @@
 (defvar *genpass-alnum* (genpass-ranges-to-bag "azAZ09"))
 (defvar *genpass-num* (genpass-ranges-to-bag "09"))
 (defvar *genpass-special-chars* (genpass-ranges-to-bag "!/:@"))
+(defvar *genpass-all* (append *genpass-special-chars* *genpass-alnum*))
 (defvar *genpass-default-len* 13)
 
 (defun genpass-genpass (n bag)
