@@ -22,7 +22,8 @@
   
 (with-eval-after-load "dired"
   (define-key dired-mode-map "q" 'dired-up-directory)
-  (define-key dired-mode-map (kbd "s-f") 'open-file))
+  (define-key dired-mode-map (kbd "s-f") 'open-file)
+  (define-key dired-mode-map (kbd "s-d") 'dired-recursive-du))
 
 
 ;;don't prompt me
@@ -31,3 +32,14 @@
   (let* ((async-shell-command-buffer 'new-buffer))
     ad-do-it))
 
+(defun dired-recursive-du ()(interactive)
+	      (let ((dired-dir dired-directory)
+		    (du-buffer "dired-rec-du"))
+		;;(shell-command (format "du -ah -d 1 %s | sort -h -r" dired_dir) dubuffer dubuffer )
+		(shell-command (format "du -ah --max-depth 1 %s | sort -h" dired-dir) du-buffer du-buffer )
+		(set-buffer du-buffer )
+		(replace-string dired-dir "" nil (point-min) (point-max))
+		(temp-buffer-window-show du-buffer)
+		(goto-char (point-max))))
+
+(setq image-dired-show-all-from-dir-max-files 2000)
