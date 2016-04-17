@@ -49,3 +49,11 @@
   
 (require 'slime-autoloads)
 (add-hook 'lisp-mode-hook 'slime-mode)
+
+;;the point of this was to switch back to command mode
+;;after entering sldb choice
+;;(add-hook 'sldb-hook 'switch_back_sldb)
+
+
+(add-hook 'sldb-hook 'visual-line-mode)
+(add-hook 'sldb-hook 'beginning-of-buffer)

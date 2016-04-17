@@ -25,13 +25,21 @@
 
 
 
-(defvar emacs-backups-dir "~/.emacs-backups")
+(defconst emacs-backups-dir "~/.emacs-backups")
 
+;; Save all tempfiles in $TMPDIR/emacs$UID/                                                        
+
+(setq backup-directory-alist
+      `((".*" . ,emacs-backups-dir)))
+(setq auto-save-file-name-transforms
+      `((".*" ,emacs-backups-dir t)))
+(setq auto-save-list-file-prefix
+      emacs-backups-dir)
 ;;taken from the internet
 (setq
  backup-by-copying t      ; don't clobber symlinks
- backup-directory-alist
- `(("." . ,emacs-backups-dir))    ; don't litter my fs tree
+ ;backup-directory-alist
+ ;`(("." . ,emacs-backups-dir))    ; don't litter my fs tree
  delete-old-versions t
  kept-new-versions 6
  kept-old-versions 2

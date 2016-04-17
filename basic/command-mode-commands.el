@@ -232,7 +232,6 @@
        
 
 (require 'f)
-(defcustom grep-extension-prompt-dir nil "whether to prompt for directory")
 (defun grep-extension (extension pattern dir &optional clear-buffer)
   ;;TODO colored output
   (interactive
@@ -251,7 +250,7 @@
 	  (ext (read-string
 		"enter extension (eg 'js'): "
 		(f-ext (or (buffer-file-name (current-buffer)) ""))))
-	  (dir (if grep-extension-prompt-dir
+	  (dir (if current-prefix-arg
 		   (read-directory-name "enter directory: ")
 		 default-directory)))
      (list

@@ -49,3 +49,9 @@
 
 (setf search-invisible nil)
 (setf org-hide-leading-stars t)
+
+(with-eval-after-load "org"
+  (require 'org-crypt)
+  (org-crypt-use-before-save-magic)
+  (setq org-tags-exclude-from-inheritance
+	'("crypt")))

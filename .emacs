@@ -1,6 +1,6 @@
 (defvar emacs-top
-  ;;find .emacs's real location
-;  (concat (expand-file-name ".") "/"))
+  ;;  find .emacs's real location
+  ;;  (concat (expand-file-name ".") "/"))
   (file-name-directory (file-truename "~ealfonso/.emacs")))
 
 (dolist (dir '("libs" "basic" "extra"))
