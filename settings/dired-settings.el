@@ -8,3 +8,10 @@
   (let* ((async-shell-command-buffer 'new-buffer))
     ad-do-it))
 
+(with-eval-after-load "dired"
+  ;;TODO
+  (define-key dired-mode-map (kbd "s-c")
+    (lambda () (interactive) (set-clipboard (dired-file-name-at-point))))
+  
+  (define-key dired-mode-map (kbd "s-f")
+    (lambda () (interactive) (open-file (dired-file-name-at-point)))))
