@@ -54,4 +54,7 @@
   (require 'org-crypt)
   (org-crypt-use-before-save-magic)
   (setq org-tags-exclude-from-inheritance
-	'("crypt")))
+	'("crypt"))
+  (require 'epa)
+  (setq org-crypt-key "AFF54E1E");; erjoalgo@gmail.com
+  )

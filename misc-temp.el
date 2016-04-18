@@ -8,6 +8,8 @@
 (add-hook 'emacs-lisp-mode-hook 'elisp_install_buttons)
 (add-hook 'lisp-mode-hook 'cl_install_buttons)
 (add-hook 'go-mode-hook 'go_install_buttons)
+(add-hook 'c++-mode-hook 'cpp_install_buttons)
+(add-hook 'ess-mode-hook 'r_install_buttons)
 
 (add-hook 'lisp-mode-hook 'slime-mode)
 (elisp_install_buttons read-expression-map)
