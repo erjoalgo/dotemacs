@@ -13,10 +13,6 @@
 (setf ac-auto-start 1)
 
 
-(require 'auto-complete)
-
-
-(require 'auto-complete-config)
 (ac-config-default)
 
 ;;command-mode and goto-last-change
@@ -24,3 +20,8 @@
 (define-key ac-completing-map [M-f1] nil )
 
 (defalias 'acmode 'auto-complete-mode)
+
+(unless (member system-name '("debian-mini"))
+  ;;ac mode slows down netbook too much
+  (require 'auto-complete)
+  (require 'auto-complete-config))
