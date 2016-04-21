@@ -52,6 +52,7 @@
 (setf search-invisible nil)
 (setf org-hide-leading-stars t)
 
+<<<<<<< HEAD
 (defun org-export-mine ()
   (interactive)
   (unless (and (boundp 'org-exporting-mine)
@@ -77,3 +78,12 @@
 (with-eval-after-load "org"
   (define-key org-mode-map (kbd "M-c") 'org-export-mine)
   (setq org-html-validation-link nil))
+
+(with-eval-after-load "org"
+  (require 'org-crypt)
+  (org-crypt-use-before-save-magic)
+  (setq org-tags-exclude-from-inheritance
+	'("crypt"))
+  (require 'epa)
+  (setq org-crypt-key "AFF54E1E");; erjoalgo@gmail.com
+  )

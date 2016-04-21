@@ -53,3 +53,10 @@
 (with-eval-after-load "slime-repl"
   (define-key slime-repl-mode-map (kbd "M-{") 'slime-repl-previous-prompt)
   (define-key slime-repl-mode-map (kbd "M-}") 'slime-repl-next-prompt))
+;;the point of this was to switch back to command mode
+;;after entering sldb choice
+;;(add-hook 'sldb-hook 'switch_back_sldb)
+
+
+(add-hook 'sldb-hook 'visual-line-mode)
+(add-hook 'sldb-hook 'beginning-of-buffer)

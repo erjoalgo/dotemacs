@@ -25,13 +25,21 @@
 
 
 
-(defvar emacs-backups-dir "~/.emacs-backups")
+(defconst emacs-backups-dir "~/.emacs-backups")
 
+;; Save all tempfiles in $TMPDIR/emacs$UID/                                                        
+
+(setq backup-directory-alist
+      `((".*" . ,emacs-backups-dir)))
+(setq auto-save-file-name-transforms
+      `((".*" ,emacs-backups-dir t)))
+(setq auto-save-list-file-prefix
+      emacs-backups-dir)
 ;;taken from the internet
 (setq
  backup-by-copying t      ; don't clobber symlinks
- backup-directory-alist
- `(("." . ,emacs-backups-dir))    ; don't litter my fs tree
+ ;backup-directory-alist
+ ;`(("." . ,emacs-backups-dir))    ; don't litter my fs tree
  delete-old-versions t
  kept-new-versions 6
  kept-old-versions 2
@@ -84,6 +92,10 @@
   (fset 'split-window-right 'split-window-horizontally)
   (fset 'split-window-below 'split-window-horizontally))
 
+
+(add-to-list 'auto-mode-alist '("\\.cs$" . java-mode))
+(add-to-list 'auto-mode-alist '("\\.graphml$" . nxml-mode))
+(add-to-list 'auto-mode-alist '("[.]y$" . bison-mode))
 
 (provide 'emacs-settings)
 ;;; emacs-settings.el ends here
