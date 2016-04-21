@@ -66,6 +66,8 @@
 
 (defadvice isearch-forward-regexp (around force-case-fold activate)
   (let* ((case-fold-search t))
+    (when current-prefix-arg
+      (set-mark-command nil))
     ad-do-it))
 
 
