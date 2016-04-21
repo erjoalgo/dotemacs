@@ -124,6 +124,7 @@
   ;([127] backward-delete-char)
   ("M-DEL" backward-kill-sexp);;originally ESC C-backspace
   ("r" set-mark-command);;originally C-SPC
+  ;("r" nil)
   ;("SPC" set-mark-command)
   ;("SPC" nil)
 
@@ -224,7 +225,7 @@
   ("e" "~/.emacs")
   ("E" "~/repos/emacs-dirty/.emacs-bloated.el")
   ("C" (join-base-dir "erjoalgo-command-mode.el"))
-  ("c" (join-base-dir "erjoalgo-command-mode-commands.el"))
+  ("c" (join-base-dir "command-mode-commands.el"))
   ("b" "~/.bashrc")
   ("a" "~/.bash_aliases")
   ("m" "*Messages*")
@@ -235,20 +236,29 @@
   ;;("y" (concat stumpwm_dir ".my_startups.sh"))
   ("S" "/sudo::/var/log/syslog")
   ("v" "~/repos/stumpwm/keynavs/.keynavrc")
-  ("w" "~/repos/stumpwm/.stumpwmrc")
+  ("w" "~/repos/stumpwm/lisp/.stumpwmrc")
   ;;("c" "/sudo::/etc/anacrontab")
   ;;("C" "/sudo::/etc/crontab")
   ("8" "~/repos/starter/data/packages")
   ("o" "~/repos/dotemacs/org/notes.org")
   ("O" "~/org/poc.org"))
 
+(defmacro run-or-switch-cmd (string command &optional regex)
+  `(lambda () (interactive)
+     (let ((existing (loop for buff in (buffer-list) thereis
+			   (and ,(if regex `(string-match string (buffer-name buff))
+				   `(string= string (buffer-name buff)))
+				buff))))
+       (if existing (switch-to-buffer existing)
+	 (call-interactively ',command)))))
+
 (define-key-tuples-macro
   open-interpreter-map
   nil 
   ("s" (lambda (arg)(interactive "P")(eshell arg)))
   ("p"  (lambda () (interactive)
-	  (let ((python-buffer (get-buffer "*Python*")))
-	    (if python-buffer (switch-to-buffer python-buffer)
+	  (let ((python-buff (get-buffer "*Python*")))
+	    (if python-buff (switch-to-buffer python-buff)
 	      (call-interactively 'run-python)))))
   ("P"  message-current-buffer-process) 
   ;;("p" 'run-python)
@@ -290,7 +300,13 @@
   ;; ("b" matlab-shell)
   ;; ("B"  run-octave)
   ("b" run-or-switch-to-matlab-or-octave)
-  ("B" run-or-switch-to-matlab-or-octave))
+  ("B" run-or-switch-to-matlab-or-octave)
+  ("3" (run-or-switch-cmd "*eww*")))
+
+
+
+     
+				   
 
 
 ;;http://stackoverflow.com/questions/683425/globally-override-key-binding-in-emacs/5340797#5340797
