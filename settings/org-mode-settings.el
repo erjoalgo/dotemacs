@@ -77,7 +77,14 @@
 
 (with-eval-after-load "org"
   (define-key org-mode-map (kbd "M-c") 'org-export-mine)
-  (setq org-html-validation-link nil))
+  (setq org-html-validation-link nil)
+  
+  (add-hook 'after-save-hook (lambda ()
+			       (when (and (eq major-mode 'org-mode)
+					  (equal (f-filename (buffer-file-name))
+						 "README.org"))
+				 (org-md-export-to-markdown))))
+  )
 
 (with-eval-after-load "org"
   (require 'org-crypt)
