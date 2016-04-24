@@ -18,7 +18,7 @@
      (gnus-group-read-group 5000 t "[Gmail]/Sent Mail" ))))
 
 
-(defun goto-sent-emails ()
+(defun gnus-goto-sent-emails ()
   (interactive)
   (let (groups)
     (mapatoms
@@ -78,14 +78,14 @@
 (with-eval-after-load "gnus-sum"
   (gnus-load-bindings gnus-my-goto-map
 		      ("g" 'gmail-search-query)
-		      ("t" 'goto-sent-emails)
+		      ("t" 'gnus-goto-sent-emails)
 		      ("r" 'gnus-summary-insert-new-articles)
 		      ("f" 'gnus-summary-mail-forward))
   
   (gnus-load-bindings gnus-summary-mode-map
    ("r" 'gnus-summary-reply-with-original)
     ((kbd "s-g") 'gmail-search-query)
-    ((kbd "s-t") 'goto-sent-emails)
+    ((kbd "s-t") 'gnus-goto-sent-emails)
     ((kbd "s-r")
      'gnus-summary-insert-new-articles)
     ("g" gnus-my-goto-map)))
