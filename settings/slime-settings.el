@@ -34,8 +34,8 @@
     (if slime-stumpwm-buffer
 	(switch-to-buffer slime-stumpwm-buffer)
       (progn
-	(add-hook 'slime-connected-hook
-		  'slime-stumpwm-connection-hook)
+	'(add-hook 'slime-connected-hook
+		   'slime-stumpwm-connection-hook)
 	(slime-connect "localhost" *stumpwm-swank-port*)))))
 
 (defun slime-stumpwm-connection-hook ()
@@ -50,6 +50,9 @@
 (require 'slime-autoloads)
 (add-hook 'lisp-mode-hook 'slime-mode)
 
+(with-eval-after-load "slime-repl"
+  (define-key slime-repl-mode-map (kbd "M-{") 'slime-repl-previous-prompt)
+  (define-key slime-repl-mode-map (kbd "M-}") 'slime-repl-next-prompt))
 ;;the point of this was to switch back to command mode
 ;;after entering sldb choice
 ;;(add-hook 'sldb-hook 'switch_back_sldb)

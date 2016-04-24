@@ -202,13 +202,19 @@
   "Revert buffer without confirmation."
   (interactive) (revert-buffer t t))
 
-(defun find-iregex (directory  regex)
-  (interactive "P\nsenter regex: ")
+(defun find-iregex (regex directory)
+  (interactive (list
+		(read-string "enter regex: ")
+		(when current-prefix-arg
+		  (expand-file-name
+		   (read-directory-name "enter directory: ")))))
+  (unless directory
+    (setf directory (expand-file-name default-directory)))
   (message directory)
-  (let ((directory (expand-file-name default-directory)))
-    (start-process "findiregex" "findiregex" "find" directory "-iregex" (format ".*%s.*" regex))
-    (switch-to-buffer "findiregex")
-    (beginning-of-buffer)))
+  (start-process "findiregex" "findiregex" "find"
+		 directory "-iregex" (format ".*%s.*" regex))
+  (switch-to-buffer "findiregex")
+  (beginning-of-buffer))
 
 (defun gen-new-buffer (&optional name)
   (generate-new-buffer (generate-new-buffer-name (or name "new-buffer"))))
@@ -274,7 +280,8 @@
       
       (start-process buff-name buff-name
 		     "grep" "-RHins" pattern dir))
-    (switch-to-buffer buff-name)))
+    (switch-to-buffer buff-name)
+    (beginning-of-buffer)))
 
 (defun kill-current-buffer-filename ()(interactive)
        (let ((fn

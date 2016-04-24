@@ -169,6 +169,101 @@
     (message "%s" kmap-syms)
     kmap-syms))
 
+(defun clean-up-async-shell-command-buffers ()
+  (interactive)
+  (loop with async-buffs = (remove-if-not
+			    (lambda (buff)
+			      (string-match "Async.Shell"
+					    (buffer-name buff)))
+			    (buffer-list))
+	for buff in async-buffs do
+	(progn (switch-to-buffer buff)
+	       (when (get-buffer-process buff)
+		 (message "command was: %s"
+			  (process-command (get-buffer-process buff))))
+	       (recursive-edit))))
+
+(defun walk-dir-tree (top fun)
+  (loop with front = (list top)
+	with new-front = nil 
+	while front do
+	(loop while front
+	      as dir = (pop front)
+	      as files = (progn (assert (f-dir? dir))
+				(directory-files dir))
+	      do (loop for base in files
+		       as fn = (f-join dir base)
+		       do (if (f-dir? fn)
+			      (unless (member base '(".." "."))
+				(push fn new-front))
+			    (unless (string-match "^#[.]" base)
+			      '(message "on file: %s" base)
+			      (funcall fun fn)))))
+	
+	do (setf front new-front
+		 new-front nil)))
+
+
+
+(defun completing-read-single-char (prompt candidates)
+  (let* ((alist (mapcar (lambda (cand)  (cons (substring cand 0 1) cand))
+		       candidates))
+	(prompt (format "%s\nenter char: " (s-join "\n" (mapcar 'prin1-to-string alist))))
+	(chars (mapcar 'car alist))
+	char)
+    (loop as char = (read-char prompt)
+	  as pair =  (assoc (and char (char-to-string char)) alist)
+	  until pair
+	  finally (return (cdr pair)))))
+
+(defmacro with-temporary-open-file (fn &rest body)
+  `(let ((was-open (get-file-buffer ,fn))
+	 buff)
+     (setf buff (find-file ,fn))
+     (save-excursion
+       ,@body)
+     (assert (eq buff (current-buffer)))
+     (unless was-open (kill-buffer buff))))
+
+(defun replace-regexp-dir (dir extension from to &optional pause)
+  ;;TODO colored output
+  (interactive
+   (let* ((ext (read-string
+		"enter extension (eg 'js'): "
+		(f-ext (or (buffer-file-name (current-buffer)) ""))))
+	  (dir (if current-prefix-arg
+		   (read-directory-name "enter directory: ")
+		 default-directory)))))
+  (let ((count 0))
+  (walk-dir-tree dir
+		 (lambda (fn)
+		   (when (string= (f-ext fn) extension)
+		     (with-temporary-open-file
+		      fn
+		      (regexp-replace-current-buffer from to pause)
+		      (save-buffer)))))
+  (message "%d occurrences replaced" count)))
+
+(defun regexp-replace-current-buffer (from to &optional pause)
+  (let ((count 0))
+    (save-excursion
+      (goto-char (point-min))
+      (while (re-search-forward from nil t)
+	(incf count)
+	(replace-match (if (functionp to)
+			   (save-excursion (funcall to))
+			 to) t)
+	(when pause (y-or-n-p (format
+			       "confirm: (%s --> %s)"
+			       from to)))))
+    count))
+
+(defun regexp-exists-current-buffer (regexp)
+  (save-excursion
+    (goto-char (point-min))
+    (re-search-forward regexp nil t)))
+
+
 (defun keymap-symbol (keymaps)
   "Return the symbol to which KEYMAP is ound, or nil if no such symbol exists."
   (unless (consp keymaps) (setf keymaps (list keymaps)))

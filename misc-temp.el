@@ -2,7 +2,6 @@
 (load-file
  (f-join emacs-top "in-progress/python_buttons.el"))
 
-
 (add-hook 'ielm-mode-hook 'elisp_install_buttons)
 (add-hook 'slime-repl-mode-hook 'elisp_install_buttons)
 (add-hook 'emacs-lisp-mode-hook 'elisp_install_buttons)
@@ -38,12 +37,14 @@
       line)
      (match-string 1 line))))
 
-
-
-(defun firefox-new-tab-sh (url &optional unknown-arg)
-  (let ((new-tab "new-tab"))
+(defun firefox-new-tab (url &optional unknown-arg)
+  (let ((new-tab "netcat-firefox-mozrepl"))
     (start-process new-tab new-tab
-		   "firefox-new-tab.sh"
-		   url)))
-(setq browse-url-browser-function 'firefox-new-tab-sh)
+		   "nc" "localhost" "4242" "-q" "1")
+    (process-send-string new-tab
+			 (format
+			  ;;newline is important
+			  "gBrowser.selectedTab = gBrowser.addTab(\"%s\");\n"
+			  url))))
 
+(setq browse-url-browser-function 'firefox-new-tab)
