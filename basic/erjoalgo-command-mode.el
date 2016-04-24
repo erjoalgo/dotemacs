@@ -239,8 +239,7 @@
   ;;("c" "/sudo::/etc/anacrontab")
   ;;("C" "/sudo::/etc/crontab")
   ("8" "~/repos/starter/data/packages")
-  ("o" "~/repos/dotemacs/org/notes.org")
-  ("O" "~/org/poc.org"))
+  ("o" "~/repos/dotemacs/org/notes.org"))
 
 (define-key-tuples-macro
   open-interpreter-map
@@ -285,6 +284,7 @@
   ("A" (lambda () (interactive) (switch-to-buffer (get-buffer-by-regex "\\*Async Shell Command\\*"))))
   ;;("k" wiki)
   ("o" gnus-goto-inbox)
+  ("O" (lambda () (interactive) (org-agenda-list)))
   ("0" open-google-calendar)
   ;("P" (lambda () (interactive)(message "point is %d" (point))))
   ;; ("b" matlab-shell)
@@ -297,6 +297,7 @@
 (defun force-mode-first (mode-symbol)
   "Try to ensure that my keybindings always have priority."
   (when (not (eq (car (car minor-mode-map-alist)) mode-symbol))
+    (message "forcing mode first")
     (let ((mykeys (assq mode-symbol minor-mode-map-alist)))
       (assq-delete-all mode-symbol minor-mode-map-alist)
       (add-to-list 'minor-mode-map-alist mykeys))))
