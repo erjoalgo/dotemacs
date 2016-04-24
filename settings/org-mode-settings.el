@@ -32,11 +32,12 @@
   (setq org-startup-folded nil))
 
 (defvar notes-file
-  (f-join emacs-top "org" "notes.org"))
+  (f-join emacs-top "org"))
 
 (when (file-exists-p notes-file)
-  (find-file notes-file)
-  (push notes-file org-agenda-files))
+  (push notes-file org-agenda-files)
+  (org-todo-list org-match)
+  (org-agenda-list nil))
 
 (defvar *org-todo-first-todo-line-number* 3)
 (defun org-todo-promote-top ()
