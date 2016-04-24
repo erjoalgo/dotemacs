@@ -108,8 +108,10 @@
 
 (defun add-file-local-variable-mode (mode)
   (interactive (list
-		(if (eq major-mode 'fundamental-mode)
-		    (read-symbol-completing "enter mode: "))))
+		(if (or current-prefix-arg
+			(eq major-mode 'fundamental-mode))
+		    (read-symbol-completing "enter mode: ")
+		  major-mode)))
   ;;first load mode to set the right comment-start
   (funcall mode)
   (let ((mode-sans-mode
@@ -141,4 +143,39 @@
 	       (recursive-edit))
 	finally (message "done checking buffers")))
 
+(defun diff-sexps (sexp-a sexp-b)
+  ;;TODO loop fill in missing length
+  (loop for a in sexp-a
+	for b in sexp-b
+	do 
+	(if (not (eq (atom a) (atom b)))
+	    (error "mismatch: %s %s" a b)
+	  (if (not (atom a))
+	      (diff-sexps a b)
+	    (unless (equal a b)
+	      (error "mismatch: %s %s" a b)))))
+  (or (not (and (consp sexp-a) (consp sexp-b)))
+      (= (length sexp-a) (length sexp-b))))
+  
+	
+	
+(defun lookup-key-in-current-maps (key)
+  "list of active keymaps that bind the given key"
+  (interactive (list (read-key-sequence "enter key to lookup in current maps: ")))
+  (let* ((kmaps-filtered (remove-if-not (lambda (kmap)
+					   (lookup-key kmap key))
+				       (current-active-maps)))
+	(kmap-syms (keymap-symbol kmaps-filtered)))
+    (message "%s" kmap-syms)
+    kmap-syms))
 
+(defun keymap-symbol (keymaps)
+  "Return the symbol to which KEYMAP is ound, or nil if no such symbol exists."
+  (unless (consp keymaps) (setf keymaps (list keymaps)))
+  (let (syms)
+    (mapatoms (lambda (sym)
+                (and (not (eq sym 'keymap))
+                     (boundp sym)
+                     (find (symbol-value sym) keymaps)
+                     (push sym syms))))
+    syms))
