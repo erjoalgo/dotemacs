@@ -78,7 +78,7 @@
     (start-process "shred" "shred" "shred" "-zufn"
 		 shred-times-string fn)))
   (when (eq major-mode 'dired-mode)
-    (revert-buffer)))
+    (call-interactively 'revert-buffer)))
 
 		 
   
