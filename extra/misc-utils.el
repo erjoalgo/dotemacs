@@ -122,8 +122,6 @@
 	   (intern (match-string 1 mode-name)))))
     (add-file-local-variable 'mode mode-sans-mode)))
 
-  
-
 (defun check-unsaved-buffers ()
   (interactive)
   (loop as next-buff =
@@ -132,16 +130,18 @@
 		       (not (get-buffer-process buff))
 		       (not (string-match "^[[:space:]]*[*].*[*]$" (buffer-name buff)))
 		       (not (member (buffer-local-value 'major-mode buff) '(dired-mode)))
-			   (or (not (buffer-file-name buff))
-			       (buffer-modified-p buff))
-			   buff))
+		       (or (not (buffer-file-name buff))
+			   (buffer-modified-p buff))
+		       buff))
 	
 	while next-buff do
 	(progn (switch-to-buffer next-buff)
 	       (message "unsaved changes in: %s... close or save, then exit rec-edit"
 			(buffer-name next-buff))
 	       (recursive-edit))
-	finally (message "done checking buffers")))
+	finally (message "done checking buffers"))
+  t)
+(add-hook 'kill-emacs-query-functions 'check-unsaved-buffers)
 
 (defun diff-sexps (sexp-a sexp-b)
   ;;TODO loop fill in missing length
