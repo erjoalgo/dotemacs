@@ -30,10 +30,12 @@
 ;; Save all tempfiles in $TMPDIR/emacs$UID/                                                        
 
 (setq backup-directory-alist
-      `((".*" . ,emacs-backups-dir)))
-(setq auto-save-file-name-transforms
-      `((".*" ,emacs-backups-dir t)))
-(setq auto-save-list-file-prefix
+      `((".*" . ,emacs-backups-dir))
+      
+      auto-save-file-name-transforms
+      `((".*" ,emacs-backups-dir t))
+      
+      setq auto-save-list-file-prefix
       emacs-backups-dir)
 ;;taken from the internet
 (setq
@@ -44,8 +46,7 @@
  kept-new-versions 6
  kept-old-versions 2
  version-control t)       ; use versioned backups
-(setq auto-save-file-name-transforms
-      `((".*" ,emacs-backups-dir t)))
+
 
 
 (setq apropos-do-all t);;include functions in apropos, not just commands
