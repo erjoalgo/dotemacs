@@ -47,4 +47,25 @@
 			  "gBrowser.selectedTab = gBrowser.addTab(\"%s\");\n"
 			  url))))
 
+(defun process-filter-line-buffer (real-filter)
+	 (let ((cum-string-sym (gensym "proc-filter-buff"))
+	       (newline (string-to-char "\n"))
+	       (string-indexof (lambda (string char start)
+				 (loop for i from start below (length string)
+				       thereis (and (eq char (aref string i))
+						    i)))))
+	   (set cum-string-sym "")
+	   `(lambda (proc string)
+	      (setf string (concat ,cum-string-sym string))
+	      (let ((start 0) new-start)
+		(while (setf new-start
+				(funcall ,string-indexof string ,newline start))
+
+		  ;;does not include newline
+		  (funcall ,real-filter proc (substring string start new-start))
+		  
+		  (setf start (1+ new-start)));;past newline
+		
+		(setf ,cum-string-sym (substring string start))))))
+
 (setq browse-url-browser-function 'firefox-new-tab)
