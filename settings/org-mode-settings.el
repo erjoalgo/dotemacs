@@ -53,7 +53,6 @@
 (setf search-invisible nil)
 (setf org-hide-leading-stars t)
 
-<<<<<<< HEAD
 (defun org-export-mine ()
   (interactive)
   (unless (and (boundp 'org-exporting-mine)
@@ -84,8 +83,7 @@
 			       (when (and (eq major-mode 'org-mode)
 					  (equal (f-filename (buffer-file-name))
 						 "README.org"))
-				 (org-md-export-to-markdown))))
-  )
+				 (org-md-export-to-markdown)))))
 
 (with-eval-after-load "org"
   (require 'org-crypt)
