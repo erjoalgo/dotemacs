@@ -1,8 +1,9 @@
 (require 'f)
 (add-to-list 'load-path
-	      ;;(f-join emacs-top "libs" "slime-2.17"))
+	     ;(f-join emacs-top "libs" "slime-2.14")
+	      (f-join emacs-top "libs-dir" "slime-2.17")
 	      ;;stumpwm's swank only works with 2.14...TODO
-	     (f-join emacs-top "libs" "slime-2.14"))
+	     )
 (setq inferior-lisp-program "/usr/bin/sbcl")
 (setq slime-contribs '(slime-fancy))
 
