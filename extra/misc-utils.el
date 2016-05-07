@@ -197,9 +197,7 @@
 			      (unless (member base '(".." "."))
 				(push fn new-front))
 			    (unless (string-match "^#[.]" base)
-			      '(message "on file: %s" base)
 			      (funcall fun fn)))))
-	
 	do (setf front new-front
 		 new-front nil)))
 
