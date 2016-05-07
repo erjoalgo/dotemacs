@@ -33,10 +33,15 @@
 (defun proxy-internal (on)
   (let ((value (if on proxy-mode-proxy ""))
 	(envs '("http_proxy" "http_proxy" "HTTP_PROXY" "HTTPS_PROXY")))
-    (message "value is: %s" value)
+    (message "value is: '%s'" value)
     (dolist (env envs)
       (setenv env value))))
 
+(defun proxy-toggle ()
+  (interactive)
+  (proxy-internal (equal "" (getenv "http_proxy"))))
+
+(defalias 'sp 'proxy-toggle)
 (defcustom proxy-mode-proxy "" "proxy for proxy mode")
     
 
