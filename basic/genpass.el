@@ -15,9 +15,12 @@
 	finally (return bag)))
 
 ;(defvar *genpass-alnum* (genpass-ranges-to-bag "azAZ09"))
-(defvar *genpass-chars* (genpass-ranges-to-bag "azAZ"))
+(defvar *genpass-letters-lower* (genpass-ranges-to-bag "az"))
+(defvar *genpass-letters-upper* (genpass-ranges-to-bag "AZ"))
+(defvar *genpass-letters* (concat *genpass-letters-upper* *genpass-letters-lower*))
+;(defvar *genpass-letters* (genpass-ranges-to-bag "azAZ"))
 (defvar *genpass-num* (genpass-ranges-to-bag "09"))
-(defvar *genpass-alnum* (concat *genpass-num* *genpass-chars*))
+(defvar *genpass-alnum* (concat *genpass-num* *genpass-letters*))
 (defvar *genpass-special-chars* (genpass-ranges-to-bag "!/:@"))
 (defvar *genpass-all* (concat *genpass-special-chars* *genpass-alnum*))
 (defvar *genpass-default-len* 13)
@@ -35,3 +38,25 @@
 	finally (progn (message str)
 		       (set-clipboard str)
 		       (return str))))
+(defun alnum-scramble-region (a b)
+  "replace any alnum chars in region with random ones. useful for anonymizing UIDS, RSA keys, while keeping structure"
+  (interactive "r")
+  (let ((region (buffer-substring-no-properties a b)))
+    (loop for i below (length region) do
+	  (let ((char-string (substring region i (1+ i)))
+		bag
+		(case-fold-search nil))
+
+	    (setf bag
+		  (cond
+	     ((string-match "[a-z]" char-string) *genpass-letters-lower*)
+	     ((string-match "[A-Z]" char-string) *genpass-letters-upper*)
+	     ((string-match "[0-9]" char-string) *genpass-num*)))
+	    
+	    (when bag
+	      (let ((new-char (aref bag (random (length bag)))))
+		    (aset region i new-char)))))
+    (delete-region a b)
+    (goto-char a)
+    (insert region)))
+  
