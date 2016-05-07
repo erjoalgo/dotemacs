@@ -106,16 +106,26 @@
   (when tetris-o-1-enable-hints
     (let
 	((hor-chars
-	  (mapcar (lambda (key)
-		    ;;not sure why this is here
-		    (unwind-protect (tetris-key-to-char key) 63))
-		  tetris-o-1-horizontal-keys))
+	  (loop with str = (make-string (length tetris-o-1-horizontal-keys) 0)
+		for key in tetris-o-1-horizontal-keys
+		for i from 0
+		as c = (unwind-protect (tetris-key-to-char key) 63)
+		do (aset str i c)
+		finally (return str)))
 	 join-space)
+
+      (fset 'join-space (lambda (str)
+			  (loop
+			   with len = (1- (* 2 (length str)))
+			   with new-str = (make-string len 0)
+			   for i below len
+			   do (aset new-str i
+				    (if (evenp i)
+					(aref str (floor (/ i 2)))
+				      32))
+			   finally (return new-str))))
       
-      (fset 'join-space
-	    (lambda (L) (when L (cons (car L) (cons 32 (join-space (cdr L)))))))
-      
-      (loop for keystring in (joinspace hor-chars)
+      (loop for keystring across (join-space hor-chars)
 	    for i from 0 do
 	    (gamegrid-set-cell
 	     (+ tetris-top-left-x i)
