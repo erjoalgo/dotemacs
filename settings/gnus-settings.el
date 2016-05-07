@@ -151,4 +151,46 @@
 	     tls-program)))
     ad-do-it))
 
+(defvar gmail-app-specific-url
+  "https://security.google.com/settings/security/apppasswords?pli=1")
+
+(defun shell-command-to-string-message (cmd)
+  (message "result of %s: %s" cmd (shell-command-to-string cmd)))
+
+(defun gnus-erjoalgo-setup ()
+  (interactive)
+  (let ((gnus-fn (expand-file-name "~/.gnus"))
+	(authinfo-fn (expand-file-name "~/.authinfo"))
+	(truename-exists-p (lambda (fn)
+			   (and (file-exists-p fn)
+				(file-exists-p (file-truename fn)))))
+	(maybe-unlink (lambda (fn)
+			(and (file-symlink-p fn)
+			     (shell-command-to-string-message
+			      (format "unlink %s" fn))))))
+    
+    (unless (funcall truename-exists-p gnus-fn)
+      (funcall maybe-unlink gnus-fn)
+      (shell-command-to-string-message
+       (format "ln -s %s %s"
+	       (f-join emacs-top "settings" ".gnus-erjoalgo")
+	       gnus-fn)))
+  
+    (unless (funcall truename-exists-p authinfo-fn)
+      (funcall maybe-unlink authinfo-fn)
+    (when (boundp 'firefox-new-tab)
+      (firefox-new-tab gmail-app-specific-url))
+    
+    (let ((pass (read-string
+		 (format "enter gmail app-specific pass (%s): "
+			 gmail-app-specific-url)))
+	  (email "erjoalgo@gmail.com"))
+      (append-to-file
+       (format
+	"machine imap.gmail.com login %s password %s port 993
+machine smtp.gmail.com login %s password %s port 587"
+	email pass
+	email pass) nil
+	authinfo-fn)))))
+
 '(require erjoalgo-indent-mode)

@@ -1,0 +1,29 @@
+;;link to this file from ~/.gnus
+
+(let ((email "erjoalgo@gmail.com")
+      (smtp-server "smtp.gmail.com")
+      (smtp-port 587)
+      (imap-server "imap.gmail.com")
+      (imap-port 993))
+  (setf gnus-select-method
+	    `(nnimap "gmail"
+		     (nnimap-address ,imap-server)
+		     (nnimap-server-port 993)
+		     (nnimap-stream ssl)))
+
+  (setf message-send-mail-function 'smtpmail-send-it
+	smtpmail-starttls-credentials `((,smtp-server ,smtp-port nil nil))
+	smtpmail-auth-credentials `((,smtp-server ,smtp-port
+						  ,email nil))
+	smtpmail-default-smtp-server smtp-server
+	smtpmail-smtp-server smtp-server
+	smtpmail-smtp-service smtp-port
+	gnus-ignored-newsgroups
+	"^to\\.\\|^[0-9. ]+\\( \\|$\\)\\|^[\"]\"[#'()]")
+
+  (setf user-mail-address email)
+  (setf smtpmail-stream-type 'starttls))
+
+;; Local Variables:
+;; mode: emacs-lisp
+;; End:
