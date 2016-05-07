@@ -287,7 +287,11 @@
        (let ((fn
 	      (replace-regexp-in-string
 	       "^/sudo:root@.*?:" ""
-	      (buffer-file-name (current-buffer)))))
+	       (if (eq major-mode 'dired-mode)
+		   (expand-file-name
+		    (or (dired-file-name-at-point)
+		       default-directory))
+		   (buffer-file-name (current-buffer))))))
 	 
 	 (kill-new fn)
 	 (message "killed: %s" fn)
