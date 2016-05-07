@@ -36,10 +36,7 @@
 (defvar notes-file
   (f-join emacs-top "org"))
 
-(when (file-exists-p notes-file)
-  (push notes-file org-agenda-files)
-  (org-todo-list org-match)
-  (org-agenda-list nil))
+
 
 (defvar *org-todo-first-todo-line-number* 3)
 (defun org-todo-promote-top ()
@@ -93,3 +90,9 @@
   (require 'epa)
   (setq org-crypt-key "AFF54E1E");; erjoalgo@gmail.com
   )
+
+(with-eval-after-load "org"
+  (when (file-exists-p notes-file)
+  (push notes-file org-agenda-files)
+  (org-todo-list org-match)
+  (org-agenda-list nil)))
