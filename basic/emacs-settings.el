@@ -98,5 +98,6 @@
 (add-to-list 'auto-mode-alist '("\\.graphml$" . nxml-mode))
 (add-to-list 'auto-mode-alist '("[.]y$" . bison-mode))
 
+(kill-buffer "*scratch*")
 (provide 'emacs-settings)
 ;;; emacs-settings.el ends here
