@@ -238,7 +238,7 @@
        
 
 (require 'f)
-(defun grep-extension (extension pattern dir &optional clear-buffer)
+(defun grep-recursive (extension pattern dir &optional clear-buffer)
   ;;TODO colored output
   (interactive
    (let* ((pattern
@@ -253,34 +253,31 @@
 	      symbol-at-point
 	      nil default)))
 	  
-	  (ext (read-string
-		"enter extension (eg 'js'): "
-		(f-ext (or (buffer-file-name (current-buffer)) ""))))
+	  (ext (and nil (read-string
+			 "enter extension (eg 'js'): "
+			 (f-ext (or (buffer-file-name (current-buffer)) "")))))
 	  (dir (if current-prefix-arg
 		   (read-directory-name "enter directory: ")
 		 default-directory)))
-     (list
-      (and (not (string= "" ext)) ext)
-      pattern
-      (expand-file-name dir)
-      t)))
+     (list  (and (not (string= "" ext)) ext) pattern (expand-file-name dir) t)))
   
-  (let ((buff-name "grep-extension"))
-
+  (let ((buff-name "grep-recursive"))
     (when clear-buffer
       (switch-to-buffer buff-name)
       (erase-buffer))
-    
-    (if extension
-	(start-process buff-name buff-name 
-		       "find"
-		       dir
-		       "-name" (concat "*" extension)
-		       "-exec" "grep" "-Hins" pattern "{}" ";")
-      
-      (start-process buff-name buff-name
-		     "grep" "-RHins" pattern dir))
+
+    (apply 'start-process buff-name buff-name 
+		   "find"
+		   dir
+		   (append 
+		    '("-name" ".git" "-prune" "-o")
+		    (when extension
+		      (list "-name" (concat "*" extension)))
+		    (list "-exec" "grep" "-Hins" pattern "{}" ";")))
+    '(start-process buff-name buff-name
+		    "grep" "-RHins" pattern dir)
     (switch-to-buffer buff-name)
+    ;(set (make-local-variable 'window-point-insertion-type) t)
     (beginning-of-buffer)))
 
 (defun kill-current-buffer-filename ()(interactive)
