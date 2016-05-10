@@ -14,8 +14,9 @@
 	  (and (member ext exts) program))))
 
 (defun open-file (fn)
-  (interactive (list (expand-file-name (dired-file-name-at-point))))
-  (let* ((program (get-file-program fn)))
+  (interactive (list (dired-file-name-at-point)))
+  (setf fn (expand-file-name fn))
+  (let ((program (get-file-program fn)))
     (if (not program)
 	(error (concat "no program known for file: " fn))
       (start-process program nil program fn))))
