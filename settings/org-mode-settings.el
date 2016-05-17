@@ -37,7 +37,7 @@
 
 (setq org-startup-folded nil)
 
-(defvar notes-file
+(defvar org-notes-top
   (f-join emacs-top "org"))
 
 (defvar *org-todo-first-todo-line-number* 3)
@@ -49,7 +49,11 @@
 		     *org-todo-first-todo-line-number*))))
 
 (with-eval-after-load 'org-agenda
-  (define-key org-agenda-mode-map (kbd "s-q") 'org-todo-promote-top))
+  (define-key org-agenda-mode-map (kbd "s-q") 'org-todo-promote-top)
+  (define-keys org-agenda-mode-map
+  ("s-1" (lambda () (interactive) (org-agenda-todo 1)));;tag TODO
+  ("s-2" (lambda () (interactive) (org-agenda-todo 2)));;tag DONE
+  ))
 
 
 (setf search-invisible nil)
@@ -93,15 +97,13 @@
 (require 'epa)
 (setq org-crypt-key "AFF54E1E");; erjoalgo@gmail.com
 
-(define-keys org-agenda-mode-map
-  ("s-1" (lambda () (interactive) (org-agenda-todo 1)));;tag TODO
-  ("s-2" (lambda () (interactive) (org-agenda-todo 2)));;tag DONE
-  )
 
-(when (file-exists-p notes-file)
-  (push notes-file org-agenda-files)
-  (org-agenda-list nil)
+
+(when (file-exists-p org-notes-top)
+  (push org-notes-top org-agenda-files)
+
+  (org-todo-list org-match)
   (setq initial-buffer-choice
-	(lambda ()
-	  (org-todo-list org-match)))
-  (org-todo-list org-match))
+	(lambda () 
+	  (call-interactively 'org-agenda-list)
+	  (get-buffer "*Org Agenda*"))))
