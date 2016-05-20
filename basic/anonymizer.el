@@ -1,0 +1,37 @@
+(defun anonymize ()
+  (interactive)
+  (let ((words `((,system-name "my-hostname")
+		       (,user-login-name "my-login" )
+		       (,user-real-login-name "my-login")
+		       (,user-mail-address "me@example.com")
+		       (,(first (s-split " " user-full-name)) "my-first-name")
+		       (,(second (s-split " " user-full-name)) "my-last-name")))
+	(regexps `(("[[:alnum:]]+@[[:alnum:]]+[.][[:alnum:]]+" "user@example.com")
+		   ("@[[:alnum:]]+[.][[:alnum:]]+" "@example.com")))
+	(total-count 0))
+
+    (setf words (loop for (word replacement) in words collect (cons (downcase word) replacement)))
+    (cl-labels ((replace-regexp-in-buffer (regexp replacement)
+					  (message "replacing occurrences of '%s'" regexp)
+					  (let ((count 0))
+					    (save-excursion
+					      (beginning-of-buffer)
+					      (while (re-search-forward regexp nil t)
+						(let* ((match (match-string 0))
+						      (replacement (funcall replacement match)))
+						  (assert replacement nil "no replacement for '%s'" match)
+						  (message "replacing '%s' with '%s'"
+							   match replacement)
+						  (replace-match replacement t t)
+						  (incf count))))
+					    (message "%d matches replaced for '%s'" count regexp)
+					    count))
+		(ors-regexp (regexps)
+			    (s-join "\\|" (mapcar 'regexp-quote (mapcar 'car regexps)))))
+      
+      (incf total-count (replace-regexp-in-buffer (ors-regexp words) (lambda (match)
+						     (cdr (assoc (downcase match) words)))))
+
+      (incf total-count (loop for (regexp replacement) in regexps sum
+			      (replace-regexp-in-buffer regexp `(lambda (match) ,replacement))))
+      (message "%d total matches replaced" total-count))))
