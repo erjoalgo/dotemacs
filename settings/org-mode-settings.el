@@ -37,7 +37,7 @@
 
 (setq org-startup-folded nil)
 
-(defvar org-notes-top
+(defvar org-top-dir
   (f-join emacs-top "org"))
 
 (defvar *org-todo-first-todo-line-number* 3)
@@ -51,9 +51,9 @@
 (with-eval-after-load 'org-agenda
   (define-key org-agenda-mode-map (kbd "s-q") 'org-todo-promote-top)
   (define-keys org-agenda-mode-map
-  ("s-1" (lambda () (interactive) (org-agenda-todo 1)));;tag TODO
-  ("s-2" (lambda () (interactive) (org-agenda-todo 2)));;tag DONE
-  ))
+    ("s-1" (lambda () (interactive) (org-agenda-todo 1)));;tag TODO
+    ("s-2" (lambda () (interactive) (org-agenda-todo 2)));;tag DONE
+    ))
 
 
 (setf search-invisible nil)
@@ -99,11 +99,27 @@
 
 
 
-(when (file-exists-p org-notes-top)
-  (push org-notes-top org-agenda-files)
+(when (file-exists-p org-top-dir)
+  (push org-top-dir org-agenda-files)
+  '(org-todo-list org-match)
 
-  (org-todo-list org-match)
   (setq initial-buffer-choice
-	(lambda () 
+	(lambda ()
 	  (call-interactively 'org-agenda-list)
-	  (get-buffer "*Org Agenda*"))))
+	  (get-buffer "*Org Agenda*")))
+  
+  '(switch-to-buffer "*Org Agenda*")
+  '(delete-other-windows))
+
+(defun org-archive-done-tasks (arg)
+  ;;taken from
+  ;;http://stackoverflow.com/questions/6997387/how-to-archive-all-the-done-tasks-using-a-single-command
+  (interactive "P")
+  (let ((scope (if arg 'file 'agenda)));('tree 'file 'agenda)
+    (org-map-entries
+     (lambda ()
+       (org-archive-subtree)
+       (setf org-map-continue-from (outline-previous-heading)))
+     "/DONE" scope)
+    (when (fboundp 'check-unsaved-buffers)
+      (check-unsaved-buffers))))
