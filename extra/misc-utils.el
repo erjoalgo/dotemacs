@@ -156,18 +156,20 @@
 	      (error "mismatch: %s %s" a b)))))
   (or (not (and (consp sexp-a) (consp sexp-b)))
       (= (length sexp-a) (length sexp-b))))
-  
-	
 	
 (defun lookup-key-in-current-maps (key)
   "list of active keymaps that bind the given key"
   (interactive (list (read-key-sequence "enter key to lookup in current maps: ")))
   (let* ((kmaps-filtered (remove-if-not (lambda (kmap)
-					   (lookup-key kmap key))
-				       (current-active-maps)))
-	(kmap-syms (keymap-symbol kmaps-filtered)))
-    (message "%s" kmap-syms)
-    kmap-syms))
+					  (lookup-key kmap key))
+					(current-active-maps)))
+	 (kmap-syms (keymap-symbol kmaps-filtered))
+	 (kmap-to-key-alist (mapcar (lambda (kmap-sym)
+				      (cons kmap-sym (lookup-key
+						      (symbol-value kmap-sym) key)))
+				    kmap-syms)))
+    (message "%s" kmap-to-key-alist)
+    kmap-to-key-alist))
 
 (defun clean-up-async-shell-command-buffers ()
   (interactive)
