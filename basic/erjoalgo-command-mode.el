@@ -293,8 +293,13 @@
   ("z" airmacs_read_key)
   ("l" alert)
   ;;("w" switch-to-slime-repl)
-  ("w" slime-sbcl)
-  ("W" slime-stumpwm)
+
+  ("w" ,(let ((kmap (make-sparse-keymap)))
+	 (define-key kmap (kbd "1") 'slime-sbcl)
+	 (define-key kmap (kbd "2") 'slime-stumpwm)
+	 (define-key kmap (kbd "3") 'cider-buffer-or-jack-in)
+	 kmap))
+   
   ("S" goto-slime-buffer)
   ("t" untarprogram)
   ("r" replace-regexp)
