@@ -43,7 +43,7 @@
 	if (file-directory-p fn)  do
 	(add-to-list 'load-path fn)))
 
-(loop for dir in '("settings" "sensitive")
+(loop for dir in '("settings" "sensitive" "extra")
       as top = (f-join emacs-top dir)
       if (file-exists-p top) do
       (loop when (file-exists-p top)
