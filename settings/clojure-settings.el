@@ -25,3 +25,12 @@
 			(buffer-list))))
     (if ciders (switch-to-buffer (car ciders))
       (cider-jack-in))))
+
+(with-eval-after-load "cider-repl"
+  (define-key cider-repl-mode-map (kbd "M-p") (lambda () (interactive)
+					       (cider-repl--history-replace 'backward nil)))
+  (define-key cider-repl-mode-map (kbd "M-n") (lambda () (interactive)
+						(cider-repl--history-replace 'forward nil)))
+
+  (define-key cider-repl-mode-map (kbd "M-?") (lambda () (interactive)
+					      (switch-to-buffer "*cider-error*"))))
