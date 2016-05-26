@@ -193,10 +193,16 @@
 
 (defun my-eval-defun (arg)
   (interactive "P")
-  (if (and (boundp 'slime-mode) slime-mode)
-      (let ((slime-load-failed-fasl 'always))
-	(slime-compile-and-load-file '(4)))
-    (eval-defun arg)))
+  (cond 
+   ((and (boundp 'slime-mode) slime-mode)
+    (let ((slime-load-failed-fasl 'always))
+      (call-interactively 'slime-compile-and-load-file)))
+
+   ((and (boundp 'cider-mode) cider-mode)
+    (call-interactively 'cider-eval-defun-at-point))
+   
+   ;;emacs lisp
+   (t (eval-defun arg))))
 
 (defun revert-buffer-no-confirm ()
   "Revert buffer without confirmation."
