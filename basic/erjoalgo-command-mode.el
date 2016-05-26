@@ -235,7 +235,7 @@
   ;("s" (:buffer "*scratch*"))
   ("s" (:buffer "*Org Agenda*"))
   ("S" (:buffer "*Org Agenda*"))
-  ("t" (f-join emacs-top "in-progress" "python_buttons.el"))
+  ("t" (f-join emacs-top "in-progress" "python-buttons.el"))
   ("M" (concat "/var/mail/" (getenv "USER")))
   ("x" (concat  "~/.stumpwmrc.d/inits/.xmodmap/"))
   ;;("y" (concat stumpwm_dir ".my_startups.sh"))
