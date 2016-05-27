@@ -1,5 +1,4 @@
-(let ((lexical-binding t))
-  (defun list-async-shell-commands ()
+(defun list-async-shell-commands ()
     (interactive)
     (let ((list-asyncs-buf-name "*List of Async Shell Commands" ))
       (with-current-buffer-window
@@ -25,7 +24,9 @@
 		  (princ (format "%s\t%s\t%s\n"
 				 name cmd snippet))))
        (use-local-map (make-sparse-keymap))
-       (cl-labels ((get-current-line-buffer ()
+       (let (get-current-line-buffer)
+
+	 (fset 'get-current-line-buffer (lambda ()
 					    (get-buffer
 					     (first (s-split "\t"
 							     (buffer-substring-no-properties
@@ -34,6 +35,7 @@
 	 (local-set-key "n" 'next-line)
 	 (local-set-key "p" 'previous-line)
 	 (local-set-key "k" (lambda () (interactive)
+			      "kill"
 			      (let ((buf (get-current-line-buffer))
 				    proc)
 				(when (and buf (setf proc (get-buffer-process buf)))
@@ -51,6 +53,8 @@
 			      ))
 
 	 (local-set-key (kbd "RET") (lambda () (interactive)
+				      "switch to buffer"
 				      (switch-to-buffer (get-current-line-buffer))))
+	 (local-set-key (kbd "r") 'list-async-shell-commands);;refresh
 	 ;;(read-only-mode 1)
-	 (switch-to-buffer list-asyncs-buf-name))))))
+	 (switch-to-buffer list-asyncs-buf-name)))))
