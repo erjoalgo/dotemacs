@@ -34,4 +34,4 @@
 
   (define-key cider-repl-mode-map (kbd "M-?") (lambda () (interactive)
 					      (switch-to-buffer "*cider-error*"))))
-(setf nrepl-kill-server-buffer-no-prompt t)
+(setf nrepl-prompt-to-kill-server-buffer-on-quit nil)
