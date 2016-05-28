@@ -226,23 +226,29 @@
      (unless was-open (kill-buffer buff))))
 
 (defun replace-regexp-dir (dir extension from to &optional pause)
+  "basically a recursive sed"
   ;;TODO colored output
   (interactive
    (let* ((ext (read-string
 		"enter extension (eg 'js'): "
-		(f-ext (or (buffer-file-name (current-buffer)) ""))))
+		(f-ext (or (buffer-file-name (current-buffer)) "")) nil  '(nil)))
 	  (dir (if current-prefix-arg
 		   (read-directory-name "enter directory: ")
-		 default-directory)))))
+		 default-directory))
+	  (from (read-string "enter from regexp: "))
+	  (to (read-string "enter to regexp: "))
+	  (pause (y-or-n-p "pause at every match? "))
+	  )
+     (list dir ext from to pause)))
   (let ((count 0))
-  (walk-dir-tree dir
-		 (lambda (fn)
-		   (when (string= (f-ext fn) extension)
-		     (with-temporary-open-file
-		      fn
-		      (regexp-replace-current-buffer from to pause)
-		      (save-buffer)))))
-  (message "%d occurrences replaced" count)))
+    (walk-dir-tree dir
+		   (lambda (fn)
+		     (when (or (null extension) (string= (f-ext fn) extension))
+		       (with-temporary-open-file
+			fn
+			(regexp-replace-current-buffer from to pause)
+			(save-buffer)))))
+    (message "%d occurrences replaced" count)))
 
 (defun regexp-replace-current-buffer (from to &optional pause)
   (let ((count 0))
