@@ -240,15 +240,16 @@
 	  (pause (y-or-n-p "pause at every match? "))
 	  )
      (list dir ext from to pause)))
-  (let ((count 0))
+  (let ((count-sym (gensym)))
+    (set count-sym 0)
     (walk-dir-tree dir
-		   (lambda (fn)
+		   `(lambda (fn)
 		     (when (or (null extension) (string= (f-ext fn) extension))
 		       (with-temporary-open-file
 			fn
-			(regexp-replace-current-buffer from to pause)
+			(incf ,count-sym (regexp-replace-current-buffer from to pause))
 			(save-buffer)))))
-    (message "%d occurrences replaced" count)))
+    (message "%d occurrences replaced" (symbol-value count))))
 
 (defun regexp-replace-current-buffer (from to &optional pause)
   (let ((count 0))
