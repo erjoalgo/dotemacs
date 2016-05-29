@@ -102,5 +102,5 @@
 
 (setf find-function-C-source-directory
       (expand-file-name "~/programs/source/emacs/emacs24-24.4+1/src/"))
-(provide 'emacs-settings)
+(provide 'my-emacs-settings)
 ;;; emacs-settings.el ends here
