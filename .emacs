@@ -20,7 +20,7 @@
 (require 'isearch-fast-reverse)
 
 (require 'legalese)
-(require 'emacs-settings)
+(require 'my-emacs-settings)
 
 
 (mapc 'load-file
