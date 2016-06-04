@@ -33,5 +33,8 @@
 						(cider-repl--history-replace 'forward nil)))
 
   (define-key cider-repl-mode-map (kbd "M-?") (lambda () (interactive)
-					      (switch-to-buffer "*cider-error*"))))
+						(switch-to-buffer "*cider-error*")))
+  (define-key clojure-mode-map (kbd "TAB") 'cider-repl-tab))
+
+
 (setf nrepl-prompt-to-kill-server-buffer-on-quit nil)
