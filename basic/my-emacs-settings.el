@@ -102,5 +102,7 @@
 
 (setf find-function-C-source-directory
       (expand-file-name "~/programs/source/emacs/emacs24-24.4+1/src/"))
+
+(setq-default show-trailing-whitespace t)
 (provide 'my-emacs-settings)
 ;;; emacs-settings.el ends here
