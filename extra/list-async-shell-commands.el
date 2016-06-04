@@ -5,9 +5,10 @@
        list-asyncs-buf-name
        #'temp-buffer-show-function
        nil
-       
+
        (loop for buf in (buffer-list) if
-	     (and
+	     (or
+	      (get-buffer-process buf)
 	      (s-starts-with? "*Async Shell Command*"
 			      (buffer-name buf))
 	      (eq
@@ -46,7 +47,7 @@
 				(delete-region (line-beginning-position)
 					       (1+ (line-end-position)))
 				(read-only-mode 1))
-			      
+
 					;(move-beginning-of-line nil)
 					;(kill-line)
 					;(kill-line)
