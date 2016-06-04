@@ -27,14 +27,14 @@
 
 (defconst emacs-backups-dir "~/.emacs-backups")
 
-;; Save all tempfiles in $TMPDIR/emacs$UID/                                                        
+;; Save all tempfiles in $TMPDIR/emacs$UID/
 
 (setq backup-directory-alist
       `((".*" . ,emacs-backups-dir))
-      
+
       auto-save-file-name-transforms
       `((".*" ,emacs-backups-dir t))
-      
+
       setq auto-save-list-file-prefix
       emacs-backups-dir)
 ;;taken from the internet
@@ -104,5 +104,11 @@
       (expand-file-name "~/programs/source/emacs/emacs24-24.4+1/src/"))
 
 (setq-default show-trailing-whitespace t)
+(dolist (mode-sym '(html-mode cider-repl-mode))
+  (let ((hook-sym (intern (concat (symbol-name mode-sym) "-hook"))))
+    (unless (boundp hook-sym)
+      (error "unknown mode hook: %s" mode-sym))
+    (add-hook hook-sym (lambda () (setf show-trailing-whitespace nil)))))
+
 (provide 'my-emacs-settings)
 ;;; emacs-settings.el ends here
