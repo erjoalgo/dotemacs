@@ -10,17 +10,17 @@
 (define-keys org-mode-map
   ("M-P" 'org-metaup);;move up
   ("M-N" 'org-metadown);;move down
-  
+
   ("M-]" 'org-metaright);;promote
   ("M-[" 'org-metaleft);;demote
 
 
   ("C-M-]" 'org-demote-subtree);;promote
   ("C-M-[" 'org-promote-subtree);;demote
-  
+
   ("RET" 'org-meta-return);;insert new
 					;use C-j to add text
-  
+
   ("s-1" (lambda () (interactive) (org-todo 1)));;tag TODO
   ("s-2" (lambda () (interactive) (org-todo 2)));;tag DONE
   ("s-d" 'org-deadline)
@@ -84,11 +84,15 @@
 (define-key org-mode-map (kbd "M-c") 'org-export-mine)
 (setq org-html-validation-link nil)
 
-(add-hook 'after-save-hook (lambda ()
-			     (when (and (eq major-mode 'org-mode)
-					(equal (f-filename (buffer-file-name))
-					       "README.org"))
-			       (org-md-export-to-markdown))))
+(defun maybe-export-to-markdown ()
+  (when (and (eq major-mode 'org-mode)
+	     (equal (f-filename (buffer-file-name))
+		    "README.org"))
+    (let ((dont-ask-user-about-supersession-threat t))
+      (org-md-export-to-markdown)
+      (org-html-export-to-html))))
+
+(add-hook 'after-save-hook 'maybe-export-to-markdown)
 
 (require 'org-crypt)
 (org-crypt-use-before-save-magic)
@@ -107,7 +111,7 @@
 	(lambda ()
 	  (call-interactively 'org-agenda-list)
 	  (get-buffer "*Org Agenda*")))
-  
+
   '(switch-to-buffer "*Org Agenda*")
   '(delete-other-windows))
 
