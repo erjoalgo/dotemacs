@@ -249,7 +249,7 @@
 			fn
 			(incf ,count-sym (regexp-replace-current-buffer from to pause))
 			(save-buffer)))))
-    (message "%d occurrences replaced" (symbol-value count))))
+    (message "%d occurrences replaced" (symbol-value count-sym))))
 
 (defun regexp-replace-current-buffer (from to &optional pause)
   (let ((count 0))
