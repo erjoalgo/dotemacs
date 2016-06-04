@@ -63,9 +63,13 @@
 
 		  ;;does not include newline
 		  (funcall ,real-filter proc (substring string start new-start))
-		  
+
 		  (setf start (1+ new-start)));;past newline
-		
+
 		(setf ,cum-string-sym (substring string start))))))
 
 (setq browse-url-browser-function 'firefox-new-tab)
+
+(defun peek (str start max)
+  "peek into str at most `max' characters"
+  (substring str start (min (length str) (+ start max))))
