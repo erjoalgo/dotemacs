@@ -1,4 +1,4 @@
-;;; emacs-settings.el --- 
+;;; emacs-settings.el ---
 
 ;; Copyright (C) 2016  Ernesto Alfonso <erjoalgo@gmail.com>
 
@@ -106,8 +106,8 @@
 (setq-default show-trailing-whitespace t)
 (dolist (mode-sym '(html-mode cider-repl-mode))
   (let ((hook-sym (intern (concat (symbol-name mode-sym) "-hook"))))
-    (unless (boundp hook-sym)
-      (error "unknown mode hook: %s" mode-sym))
+    '(unless (boundp hook-sym)
+      (error "unknown mode hook: %s" hook-sym))
     (add-hook hook-sym (lambda () (setf show-trailing-whitespace nil)))))
 
 (provide 'my-emacs-settings)
