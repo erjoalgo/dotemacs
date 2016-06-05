@@ -33,7 +33,7 @@
   (shell-command-of-region
    (line-beginning-position)
    (line-end-position)))
-  
+
 (defun lnabs (source &optional prompt)
   ;;(interactive "fEnter soft link source: ")
   (interactive (list
@@ -41,7 +41,7 @@
 				    (dired-file-name-at-point)
 				    (f-filename
 				     (dired-file-name-at-point)))))
-		  
+
 		  (read-file-name
 		   "Enter soft link source: "
 		   nil initial t initial))))
@@ -66,12 +66,12 @@
     (setf shred-times *shred-rec-default-times*))
   (y-or-n-p (format "confirm shred %s: " fn))
   (let ((shred-times-string (int-to-string shred-times)))
-    
+
   (if (file-directory-p fn)
       (and (y-or-n-p (format "confirm recursive shred of %s: " fn))
 	   (progn
 	     (start-process "rec-shred" "rec-shred" "find" fn "-type" "f"
-			  "-exec" "shred" "-zufn" 
+			  "-exec" "shred" "-zufn"
 			  shred-times-string "{}" ";")
 	     (start-process "rec-shred" "rec-shred" "find" fn "-depth" "-type" "d"
 			  "-exec" "rmdir" "{}" ";")))
@@ -80,8 +80,8 @@
   (when (eq major-mode 'dired-mode)
     (call-interactively 'revert-buffer)))
 
-		 
-  
+
+
 
 (cl-defun sort-key (list key &key descending (pred '<))
   (let* ((sorted-tuples (sort (mapcar (lambda (el)
@@ -93,9 +93,9 @@
     (if descending (reverse sorted)
       sorted)))
 
-  
-			
-  
+
+
+
 (defun directory-files-sort-by-ctime-descending (dir)
   (let ((files (directory-files dir)))
     (reverse (sort-key files (lambda (fn)
@@ -133,7 +133,7 @@
 		       (or (not (buffer-file-name buff))
 			   (buffer-modified-p buff))
 		       buff))
-	
+
 	while next-buff do
 	(progn (switch-to-buffer next-buff)
 	       (message "unsaved changes in: %s... close or save, then exit rec-edit"
@@ -147,7 +147,7 @@
   ;;TODO loop fill in missing length
   (loop for a in sexp-a
 	for b in sexp-b
-	do 
+	do
 	(if (not (eq (atom a) (atom b)))
 	    (error "mismatch: %s %s" a b)
 	  (if (not (atom a))
@@ -156,7 +156,7 @@
 	      (error "mismatch: %s %s" a b)))))
   (or (not (and (consp sexp-a) (consp sexp-b)))
       (= (length sexp-a) (length sexp-b))))
-	
+
 (defun lookup-key-in-current-maps (key)
   "list of active keymaps that bind the given key"
   (interactive (list (read-key-sequence "enter key to lookup in current maps: ")))
@@ -187,7 +187,7 @@
 
 (defun walk-dir-tree (top fun)
   (loop with front = (list top)
-	with new-front = nil 
+	with new-front = nil
 	while front do
 	(loop while front
 	      as dir = (pop front)
@@ -281,3 +281,12 @@
                      (find (symbol-value sym) keymaps)
                      (push sym syms))))
     syms))
+
+(defun remove-trailing-whitespace (a b)
+  (interactive "r")
+  (save-excursion
+    (goto-char (or a (point-min)))
+    (while (search-forward-regexp "[[:space:]]+$" b t)
+      (replace-match ""))))
+
+
