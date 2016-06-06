@@ -3,24 +3,30 @@
   ;;  (concat (expand-file-name ".") "/"))
   (file-name-directory (file-truename "~ealfonso/.emacs")))
 
+(defun add-hook-to-modes (hook mode-sym-list)
+  (dolist (mode-sym mode-sym-list)
+  (let ((hook-sym (intern (concat (symbol-name mode-sym) "-hook"))))
+    (add-hook hook-sym hook)
+    (when (derived-mode-p mode-sym)
+      (funcall hook)))))
+
 (dolist (dir '("libs" "basic" "extra"))
   (add-to-list 'load-path
 	       (concat emacs-top dir)))
 
-(require 'f)
-(require 'goto-last-change)
-(require 'quick-yes)
-;;(require 'help-fns+)
+(mapcar 'require
+	'(f
+	  goto-last-change
+	  quick-yes
+	  cl-lib
+	  cl
+	  erjoalgo-command-mode
+	  zoom-global
+	  isearch-fast-reverse
 
-(require 'cl-lib)
-(require 'cl)
+	  legalese
+	  my-emacs-settings))
 
-(require 'erjoalgo-command-mode)
-(require 'zoom-global)
-(require 'isearch-fast-reverse)
-
-(require 'legalese)
-(require 'my-emacs-settings)
 
 
 (mapc 'load-file
@@ -34,6 +40,8 @@
   (condition-case ex (load fn)
     ('error
      (message "WARNING: unable to load %s:\n %s" fn ex))))
+
+
 
 
 (dolist (top-base '("libs-submodules" "libs-dirs"))
@@ -53,4 +61,4 @@
 	    (load-file-safe fn)))
 
 (ensure-packages-exist
- '(company legalese go-mode goto-last-change quick-yes))
+ '(company legalese go-mode magit))
