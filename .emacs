@@ -10,6 +10,9 @@
     (when (derived-mode-p mode-sym)
       (funcall hook)))))
 
+
+(require 'package)
+(package-initialize)
 (defun ensure-packages-exist (packages)
   (let (refreshed-p)
     (dolist (package packages)
