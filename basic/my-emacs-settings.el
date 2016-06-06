@@ -104,11 +104,10 @@
       (expand-file-name "~/programs/source/emacs/emacs24-24.4+1/src/"))
 
 (setq-default show-trailing-whitespace t)
-(dolist (mode-sym '(html-mode cider-repl-mode))
-  (let ((hook-sym (intern (concat (symbol-name mode-sym) "-hook"))))
-    '(unless (boundp hook-sym)
-      (error "unknown mode hook: %s" hook-sym))
-    (add-hook hook-sym (lambda () (setf show-trailing-whitespace nil)))))
+
+(add-hook-to-modes (lambda () (setf show-trailing-whitespace nil))
+		   '(html-mode cider-repl-mode slime-repl-mode
+			       messages-buffer-mode))
 
 (provide 'my-emacs-settings)
 ;;; emacs-settings.el ends here
