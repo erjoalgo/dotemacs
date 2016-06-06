@@ -51,3 +51,6 @@
 	    as fn = (f-join top fn)
 	    if (file-regular-p fn) do
 	    (load-file-safe fn)))
+
+(ensure-packages-exist
+ '(company legalese go-mode goto-last-change quick-yes))
