@@ -42,7 +42,7 @@
   (gnus-group-exit)
   (gnus-goto-inbox))
 
-	    
+
 (defun ispell-mail ()
   ;;why not just (ispell-buffer) or (ispell)?
   (ispell-region
@@ -60,7 +60,7 @@
 
 (with-eval-after-load "message"
   (gnus-load-bindings
-   message-mode-map 
+   message-mode-map
   ((kbd "\C-ci") 'gmail-contacts-insert-contact)
   ("" nil)
   ("" nil)
@@ -81,7 +81,7 @@
 		      ("t" 'gnus-goto-sent-emails)
 		      ("r" 'gnus-summary-insert-new-articles)
 		      ("f" 'gnus-summary-mail-forward))
-  
+
   (gnus-load-bindings gnus-summary-mode-map
    ("r" 'gnus-summary-reply-with-original)
     ((kbd "s-g") 'gmail-search-query)
@@ -121,7 +121,7 @@
   ;(interactive "GEnter destination directory to save attachments: " )
   (interactive (list (read-directory-name "Enter destination directory to save attachments: " gnus-attachments-default ) ))
   (unless (file-exists-p dir)
-    (or (y-or-n-p (format "making directory %s" dir) ) (error "failed to confirm ")) 
+    (or (y-or-n-p (format "making directory %s" dir) ) (error "failed to confirm "))
     (mkdir dir t))
   (gnus-summary-save-parts ".*/.*" dir nil )
   (find-file dir))
@@ -168,19 +168,19 @@
 			(and (file-symlink-p fn)
 			     (shell-command-to-string-message
 			      (format "unlink %s" fn))))))
-    
+
     (unless (funcall truename-exists-p gnus-fn)
       (funcall maybe-unlink gnus-fn)
       (shell-command-to-string-message
        (format "ln -s %s %s"
 	       (f-join emacs-top "settings" ".gnus-erjoalgo")
 	       gnus-fn)))
-  
+
     (unless (funcall truename-exists-p authinfo-fn)
       (funcall maybe-unlink authinfo-fn)
     (when (boundp 'firefox-new-tab)
       (firefox-new-tab gmail-app-specific-url))
-    
+
     (let ((pass (read-string
 		 (format "enter gmail app-specific pass (%s): "
 			 gmail-app-specific-url)))
