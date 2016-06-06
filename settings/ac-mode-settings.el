@@ -17,7 +17,7 @@
 (defalias 'acmode 'auto-complete-mode)
 
 ;;ac mode slows down netbook too much
-(unless (member system-name '("debian-mini"))
+'(unless (member system-name '("debian-mini"))
   (require 'auto-complete)
   (require 'auto-complete-config)
   (ac-config-default))
