@@ -10,6 +10,30 @@
     (when (derived-mode-p mode-sym)
       (funcall hook)))))
 
+(defun ensure-packages-exist (packages)
+  (let (refreshed-p)
+    (dolist (package packages)
+      (when
+	  (and (not (package-installed-p package))
+	       (loop for i below 2 always
+		     (y-or-n-p (format "connect to the internet to install %s? (%d)"
+				       package i))))
+	(condition-case ex
+	    (or refreshed-p (progn
+			      (package-refresh-contents)
+			      (setf refreshed-p t)))
+	  (package-install package)
+	  ('error
+	   (message "WARNING: unable to install %s:\n %s" package ex)))))))
+
+(defun load-file-safe (fn)
+  (condition-case ex (load fn)
+    ('error
+     (message "WARNING: unable to load %s:\n %s" fn ex))))
+
+(ensure-packages-exist
+ '(company legalese go-mode magit))
+
 (dolist (dir '("libs" "basic" "extra"))
   (add-to-list 'load-path
 	       (concat emacs-top dir)))
@@ -23,7 +47,7 @@
 	  erjoalgo-command-mode
 	  zoom-global
 	  isearch-fast-reverse
-
+	  company
 	  legalese
 	  my-emacs-settings))
 
@@ -35,14 +59,6 @@
 
 (require 'proxy-mode)
 (require 'plusx)
-
-(defun load-file-safe (fn)
-  (condition-case ex (load fn)
-    ('error
-     (message "WARNING: unable to load %s:\n %s" fn ex))))
-
-
-
 
 (dolist (top-base '("libs-submodules" "libs-dirs"))
   (loop with top = (f-join emacs-top top-base)
@@ -60,5 +76,3 @@
 	    if (file-regular-p fn) do
 	    (load-file-safe fn)))
 
-(ensure-packages-exist
- '(company legalese go-mode magit))
