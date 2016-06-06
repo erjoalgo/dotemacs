@@ -8,7 +8,7 @@
   (setf gnus-select-method
 	    `(nnimap "gmail"
 		     (nnimap-address ,imap-server)
-		     (nnimap-server-port 993)
+		     (nnimap-server-port imap-port)
 		     (nnimap-stream ssl)))
 
   (setf message-send-mail-function 'smtpmail-send-it
