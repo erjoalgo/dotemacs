@@ -284,8 +284,10 @@
 
 (defun remove-trailing-whitespace (a b)
   (interactive "r")
+  (unless (region-active-p) (setf a (point-min)
+				  b (point-max)))
   (save-excursion
-    (goto-char (or a (point-min)))
+    (goto-char a)
     (while (search-forward-regexp "[ \t]+$" b t)
       (replace-match ""))))
 
@@ -303,3 +305,6 @@
       (package-install package)))))
 
 
+(defun erc-autologin ()
+  (interactive)
+  (erc))
