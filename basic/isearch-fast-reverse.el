@@ -19,14 +19,14 @@
 ;; along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 ;;; Commentary:
-;;Make switching directions in isearch mode faster. 
+;;Make switching directions in isearch mode faster.
 ;;Changes:
-;;Make regexp search default
+;;Make regexp search the default search
 ;;Reverse directions and get next match in a single keystroke.
 ;;Bind forward search, reverse search to f3, M-f3
 ;;Esc to exit isearch at current position
-;;f4 to cancel isearch and return to original, pre-search position
-;;for consistency, exiting while on isearch-forward will move point to beginning of match
+;;C-g or f4 to cancel isearch and return to original, pre-search position
+;;Exiting while on isearch-forward will move point to beginning of match, not at the end. This makes it easier to move point where desired via isearch-forward
 ;;In dired or gnus, RET automatically opens file/directory at point
 
 
