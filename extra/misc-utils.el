@@ -291,20 +291,6 @@
     (while (search-forward-regexp "[ \t]+$" b t)
       (replace-match ""))))
 
-(defun ensure-packages-exist (packages)
-  (let (refreshed-p)
-  (dolist (package packages)
-    (when
-	(and (not (package-installed-p package))
-	(loop for i below 2 always
-	      (y-or-n-p (format "connect to the internet to install %s? (%d)"
-				package i))))
-      (or refreshed-p (progn
-			(package-refresh-contents)
-			(setf refreshed-p t)))
-      (package-install package)))))
-
-
 (defun erc-autologin ()
   (interactive)
   (erc))
