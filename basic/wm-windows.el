@@ -39,7 +39,7 @@
 (defun wm-windows-list ()
   ;;hexid desktop-num-or-neg1 pid host title
   (let ((output (shell-command-to-string "wmctrl -xpl")))
-    
+
     (loop for line in (split-string output "\n" t)
 	  collect
 	  (destructuring-bind (id desktop pid class hostname . title)
