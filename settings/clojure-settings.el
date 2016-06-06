@@ -1,16 +1,3 @@
-(defun ensure-packages-exist (&rest packages )
-  (let (refreshed-p)
-  (dolist (package packages)
-    (when
-	(and (not (package-installed-p package))
-	(loop for i below 2 always
-	      (y-or-n-p (format "connect to the internet to install %s? (%d)"
-				package i))))
-      (or refreshed-p (progn
-			(package-refresh-contents)
-			(setf refreshed-p t)))
-      (package-install package)))))
-
 (ensure-packages-exist
  'clojure-mode 'cider)
 
@@ -34,7 +21,31 @@
 
   (define-key cider-repl-mode-map (kbd "M-?") (lambda () (interactive)
 						(switch-to-buffer "*cider-error*")))
-  (define-key clojure-mode-map (kbd "TAB") 'cider-repl-tab))
+  (define-key clojure-mode-map (kbd "TAB") 'company-complete))
 
 
 (setf nrepl-prompt-to-kill-server-buffer-on-quit nil)
+
+
+(defun clojure-opts-summary-to-org-table (path-to-jar)
+  (interactive "fenter path to jar, should accept -h option: ")
+ ;TODO align descriptions in the correct column
+  (let* (
+	(out "  -e, --email EMAIL                          erjoalgo@gmail.com                email address
+  -d, --db DB                                /home/ealfonso/.imap-contacts.db  path to sqlite db
+  -m, --max-results MAX                      600                               max results to fetch, default 600, 0 for infinite
+  -p, --passwd-file PASSWD_FN                                                  path to file containing app specific pass. user is prompted if not provided
+  -n, --newline                                                                flag to insert newlines instead of \r
+  -q, --quiet                                                                  quiet
+  -s, --imap-protocol-host-port IMAP_SERVER  [\"https\" \"imap.gmail.com\" 993]    url for for imap server including protocol, host, port, example 'https://imap.gmail.com:993'")
+	(out (shell-command-to-string (format "java -jar %s -h" path-to-jar)))
+
+	)
+    (insert (concat " | Option | Default | Description | \n"
+	    (replace-regexp-in-string " \\{2,\\}" " | " out)))))
+
+(defface cider-repl-err-output-face
+  '((t (:inherit font-lock-warning-face)))
+  "Face for STDERR output in the REPL buffer."
+  :group 'cider-repl
+  :package-version '(cider . "0.6.0"))
