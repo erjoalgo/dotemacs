@@ -1,4 +1,4 @@
-;;; sexchange-mode.el --- 
+;;; stack-exchange-mode.el --- 
 
 ;; Copyright (C) 2016  Ernesto Alfonso <erjoalgo@gmail.com>
 
@@ -24,26 +24,27 @@
 
 ;;; Code:
 
-(define-minor-mode sexchange-mode
+;TODO this should be implemented in org mode and md export
+(define-minor-mode stack-exchange-mode
   "mode for creating stack-exchange questions/answers"
-  0
+  nil
   "s-exchange"
   (make-sparse-keymap))
 
-(defun sexchange-insert-cmd-and-output (cmd)
+(defun stack-exchange-insert-cmd-and-output (cmd)
   (interactive (list (read-shell-command
 		      "senter shell command: ")))
   (insert (format "\n\n%s\n%s\n\n"
-		  (sexchange-code-block
+		  (stack-exchange-code-block
 		   (concat "$" cmd))
-		  (sexchange-code-block (shell-command-to-string cmd)))))
+		  (stack-exchange-code-block (shell-command-to-string cmd)))))
 
-(defun sexchange-code-block (code)
+(defun stack-exchange-code-block (code)
   (replace-regexp-in-string
    "^" "    " code))
 
 
-(defun sexchange-code-block-region (a b)
+(defun stack-exchange-code-block-region (a b)
   (interactive "r")
   (save-excursion
     (goto-char a)
@@ -53,11 +54,11 @@
       (next-logical-line))))
 
 (loop for (key binding) in
-      `((,(kbd "s-k") sexchange-code-block-region)
-	
-	(,(kbd "s-!") sexchange-insert-cmd-and-output))
-      do 
-      (define-key sexchange-mode-map key binding))
+      `((,(kbd "s-k") stack-exchange-code-block-region)
 
-(provide 'sexchange-mode)
-;;; sexchange-mode.el ends here
+	(,(kbd "s-!") stack-exchange-insert-cmd-and-output))
+      do
+      (define-key stack-exchange-mode-map key binding))
+
+(provide 'stack-exchange-mode)
+;;; stack-exchange-mode.el ends here
