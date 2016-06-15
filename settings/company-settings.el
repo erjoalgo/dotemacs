@@ -13,4 +13,8 @@
     `(lambda () (interactive) (company-complete-number ,i))))
 
 
-(global-set-key (kbd "<s-tab>") 'indent-according-to-mode)
+;(global-set-key (kbd "<s-tab>") 'indent-according-to-mode)
+(global-set-key (kbd "<s-tab>") (lambda () (interactive)
+				  (if (region-active-p)
+				      (indent-region (region-beginning) (region-end))
+				    (indent-according-to-mode))))
