@@ -1,5 +1,5 @@
 (ensure-packages-exist
- 'clojure-mode 'cider)
+ '(clojure-mode cider))
 
 (setf cider-repl-display-help-banner nil )
 (setf cider-show-error-buffer nil)
