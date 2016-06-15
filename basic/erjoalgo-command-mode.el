@@ -1,4 +1,4 @@
-;;; erjoalgo-command-mode.el --- 
+;;; erjoalgo-command-mode.el ---
 
 ;; Copyright (C) 2016  Ernesto Alfonso <erjoalgo@gmail.com>
 
@@ -44,9 +44,10 @@
 (defun erjoalgo-command-mode-hook-add-color ()
   "add a visual indicator of current mode"
   (let ((color (if erjoalgo-command-mode *erjoalgo-command-mode-color-on* *erjoalgo-command-mode-color-off*)))
-  ;(let ((color (if erjoalgo-command-mode "dark blue" "dark gray")))
-	(set-face-background 'mode-line color)
-	(set-cursor-color color)))
+					;(let ((color (if erjoalgo-command-mode "dark blue" "dark gray")))
+    (set-face-background 'mode-line color)
+    (when nil
+	'(set-cursor-color color))))
 
 (add-hook 'erjoalgo-command-mode-hook 'erjoalgo-command-mode-hook-add-color)
 
@@ -86,16 +87,16 @@
 (define-key-tuples-macro
   erjoalgo-command-mode-map
   nil
-  
+
   ("1" scroll-up-keep-cursor);;originally M-v
   ("2" scroll-down-keep-cursor);;originally C-v
 
-  
+
 
   ("n" next-line);;originally C-n
   ("N" copy-line-down);; copy full line down
   ("M-n" move-line-down);; move line down
-  
+
   ("p" previous-line);;originally C-p
   ("P" copy-line-up);; copy full line up
   ("M-p" move-line-up);; move line up
@@ -115,7 +116,7 @@
   ("f" forward-char);;originally C-f
   ("b" backward-char);;originally C-b
   ("/" undo);;originally C-/
-  
+
 
   ("M-f" forward-sexp);;originally C-M-f
   ("M-b" backward-sexp);;originally C-M-b
@@ -132,7 +133,7 @@
   ("W" kill-surrounding-sexp);; incrementally kill backward-sexp. incrementally displays what is being killed
   ("M-w" kill-region);;originally C-w
 
-  
+
   ("M-1" delete-other-windows);;originally C-x 1
   ("M-2" my-split-window-below);;originally C-x 2
   ("M-3" my-split-window-right);;originally C-x 3
@@ -144,17 +145,17 @@
   ("C" duplicate-current-buffer);; open current buffer in split-window-below
   ("z" kill-this-buffer);;originally C-x k
   ("q" bury-buffer);; move current buffer to end of the list
-  
+
 
   ("3" find-file-at-point-cmd);;originally C-x f
   ("4" switch-to-buffer);;originally C-x b
   ("5" (lambda () (interactive) (find-file-under-dir-completing-read "~/repos")))
   ("6" (lambda () (interactive) (find-file-under-dir-completing-read (f-join emacs-top "org"))))
-  
-  
+
+
   ("s" save-buffer);;originally C-x s
 
-  
+
   ("l" recenter-top-bottom);;originally C-l
   ("d" delete-char);;originally C-d
   ("M-d" kill-word);;originally M-d
@@ -166,27 +167,27 @@
   ([134217849] quick-yes-answer-yes);; type "yes RET" for those annoying prompts. the key is s-SPC (super space)
 
 
-  
+
   ("-" global-text-scale-lower);; increase text size
   ("=" global-text-scale-higher);; decrease text size
-  
+
   ("g" goto-line)
 
   ("x" ,open-interpreter-map);;custom map
   ("m" ,open-init-files-map);;custom map
 
   ("	" indent-for-tab-command)
-  
+
   ("9" ,(string-insert-command "("));; insert "("
   ("0" ,(string-insert-command ")"));; insert ")"
-  
+
   ("" universal-argument)
   ("u" universal-argument)
 
   ("'" ,(string-insert-command "\""));; insert double-quote
-  
+
   ("i" one-char-insert-mode)
-  
+
   ("h" (lambda (arg) (interactive "P")
 	 "with prefix arg, keep erjoalgo-command-mode while on help-command map
 	  ie for inspecting erjoalgo-command-mode bindings
@@ -195,7 +196,7 @@
 	 (set-temporary-overlay-map 'help-command)
 	 (unless arg
 	   (global-erjoalgo-command-mode 0))))
-  
+
   ([f1] global-erjoalgo-command-mode-toggle);; f1 toggle command mode
   )
 
@@ -206,12 +207,12 @@
   (find-file (f-join dir
 		     (completing-read (concat dir ": ")
 				      (directory-files dir)))))
-    
+
 (defun curry (fun &rest fixed-args)
   `(lambda (&rest args)
      ,(when (commandp fun) '(interactive))
      (apply ',fun (append (list ,@fixed-args) args))))
-  
+
 
 ;(fset 'join-base-dir (curry 'f-join basic-top))
 (fset 'join-base-dir (curry 'concat "~/repos/dotemacs/basic/"))
@@ -262,13 +263,13 @@
 
 (define-key-tuples-macro
   open-interpreter-map
-  nil 
+  nil
   ("s" (lambda (arg)(interactive "P")(eshell arg)))
   ("p"  (lambda () (interactive)
 	  (let ((python-buff (get-buffer "*Python*")))
 	    (if python-buff (switch-to-buffer python-buff)
 	      (call-interactively 'run-python)))))
-  ("P"  message-current-buffer-process) 
+  ("P"  message-current-buffer-process)
   ;;("p" 'run-python)
   ("i" ielm)
   ("I" load-dark-theme-toggle)
@@ -299,7 +300,7 @@
 	 (define-key kmap (kbd "2") 'slime-stumpwm)
 	 (define-key kmap (kbd "3") 'cider-buffer-or-jack-in)
 	 kmap))
-   
+
   ("S" goto-slime-buffer)
   ("t" untarprogram)
   ("r" replace-regexp)
@@ -318,8 +319,8 @@
 
 
 
-     
-				   
+
+
 
 
 ;;http://stackoverflow.com/questions/683425/globally-override-key-binding-in-emacs/5340797#5340797
