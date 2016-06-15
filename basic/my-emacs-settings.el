@@ -105,9 +105,10 @@
 
 (setq-default show-trailing-whitespace t)
 
+;disable whitespace mode in certain modes
 (add-hook-to-modes (lambda () (setf show-trailing-whitespace nil))
 		   '(html-mode cider-repl-mode slime-repl-mode
-			       messages-buffer-mode))
+			       messages-buffer-mode eshell-mode compilation-mode))
 
 (provide 'my-emacs-settings)
 ;;; emacs-settings.el ends here
