@@ -11,7 +11,6 @@
 	 (ret-code (call-process "pdflatex" nil compile-errors-buffer nil "-halt-on-error" tex)))
 
     (with-current-buffer compile-errors-buffer (erase-buffer))
-    
     (if (= ret-code 0)
 	(progn
 	  (message "successful compilation")
