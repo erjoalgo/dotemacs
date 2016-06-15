@@ -38,6 +38,7 @@
 
 (defun wm-windows-list ()
   ;;hexid desktop-num-or-neg1 pid host title
+  (wm-window-ensure-wmctrl-exists)
   (let ((output (shell-command-to-string "wmctrl -xpl")))
 
     (loop for line in (split-string output "\n" t)
@@ -56,8 +57,16 @@
 	     :hostname hostname
 	     :title (s-join " " title))))))
 
+(defun which (program)
+  (zerop (call-process "which" nil nil nil program)))
+
+(defun wm-window-ensure-wmctrl-exists ()
+  (unless (which "wmctrl")
+    (error "wmctrl not available")))
+
 (defun wm-window-raise (wm-window)
   ;;it's really called 'activate' in wmctrl
+  (wm-window-ensure-wmctrl-exists)
   (let ((buff-name "wm-windows-raise"))
     (start-process buff-name buff-name
 		   "wmctrl" "-ia" (wm-window-id wm-window))))
