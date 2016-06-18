@@ -49,3 +49,5 @@
   "Face for STDERR output in the REPL buffer."
   :group 'cider-repl
   :package-version '(cider . "0.6.0"))
+
+(define-key clojure-mode-map (kbd "TAB") 'completion-at-point)
