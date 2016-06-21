@@ -1,4 +1,4 @@
-;;; command-mode-commands.el --- 
+;;; command-mode-commands.el ---
 
 ;; Copyright (C) 2016  Ernesto Alfonso <erjoalgo@gmail.com>
 
@@ -47,7 +47,7 @@
 (defun duplicate-current-buffer ()
   (interactive)
   (switch-to-buffer-other-window (current-buffer)))
-  
+
 (defun yank-or-pop ()
   (interactive)
    (if (eq last-command 'yank)
@@ -68,20 +68,20 @@
   (cond
       ((eq major-mode 'eshell-mode)
        (eshell-bol))
-      
+
       ((eq major-mode 'slime-repl-mode)
        (beginning-of-line))
-      
+
       ;;((string-match "[*]R[*]" (buffer-name (current-buffer)))
       ((eq major-mode 'inferior-ess-mode)
        (move-past-prompt "^> " t))
-      
+
       ((equal last-command 'my-move-beginning-of-line)
        (if my-move-beginning-of-line-toggle
 	   (move-beginning-of-line nil )
 	 (back-to-indentation))
        (toggle-bool my-move-beginning-of-line-toggle))
-      
+
       (t (setq my-move-beginning-of-line-toggle t) (back-to-indentation))))
 
 (defun copy-line-up (arg) (interactive "P")
@@ -161,7 +161,7 @@
 (fset 'my-split-window-right (then-cycle-window 'split-window-right))
 
 (setq exclude-buffer-cycle (list "*scratch*" "*GNU Emacs*" " *Minibuf-1*" " *Minibuf-0*" "*Messages*" " *code-conversion-work*" " *Echo Area 1*" " *Echo Area 0*" "*Completions*" "*Apropos*" "*Help*"))
-(defun cycle-buffer (arg) (interactive "P") 
+(defun cycle-buffer (arg) (interactive "P")
        (let* ((buflist (buffer-list))
 	      (first t))
 	 (if (member last-command '(cycle-buffer 'cycle-prev-buffer))
@@ -193,14 +193,14 @@
 
 (defun my-eval-defun (arg)
   (interactive "P")
-  (cond 
+  (cond
    ((and (boundp 'slime-mode) slime-mode)
     (let ((slime-load-failed-fasl 'always))
       (call-interactively 'slime-compile-and-load-file)))
 
    ((and (boundp 'cider-mode) cider-mode)
     (call-interactively 'cider-eval-defun-at-point))
-   
+
    ;;emacs lisp
    (t (eval-defun arg))))
 
@@ -236,12 +236,12 @@
        (let ((curr-fn (if (eq major-mode 'dired-mode)
 			  dired-directory
 			(buffer-file-name (current-buffer)))))
-	 
+
 	 (unless (s-starts-with-p "/sudo" curr-fn)
 	   (let ((pos (point)))
 	     (find-file (concat "/sudo::" curr-fn))
 	     (goto-char pos)))))
-       
+
 
 (require 'f)
 (defun grep-recursive (extension pattern dir &optional clear-buffer)
@@ -253,12 +253,12 @@
 		  (let ((search (sexp-at-point)))
 		    (and search (symbolp search)
 			 (symbol-name search)))))
-	     
+
 	     (read-string
 	      (format "enter grep pattern: (default %s): " default)
 	      symbol-at-point
 	      nil default)))
-	  
+
 	  (ext (and nil (read-string
 			 "enter extension (eg 'js'): "
 			 (f-ext (or (buffer-file-name (current-buffer)) "")))))
@@ -266,25 +266,35 @@
 		   (read-directory-name "enter directory: ")
 		 default-directory)))
      (list  (and (not (string= "" ext)) ext) pattern (expand-file-name dir) t)))
-  
-  (let ((buff-name "grep-recursive"))
+
+  (let ((buff-name "grep-recursive")
+	proc)
     (when clear-buffer
       (switch-to-buffer buff-name)
       (erase-buffer))
 
-    (apply 'start-process buff-name buff-name 
-		   "find"
-		   dir
-		   (append 
-		    '("-name" ".git" "-prune" "-o")
+    (setf proc (apply 'start-process buff-name buff-name
+		   (append
+		    `("find" ,dir "-name" ".git" "-prune" "-o")
 		    (when extension
 		      (list "-name" (concat "*" extension)))
-		    (list "-exec" "grep" "-Hins" pattern "{}" ";")))
+		    (list "-exec" "grep" "-Hins" pattern "{}" ";"))))
+    (set-process-sentinel proc
+			  `(lambda (proc change)
+			     (message "running sentinel")
+			     (switch-to-buffer ,buff-name)
+			     (save-excursion
+			       (goto-char (point-min))
+			       (while (re-search-forward
+				       ,(concat "^" (regexp-quote dir))
+				       nil t)
+				 (replace-match "")))
+			     (beginning-of-buffer)))
+
     '(start-process buff-name buff-name
 		    "grep" "-RHins" pattern dir)
-    (switch-to-buffer buff-name)
     ;(set (make-local-variable 'window-point-insertion-type) t)
-    (beginning-of-buffer)))
+    ))
 
 (defun kill-current-buffer-filename ()(interactive)
        (let ((fn
@@ -295,7 +305,7 @@
 		    (or (dired-file-name-at-point)
 		       default-directory))
 		   (buffer-file-name (current-buffer))))))
-	 
+
 	 (kill-new fn)
 	 (message "killed: %s" fn)
 	 fn))
