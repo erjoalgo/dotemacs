@@ -117,5 +117,13 @@
 (add-hook 'find-file-hook 'highlight-long-lines)
 
 
+(defun highlight-long-lines ()
+  (interactive)
+  (highlight-lines-matching-regexp ".\\{81\\}" 'hi-yellow))
+
+(add-hook-to-modes 'highlight-long-lines
+		   '(emacs-lisp-mode clojure-mode go-mode java-mode js-mode))
+
+
 (provide 'my-emacs-settings)
 ;;; emacs-settings.el ends here
