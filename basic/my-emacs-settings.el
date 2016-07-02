@@ -109,7 +109,13 @@
 (add-hook-to-modes (lambda () (setf show-trailing-whitespace nil))
 		   '(html-mode cider-repl-mode slime-repl-mode
 			       messages-buffer-mode eshell-mode compilation-mode
-			       comint-mode))
+			       comint-mode ielm-mode))
+
+(defun highlight-long-lines ()
+  (highlight-lines-matching-regexp ".\\{81\\}" 'hi-yellow))
+
+(add-hook 'find-file-hook 'highlight-long-lines)
+
 
 (provide 'my-emacs-settings)
 ;;; emacs-settings.el ends here
