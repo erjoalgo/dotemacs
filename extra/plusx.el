@@ -1,4 +1,4 @@
-;;; plusx.el --- 
+;;; plusx.el ---
 
 ;; Copyright (C) 2016  Ernesto Alfonso <erjoalgo@gmail.com>
 
@@ -29,9 +29,11 @@
   '(("[.]py$" "#!/usr/bin/python")
     ("[.]sh$" "#!/bin/bash")
     ("[.]bash$" "#!/bin/bash")
-    ("[.]lisp$" "#!/usr/bin/sbcl --script"))
+    ("[.]lisp$" "#!/usr/bin/sbcl --script")
+    ("[.]perl$" "#!/usr/bin/perl")
+    )
   "regexp --> shebang")
-  
+
 
 (defun plusx-maybe-insert-interpreter-line ()
   (interactive)
@@ -39,8 +41,8 @@
 	 (shebang
 	  (loop for (regexp shebang) in plusx-interpreter-line-rules
 		thereis (and (string-match regexp fn) shebang))))
-    
-    (if (not shebang) (unless quiet (message "no match for %s" fn))
+
+    (if (not shebang) (message "no match for %s" fn)
       (save-excursion
 	(goto-char (point-min))
 	(unless (looking-at "#!")
@@ -49,18 +51,18 @@
 	  ;;(save-buffer)
 	  ;;(chmodx)
 	  )))))
-      
+
 
 (defun plusx (fn &optional link-bin-p)
   (interactive (list (buffer-file-name (current-buffer))
 		     nil))
   (plusx-maybe-insert-interpreter-line)
   (shell-command (format "chmod +x '%s'" fn))
-  
+
   (unless (file-name-absolute-p fn) (setq fn (expand-file-name fn)))
   (let* ((bin-dir "~/bin")
 	 (bin-link (f-join bin-dir (f-filename fn))))
-    
+
     (when (and link-bin-p
 	       (not (file-exists-p bin-link)))
       (message "creating symlink for %s" fn)
