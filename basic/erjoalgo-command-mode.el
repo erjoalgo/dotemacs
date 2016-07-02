@@ -19,10 +19,12 @@
 ;; along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 ;;; Commentary:
-;; Provides command mode for easy access to usually Ctrl-prefixed commands in emacs
+;; Provides command mode for single-key access to
+;; Ctrl-prefixed and other common commands in emacs
 ;; f1 to toggle mode on/off,
 ;; clear visual indicator when mode is on
-;; Most of the keybindings in this mode are obtained by simply removing the Ctrl or Ctrl+x prefix of emacs
+;; Most of the keybindings in this mode are obtained
+;; by removing the Ctrl or Ctrl+x prefix of emacs
 ;;
 
 ;;; Code:
@@ -36,14 +38,18 @@
 (define-minor-mode erjoalgo-command-mode
     "command mode"
     0 "-CM" erjoalgo-command-mode-map)
-(define-globalized-minor-mode global-erjoalgo-command-mode erjoalgo-command-mode erjoalgo-command-mode)
+
+(define-globalized-minor-mode global-erjoalgo-command-mode
+  erjoalgo-command-mode erjoalgo-command-mode)
 
 (defvar *erjoalgo-command-mode-color-on* "dark green")
 (defvar *erjoalgo-command-mode-color-off* "dark gray")
 
 (defun erjoalgo-command-mode-hook-add-color ()
   "add a visual indicator of current mode"
-  (let ((color (if erjoalgo-command-mode *erjoalgo-command-mode-color-on* *erjoalgo-command-mode-color-off*)))
+  (let ((color (if erjoalgo-command-mode
+		   *erjoalgo-command-mode-color-on*
+		 *erjoalgo-command-mode-color-off*)))
 					;(let ((color (if erjoalgo-command-mode "dark blue" "dark gray")))
     (set-face-background 'mode-line color)
     (when nil
@@ -73,7 +79,8 @@
   `(let ((command-maker ,command-maker)
 	 (kmap ,kmap))
      (loop for (key command) in (backquote ,kbd-cmd-tuples)
-	   do (define-key kmap (if (vectorp key) key (kbd key)) (funcall ,command-maker command)))
+	   do (define-key kmap (if (vectorp key) key (kbd key))
+		(funcall ,command-maker command)))
      kmap))
 
 (defun string-insert-command (str)
@@ -130,7 +137,10 @@
   ;("SPC" nil)
 
   ("w" kill-ring-save);;originally M-w
-  ("W" kill-surrounding-sexp);; incrementally kill backward-sexp. incrementally displays what is being killed
+
+  ;; incrementally kill backward-sexp. incrementally displays what is being killed
+  ("W" kill-surrounding-sexp)
+  
   ("M-w" kill-region);;originally C-w
 
 
@@ -149,8 +159,10 @@
 
   ("3" find-file-at-point-cmd);;originally C-x f
   ("4" switch-to-buffer);;originally C-x b
-  ("5" (lambda () (interactive) (find-file-under-dir-completing-read "~/repos")))
-  ("6" (lambda () (interactive) (find-file-under-dir-completing-read (f-join emacs-top "org"))))
+  ("5" (lambda () (interactive) (find-file-under-dir-completing-read
+				 "~/repos")))
+  ("6" (lambda () (interactive) (find-file-under-dir-completing-read
+				 (f-join emacs-top "org"))))
 
 
   ("s" save-buffer);;originally C-x s
@@ -163,8 +175,10 @@
 
 
   ;("," tags-loop-continue)
-  ;("" my-backward-delete)
-  ([134217849] quick-yes-answer-yes);; type "yes RET" for those annoying prompts. the key is s-SPC (super space)
+					;("" my-backward-delete)
+
+  ;; type "yes RET" for those annoying prompts. the key is s-SPC (super space)
+  ([134217849] quick-yes-answer-yes)
 
 
 
@@ -306,7 +320,8 @@
   ("r" replace-regexp)
   ("R" query-replace-regexp)
   ;("R" erc-autologin)
-  ("A" (lambda () (interactive) (switch-to-buffer (get-buffer-by-regex "\\*Async Shell Command\\*"))))
+  ("A" (lambda () (interactive)
+	 (switch-to-buffer (get-buffer-by-regex "\\*Async Shell Command\\*"))))
   ;;("k" wiki)
   ("o" gnus-goto-inbox)
   ("0" open-google-calendar)
@@ -400,8 +415,19 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(mode-line ((t (:background "dark gray" :foreground "white" :box (:line-width -1 :style released-button) :weight normal :height 2.0 :width extra-expanded))))
- '(mode-line-inactive ((t (:inherit mode-line :background "grey90" :foreground "grey20" :box (:line-width -1 :color "grey75") :weight light :height 1.1 :width normal))))
+ '(mode-line ((t (:background "dark gray"
+			      :foreground "white"
+			      :box (:line-width -1 :style released-button)
+			      :weight normal
+			      :height 2.0
+			      :width extra-expanded))))
+ '(mode-line-inactive ((t (:inherit mode-line
+				    :background "grey90"
+				    :foreground "grey20"
+				    :box (:line-width -1 :color "grey75")
+				    :weight light
+				    :height 1.1
+				    :width normal))))
  ;(set-face-attribute 'region nil :background "green")
 '(region ((t :background "#666" :foreground "#ffffff"))))
 
@@ -434,7 +460,8 @@
 ;;on minibuffer-exit, enable it if it was originally on
 (defvar was-in-erjoalgo-command-mode-before-minibuf)
 (add-hook 'minibuffer-setup-hook
-	  (lambda () (setq was-in-erjoalgo-command-mode-before-minibuf erjoalgo-command-mode)
+	  (lambda () (setq was-in-erjoalgo-command-mode-before-minibuf
+			   erjoalgo-command-mode)
 	    (global-erjoalgo-command-mode 0)))
 
 (add-hook 'minibuffer-exit-hook

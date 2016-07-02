@@ -48,7 +48,8 @@
 (defun isearch-forward-or-backward ()
   (interactive)
   (let* ((case-fold-search t))
-    (if isearch-reverse-direction-p (isearch-repeat-backward) (isearch-repeat-forward))))
+    (if isearch-reverse-direction-p (isearch-repeat-backward)
+      (isearch-repeat-forward))))
 
 
 (defun isearch-reverse-search-and-search ()
@@ -58,7 +59,8 @@
   (isearch-forward-or-backward))
 
 
-(add-hook 'isearch-mode-end-hook (lambda () (setq isearch-reverse-direction-p nil)))
+(add-hook 'isearch-mode-end-hook
+	  (lambda () (setq isearch-reverse-direction-p nil)))
 
 
 ;;TODO turn into hooks?
