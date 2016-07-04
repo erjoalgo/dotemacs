@@ -21,7 +21,8 @@
 
   (define-key cider-repl-mode-map (kbd "M-?") (lambda () (interactive)
 						(switch-to-buffer "*cider-error*")))
-  (define-key clojure-mode-map (kbd "TAB") 'company-complete))
+  '(define-key clojure-mode-map (kbd "TAB") 'company-complete)
+  )
 
 
 (setf nrepl-prompt-to-kill-server-buffer-on-quit nil)
