@@ -26,10 +26,10 @@
 		     (y-or-n-p (format "connect to the internet to install %s? (%d)"
 				       package i))))
 	(condition-case ex
-	    (or refreshed-p (progn
-			      (package-refresh-contents)
-			      (setf refreshed-p t)))
-	  (package-install package)
+	    (progn (or refreshed-p (progn
+				     (package-refresh-contents)
+				     (setf refreshed-p t)))
+		   (package-install package))
 	  ('error
 	   (message "WARNING: unable to install %s:\n %s" package ex)))))))
 
