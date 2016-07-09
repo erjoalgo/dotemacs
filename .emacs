@@ -1,7 +1,11 @@
 (defvar emacs-top
   ;;  find .emacs's real location
   ;;  (concat (expand-file-name ".") "/"))
-  (file-name-directory (file-truename "~ealfonso/.emacs")))
+  (let ((ealfonso
+	(file-name-directory (file-truename "~ealfonso/.emacs"))))
+    (if (file-exists-p ealfonso) ealfonso
+      (file-name-directory (file-truename "~/.emacs")))))
+
 
 (defun add-hook-to-modes (hook mode-sym-list)
   (dolist (mode-sym mode-sym-list)
