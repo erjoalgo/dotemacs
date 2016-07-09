@@ -47,11 +47,11 @@
 (defun stack-exchange-code-block-region (a b)
   (interactive "r")
   (save-excursion
-    (goto-char a)
-    (while (<= (point) b)
+    (goto-char b)
+    (while (> (point) a)
       (beginning-of-line)
       (insert "    ")
-      (next-logical-line))))
+      (previous-logical-line))))
 
 (loop for (key binding) in
       `((,(kbd "s-k") stack-exchange-code-block-region)
