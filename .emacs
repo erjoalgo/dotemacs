@@ -38,6 +38,11 @@
     ('error
      (message "WARNING: unable to load %s:\n %s" fn ex))))
 
+(defun require-safe (sym)
+  (condition-case ex (require sym)
+    ('error
+     (message "WARNING: unable to require %s:\n %s" sym ex))))
+
 (ensure-packages-exist
  '(company legalese go-mode magit))
 
@@ -45,7 +50,7 @@
   (add-to-list 'load-path
 	       (concat emacs-top dir)))
 
-(mapcar 'require
+(mapcar 'require-safe
 	'(f
 	  goto-last-change
 	  quick-yes
