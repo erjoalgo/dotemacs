@@ -65,24 +65,26 @@
 (defun my-move-beginning-of-line ()
   ;;TODO use mode-hook-initialized variables
   (interactive)
-  (cond
-      ((eq major-mode 'eshell-mode)
-       (eshell-bol))
+  (case major-mode
+    ('eshell-mode
+     (eshell-bol))
 
-      ((eq major-mode 'slime-repl-mode)
-       (beginning-of-line))
+    ('slime-repl-mode
+     (beginning-of-line))
 
-      ;;((string-match "[*]R[*]" (buffer-name (current-buffer)))
-      ((eq major-mode 'inferior-ess-mode)
-       (move-past-prompt "^> " t))
+    ;;((string-match "[*]R[*]" (buffer-name (current-buffer)))
+    ('inferior-ess-mode
+     (move-past-prompt "^> " t))
 
-      ((equal last-command 'my-move-beginning-of-line)
-       (if my-move-beginning-of-line-toggle
-	   (move-beginning-of-line nil )
-	 (back-to-indentation))
-       (toggle-bool my-move-beginning-of-line-toggle))
+    (t
+     (if (equal last-command 'my-move-beginning-of-line)
 
-      (t (setq my-move-beginning-of-line-toggle t) (back-to-indentation))))
+	 (progn (if my-move-beginning-of-line-toggle
+		    (move-beginning-of-line nil )
+		  (back-to-indentation))
+		(toggle-bool my-move-beginning-of-line-toggle))
+       (progn (setq my-move-beginning-of-line-toggle t)
+	      (back-to-indentation))))))
 
 (defun copy-line-up (arg) (interactive "P")
   (move-line-up-mine nil t arg))
