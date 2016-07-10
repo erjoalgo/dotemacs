@@ -36,22 +36,18 @@
 
   (ensure-packages-exist
    '(company legalese magit)))
-(defun load-file-safe (fn)
-  (condition-case ex (load fn)
-    ('error
-     (message "WARNING: unable to load %s:\n %s" fn ex))))
 
-(defun require-safe (sym)
-  (condition-case ex (require sym)
-    ('error
-     (message "WARNING: unable to require %s:\n %s" sym ex))))
-
+(defun safe-fun (fun-sym)
+  `(lambda (&rest args)
+     (condition-case ex (apply ',fun-sym args)
+       ('error
+	(message ,(format "WARNING: unable to %s on args %%s:\n" fun-sym) args)))))
 
 (dolist (dir '("lisp/libs" "lisp/core" "lisp/extra"))
   (add-to-list 'load-path
 	       (concat emacs-top dir)))
 
-(mapcar 'require-safe
+(mapc (safe-fun 'require)
 	'(f
 	  goto-last-change
 	  quick-yes
@@ -73,12 +69,13 @@
       if (file-directory-p fn)  do
       (add-to-list 'load-path fn))
 
-(loop for dir in '("settings" "sensitive" "extra")
+(loop with safe-load = (safe-fun 'load)
+      for dir in '("settings" "sensitive" "extra")
       as top = (f-join emacs-top "lisp" dir)
       if (file-exists-p top) do
       (loop when (file-exists-p top)
 	    for fn in (directory-files top)
 	    as fn = (f-join top fn)
 	    if (file-regular-p fn) do
-	    (load-file-safe fn)))
+	    (funcall safe-load fn)))
 
