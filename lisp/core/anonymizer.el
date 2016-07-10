@@ -23,7 +23,7 @@
 ;;; Code:
 
 
-(defun anonymize ()
+(defun anonymizer-anonymize ()
   (interactive)
   (let ((words `((,system-name "my-hostname")
 		       (,user-login-name "my-login" )
@@ -35,7 +35,9 @@
 		   ("@[[:alnum:]]+[.][[:alnum:]]+" "@example.com")))
 	(total-count 0))
 
-    (setf words (loop for (word replacement) in words collect (cons (downcase word) replacement)))
+    (setf words (loop for (word replacement) in words
+		      collect (cons (downcase word) replacement)))
+
     (cl-labels ((replace-regexp-in-buffer (regexp replacement)
 					  (message "replacing occurrences of '%s'" regexp)
 					  (let ((count 0))
@@ -60,6 +62,28 @@
       (incf total-count (loop for (regexp replacement) in regexps sum
 			      (replace-regexp-in-buffer regexp `(lambda (match) ,replacement))))
       (message "%d total matches replaced" total-count))))
+
+(defun anonymizer-scramble-region (a b)
+  "replace any alnum chars in region with random ones. useful for anonymizing UIDS, RSA keys, while keeping structure"
+  (interactive "r")
+  (let ((region (buffer-substring-no-properties a b)))
+    (loop for i below (length region) do
+	  (let ((char-string (substring region i (1+ i)))
+		bag
+		(case-fold-search nil))
+
+	    (setf bag
+		  (cond
+	     ((string-match "[a-z]" char-string) *genpass-letters-lower*)
+	     ((string-match "[A-Z]" char-string) *genpass-letters-upper*)
+	     ((string-match "[0-9]" char-string) *genpass-num*)))
+
+	    (when bag
+	      (let ((new-char (aref bag (random (length bag)))))
+		    (aset region i new-char)))))
+    (delete-region a b)
+    (goto-char a)
+    (insert region)))
 
 
 (provide 'anonymizer)
