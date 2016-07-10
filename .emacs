@@ -32,7 +32,7 @@
 				       (setf refreshed-p t)))
 		     (package-install package))
 	    ('error
-	     (message "WARNING: unable to install %s:\n %s" package ex)))))))
+	     (warn "WARNING: unable to install %s:\n %s" package ex)))))))
 
   (ensure-packages-exist
    '(company legalese magit)))
@@ -41,7 +41,7 @@
   `(lambda (&rest args)
      (condition-case ex (apply ',fun-sym args)
        ('error
-	(message ,(format "WARNING: unable to %s on args %%s:\n" fun-sym) args)))))
+	(warn ,(format "WARNING: unable to %s on args %%s:\n" fun-sym) args)))))
 
 (dolist (dir '("lisp/libs" "lisp/core" "lisp/extra"))
   (add-to-list 'load-path
