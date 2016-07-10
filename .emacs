@@ -46,7 +46,7 @@
 (ensure-packages-exist
  '(company legalese go-mode magit))
 
-(dolist (dir '("libs" "basic" "extra"))
+(dolist (dir '("lisp/libs" "lisp/core" "lisp/extra"))
   (add-to-list 'load-path
 	       (concat emacs-top dir)))
 
@@ -66,16 +66,14 @@
 	  plusx
 	  ))
 
-
-(dolist (top-base '("libs-submodules" "libs-dirs"))
-  (loop with top = (f-join emacs-top top-base)
-	for lib-dir in (directory-files top)
-	as fn = (f-join top lib-dir)
-	if (file-directory-p fn)  do
-	(add-to-list 'load-path fn)))
+(loop with top = (f-join emacs-top "libs")
+      for lib-dir in (directory-files top)
+      as fn = (f-join top lib-dir)
+      if (file-directory-p fn)  do
+      (add-to-list 'load-path fn))
 
 (loop for dir in '("settings" "sensitive" "extra")
-      as top = (f-join emacs-top dir)
+      as top = (f-join emacs-top "lisp" dir)
       if (file-exists-p top) do
       (loop when (file-exists-p top)
 	    for fn in (directory-files top)
