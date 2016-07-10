@@ -162,7 +162,6 @@
 (fset 'my-split-window-below (then-cycle-window 'split-window-below))
 (fset 'my-split-window-right (then-cycle-window 'split-window-right))
 
-(setq exclude-buffer-cycle (list "*scratch*" "*GNU Emacs*" " *Minibuf-1*" " *Minibuf-0*" "*Messages*" " *code-conversion-work*" " *Echo Area 1*" " *Echo Area 0*" "*Completions*" "*Apropos*" "*Help*"))
 (defmacro -> (&rest forms)
   (if (cadr forms)
       ;;(destructuring-bind (first (a a-rest) . rest) forms
@@ -180,6 +179,13 @@
 	(let ((b (if (atom b) (list b) b)))
 	  `(->> ,(nconc b (list a)) ,@cde)))
     (first forms)))
+
+(setf exclude-buffer-cycle (list
+			    "*scratch*" "*GNU Emacs*" " *Minibuf-1*"
+			    " *Minibuf-0*" "*Messages*" " *code-conversion-work*"
+			    " *Echo Area 1*" " *Echo Area 0*" "*Completions*"
+			    "*Apropos*" "*Help*"))
+
 
 (defun cycle-buffer (arg) (interactive "P")
        (let* ((buflist (buffer-list))
