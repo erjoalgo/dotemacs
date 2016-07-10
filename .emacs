@@ -15,24 +15,27 @@
       (funcall hook)))))
 
 
-(require 'package)
-(package-initialize)
-(defun ensure-packages-exist (packages)
-  (let (refreshed-p)
-    (dolist (package packages)
-      (when
-	  (and (not (package-installed-p package))
-	       (loop for i below 2 always
-		     (y-or-n-p (format "connect to the internet to install %s? (%d)"
-				       package i))))
-	(condition-case ex
-	    (progn (or refreshed-p (progn
-				     (package-refresh-contents)
-				     (setf refreshed-p t)))
-		   (package-install package))
-	  ('error
-	   (message "WARNING: unable to install %s:\n %s" package ex)))))))
+(when (>= emacs-major-version 24)
+  (require 'package)
+  (package-initialize)
+  (defun ensure-packages-exist (packages)
+    (let (refreshed-p)
+      (dolist (package packages)
+	(when
+	    (and (not (package-installed-p package))
+		 (loop for i below 2 always
+		       (y-or-n-p (format "connect to the internet to install %s? (%d)"
+					 package i))))
+	  (condition-case ex
+	      (progn (or refreshed-p (progn
+				       (package-refresh-contents)
+				       (setf refreshed-p t)))
+		     (package-install package))
+	    ('error
+	     (message "WARNING: unable to install %s:\n %s" package ex)))))))
 
+  (ensure-packages-exist
+   '(company legalese magit)))
 (defun load-file-safe (fn)
   (condition-case ex (load fn)
     ('error
@@ -43,8 +46,6 @@
     ('error
      (message "WARNING: unable to require %s:\n %s" sym ex))))
 
-(ensure-packages-exist
- '(company legalese go-mode magit))
 
 (dolist (dir '("lisp/libs" "lisp/core" "lisp/extra"))
   (add-to-list 'load-path
