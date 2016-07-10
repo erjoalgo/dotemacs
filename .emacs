@@ -63,7 +63,7 @@
 	  plusx
 	  ))
 
-(loop with top = (f-join emacs-top "libs")
+(loop with top = (f-join emacs-top "lisp" "libs")
       for lib-dir in (directory-files top)
       as fn = (f-join top lib-dir)
       if (file-directory-p fn)  do
