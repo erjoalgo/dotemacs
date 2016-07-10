@@ -41,7 +41,8 @@
   `(lambda (&rest args)
      (condition-case ex (apply ',fun-sym args)
        ('error
-	(warn ,(format "WARNING: unable to %s on args %%s:\n" fun-sym) args)))))
+	(warn ,(format "WARNING: unable to %s on args %%s %%s:\n" fun-sym)
+	      args ex)))))
 
 (dolist (dir '("lisp/libs" "lisp/core" "lisp/extra"))
   (add-to-list 'load-path
