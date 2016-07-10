@@ -180,7 +180,7 @@
 	  `(->> ,(nconc b (list a)) ,@cde)))
     (first forms)))
 
-(setf exclude-buffer-cycle (list
+(setf cycle-buffer-exclude (list
 			    "*scratch*" "*GNU Emacs*" " *Minibuf-1*"
 			    " *Minibuf-0*" "*Messages*" " *code-conversion-work*"
 			    " *Echo Area 1*" " *Echo Area 0*" "*Completions*"
@@ -188,17 +188,18 @@
 
 
 (defun cycle-buffer (arg) (interactive "P")
-       (let* ((buflist (buffer-list))
-	      (first t))
+       (let ((buf-list (remove-if (lambda (buf)
+				    (-> (buffer-name buf)
+					(member cycle-buffer-exclude)))
+				  (buffer-list)))
+	     (nth-mod (lambda (n list) (nth (mod n (length list)) list)))
+	     (direction (if arg -1 1)))
 	 (if (member last-command '(cycle-buffer 'cycle-prev-buffer))
 	     (progn
-	       (while (or first (member (buffer-name (nth buffer-index buflist)) exclude-buffer-cycle))
-		 (setq buffer-index (mod (+ buffer-index (if arg -1 1)) (length (buffer-list))))
-		 (setq first nil))
-	       (switch-to-buffer (nth buffer-index buflist))
-	       )
+	       (incf cycle-buffer-index direction)
+	       (switch-to-buffer (funcall nth-mod cycle-buffer-index buf-list)))
 	   (progn
-	     (setq buffer-index
+	     (setq cycle-buffer-index
 		   (loop for i from 0
 			 for buff in (buffer-list)
 			 thereis (and (eq (current-buffer) buff) i)))
