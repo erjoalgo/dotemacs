@@ -6,4 +6,4 @@
   (define-key diff-mode-map (kbd "M-c") 'server-edit)
   (define-key diff-mode-map (kbd "C-x #") nil))
 
-
+(global-set-key (kbd "M-c") 'server-edit)
