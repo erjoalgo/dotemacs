@@ -61,16 +61,11 @@
 	  isearch-fast-reverse
 	  company
 	  legalese
-	  my-emacs-settings))
+	  my-emacs-settings
+	  proxy-mode
+	  plusx
+	  ))
 
-
-
-(mapc 'load-file
-      (list (f-join emacs-top "misc-temp.el")
-	    (f-join emacs-top "extra" "misc-utils.el")))
-
-(require 'proxy-mode)
-(require 'plusx)
 
 (dolist (top-base '("libs-submodules" "libs-dirs"))
   (loop with top = (f-join emacs-top top-base)
