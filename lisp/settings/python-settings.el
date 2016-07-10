@@ -12,8 +12,6 @@
   ;; point is a nested block
   (split-line)
   (insert python--pdb-breakpoint-string))
-;;(define-key python-mode-map (kbd "<f5>") 'python-insert-breakpoint)
-(define-key python-mode-map (kbd "<f5>") nil)
 
 
 (defadvice compilation-start (before ad-compile-smart activate)
