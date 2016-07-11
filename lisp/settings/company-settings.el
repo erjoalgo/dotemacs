@@ -30,7 +30,29 @@
 
 					;(global-set-key (kbd "<s-tab>") 'indent-according-to-mode)
 
-(global-set-key (kbd "<s-tab>") (lambda () (interactive)
-				  (if (region-active-p)
-				      (indent-region (region-beginning) (region-end))
-				    (indent-according-to-mode))))
+(defun at-end-of-sexp ()
+  (condition-case ex
+      (save-excursion
+	(= (point)
+	   (progn (backward-sexp 1)
+		  (forward-sexp 1)
+		  (point))))
+    ('error nil)))
+
+(defun indent-last-sexp ()
+  (interactive)
+  (let ((b (point))
+	(a (save-excursion (progn
+		    (backward-sexp 1)
+		    (point)))))
+    (indent-region a b)))
+
+(defun my-indent ()
+  (interactive)
+  (if (region-active-p)
+      (indent-region (region-beginning) (region-end))
+    (if (at-end-of-sexp)
+	(indent-last-sexp)
+      (indent-according-to-mode))))
+
+(global-set-key (kbd "<s-tab>") 'my-indent)
