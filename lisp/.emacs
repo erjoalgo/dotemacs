@@ -71,7 +71,7 @@
       (add-to-list 'load-path fn))
 
 (loop with safe-load = (safe-fun 'load)
-      for dir in '("settings" "sensitive" "extra")
+      for dir in '("core" "settings" "sensitive" "extra")
       as top = (f-join emacs-top "lisp" dir)
       if (file-exists-p top) do
       (loop when (file-exists-p top)
@@ -79,4 +79,3 @@
 	    as fn = (f-join top fn)
 	    if (file-regular-p fn) do
 	    (funcall safe-load fn)))
-

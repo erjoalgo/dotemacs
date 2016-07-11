@@ -1,6 +1,6 @@
 ;;minibuffer-local-map
 (load-file
- (f-join emacs-top "in-progress/python-buttons.el"))
+ (f-join emacs-top "lisp/extra/python-buttons.el"))
 
 (add-hook 'ielm-mode-hook 'elisp_install_buttons)
 (add-hook 'slime-repl-mode-hook 'elisp_install_buttons)

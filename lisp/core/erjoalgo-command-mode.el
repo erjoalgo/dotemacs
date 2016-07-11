@@ -229,7 +229,7 @@
 
 
 ;(fset 'join-base-dir (curry 'f-join basic-top))
-(fset 'join-base-dir (curry 'concat "~/repos/dotemacs/basic/"))
+(fset 'join-base-dir (curry 'concat "~/repos/dotemacs/lisp/core/"))
 
 ;;TODO load this from a tsv file
 (define-key-tuples-macro
