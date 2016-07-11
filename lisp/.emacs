@@ -44,7 +44,7 @@
 	(warn ,(format "WARNING: unable to %s on args %%s %%s:\n" fun-sym)
 	      args ex)))))
 
-(dolist (dir '("lisp/libs" "lisp/core" "lisp/extra"))
+(dolist (dir '("libs" "core" "extra"))
   (add-to-list 'load-path
 	       (concat emacs-top dir)))
 
@@ -64,7 +64,7 @@
 	  plusx
 	  ))
 
-(loop with top = (f-join emacs-top "lisp" "libs")
+(loop with top = (f-join emacs-top "libs")
       for lib-dir in (directory-files top)
       as fn = (f-join top lib-dir)
       if (file-directory-p fn)  do
@@ -72,7 +72,7 @@
 
 (loop with safe-load = (safe-fun 'load)
       for dir in '("core" "settings" "sensitive" "extra")
-      as top = (f-join emacs-top "lisp" dir)
+      as top = (f-join emacs-top dir)
       if (file-exists-p top) do
       (loop when (file-exists-p top)
 	    for fn in (directory-files top)
