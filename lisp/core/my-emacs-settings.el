@@ -98,7 +98,7 @@
 (add-to-list 'auto-mode-alist '("\\.graphml$" . nxml-mode))
 (add-to-list 'auto-mode-alist '("[.]y$" . bison-mode))
 
-(kill-buffer "*scratch*")
+(when (get-buffer "*scratch*") (kill-buffer "*scratch*"))
 
 (setf find-function-C-source-directory
       (expand-file-name "~/programs/source/emacs/emacs24-24.4+1/src/"))
