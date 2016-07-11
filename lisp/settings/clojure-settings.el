@@ -5,13 +5,12 @@
 (setf cider-show-error-buffer nil)
 ;;https://github.com/bbatsov/projectile
 
-(defun cider-buffer-or-jack-in ()
-  (interactive)
-  (let ((ciders (remove-if-not (lambda (buf)
-			  (s-starts-with? "*cider-repl" (buffer-name buf)))
-			(buffer-list))))
-    (if ciders (switch-to-buffer (car ciders))
-      (cider-jack-in))))
+(defcommand-cycle-buffer
+  cider-buffer-or-jack-in
+  (lambda (buf &rest args)
+    (->> (buffer-name buf)
+	 (s-starts-with? "*cider-repl" )))
+  'cider-jack-in)
 
 (with-eval-after-load "cider-repl"
   (define-key cider-repl-mode-map (kbd "M-p") (lambda () (interactive)

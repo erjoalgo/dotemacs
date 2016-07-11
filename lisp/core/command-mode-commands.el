@@ -187,23 +187,53 @@
 			    "*Apropos*" "*Help*"))
 
 
-(defun cycle-buffer (arg) (interactive "P")
-       (let ((buf-list (remove-if (lambda (buf)
-				    (-> (buffer-name buf)
-					(member cycle-buffer-exclude)))
-				  (buffer-list)))
-	     (nth-mod (lambda (n list) (nth (mod n (length list)) list)))
-	     (direction (if arg -1 1)))
-	 (if (member last-command '(cycle-buffer 'cycle-prev-buffer))
-	     (progn
-	       (incf cycle-buffer-index direction)
-	       (switch-to-buffer (funcall nth-mod cycle-buffer-index buf-list)))
-	   (progn
-	     (setq cycle-buffer-index
-		   (loop for i from 0
+(defun nth-mod (n list)
+  (nth (mod n (length list)) list))
+
+(defmacro defcommand-cycle-buffer (cmd-name
+				   buffer-pred
+				   &optional
+				   empty-bufflist-fun)
+  (let* ((cmd-name-fmt-gensym (lambda (suffix)
+				(->> suffix (concat (symbol-name cmd-name))
+				     gensym)))
+	 (pred-sym (funcall cmd-name-fmt-gensym "-prefix-"))
+	 (index-sym (funcall cmd-name-fmt-gensym "-index-"))
+	 (empty-bufflist-sym (funcall cmd-name-fmt-gensym "-empty-bufflist-")))
+
+    (fset pred-sym buffer-pred)
+    (fset empty-bufflist-sym empty-bufflist-fun)
+
+    `(progn
+       (fset ',pred-sym ,buffer-pred)
+       (fset ',empty-bufflist-sym ,empty-bufflist-fun)
+       (defun ,cmd-name (arg)
+	 (interactive "P")
+	 (if arg (,empty-bufflist-sym)
+	   (progn (setf ,index-sym
+			(loop
+			 with seen-self = nil
+			 with first-match = nil
+			 for i from 0
 			 for buff in (buffer-list)
-			 thereis (and (eq (current-buffer) buff) i)))
-	     (switch-to-buffer nil)))))
+			 as matches = (,pred-sym buff)
+			 as is-curr = (eq (current-buffer) buff)
+			 sum (if matches 1 0) into index
+			 when is-curr do (setf seen-self t)
+			 when (and matches (not first-match)) do
+			 (setf first-match i)
+			 thereis (and seen-seln (not is-curr) matches i)
+			 finally return first-match))
+		  (if ,index-sym
+		      (-> (nth-mod ,index-sym (buffer-list))
+			  switch-to-buffer)
+		    (,empty-bufflist-sym))))))))
+
+(defcommand-cycle-buffer my-cycle-buffer (lambda (buff)
+					   (-> buff buffer-name
+					       (member cycle-buffer-exclude)
+					       not)))
+
 
 (defun async-shell-command-no-prompt (&rest args)
   (let* ((async-shell-command-buffer 'new-buffer))
