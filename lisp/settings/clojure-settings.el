@@ -51,4 +51,5 @@
   :group 'cider-repl
   :package-version '(cider . "0.6.0"))
 
-(define-key clojure-mode-map (kbd "TAB") 'completion-at-point)
+(with-eval-after-load "clojure-mode"
+  (define-key clojure-mode-map (kbd "TAB") 'completion-at-point))
