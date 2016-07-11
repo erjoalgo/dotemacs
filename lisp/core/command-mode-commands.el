@@ -216,7 +216,8 @@
 	 ;(default (if (and sym (symbolp sym)) (symbol-name sym) nil)))
 	 (default (if (and sym) (prin1-to-string sym) nil)))
     (async-shell-command-no-prompt
-     (read-shell-command "Enter grep search: " (concat "grep -Risn " default) ))))
+     (read-shell-command "Enter grep search: "
+			 (concat "grep -Risn " default) ))))
 
 (defun my-eval-defun (arg)
   (interactive "P")
@@ -295,6 +296,7 @@
      (list  (and (not (string= "" ext)) ext) pattern (expand-file-name dir) t)))
 
   (let ((buff-name "grep-recursive")
+	(default-directory dir)
 	proc)
     (when clear-buffer
       (switch-to-buffer buff-name)
@@ -308,7 +310,6 @@
 		    (list "-exec" "grep" "-Hins" pattern "{}" ";"))))
     (set-process-sentinel proc
 			  `(lambda (proc change)
-			     (message "running sentinel")
 			     (switch-to-buffer ,buff-name)
 			     (save-excursion
 			       (goto-char (point-min))
