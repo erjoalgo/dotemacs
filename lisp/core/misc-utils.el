@@ -294,3 +294,20 @@
 (defun erc-autologin ()
   (interactive)
   (erc))
+
+(defun kill-buffers-regex (regex)
+  (interactive "senter regex to kill buffers: ")
+       (let* ((regex (format ".*%s.*" regex))
+	      (buffers (remove-if-not
+			(lambda (buff) (string-match regex (buffer-name buff)))
+			(buffer-list)))
+	      (kill-func
+	       (lambda (buff)
+		 (let* ((proc (get-buffer-process buff)))
+		   (when proc
+		     (message "killing %s" (process-name proc))
+		     (interrupt-process proc)
+		     (kill-process proc)))
+		 (message "killing buffer: %s " (buffer-name buff))
+		 (kill-buffer buff))))
+	 (mapc kill-func buffers)))
