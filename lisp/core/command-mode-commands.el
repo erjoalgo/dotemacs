@@ -222,14 +222,14 @@
 			 when is-curr do (setf seen-self t)
 			 when (and matches (not first-match)) do
 			 (setf first-match i)
-			 thereis (and seen-seln (not is-curr) matches i)
+			 thereis (and seen-self (not is-curr) matches i)
 			 finally return first-match))
 		  (if ,index-sym
 		      (-> (nth-mod ,index-sym (buffer-list))
 			  switch-to-buffer)
 		    (,empty-bufflist-sym))))))))
 
-(defcommand-cycle-buffer my-cycle-buffer (lambda (buff)
+(defcommand-cycle-buffer cycle-buffer (lambda (buff)
 					   (-> buff buffer-name
 					       (member cycle-buffer-exclude)
 					       not)))
