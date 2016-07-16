@@ -186,6 +186,7 @@
 	       (recursive-edit))))
 
 (defun walk-dir-tree (top fun)
+  (lexical-let ((fun fun))
   (loop with front = (list top)
 	with new-front = nil
 	while front do
@@ -201,7 +202,7 @@
 			    (unless (string-match "^#[.]" base)
 			      (funcall fun fn)))))
 	do (setf front new-front
-		 new-front nil)))
+		 new-front nil))))
 
 
 
