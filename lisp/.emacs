@@ -15,27 +15,7 @@
       (funcall hook)))))
 
 
-(when (>= emacs-major-version 24)
-  (require 'package)
-  (package-initialize)
-  (defun ensure-packages-exist (packages)
-    (let (refreshed-p)
-      (dolist (package packages)
-	(when
-	    (and (not (package-installed-p package))
-		 (loop for i below 2 always
-		       (y-or-n-p (format "connect to the internet to install %s? (%d)"
-					 package i))))
-	  (condition-case ex
-	      (progn (or refreshed-p (progn
-				       (package-refresh-contents)
-				       (setf refreshed-p t)))
-		     (package-install package))
-	    ('error
-	     (warn "WARNING: unable to install %s:\n %s" package ex)))))))
 
-  (ensure-packages-exist
-   '(company legalese magit)))
 
 (defun safe-fun (fun-sym)
   `(lambda (&rest args)
@@ -64,6 +44,28 @@
 	  plusx
 	  dash
 	  ))
+
+(when (>= emacs-major-version 24)
+  (require 'package)
+  (package-initialize)
+  (defun ensure-packages-exist (packages)
+    (let (refreshed-p)
+      (dolist (package packages)
+	(when
+	    (and (not (package-installed-p package))
+		 (loop for i below 2 always
+		       (y-or-n-p (format "connect to the internet to install %s? (%d)"
+					 package i))))
+	  (condition-case ex
+	      (progn (or refreshed-p (progn
+				       (package-refresh-contents)
+				       (setf refreshed-p t)))
+		     (package-install package))
+	    ('error
+	     (warn "WARNING: unable to install %s:\n %s" package ex)))))))
+
+  (ensure-packages-exist
+   '(company legalese magit)))
 
 (loop with top = (f-join emacs-top "libs")
       for lib-dir in (directory-files top)
