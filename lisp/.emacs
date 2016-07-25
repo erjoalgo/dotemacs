@@ -62,6 +62,7 @@
 	  my-emacs-settings
 	  proxy-mode
 	  plusx
+	  dash
 	  ))
 
 (loop with top = (f-join emacs-top "libs")
