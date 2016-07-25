@@ -19,3 +19,12 @@
 if breakpoints are present in `python-mode' files"
   (when (derived-mode-p 'python-mode)
     (ad-set-arg 1 t)))
+
+(defun my-python-indentation ()
+  ;;taken from the internet
+  (setq tab-width 4
+      python-indent-offset 8
+      indent-tabs-mode t
+      py-smart-indentation nil))
+
+(add-hook 'python-mode-hook 'my-python-indentation)
