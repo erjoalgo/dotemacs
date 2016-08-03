@@ -37,8 +37,6 @@
 	  erjoalgo-command-mode
 	  zoom-global
 	  isearch-fast-reverse
-	  company
-	  legalese
 	  my-emacs-settings
 	  proxy-mode
 	  plusx
@@ -65,7 +63,9 @@
 	     (warn "WARNING: unable to install %s:\n %s" package ex)))))))
 
   (ensure-packages-exist
-   '(company legalese magit)))
+   '(company legalese magit))
+
+  (funcall (safe-fun 'require) 'company))
 
 (loop with top = (f-join emacs-top "libs")
       for lib-dir in (directory-files top)
