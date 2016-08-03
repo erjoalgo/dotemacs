@@ -15,8 +15,6 @@
       (funcall hook)))))
 
 
-
-
 (defun safe-fun (fun-sym)
   `(lambda (&rest args)
      (condition-case ex (apply ',fun-sym args)
