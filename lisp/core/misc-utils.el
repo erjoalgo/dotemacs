@@ -284,9 +284,12 @@
     syms))
 
 (defun remove-trailing-whitespace (a b)
-  (interactive "r")
-  (unless (region-active-p) (setf a (point-min)
-				  b (point-max)))
+  (interactive
+   (if (region-active-p)
+       (let ((a (min (mark) (point)))
+	     (b (max (mark) (point))))
+	 (list a b))
+	 (list (point-min) (point-max))))
   (save-excursion
     (goto-char a)
     (while (search-forward-regexp "[ \t]+$" b t)
