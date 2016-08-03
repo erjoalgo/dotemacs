@@ -109,7 +109,7 @@
 (add-hook-to-modes (lambda () (setf show-trailing-whitespace nil))
 		   '(html-mode cider-repl-mode slime-repl-mode
 			       messages-buffer-mode eshell-mode compilation-mode
-			       comint-mode ielm-mode))
+			       comint-mode ielm-mode term-mode))
 
 (defun highlight-long-lines ()
   (highlight-lines-matching-regexp ".\\{81\\}" 'hi-yellow))
