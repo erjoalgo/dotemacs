@@ -39,6 +39,7 @@
 	  proxy-mode
 	  plusx
 	  dash
+	  dash-functional
 	  ))
 
 (when (>= emacs-major-version 24)
@@ -61,7 +62,7 @@
 	     (warn "WARNING: unable to install %s:\n %s" package ex)))))))
 
   (ensure-packages-exist
-   '(company legalese magit))
+   '(company legalese magit dash))
 
   (funcall (safe-fun 'require) 'company))
 
