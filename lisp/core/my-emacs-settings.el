@@ -103,14 +103,6 @@
 (setf find-function-C-source-directory
       (expand-file-name "~/programs/source/emacs/emacs24-24.4+1/src/"))
 
-(setq-default show-trailing-whitespace t)
-
-;disable whitespace mode in certain modes
-(add-hook-to-modes (lambda () (setf show-trailing-whitespace nil))
-		   '(html-mode cider-repl-mode slime-repl-mode
-			       messages-buffer-mode eshell-mode compilation-mode
-			       comint-mode ielm-mode term-mode))
-
 (defun highlight-long-lines ()
   (highlight-lines-matching-regexp ".\\{81\\}" 'hi-yellow))
 
@@ -121,8 +113,10 @@
   (interactive)
   (highlight-lines-matching-regexp ".\\{81\\}" 'hi-yellow))
 
-(add-hook-to-modes 'highlight-long-lines
-		   '(emacs-lisp-mode clojure-mode go-mode java-mode js-mode))
+(setf source-modes
+      '(emacs-lisp-mode clojure-mode go-mode java-mode js-mode))
+(add-hook-to-modes 'highlight-long-lines source-modes)
+(add-hook-to-modes (lambda () (setf show-trailing-whitespace t)) source-modes)
 
 
 (provide 'my-emacs-settings)
