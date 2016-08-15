@@ -365,5 +365,12 @@
 	(message "%s" (process-command proc))
       (message "buffer has no process"))))
 
+(defun flush-repeatedly ()
+  (interactive)
+  (goto-char (point-min))
+  (let (regexp)
+    (while (progn (setf regexp (read-string "flush lines: "))
+		  (-> regexp length zerop not))
+      (flush-lines regexp))))
 (provide 'command-mode-commands)
 ;;; command-mode-commands.el ends here
