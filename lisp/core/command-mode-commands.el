@@ -239,16 +239,6 @@
   (let* ((async-shell-command-buffer 'new-buffer))
     (apply 'async-shell-command args)))
 
-(defun grep-search-default ()
-  (interactive)
-  ;;(edebug);
-  (let* ((sym (sexp-at-point))
-	 ;(default (if (and sym (symbolp sym)) (symbol-name sym) nil)))
-	 (default (if (and sym) (prin1-to-string sym) nil)))
-    (async-shell-command-no-prompt
-     (read-shell-command "Enter grep search: "
-			 (concat "grep -Risn " default) ))))
-
 (defun my-eval-defun (arg)
   (interactive "P")
   (cond
