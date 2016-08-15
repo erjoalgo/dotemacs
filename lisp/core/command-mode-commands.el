@@ -337,7 +337,7 @@
 		    `("find" ,dir "-name" ".git" "-prune" "-o")
 		    (when extension
 		      (list "-name" (concat "*" extension)))
-		    (list "-exec" "grep" "-Hins" pattern "{}" ";"))))
+		    (list "-exec" "grep" "-HinsI" pattern "{}" ";"))))
     (set-process-sentinel proc
 			  `(lambda (proc change)
 			     (switch-to-buffer ,buff-name)
