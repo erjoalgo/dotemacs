@@ -300,7 +300,6 @@
   ("v" revert-buffer-no-confirm)
   ("n" find-new-buffer)
   ("D" (lambda () (interactive)(call-interactively 'pdb)))
-  ;("g" grep-search-default)
   ("g" grep-recursive)
   ("f" find-iregex)
   ("u" universal-argument)
