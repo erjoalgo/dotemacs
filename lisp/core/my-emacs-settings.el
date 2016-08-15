@@ -118,6 +118,8 @@
 (add-hook-to-modes 'highlight-long-lines source-modes)
 (add-hook-to-modes (lambda () (setf show-trailing-whitespace t)) source-modes)
 
+;;auto tail file
+(add-to-list 'auto-mode-alist '("\\.log\\'" . auto-revert-mode))
 
 (provide 'my-emacs-settings)
 ;;; emacs-settings.el ends here
