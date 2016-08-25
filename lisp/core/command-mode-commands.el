@@ -374,5 +374,24 @@
     (while (progn (setf regexp (read-string "flush lines: "))
 		  (-> regexp length zerop not))
       (flush-lines regexp))))
+
+(defun cycle-buffer (arg) (interactive "P")
+       (let ((buf-list (remove-if (lambda (buf)
+                                   (-> (buffer-name buf)
+                                       (member cycle-buffer-exclude)))
+                                 (buffer-list)))
+            (nth-mod (lambda (n list) (nth (mod n (length list)) list)))
+            (direction (if arg -1 1)))
+        (if (member last-command '(cycle-buffer 'cycle-prev-buffer))
+            (progn
+              (incf cycle-buffer-index direction)
+              (switch-to-buffer (funcall nth-mod cycle-buffer-index buf-list)))
+          (progn
+            (setq cycle-buffer-index
+                  (loop for i from 0
+                         for buff in (buffer-list)
+                        thereis (and (eq (current-buffer) buff) i)))
+            (switch-to-buffer nil)))))
+
 (provide 'command-mode-commands)
 ;;; command-mode-commands.el ends here
