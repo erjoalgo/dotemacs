@@ -332,6 +332,8 @@
 			  `(lambda (proc change)
 			     (switch-to-buffer ,buff-name)
 			     (save-excursion
+			       (progn (goto-char (point-max))
+				      (insert "DONE"))
 			       (goto-char (point-min))
 			       (while (re-search-forward
 				       ,(concat "^" (regexp-quote dir))
