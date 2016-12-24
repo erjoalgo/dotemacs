@@ -56,3 +56,4 @@
       (indent-according-to-mode))))
 
 (global-set-key (kbd "<s-tab>") 'my-indent)
+(define-key global-map (kbd "<backtab>") 'my-indent)
