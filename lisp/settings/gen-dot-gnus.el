@@ -1,7 +1,6 @@
 ;;link to this file from ~/.gnus
 
 (defun gnus-imap-smtp-form (email smtp-server-port imap-server-port)
-
   (destructuring-bind ((smtp-server . smtp-port) . (imap-server . imap-port))
       (cons smtp-server-port imap-server-port)
     `(let ((email ,email)
@@ -35,15 +34,13 @@
 		(when (y-or-n-p "~/.gnus file exists. overwrite?")
 		  (funcall (if (fboundp 'shred-rec) 'shred-rec 'delete-file) dot-gnus)
 		  t))
-    (error "~/.gnus already exists"))
+      (error "~/.gnus already exists"))
     (write-region (pp form) nil dot-gnus)
     (message "wrote to %s" dot-gnus)))
-
 
 '(gnus-gen-dot-gnus "erjoalgo@gmail.com"
 		    :smtp '("smtp.gmail.com" . 587)
 		    :imap '("imap.gmail.com" . 993))
-
 
 
 
