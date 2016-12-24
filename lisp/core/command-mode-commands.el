@@ -336,7 +336,7 @@
 				      (insert "DONE"))
 			       (goto-char (point-min))
 			       (while (re-search-forward
-				       ,(concat "^" (regexp-quote dir))
+				       ,(concat "^" (regexp-quote dir) "/?")
 				       nil t)
 				 (replace-match "")))
 			     (beginning-of-buffer)))
