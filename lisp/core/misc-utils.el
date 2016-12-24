@@ -65,20 +65,28 @@
   (unless shred-times
     (setf shred-times *shred-rec-default-times*))
   (y-or-n-p (format "confirm shred %s: " fn))
-  (let ((shred-times-string (int-to-string shred-times)))
+  (let* ((shred-times-string (int-to-string shred-times))
+	 (shred-cmd-arg-list
+	  (if (executable-find "shred")
+	      `("shred" "-zufn" ,shred-times-string)
+	    `("srm" "-z")))
+	 (fn (expand-file-name fn))
+	 (BUFNAME "shred"))
 
   (if (file-directory-p fn)
       (and (y-or-n-p (format "confirm recursive shred of %s: " fn))
 	   (progn
-	     (start-process "rec-shred" "rec-shred" "find" fn "-type" "f"
-			  "-exec" "shred" "-zufn"
-			  shred-times-string "{}" ";")
-	     (start-process "rec-shred" "rec-shred" "find" fn "-depth" "-type" "d"
+	       (apply 'start-process
+		      `(BUFNAME BUFNAME "find" fn "-type" "f"
+			"-exec" ,@shred-cmd-arg-list "{}" ";"))
+	       (start-process BUFNAME BUFNAME "find" fn "-depth" "-type" "d"
 			  "-exec" "rmdir" "{}" ";")))
-    (start-process "shred" "shred" "shred" "-zufn"
-		 shred-times-string fn)))
+      (unless (zerop (apply 'call-process (car shred-cmd-arg-list) nil BUFNAME t
+			    (append (cdr shred-cmd-arg-list) (list fn))))
+	(switch-to-buffer BUFNAME)
+	(error "error in shred")))
   (when (eq major-mode 'dired-mode)
-    (call-interactively 'revert-buffer)))
+      (call-interactively 'revert-buffer))))
 
 
 
