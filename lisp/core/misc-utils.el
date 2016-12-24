@@ -53,6 +53,7 @@
       (shell-command command))))
 
 (defvar *shred-rec-default-times* 10)
+
 (defun shred-rec (fn &optional shred-times)
   ;;(interactive "fEnter soft link source: ")
   (interactive (list
@@ -73,23 +74,20 @@
 	 (fn (expand-file-name fn))
 	 (BUFNAME "shred"))
 
-  (if (file-directory-p fn)
-      (and (y-or-n-p (format "confirm recursive shred of %s: " fn))
-	   (progn
+    (if (file-directory-p fn)
+	(and (y-or-n-p (format "confirm recursive shred of %s: " fn))
+	     (progn
 	       (apply 'start-process
 		      `(BUFNAME BUFNAME "find" fn "-type" "f"
-			"-exec" ,@shred-cmd-arg-list "{}" ";"))
+				"-exec" ,@shred-cmd-arg-list "{}" ";"))
 	       (start-process BUFNAME BUFNAME "find" fn "-depth" "-type" "d"
-			  "-exec" "rmdir" "{}" ";")))
+			      "-exec" "rmdir" "{}" ";")))
       (unless (zerop (apply 'call-process (car shred-cmd-arg-list) nil BUFNAME t
 			    (append (cdr shred-cmd-arg-list) (list fn))))
 	(switch-to-buffer BUFNAME)
 	(error "error in shred")))
-  (when (eq major-mode 'dired-mode)
+    (when (eq major-mode 'dired-mode)
       (call-interactively 'revert-buffer))))
-
-
-
 
 (cl-defun sort-key (list key &key descending (pred '<))
   (let* ((sorted-tuples (sort (mapcar (lambda (el)
@@ -100,9 +98,6 @@
 	(sorted (mapcar 'car sorted-tuples)))
     (if descending (reverse sorted)
       sorted)))
-
-
-
 
 (defun directory-files-sort-by-ctime-descending (dir)
   (let ((files (directory-files dir)))
@@ -149,6 +144,7 @@
 	       (recursive-edit))
 	finally (message "done checking buffers"))
   t)
+
 (add-hook 'kill-emacs-query-functions 'check-unsaved-buffers)
 
 (defun diff-sexps (sexp-a sexp-b)
@@ -211,8 +207,6 @@
 			      (funcall fun fn)))))
 	do (setf front new-front
 		 new-front nil))))
-
-
 
 (defun completing-read-single-char (prompt candidates)
   (let* ((alist (mapcar (lambda (cand)  (cons (substring cand 0 1) cand))
@@ -278,7 +272,6 @@
   (save-excursion
     (goto-char (point-min))
     (re-search-forward regexp nil t)))
-
 
 (defun keymap-symbol (keymaps)
   "Return the symbol to which KEYMAP is ound, or nil if no such symbol exists."
