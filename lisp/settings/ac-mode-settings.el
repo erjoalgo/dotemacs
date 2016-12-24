@@ -15,9 +15,3 @@
   (define-key ac-completing-map [M-f1] nil))
 
 (defalias 'acmode 'auto-complete-mode)
-
-;;ac mode slows down netbook too much
-'(unless (member system-name '("debian-mini"))
-  (require 'auto-complete)
-  (require 'auto-complete-config)
-  (ac-config-default))
