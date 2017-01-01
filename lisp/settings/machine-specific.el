@@ -2,7 +2,7 @@
   (when cases
     `(if (equal ,expr-form ,(caar cases))
 	 (progn ,@(cdar cases))
-       (case-eq ,expr-form ,@(cdr cases)))))
+       (case-equal ,expr-form ,@(cdr cases)))))
 
 (case-equal
   system-name
