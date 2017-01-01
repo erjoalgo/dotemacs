@@ -19,5 +19,5 @@
 	(add-hook 'before-save-hook #'gofmt-before-save)))))
 
 ;(add-to-list 'auto-mode-alist '("[.]go$" . go-mode))
-;;(autoload 'go-mode "go-mode" "go mode" t)
-(require 'go-mode-autoloads)
+;(autoload 'go-mode "go-mode" "go mode" t)
+;(require 'go-mode-autoloads)
