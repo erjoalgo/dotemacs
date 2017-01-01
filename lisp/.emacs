@@ -62,7 +62,7 @@
 	     (warn "WARNING: unable to install %s:\n %s" package ex)))))))
 
   (ensure-packages-exist
-   '(company legalese magit dash))
+   '(company legalese magit dash dash-functional))
 
   (funcall (safe-fun 'require) 'company))
 
