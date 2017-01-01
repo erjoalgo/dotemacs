@@ -83,6 +83,7 @@
 		      ("f" 'gnus-summary-mail-forward))
 
   (gnus-load-bindings gnus-summary-mode-map
+   ("R" 'gnus-summary-wide-reply-with-original)
    ("r" 'gnus-summary-reply-with-original)
     ((kbd "s-g") 'gmail-search-query)
     ((kbd "s-t") 'gnus-goto-sent-emails)
