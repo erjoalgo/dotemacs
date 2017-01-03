@@ -62,7 +62,9 @@
 	     (warn "WARNING: unable to install %s:\n %s" package ex)))))))
 
   (ensure-packages-exist
-   '(company legalese magit dash dash-functional go-mode calfw calfw-gcal))
+   '(company legalese magit dash dash-functional
+	     go-mode calfw calfw-gcal
+	     slime))
 
   (funcall (safe-fun 'require) 'company))
 
