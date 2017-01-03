@@ -93,7 +93,8 @@
 
 (with-eval-after-load "gnus-art"
   (gnus-load-bindings gnus-article-mode-map
-		      ("F" 'gnus-summary-mail-forward)))
+		      ("F" 'gnus-summary-mail-forward)
+		      ("R" 'gnus-article-wide-reply-with-original)))
 
 
 
