@@ -1,11 +1,10 @@
-(require 'f)
-(add-to-list 'load-path
-	     ;(f-join emacs-top "libs" "slime-2.14")
-	      (f-join emacs-top "libs-dir" "slime-2.17")
-	      ;;stumpwm's swank only works with 2.14...TODO
-	     )
-(setq inferior-lisp-program "/usr/bin/sbcl")
+;works after (ql:quickload "quicklisp-slime-helper")
+(load (expand-file-name "~/quicklisp/slime-helper.el"))
+(setq inferior-lisp-program "sbcl")
+
 (setq slime-contribs '(slime-fancy))
+(require 'slime-autoloads)
+(add-hook 'lisp-mode-hook 'slime-mode)
 
 (defun find-buffer-by-starts-with (prefix)
   (loop for buff in (buffer-list)
@@ -48,8 +47,6 @@
     (slime-repl-set-package "STUMPWM")))
 
   
-(require 'slime-autoloads)
-(add-hook 'lisp-mode-hook 'slime-mode)
 
 (with-eval-after-load "slime-repl"
   (define-key slime-repl-mode-map (kbd "M-{") 'slime-repl-previous-prompt)
