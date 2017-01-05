@@ -46,18 +46,18 @@
 	   (second (process-contact slime-buffer-connection))))
     (slime-repl-set-package "STUMPWM")))
 
-  
+
 
 (with-eval-after-load "slime-repl"
   (define-key slime-repl-mode-map (kbd "M-{") 'slime-repl-previous-prompt)
   (define-key slime-repl-mode-map (kbd "M-}") 'slime-repl-next-prompt)
-  
+
   (define-key slime-repl-mode-map (kbd "M-p") (lambda () (interactive)
 						(slime-repl-history-replace 'backward nil)))
 
   (define-key slime-repl-mode-map (kbd "M-n") (lambda () (interactive)
 						(slime-repl-history-replace 'forward nil)))
-  
+
   )
 ;;the point of this was to switch back to command mode
 ;;after entering sldb choice
