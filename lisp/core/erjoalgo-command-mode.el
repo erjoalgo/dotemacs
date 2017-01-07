@@ -140,7 +140,7 @@
 
   ;; incrementally kill backward-sexp. incrementally displays what is being killed
   ("W" kill-surrounding-sexp)
-  
+
   ("M-w" kill-region);;originally C-w
 
 
