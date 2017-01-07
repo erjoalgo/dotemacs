@@ -74,7 +74,7 @@
   (progn
     (defun tetris-get-leftmost-x () tetris-pos-x)
     (defun tetris-shape-rotations ()	4)))
-  
+
 
 
 
@@ -89,11 +89,11 @@
 	       ((t str)))))
     (string-to-char chr)))
 
-  
+
 (defadvice tetris (after tetris-o-1-bindings activate)
 ;not necessary to use advice. will use tetris-mode-hook
 ;(defun tetris-o-1-bindings ()
-  
+
   (loop for key in tetris-o-1-horizontal-keys
 	for i from 0 do
 	(define-key tetris-mode-map key (tetris-move-x-factory i)))
@@ -101,8 +101,8 @@
   (loop for key in tetris-o-1-rotation-keys
 	for i from 0 do
 	(define-key tetris-mode-map key (tetris-rot-x-factory i)))
-  
-  
+
+
   (when tetris-o-1-enable-hints
     (let
 	((hor-chars
@@ -124,7 +124,7 @@
 					(aref str (floor (/ i 2)))
 				      32))
 			   finally (return new-str))))
-      
+
       (loop for keystring across (join-space hor-chars)
 	    for i from 0 do
 	    (gamegrid-set-cell
@@ -138,7 +138,7 @@
 	;;(lambda (a b) (/ 20.0 50.0)))
 	(lambda (a b) (/ 20.0 20.0)))
   (message "speedup disabled"))
-  
+
 ;(add-hook 'tetris-mode-hook 'tetris-o-1-bindings)
 (provide 'tetris-o-1)
 ;;; tetris-o-1.el ends here
