@@ -26,6 +26,7 @@
       (slime))))
 
 (defvar *stumpwm-swank-port* 4005)
+
 (defun slime-stumpwm ()
   (interactive)
   (require 'slime)
@@ -33,20 +34,18 @@
 	 (find-buffer-by-starts-with "*slime-repl sbcl")))
     (if slime-stumpwm-buffer
 	(switch-to-buffer slime-stumpwm-buffer)
-      (progn
-	'(add-hook 'slime-connected-hook
-		   'slime-stumpwm-connection-hook)
+
+      ;;doesn't work since slime-connect does async stuff
+      ;;dynamic binding won't reach slime-stumpwm-connection-hook
+      (let ((slime-stumpwm-connection-p t))
+	(add-hook 'slime-editing-mode-hook
+		  'slime-stumpwm-connection-hook)
 	(slime-connect "localhost" *stumpwm-swank-port*)))))
 
 (defun slime-stumpwm-connection-hook ()
-  '(slime-interactive-eval
-    "(swank:set-package \"STUMPWM\")")
-  (when (and slime-buffer-connection
-	     (= *stumpwm-swank-port*
-	   (second (process-contact slime-buffer-connection))))
-    (slime-repl-set-package "STUMPWM")))
-
-
+  (slime-repl-set-package "STUMPWM")
+  (remove-hook 'slime-editing-mode-hook
+	       'slime-stumpwm-connection-hook))
 
 (with-eval-after-load "slime-repl"
   (define-key slime-repl-mode-map (kbd "M-{") 'slime-repl-previous-prompt)
