@@ -138,7 +138,8 @@
 		    (progn (forward-sexp n) (point)))))
       (message "killed: %s" killed)
       (kill-new killed)
-      (set-clipboard killed))))
+      (when window-system
+	(set-clipboard killed)))))
 
 (defun set-clipboard (x)
   (x-set-selection 'CLIPBOARD x)
