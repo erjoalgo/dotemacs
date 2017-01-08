@@ -190,6 +190,20 @@
 	       (recursive-edit))))
 
 (defun walk-dir-tree (top fun)
+  (interactive
+   "Denter top directory:
+Center command to run on each file: ")
+  (when (commandp fun)
+    (setf fun `(lambda (fn)
+		 (unless (auto-save-file-name-p (f-filename fn))
+		   (let ((was-open (find-buffer-visiting fn))
+			 (buffer (find-file-noselect fn))
+			 was-modified)
+		     (set-buffer buffer)
+		     (setf was-modified (buffer-modified-p buffer))
+		     (call-interactively ',fun)
+		     (unless was-modified (save-buffer))
+		     (unless was-open (kill-buffer buffer)))))))
   (lexical-let ((fun fun))
   (loop with front = (list top)
 	with new-front = nil
