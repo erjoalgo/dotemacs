@@ -20,7 +20,7 @@
     (if (not program)
 	(error (concat "no program known for file: " fn))
       (start-process program nil program fn))))
-  
+
 (with-eval-after-load "dired"
   (define-key dired-mode-map "q" 'dired-up-directory)
   (define-key dired-mode-map (kbd "s-f") 'open-file)
@@ -37,7 +37,7 @@
   ;;TODO
   (define-key dired-mode-map (kbd "s-c")
     (lambda () (interactive) (set-clipboard (dired-file-name-at-point))))
-  
+
   (define-key dired-mode-map (kbd "s-f")
     (lambda () (interactive) (open-file (dired-file-name-at-point)))))
 

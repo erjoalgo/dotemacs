@@ -2,7 +2,7 @@
   (setf ac-number-candidates-p t)
   (setf ac-complete-select-nth-kdb-fun
 	(lambda (i) (kbd (format "s-%d" i))))
-  
+
   ;;(setf ac-delay .005)
   (setf ac-delay 0)
   (setf ac-auto-show-menu 0)

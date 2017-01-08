@@ -191,7 +191,7 @@ commented out using comment-region."
 prefix-argument ASK, ask for a license to use."
   (interactive "P")
   (let ((legalese-year (format-time-string "%Y"))
-        (legalese-copyright (or legalese-default-copyright 
+        (legalese-copyright (or legalese-default-copyright
                                 (concat user-full-name
                                         " <" user-mail-address ">")))
         (legalese-author (or legalese-default-author
