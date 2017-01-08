@@ -296,7 +296,6 @@ Center command to run on each file: ")
 
 (defun keymap-symbol (keymaps)
   "Return the symbol to which KEYMAP is ound, or nil if no such symbol exists."
-  (unless (consp keymaps) (setf keymaps (list keymaps)))
   (let (syms)
     (mapatoms (lambda (sym)
                 (and (not (eq sym 'keymap))
