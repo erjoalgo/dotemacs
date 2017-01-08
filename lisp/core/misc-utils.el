@@ -217,7 +217,7 @@ Center command to run on each file: ")
 		       do (if (f-dir? fn)
 			      (unless (member base '(".." "."))
 				(push fn new-front))
-			    (unless (string-match "^#[.]" base)
+			    (unless (auto-save-file-name-p base)
 			      (funcall fun fn)))))
 	do (setf front new-front
 		 new-front nil))))
