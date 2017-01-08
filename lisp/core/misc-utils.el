@@ -175,6 +175,13 @@
     (message "%s" kmap-to-key-alist)
     kmap-to-key-alist))
 
+(defun current-active-maps-symbols ()
+  (interactive)
+  (let ((symbols (keymap-symbol (current-active-maps))))
+    (when (called-interactively-p 'any)
+      (message "%s" symbols))
+    symbols))
+
 (defun clean-up-async-shell-command-buffers ()
   (interactive)
   (loop with async-buffs = (remove-if-not
