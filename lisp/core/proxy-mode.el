@@ -35,7 +35,13 @@
 	(envs '("http_proxy" "http_proxy" "HTTP_PROXY" "HTTPS_PROXY")))
     (message "value is: '%s'" value)
     (dolist (env envs)
-      (setenv env value))))
+      (setenv env value))
+    (let ((value
+	   (gnus-replace-in-string value "https?://" "")))
+      (setq url-proxy-services
+	    `(("no_proxy" . "^\\(localhost\\|10.*\\)")
+	      ("http" . ,value)
+	      ("https" . ,value))))))
 
 (defun proxy-toggle ()
   (interactive)
