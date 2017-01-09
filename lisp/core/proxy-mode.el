@@ -1,4 +1,4 @@
-;;; proxy-mode.el --- 
+;;; proxy-mode.el ---
 
 ;; Copyright (C) 2016  Ernesto Alfonso <erjoalgo@gmail.com>
 
@@ -43,7 +43,7 @@
 
 (defalias 'sp 'proxy-toggle)
 (defcustom proxy-mode-proxy "" "proxy for proxy mode")
-    
+
 
 (provide 'proxy-mode)
 ;;; proxy-mode.el ends here
