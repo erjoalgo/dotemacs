@@ -28,8 +28,8 @@
 	    (symbol-value group)
 	    (push (symbol-name group) groups)))
      gnus-active-hashtb)
-    ;(gnus-group-read-group nil t "nnfolder+archive:sent.2015-01" nil )
-					;(gnus-group-read-group nil t sent-group-name nil )
+    ;;(gnus-group-read-group nil t "nnfolder+archive:sent.2015-01" nil )
+    ;;(gnus-group-read-group nil t sent-group-name nil )
     (mapc (lambda (g)
 	    (gnus-group-read-group nil t g nil ))
 	  groups)
@@ -37,8 +37,8 @@
 
 (defun gnus-quit ()
   (interactive)
-  ;(gnus-summary-quit t)
-  ;(gnus-group-quit)
+  ;;(gnus-summary-quit t)
+  ;;(gnus-group-quit)
   (gnus-group-exit)
   (gnus-goto-inbox))
 
@@ -56,24 +56,22 @@
 
 (defmacro gnus-load-bindings (kmap &rest bindings)
   `(progn ,@(loop for (key cmd) in bindings collect
-	 `(define-key ,kmap ,key ,cmd))))
+		  `(define-key ,kmap ,key ,cmd))))
 
 (with-eval-after-load "message"
   (gnus-load-bindings
    message-mode-map
-  ((kbd "\C-ci") 'gmail-contacts-insert-contact)
-  ("" nil)
-  ("" nil)
-  ("a" nil )
-  ("M" nil)
-  ((kbd "s-a") 'gnus-attach-file-simple)
-  ((kbd "M-c") 'message-send-and-exit))
-  '(add-hook 'message-mode-hook
-			(lambda ()
-			  (erjoalgo-indent-mode 1)
-			  (indent-mode-set-string ">"))))
-
-
+   ((kbd "\C-ci") 'gmail-contacts-insert-contact)
+   ("" nil)
+   ("" nil)
+   ("a" nil )
+   ("M" nil)
+   ((kbd "s-a") 'gnus-attach-file-simple)
+   ((kbd "M-c") 'message-send-and-exit))
+  (add-hook 'message-mode-hook
+	    (lambda ()
+	      (erjoalgo-indent-mode 1)
+	      (indent-mode-set-string ">"))))
 
 (with-eval-after-load "gnus-sum"
   (gnus-load-bindings gnus-my-goto-map
@@ -83,13 +81,13 @@
 		      ("f" 'gnus-summary-mail-forward))
 
   (gnus-load-bindings gnus-summary-mode-map
-   ("R" 'gnus-summary-wide-reply-with-original)
-   ("r" 'gnus-summary-reply-with-original)
-    ((kbd "s-g") 'gmail-search-query)
-    ((kbd "s-t") 'gnus-goto-sent-emails)
-    ((kbd "s-r")
-     'gnus-summary-insert-new-articles)
-    ("g" gnus-my-goto-map)))
+		      ("R" 'gnus-summary-wide-reply-with-original)
+		      ("r" 'gnus-summary-reply-with-original)
+		      ((kbd "s-g") 'gmail-search-query)
+		      ((kbd "s-t") 'gnus-goto-sent-emails)
+		      ((kbd "s-r")
+		       'gnus-summary-insert-new-articles)
+		      ("g" gnus-my-goto-map)))
 
 (with-eval-after-load "gnus-art"
   (gnus-load-bindings gnus-article-mode-map
@@ -120,7 +118,7 @@
 			     (cons 'nnir-group-spec group-spec))))))
 
 (defun gnus-mime-save-all-attachmnets (dir)
-  ;(interactive "GEnter destination directory to save attachments: " )
+  ;;(interactive "GEnter destination directory to save attachments: " )
   (interactive (list (read-directory-name "Enter destination directory to save attachments: " gnus-attachments-default ) ))
   (unless (file-exists-p dir)
     (or (y-or-n-p (format "making directory %s" dir) ) (error "failed to confirm "))
@@ -164,8 +162,8 @@
   (let ((gnus-fn (expand-file-name "~/.gnus"))
 	(authinfo-fn (expand-file-name "~/.authinfo"))
 	(truename-exists-p (lambda (fn)
-			   (and (file-exists-p fn)
-				(file-exists-p (file-truename fn)))))
+			     (and (file-exists-p fn)
+				  (file-exists-p (file-truename fn)))))
 	(maybe-unlink (lambda (fn)
 			(and (file-symlink-p fn)
 			     (shell-command-to-string-message
@@ -180,19 +178,19 @@
 
     (unless (funcall truename-exists-p authinfo-fn)
       (funcall maybe-unlink authinfo-fn)
-    (when (boundp 'firefox-new-tab)
-      (firefox-new-tab gmail-app-specific-url))
+      (when (boundp 'firefox-new-tab)
+	(firefox-new-tab gmail-app-specific-url))
 
-    (let ((pass (read-string
-		 (format "enter gmail app-specific pass (%s): "
-			 gmail-app-specific-url)))
-	  (email "erjoalgo@gmail.com"))
-      (append-to-file
-       (format
-	"machine imap.gmail.com login %s password %s port 993
+      (let ((pass (read-string
+		   (format "enter gmail app-specific pass (%s): "
+			   gmail-app-specific-url)))
+	    (email "erjoalgo@gmail.com"))
+	(append-to-file
+	 (format
+	  "machine imap.gmail.com login %s password %s port 993
 machine smtp.gmail.com login %s password %s port 587"
-	email pass
-	email pass) nil
-	authinfo-fn)))))
+	  email pass
+	  email pass) nil
+	  authinfo-fn)))))
 
 '(require erjoalgo-indent-mode)
