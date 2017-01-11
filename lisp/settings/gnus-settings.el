@@ -73,6 +73,17 @@
 	      (erjoalgo-indent-mode 1)
 	      (indent-mode-set-string ">"))))
 
+(defun setup-gnus-notifications ()
+  (require 'gnus-desktop-notify)
+  (setq gnus-desktop-notify-function 'gnus-desktop-notify-exec
+					;gnus-desktop-notify-exec-program )
+	gnus-desktop-notify-exec-program
+	(case system-type
+	  ((gnu/linux) "notify-send")
+	  ((darwin) "growlnotify -a Emacs.app -m"))
+	(gnus-desktop-notify-mode)
+	(gnus-demon-add-scanmail)))
+
 (with-eval-after-load "gnus-sum"
   (gnus-load-bindings gnus-my-goto-map
 		      ("g" 'gmail-search-query)
@@ -87,7 +98,8 @@
 		      ((kbd "s-t") 'gnus-goto-sent-emails)
 		      ((kbd "s-r")
 		       'gnus-summary-insert-new-articles)
-		      ("g" gnus-my-goto-map)))
+		      ("g" gnus-my-goto-map))
+    (setup-gnus-notifications))
 
 (with-eval-after-load "gnus-art"
   (gnus-load-bindings gnus-article-mode-map
