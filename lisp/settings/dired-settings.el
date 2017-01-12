@@ -5,7 +5,7 @@
    ("evince" "ps" "eps")
    ("eog" "png" "pgm" "tif" "jpg" "jpeg")
    ("aplay" "wav")
-   ("firefox" "html")
+   ("firefox-new-tab.sh" "html")
    ("vlc" "mp4" )))
 
 (defun get-file-program (fn)
