@@ -80,9 +80,10 @@
 	gnus-desktop-notify-exec-program
 	(case system-type
 	  ((gnu/linux) "notify-send")
-	  ((darwin) "growlnotify -a Emacs.app -m"))
-	(gnus-desktop-notify-mode)
-	(gnus-demon-add-scanmail)))
+	  ((darwin) "growlnotify -a Emacs.app -m")))
+  (gnus-desktop-notify-mode)
+  (gnus-demon-add-scanmail)
+  )
 
 (with-eval-after-load "gnus-sum"
   (gnus-load-bindings gnus-my-goto-map
