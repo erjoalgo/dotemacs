@@ -38,7 +38,7 @@
 (setq org-startup-folded nil)
 
 (defvar org-top-dir
-  (f-join emacs-top "org"))
+  (f-expand "~/git/org"))
 
 (defvar *org-todo-first-todo-line-number* 3)
 
