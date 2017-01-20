@@ -47,10 +47,12 @@
 		   nil initial t initial))))
   (let* ((source (expand-file-name source))
 	 (base (f-filename source))
-	 (destination (read-file-name "enter destination: " nil base nil nil nil ))
-	 (command (format "ln -sf %s %s" source (expand-file-name destination))))
+	 (dest (expand-file-name
+		(read-file-name "enter destination: " nil base nil nil nil )))
+	 (command (format "ln -sf %s %s" source dest)))
     (when (or (not prompt) (y-or-n-p command))
-      (shell-command command))))
+      (apply 'call-process "ln" nil "*lnabs*" nil
+	     `("-sf" ,source ,dest)))))
 
 (defvar *shred-rec-default-times* 10)
 
