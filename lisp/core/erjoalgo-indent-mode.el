@@ -13,14 +13,14 @@
 	erjoalgo-indent-mode-length (length str)
 	;;erjoalgo-indent-mode-looking-at (format "$\\|%s" (regexp-quote str))
 	erjoalgo-indent-mode-looking-at (regexp-quote str)))
-  
+
 (defun indent-mode-shift (up &optional line-a line-b)
   (interactive)
   (when (and (region-active-p) (not line-a) (not line-b))
     (setq line-a (line-number-at-pos (region-beginning))
 	  line-b (line-number-at-pos (region-end))))
-  
-  
+
+
   (if (and line-a line-b)
       (let* (
 	     (count (1+ (abs (- line-a line-b))))
@@ -38,7 +38,7 @@
 	      (funcall next-line-fun)
 	      )
 	)
-    
+
     (if up
 	(if (eq (line-beginning-position) (line-end-position))
 	    (insert erjoalgo-indent-mode-string)
@@ -47,7 +47,8 @@
 	    (insert erjoalgo-indent-mode-string)))
       ;;(when (looking-at (format "$\\|%s" (regexp-quote erjoalgo-indent-mode-char))) (delete-char 1))
       (save-excursion
-	(when (>= (- (line-end-position) (line-beginning-position)) (length erjoalgo-indent-mode-string))
+	(when (>= (- (line-end-position) (line-beginning-position))
+		  (length erjoalgo-indent-mode-string))
 	  ;;(when (looking-at "$")  (backward-char (length erjoalgo-indent-mode-string)))
 	  ;;(when (looking-at "$")  (backward-char (length erjoalgo-indent-mode-string)))
 	  (beginning-of-line)
@@ -61,25 +62,30 @@
   )
 
 (defun indent-mode-shift-up-from-blocks (start-tag end-tag same-line-rep)
-  (interactive "senter start tag:\nsenter end tag:\nenter same-line replacement")
+  (interactive "senter start tag:
+senter end tag:
+senter same-line replacement")
   (let* (
 	 (regexp (format "%s\\(\\(.\\|[\n]\\)*?\\)%s"
 			(regexp-quote start-tag) (regexp-quote end-tag)))
 	 )
-			
+
     (save-excursion
       (while (re-search-forward regexp nil t)
 	(let* (
 	       (a (line-number-at-pos (match-beginning 1)))
 	       (b (line-number-at-pos (match-end 1)))
 	       )
-	  
+
 	  (if (eq a b)
-	      (replace-match (format "%s%s%s" same-line-rep (match-string 1) same-line-rep) t t)
-	  
+	      (replace-match
+	       (format "%s%s%s" same-line-rep (match-string 1)
+		       same-line-rep)
+	       t t)
+
 	    (replace-match (match-string 1) t t)
 	    (indent-mode-shift t a b)
-	    
+
 	    ))
 	(y-or-n-p "")
 	)
@@ -145,9 +151,9 @@
     (goto-char a)
     (while t
       (let* (line-len indent-level line-prefix broken-lines)
-	
+
 	(setq line-len (- (line-end-position) (line-beginning-position)))
-	
+
 	(when (>= line-len fill-column)
 	  (setq indent-level (indent-mode-line-indent-level)
 		line-prefix (multiply-string erjoalgo-indent-mode-string indent-level)
@@ -157,7 +163,7 @@
 			      (buffer-substring-no-properties line-start line-end)
 			      fill-column
 			      "[^[:space:]]*[[:space:]]+")
-		
+
 		)
 	  (delete-region line-start line-end)
 	  (insert (car broken-lines) )
@@ -178,7 +184,7 @@
   "minor mode to indent up and down"
   nil "-INDENT" (make-sparse-keymap)
   ;;(indent-mode-set-string)
-  
+
   (if (and (boundp 'erjoalgo-indent-mode-string)
 	   erjoalgo-indent-mode-string)
       (indent-mode-set-string erjoalgo-indent-mode-string)
@@ -188,7 +194,7 @@
   (if (null erjoalgo-indent-mode)
       ad-do-it
     (erjoalgo-indent-mode-newline-and-indent)))
-      
+
 
 (make-variable-buffer-local 'erjoalgo-indent-mode-string)
 (set-default 'erjoalgo-indent-mode-string "\t")
@@ -200,29 +206,31 @@
 ;;(add-hook 'erjoalgo-indent-mode-hook 'erjoalgo-indent-mode-fix-newline-indent)
 
 
-  
+
 (defun indent-mode-line-level (&optional n)
   (let* ((start-line (line-number-at-pos (point))))
-    
+
     (save-excursion
       (if n (next-line n))
       (beginning-of-line)
       (loop for i from 0
-	    while (and 
+	    while (and
 		   (re-search-forward (regexp-quote erjoalgo-indent-mode-string) nil t)
 		   (eq (line-number-at-pos (point)) start-line))
 	    finally return i))
     )
-  
+
   )
 
 (defun indent-mode-line-contents (&optional n)
   (let* ((start-line (line-number-at-pos (point))))
-    
+
     (save-excursion
     (if n (next-line n))
     (beginning-of-line)
-    (re-search-forward (format "\\(%s\\)*" (regexp-quote erjoalgo-indent-mode-string)) nil t)
+    (re-search-forward
+     (format "\\(%s\\)*" (regexp-quote erjoalgo-indent-mode-string))
+     nil t)
     (buffer-substring-no-properties (point) (line-end-position)))
     )
   )
@@ -233,14 +241,14 @@
 	 (current-level (indent-mode-line-level))
 	 (current-contents (indent-mode-line-contents))
 	 )
-    
+
     (if (< 0 (length current-contents))
-	(progn 
+	(progn
 	  (message "curr level is %d " current-level)
 	  (newline)
 	  (loop for i from 0 below current-level
 		do (insert erjoalgo-indent-mode-string)))
-      (progn 
+      (progn
 	(delete-region (line-beginning-position ) (line-end-position))
 	(newline)
 	)
@@ -248,7 +256,7 @@
     )
   )
 
-  
+
 (defun debian-to-soverflow ()
   (interactive)
   (indent-mode-shift-up-from-blocks "[code]" "[/code]" "`"))
