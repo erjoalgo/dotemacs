@@ -61,7 +61,9 @@
 	for i below n do
 	(aset str i (aref bag (random bag-len)))
 	finally (progn (message str)
-		       (set-clipboard str)
+		       (if window-system
+			   (set-clipboard str)
+			 (kill-new str))
 		       (return str))))
 
 (provide 'genpass)
