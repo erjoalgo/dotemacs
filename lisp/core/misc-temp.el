@@ -9,6 +9,9 @@
 (add-hook 'go-mode-hook 'go_install_buttons)
 (add-hook 'c++-mode-hook 'cpp_install_buttons)
 (add-hook 'ess-mode-hook 'r_install_buttons)
+(add-hook 'python-mode-hook 'python_install_buttons)
+(add-hook 'c-mode-hook 'c_install_buttons)
+(add-hook 'java-mode-hook 'java_install_buttons)
 
 (add-hook 'lisp-mode-hook 'slime-mode)
 (elisp_install_buttons read-expression-map)
