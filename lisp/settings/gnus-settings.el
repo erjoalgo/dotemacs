@@ -31,7 +31,7 @@
     ;;(gnus-group-read-group nil t "nnfolder+archive:sent.2015-01" nil )
     ;;(gnus-group-read-group nil t sent-group-name nil )
     (mapc (lambda (g)
-	    (gnus-group-read-group nil t g nil ))
+	    (gnus-group-read-group t t g nil ))
 	  groups)
     (message "%s" groups)))
 
