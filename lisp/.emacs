@@ -80,5 +80,6 @@
       (loop when (file-exists-p top)
 	    for fn in (directory-files top)
 	    as fn = (f-join top fn)
-	    if (file-regular-p fn) do
+	    if (and (file-regular-p fn)
+		    (equal "el" (f-ext fn))) do
 	    (funcall safe-load fn)))
