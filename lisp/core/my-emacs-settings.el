@@ -122,5 +122,6 @@
 ;;auto tail file
 (add-to-list 'auto-mode-alist '("\\.log\\'" . auto-revert-mode))
 
+(put 'upcase-region 'disabled nil)
 (provide 'my-emacs-settings)
 ;;; emacs-settings.el ends here
