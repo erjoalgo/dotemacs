@@ -65,3 +65,4 @@
 
 (add-hook 'sldb-hook 'visual-line-mode)
 (add-hook 'sldb-hook 'beginning-of-buffer)
+(define-key slime-repl-mode-map (kbd "s-h") slime-doc-map)
