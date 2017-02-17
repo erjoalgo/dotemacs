@@ -12,6 +12,7 @@
 (add-hook 'python-mode-hook 'python_install_buttons)
 (add-hook 'c-mode-hook 'c_install_buttons)
 (add-hook 'java-mode-hook 'java_install_buttons)
+(add-hook 'clojure-mode-hook 'cj_install_buttons)
 
 (add-hook 'lisp-mode-hook 'slime-mode)
 (elisp_install_buttons read-expression-map)
