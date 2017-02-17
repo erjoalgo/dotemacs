@@ -114,7 +114,8 @@
   (highlight-lines-matching-regexp ".\\{81\\}" 'hi-yellow))
 
 (setf source-modes
-      '(emacs-lisp-mode clojure-mode go-mode java-mode js-mode c-mode))
+      '(emacs-lisp-mode clojure-mode go-mode java-mode js-mode c-mode
+			lisp-mode))
 (add-hook-to-modes 'highlight-long-lines source-modes)
 (add-hook-to-modes (lambda () (setf show-trailing-whitespace t)) source-modes)
 
