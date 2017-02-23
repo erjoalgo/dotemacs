@@ -270,10 +270,10 @@
   `(lambda () (interactive)
      (let ((existing (loop for buff in (buffer-list) thereis
 			   (and ,(if regex `(string-match string (buffer-name buff))
-				   `(string= string (buffer-name buff)))
+				   `(string= ,string (buffer-name buff)))
 				buff))))
        (if existing (switch-to-buffer existing)
-	 (call-interactively ',command)))))
+	 (call-interactively ,command)))))
 
 (define-key-tuples-macro
   open-interpreter-map
@@ -327,8 +327,7 @@
   ;("P" (lambda () (interactive)(message "point is %d" (point))))
   ;; ("b" matlab-shell)
   ;; ("B"  run-octave)
-  ("b" run-or-switch-to-matlab-or-octave)
-  ("B" run-or-switch-to-matlab-or-octave)
+  ("b" ,(run-or-switch-cmd "*Inferior Octave*" 'inferior-octave))
   ("3" (run-or-switch-cmd "*eww*")))
 
 
