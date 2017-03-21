@@ -63,7 +63,7 @@
 
   (ensure-packages-exist
    '(company legalese magit dash dash-functional go-mode calfw calfw-gcal
-	     gnus-desktop-notify))
+	     gnus-desktop-notify java-imports))
 
   (funcall (safe-fun 'require) 'company))
 
