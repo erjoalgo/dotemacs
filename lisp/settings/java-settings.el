@@ -39,6 +39,11 @@
     (replace-regexp "\t" "")
     (indent-region (point-min) (point-max))))
 
+(defun mvn-offline-p-toggle (&optional offline)
+  (interactive (list (not (and (boundp 'mvn-offline-p) mvn-offline-p))))
+  (setf mvn-offline-p offline)
+  (message (if offline "offline" "online")))
+
 (add-hook 'java-mode-hook 'java-imports-scan-file)
 (define-key java-mode-map (kbd "s-m") 'java-imports-add-import-dwim)
 
