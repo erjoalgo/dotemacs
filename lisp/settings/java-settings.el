@@ -41,3 +41,53 @@
 
 (add-hook 'java-mode-hook 'java-imports-scan-file)
 (define-key java-mode-map (kbd "s-m") 'java-imports-add-import-dwim)
+
+
+(defun java-sync-function-file-names ()
+  ;; adapted from octave.el: octave-sync-function-file-names
+  ;; TODO make generic
+  "Ensure function name agree with function file name.
+See Info node `(octave)Function Files'."
+  (interactive)
+  (when buffer-file-name
+    (let* ((java-public-class-regexp
+	    "public[[:space:]]+class[[:space:]]+\\([^[:space:]]+\\)")
+	   (java-class-name
+	    (save-excursion
+	      (goto-char (point-min))
+	      (if (re-search-forward
+		   java-public-class-regexp nil)
+		  (match-string 1)
+		(prog1 nil (warn "no class name found"))))))
+      (when java-class-name
+        (let* ((func java-class-name)
+               (file (file-name-sans-extension
+                      (file-name-nondirectory buffer-file-name)))
+               (help-form (format "\
+a: Use function name `%s'
+b: Use file name `%s'
+q: Don't fix\n" func file))
+               (c (unless (equal file func)
+                    (save-window-excursion
+                      (help-form-show)
+                      (read-char-choice
+                       "Which name to use? (a/b/q) " '(?a ?b ?q))))))
+          (pcase c
+            (`?a (let ((newname (expand-file-name
+                                 (concat func (file-name-extension
+                                               buffer-file-name t)))))
+                   (when (or (not (file-exists-p newname))
+                             (yes-or-no-p
+                              (format "Target file %s exists; proceed? " newname)))
+                     (when (file-exists-p buffer-file-name)
+                       (rename-file buffer-file-name newname t))
+                     (set-visited-file-name newname))))
+            (`?b (save-excursion
+		   (goto-char (point-min))
+		   (re-search-forward
+		    java-public-class-regexp nil)
+		   (replace-match file t t nil 1)))))))))
+
+(add-hook 'java-mode-hook
+	  (lambda ()
+	    (add-hook 'before-save-hook 'java-sync-function-file-names nil t)))
