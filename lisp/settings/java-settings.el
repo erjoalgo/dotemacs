@@ -45,7 +45,9 @@
   (message (if offline "offline" "online")))
 
 (add-hook 'java-mode-hook 'java-imports-scan-file)
-(define-key java-mode-map (kbd "s-m") 'java-imports-add-import-dwim)
+(add-hook 'java-mode-hook
+	  (lambda ()
+	    (define-key java-mode-map (kbd "s-m") 'java-imports-add-import-dwim)))
 
 
 (defun java-sync-function-file-names ()
