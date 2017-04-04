@@ -26,7 +26,8 @@
   ("s-d" 'org-deadline)
 
   ("s-l" 'org-insert-link)
-  ("s-0" 'org-ctrl-c-ctrl-c))
+  ("s-0" 'org-ctrl-c-ctrl-c)
+  ("<s-return>" 'browse-url-at-point))
 
 (setq org-blank-before-new-entry
       ;;don't add extra newlines
