@@ -5,6 +5,7 @@
 (unless (f-exists? gnus-attachments-default)
   (mkdir gnus-attachments-default))
 
+(defvar sent-group-name "[Gmail]/Sent Mail")
 (defun gnus-goto-inbox ()
   (interactive)
   (require 'gnus)
@@ -15,7 +16,7 @@
      (gnus)
      (gnus-group-read-group 1000 t "INBOX" )
      ;;(gnus-summary-sort-by-most-recent-date)
-     (gnus-group-read-group 5000 t "[Gmail]/Sent Mail" ))))
+     (gnus-group-read-group 5000 t sent-group-name ))))
 
 
 (defun gnus-goto-sent-emails ()
@@ -28,12 +29,7 @@
 	    (symbol-value group)
 	    (push (symbol-name group) groups)))
      gnus-active-hashtb)
-    ;;(gnus-group-read-group nil t "nnfolder+archive:sent.2015-01" nil )
-    ;;(gnus-group-read-group nil t sent-group-name nil )
-    (mapc (lambda (g)
-	    (gnus-group-read-group t t g nil ))
-	  groups)
-    (message "%s" groups)))
+    (gnus-group-read-group 200 t sent-group-name nil )))
 
 (defun gnus-quit ()
   (interactive)
