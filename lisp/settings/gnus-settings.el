@@ -6,6 +6,9 @@
   (mkdir gnus-attachments-default))
 
 (defvar sent-group-name "[Gmail]/Sent Mail")
+(defvar inbox-group-name "INBOX")
+(defvar inbox-group "nnimap:erjoalgo@gmail.com")
+
 (defun gnus-goto-inbox ()
   (interactive)
   (require 'gnus)
@@ -119,7 +122,7 @@
 (defun gmail-search-query (query)
   (interactive "sEnter search query to send to gmail: ")
   (let* (
-	 (group-spec '(("nnimap:gmail" ("INBOX"))))
+	 (group-spec `((,inbox-group (,inbox-group-name))))
 	 (query-spec `((query . ,query)))
 	 )
     (gnus-group-make-nnir-group
