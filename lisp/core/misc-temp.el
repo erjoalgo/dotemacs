@@ -41,15 +41,7 @@
       line)
      (match-string 1 line))))
 
-(defun firefox-new-tab (url &optional unknown-arg)
-  (let ((new-tab "netcat-firefox-mozrepl"))
-    (start-process new-tab new-tab
-		   "nc" "localhost" "4242" "-q" "1")
-    (process-send-string new-tab
-			 (format
-			  ;;newline is important
-			  "gBrowser.selectedTab = gBrowser.addTab(\"%s\");\n"
-			  url))))
+
 
 (defun process-filter-line-buffer (real-filter)
 	 (let ((cum-string-sym (gensym "proc-filter-buff"))
@@ -72,7 +64,7 @@
 
 		(setf ,cum-string-sym (substring string start))))))
 
-(setq browse-url-browser-function 'firefox-new-tab)
+
 
 (defun peek (str start max)
   "peek into str at most `max' characters"

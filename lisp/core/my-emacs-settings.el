@@ -123,5 +123,17 @@
 (add-to-list 'auto-mode-alist '("\\.log\\'" . auto-revert-mode))
 
 (put 'upcase-region 'disabled nil)
+
+(defun firefox-new-tab (url &optional unknown-arg)
+  (let ((new-tab "netcat-firefox-mozrepl"))
+    (start-process new-tab new-tab
+		   "nc" "localhost" "4242" "-q" "1")
+    (process-send-string new-tab
+			 (format
+			  ;;newline is important
+			  "gBrowser.selectedTab = gBrowser.addTab(\"%s\");\n"
+			  url))))
+
+(setq browse-url-browser-function 'firefox-new-tab)
 (provide 'my-emacs-settings)
 ;;; emacs-settings.el ends here
