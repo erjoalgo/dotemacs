@@ -5,6 +5,7 @@
 (unless (f-exists? gnus-attachments-default)
   (mkdir gnus-attachments-default))
 
+(setf mm-default-directory (expand-file-name "~/Downloads"))
 (defvar sent-group-name "[Gmail]/Sent Mail")
 (defvar inbox-group-name "INBOX")
 (defvar inbox-group "nnimap:erjoalgo@gmail.com")
