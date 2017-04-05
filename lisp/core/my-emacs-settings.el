@@ -106,9 +106,6 @@
 (defun highlight-long-lines ()
   (highlight-lines-matching-regexp ".\\{81\\}" 'hi-yellow))
 
-(add-hook 'find-file-hook 'highlight-long-lines)
-
-
 (defun highlight-long-lines ()
   (interactive)
   (highlight-lines-matching-regexp ".\\{81\\}" 'hi-yellow))
