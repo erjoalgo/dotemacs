@@ -63,7 +63,8 @@
 
   (ensure-packages-exist
    '(company legalese magit dash dash-functional go-mode calfw calfw-gcal
-	     gnus-desktop-notify java-imports bbdb))
+	     ;; gnus-desktop-notify
+	     java-imports bbdb))
 
   (funcall (safe-fun 'require) 'company))
 
