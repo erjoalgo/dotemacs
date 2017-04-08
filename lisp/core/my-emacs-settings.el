@@ -85,6 +85,8 @@
 (setq enable-local-variables :safe)
 
 (put 'erase-buffer 'disabled nil)
+(put 'downcase-region 'disabled nil)
+(put 'upcase-region 'disabled nil)
 
 (add-hook 'Man-mode-hook 'visual-line-mode)
 
