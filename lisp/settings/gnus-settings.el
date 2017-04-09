@@ -84,7 +84,7 @@
   (gnus-desktop-notify-mode)
   (gnus-demon-add-scanmail)
   )
-
+(defun setup-gnus-notifications ())
 (with-eval-after-load "gnus-sum"
   (gnus-load-bindings gnus-my-goto-map
 		      ("g" 'gmail-search-query)
