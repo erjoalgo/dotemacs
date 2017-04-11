@@ -8,9 +8,15 @@
 	 (pdf (concat base-sans-ext ".pdf"))
 	 (compile-errors-buffer "*TEX-COMPILE-ERRORS*")
 	 (async-shell-command-buffer 'new-buffer)
-	 (ret-code (call-process "pdflatex" nil compile-errors-buffer nil "-halt-on-error" tex)))
+	 ret-code)
 
-    (with-current-buffer compile-errors-buffer (erase-buffer))
+    (when (get-buffer compile-errors-buffer)
+      (with-current-buffer compile-errors-buffer
+	(erase-buffer)))
+
+    (setf ret-code
+	  (call-process "pdflatex" nil compile-errors-buffer nil
+			"-halt-on-error" tex))
     (if (= ret-code 0)
 	(progn
 	  (message "successful compilation")
