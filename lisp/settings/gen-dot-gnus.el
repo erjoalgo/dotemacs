@@ -27,11 +27,12 @@
        (setf user-mail-address email)
        (setf smtpmail-stream-type 'starttls))))
 
-(cl-defun gnus-gen-dot-gnus (email &key smtp imap)
+
+(cl-defun gnus-gen-dot-gnus (email &key smtp imap dot-gnus)
   (let ((form (gnus-imap-smtp-form email smtp imap))
-	(dot-gnus (f-expand "~/.gnus")))
+	(dot-gnus (f-expand (or dot-gnus "~/.gnus"))))
     (unless (or (not (file-exists-p dot-gnus))
-		(when (y-or-n-p "~/.gnus file exists. overwrite?")
+		(when (y-or-n-p (format "%s file exists. overwrite?" dot-gnus))
 		  (funcall (if (fboundp 'shred-rec) 'shred-rec 'delete-file) dot-gnus)
 		  t))
       (error "~/.gnus already exists"))
@@ -40,7 +41,8 @@
 
 '(gnus-gen-dot-gnus "erjoalgo@gmail.com"
 		    :smtp '("smtp.gmail.com" . 587)
-		    :imap '("imap.gmail.com" . 993))
+		   :imap '("imap.gmail.com" . 993)
+		   :dot-gnus "~/.gnus-1")
 
 
 
