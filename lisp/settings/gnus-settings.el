@@ -2,6 +2,30 @@
       (expand-file-name
        "~/Downloads/gnus-attachments/"))
 
+(defun gnus-init-filename ()
+  "return a ~/.gnus filename based on the current emacs session"
+  (let* ((emacs-self-pid (emacs-pid))
+	 (all-emacs-pids (->> (shell-command-to-string "pidof emacs")
+			      s-trim
+			      (s-split " ")
+			      (mapcar 'parse-integer)
+			      reverse))
+	 (gnus-init-idx (loop for i from 0
+			      for pid in all-emacs-pids
+			      when (eql pid emacs-self-pid)
+			      return i))
+	 (gnus-init-filename (format "~/.gnus%s"
+				     (if (or (null gnus-init-idx)
+					     (zerop gnus-init-idx)) ""
+				       (format "-%d" gnus-init-idx))))
+	 )
+    (if (file-exists-p gnus-init-filename)
+	gnus-init-filename
+      gnus-init-file)))
+
+(setf gnus-init-file
+      (gnus-init-filename))
+
 (unless (f-exists? gnus-attachments-default)
   (mkdir gnus-attachments-default))
 
