@@ -27,7 +27,7 @@
       (gnus-init-filename))
 
 (unless (f-exists? gnus-attachments-default)
-  (mkdir gnus-attachments-default))
+  (mkdir gnus-attachments-default t))
 
 (setf mm-default-directory (expand-file-name "~/Downloads"))
 (defvar sent-group-name "[Gmail]/Sent Mail")
