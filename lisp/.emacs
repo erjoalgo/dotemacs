@@ -68,6 +68,10 @@
 
   (funcall (safe-fun 'require) 'company))
 
+(unless (boundp 'with-eval-after-load)
+  (defmacro with-eval-after-load (feature &rest forms)
+    `(eval-after-load ,feature '(progn ,@forms))))
+
 (loop with top = (f-join emacs-top "libs")
       for lib-dir in (directory-files top)
       as fn = (f-join top lib-dir)
