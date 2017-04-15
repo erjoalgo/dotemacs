@@ -28,7 +28,8 @@
        (setf smtpmail-stream-type 'starttls))))
 
 
-(cl-defun gnus-gen-dot-gnus (email &key smtp imap dot-gnus)
+(cl-defun gnus-gen-dot-gnus (email &key smtp imap dot-gnus
+				   inbox-group-name sent-group-name)
   (let ((form (gnus-imap-smtp-form email smtp imap))
 	(dot-gnus (f-expand (or dot-gnus "~/.gnus"))))
     (unless (or (not (file-exists-p dot-gnus))
@@ -37,12 +38,18 @@
 		  t))
       (error "~/.gnus already exists"))
     (write-region (pp form) nil dot-gnus)
+    (when inbox-group-name
+      (write-region (pp `(setf inbox-group-name ,inbox-group-name)) t dot-gnus))
+    (when sent-group-name
+      (write-region (pp `(setf sent-group-name ,sent-group-name)) t dot-gnus))
     (message "wrote to %s" dot-gnus)))
 
 '(gnus-gen-dot-gnus "erjoalgo@gmail.com"
 		    :smtp '("smtp.gmail.com" . 587)
 		   :imap '("imap.gmail.com" . 993)
-		   :dot-gnus "~/.gnus-1")
+		   :dot-gnus "~/.gnus-1"
+		   :inbox-group-name "INBOX"
+		   :sent-group-name "[Gmail]/Sent Mail")
 
 
 
