@@ -242,4 +242,5 @@ machine smtp.gmail.com login %s password %s port 587"
 	  email pass) nil
 	  authinfo-fn)))))
 
+(setq gnutls-min-prime-bits 2048)
 '(require erjoalgo-indent-mode)
