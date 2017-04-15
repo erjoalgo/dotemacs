@@ -17,6 +17,13 @@
       (setq eshell-command-aliases-list
 	    (cons alias-def eshell-command-aliases-list)))))
 
+
+(unless (boundp 'debian-file->string)
+  (defun debian-file->string (filename)
+    (with-temp-buffer
+      (insert-file-contents-literally filename)
+      (buffer-string))))
+
 (defun eshell-load-bashrc-aliases ()
   (interactive)
   (mapc (lambda (alias-def)
