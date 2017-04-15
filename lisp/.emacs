@@ -66,7 +66,9 @@
 	     ;; gnus-desktop-notify
 	     java-imports bbdb))
 
-  (funcall (safe-fun 'require) 'company))
+  (funcall (safe-fun 'require) 'company)
+  (require 'dash)
+  (require 'dash-functional))
 
 (unless (boundp 'with-eval-after-load)
   (defmacro with-eval-after-load (feature &rest forms)
