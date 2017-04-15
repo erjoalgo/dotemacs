@@ -21,7 +21,7 @@
 	 )
     (if (file-exists-p gnus-init-filename)
 	gnus-init-filename
-      gnus-init-file)))
+      (and (boundp 'gnus-init-file) gnus-init-file))))
 
 (setf gnus-init-file
       (gnus-init-filename))
