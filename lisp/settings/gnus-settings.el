@@ -30,34 +30,45 @@
   (mkdir gnus-attachments-default t))
 
 (setf mm-default-directory (expand-file-name "~/Downloads"))
-(defvar sent-group-name "[Gmail]/Sent Mail")
-(defvar inbox-group-name "INBOX")
-(defvar inbox-group "nnimap:erjoalgo@gmail.com")
+
+(defvar inbox-group-name)
+(defvar sent-group-name)
 
 (defun gnus-goto-inbox ()
   (interactive)
   (require 'gnus)
-  (let ((inbox "*Summary INBOX*"))
+  (let* ((inbox (or inbox-group-name
+		    (car (gnus-filter-groups
+			  (lambda (name) (string-match "INBOX" name))))))
+	 (inbox-buffer (format "*Summary %s*" inbox)))
     (or
-     (and (get-buffer inbox)
-	  (switch-to-buffer inbox))
+     (and (get-buffer inbox-buffer)
+	  (switch-to-buffer inbox-buffer))
      (gnus)
-     (gnus-group-read-group 1000 t "INBOX" )
+     (gnus-group-read-group 1000 t inbox )
      ;;(gnus-summary-sort-by-most-recent-date)
      (gnus-group-read-group 5000 t sent-group-name ))))
 
 
-(defun gnus-goto-sent-emails ()
-  (interactive)
+(defun gnus-filter-groups (pred)
   (let (groups)
     (mapatoms
      (lambda (group)
-       (and (symbol-name group)
-	    (string-match "Sent" (symbol-name group))
-	    (symbol-value group)
-	    (push (symbol-name group) groups)))
+       (when
+	   (and (symbol-name group)
+		(funcall pred (symbol-name group))
+		(symbol-value group))
+	 (push (symbol-name group) groups)))
      gnus-active-hashtb)
-    (gnus-group-read-group 200 t sent-group-name nil )))
+    groups))
+
+
+(defun gnus-goto-sent-emails ()
+  (interactive)
+  (let ((sent (or sent-group-name
+		   (car (gnus-filter-groups
+			 (lambda (name) (string-match "Sent" name)))))))
+    (gnus-group-read-group 200 t sent nil)))
 
 (defun gnus-quit ()
   (interactive)
