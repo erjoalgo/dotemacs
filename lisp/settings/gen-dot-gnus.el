@@ -37,11 +37,11 @@
 		  (funcall (if (fboundp 'shred-rec) 'shred-rec 'delete-file) dot-gnus)
 		  t))
       (error "~/.gnus already exists"))
-    (write-region (pp form) nil dot-gnus)
-    (when inbox-group-name
-      (write-region (pp `(setf inbox-group-name ,inbox-group-name)) t dot-gnus))
-    (when sent-group-name
-      (write-region (pp `(setf sent-group-name ,sent-group-name)) t dot-gnus))
+    (with-temp-file dot-gnus
+      (insert (pp form))
+      (insert (pp `(setf inbox-group-name ,inbox-group-name)))
+      (insert (pp `(setf sent-group-name ,sent-group-name)))
+      (add-file-local-variable 'mode 'emacs-lisp))
     (message "wrote to %s" dot-gnus)))
 
 '(gnus-gen-dot-gnus "erjoalgo@gmail.com"
