@@ -47,7 +47,7 @@
 '(gnus-gen-dot-gnus "erjoalgo@gmail.com"
 		    :smtp '("smtp.gmail.com" . 587)
 		   :imap '("imap.gmail.com" . 993)
-		   :dot-gnus "~/.gnus-1"
+		   :dot-gnus "~/.gnus-gmail"
 		   :inbox-group-name "INBOX"
 		   :sent-group-name "[Gmail]/Sent Mail")
 
