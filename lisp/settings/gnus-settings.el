@@ -267,4 +267,7 @@ machine smtp.gmail.com login %s password %s port 587"
 	  authinfo-fn)))))
 
 (setq gnutls-min-prime-bits 2048)
+;; https://www.emacswiki.org/emacs/GnusSpeed#toc3
+(setq gc-cons-threshold 3500000)
+(setq gnus-use-correct-string-widths nil)
 '(require erjoalgo-indent-mode)
