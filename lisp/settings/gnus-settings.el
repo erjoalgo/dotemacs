@@ -37,10 +37,10 @@
 (defun gnus-select-init-filename ()
   (interactive)
   (let* ((cands (remove-if-not (lambda (fn) (string-match "^[.]?gnus-.*" fn))
-			      (directory-files (expand-file-name "~"))))
-	(selection (completing-read "select ~/.gnus init file: " cands
-				    nil t (longest-common-prefix cands) nil (car cands)))
-	(filename (f-join "~" selection)))
+			       (directory-files (expand-file-name "~"))))
+	 (selection (completing-read "select ~/.gnus init file: " cands
+				     nil t (longest-common-prefix cands) nil (car cands)))
+	 (filename (f-join "~" selection)))
     (setf gnus-init-file filename)
     ))
 
@@ -62,15 +62,14 @@
 		    (car (gnus-filter-groups
 			  (lambda (name) (string-match "INBOX" name))))))
 	 (inbox-buffer (format "*Summary %s*" inbox)))
-    (or
-     (and (get-buffer inbox-buffer)
-	  (switch-to-buffer inbox-buffer))
-     (progn (gnus-select-init-filename)
-	    (load gnus-init-file)
-     (gnus)
-     (gnus-group-read-group 1000 t inbox )
-     ;;(gnus-summary-sort-by-most-recent-date)
-     (gnus-group-read-group 5000 t sent-group-name )))))
+    (if (get-buffer inbox-buffer)
+	(switch-to-buffer inbox-buffer)
+      (gnus-select-init-filename)
+      (load gnus-init-file)
+      (gnus)
+      (gnus-group-read-group 1000 t inbox )
+      ;;(gnus-summary-sort-by-most-recent-date)
+      (gnus-group-read-group 5000 t sent-group-name ))))
 
 
 (defun gnus-filter-groups (pred)
@@ -89,8 +88,8 @@
 (defun gnus-goto-sent-emails ()
   (interactive)
   (let ((sent (or sent-group-name
-		   (car (gnus-filter-groups
-			 (lambda (name) (string-match "Sent" name)))))))
+		  (car (gnus-filter-groups
+			(lambda (name) (string-match "Sent" name)))))))
     (gnus-group-read-group 200 t sent nil)))
 
 (defun gnus-quit ()
@@ -117,19 +116,19 @@
 		  `(define-key ,kmap ,key ,cmd))))
 
 (with-eval-after-load "message"
-  (gnus-load-bindings
-   message-mode-map
-   ((kbd "\C-ci") 'gmail-contacts-insert-contact)
-   ("" nil)
-   ("" nil)
-   ("a" nil )
-   ("M" nil)
-   ((kbd "s-a") 'gnus-attach-file-simple)
-   ((kbd "M-c") 'message-send-and-exit))
-  (add-hook 'message-mode-hook
-	    (lambda ()
-	      (erjoalgo-indent-mode 1)
-	      (indent-mode-set-string ">"))))
+		      (gnus-load-bindings
+		       message-mode-map
+		       ((kbd "\C-ci") 'gmail-contacts-insert-contact)
+		       ("" nil)
+		       ("" nil)
+		       ("a" nil )
+		       ("M" nil)
+		       ((kbd "s-a") 'gnus-attach-file-simple)
+		       ((kbd "M-c") 'message-send-and-exit))
+		      (add-hook 'message-mode-hook
+				(lambda ()
+				  (erjoalgo-indent-mode 1)
+				  (indent-mode-set-string ">"))))
 
 (defun setup-gnus-notifications ()
   (require 'gnus-desktop-notify)
@@ -140,31 +139,34 @@
 	  ((gnu/linux) "notify-send")
 	  ((darwin) "growlnotify -a Emacs.app -m")))
   (gnus-desktop-notify-mode)
-  (gnus-demon-add-scanmail)
-  )
+  (gnus-demon-add-scanmail))
+
 (defun setup-gnus-notifications ())
 (with-eval-after-load "gnus-sum"
-  (gnus-load-bindings gnus-my-goto-map
-		      ("g" 'gmail-search-query)
-		      ("t" 'gnus-goto-sent-emails)
-		      ("r" 'gnus-summary-insert-new-articles)
-		      ("f" 'gnus-summary-mail-forward))
+		      (gnus-load-bindings
+		       gnus-my-goto-map
+		       ("g" 'gmail-search-query)
+		       ("t" 'gnus-goto-sent-emails)
+		       ("r" 'gnus-summary-insert-new-articles)
+		       ("f" 'gnus-summary-mail-forward))
 
-  (gnus-load-bindings gnus-summary-mode-map
-		      ("R" 'gnus-summary-wide-reply-with-original)
-		      ("r" 'gnus-summary-reply-with-original)
-		      ((kbd "s-g") 'gmail-search-query)
-		      ((kbd "s-t") 'gnus-goto-sent-emails)
-		      ((kbd "s-r")
-		       'gnus-summary-insert-new-articles)
-		      ("g" gnus-my-goto-map))
-    (setup-gnus-notifications))
+		      (gnus-load-bindings
+		       gnus-summary-mode-map
+		       ("R" 'gnus-summary-wide-reply-with-original)
+		       ("r" 'gnus-summary-reply-with-original)
+		       ((kbd "s-g") 'gmail-search-query)
+		       ((kbd "s-t") 'gnus-goto-sent-emails)
+		       ((kbd "s-r")
+			'gnus-summary-insert-new-articles)
+		       ("g" gnus-my-goto-map))
+		      (setup-gnus-notifications))
 
 (with-eval-after-load "gnus-art"
-  (gnus-load-bindings gnus-article-mode-map
-		      ("F" 'gnus-summary-mail-forward)
-		      ("R" 'gnus-article-wide-reply-with-original)
-		      ((kbd "s-s") 'gnus-mime-save-all-attachmnets)))
+		      (gnus-load-bindings
+		       gnus-article-mode-map
+		       ("F" 'gnus-summary-mail-forward)
+		       ("R" 'gnus-article-wide-reply-with-original)
+		       ((kbd "s-s") 'gnus-mime-save-all-attachmnets)))
 
 
 
@@ -187,28 +189,31 @@
 
 (defun gnus-mime-save-all-attachmnets (dir)
   ;;(interactive "GEnter destination directory to save attachments: " )
-  (interactive (list (read-directory-name "Enter destination directory to save attachments: " gnus-attachments-default ) ))
+  (interactive (list (read-directory-name
+		      "Enter destination directory to save attachments: "
+		      gnus-attachments-default ) ))
   (unless (file-exists-p dir)
-    (or (y-or-n-p (format "making directory %s" dir) ) (error "failed to confirm "))
+    (unless (y-or-n-p (format "making directory %s" dir) )
+      (error "failed to confirm"))
     (mkdir dir t))
-  (gnus-summary-save-parts ".*/.*" dir nil )
+  (gnus-summary-save-parts ".*" dir nil )
   (find-file dir))
 
 (defadvice gnus-group-select-group
-    ;;there must be a better way
-    (around select-unread-email-advice activate)
+  ;;there must be a better way
+  (around select-unread-email-advice activate)
   '(ad-set-arg 0 t)
   ad-do-it
   (gnus-summary-sort-by-most-recent-date))
 
 (defadvice gnus-summary-insert-new-articles
-    ;;there must be a better way
-    (after sort-by-date-after-refresh activate)
+  ;;there must be a better way
+  (after sort-by-date-after-refresh activate)
   (gnus-summary-sort-by-most-recent-date))
 
 (defadvice gnus-group-read-group
-    ;;there must be a better way!
-    (after sort-by-date-after-nnir activate)
+  ;;there must be a better way!
+  (after sort-by-date-after-nnir activate)
   (gnus-summary-sort-by-most-recent-date))
 
 (defadvice smtpmail-send-it (around fix-using-openssl activate)
