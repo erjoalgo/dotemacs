@@ -23,6 +23,27 @@
 	gnus-init-filename
       (and (boundp 'gnus-init-file) gnus-init-file))))
 
+(defun longest-common-prefix (cands)
+  (when cands
+    (loop with min-len = (apply 'min (mapcar 'length cands))
+	  with i = 0
+	  as char = (aref (car cands) i)
+	  while (and (< i min-len)
+		     (every (lambda (s) (eql (aref s i) char))
+			    cands))
+	  do (incf i)
+	  finally (return (substring (or (car cands) "") 0 i)))))
+
+(defun gnus-select-init-filename ()
+  (interactive)
+  (let* ((cands (remove-if-not (lambda (fn) (string-match "^[.]?gnus-.*" fn))
+			      (directory-files (expand-file-name "~"))))
+	(selection (completing-read "select ~/.gnus init file: " cands
+				    nil t (longest-common-prefix cands) nil (car cands)))
+	(filename (f-join "~" selection)))
+    (setf gnus-init-file filename)
+    ))
+
 (setf gnus-init-file
       (gnus-init-filename))
 
@@ -37,17 +58,19 @@
 (defun gnus-goto-inbox ()
   (interactive)
   (require 'gnus)
-  (let* ((inbox (or inbox-group-name
+  (let* ((inbox (or "INBOX"
 		    (car (gnus-filter-groups
 			  (lambda (name) (string-match "INBOX" name))))))
 	 (inbox-buffer (format "*Summary %s*" inbox)))
     (or
      (and (get-buffer inbox-buffer)
 	  (switch-to-buffer inbox-buffer))
+     (progn (gnus-select-init-filename)
+	    (load gnus-init-file)
      (gnus)
      (gnus-group-read-group 1000 t inbox )
      ;;(gnus-summary-sort-by-most-recent-date)
-     (gnus-group-read-group 5000 t sent-group-name ))))
+     (gnus-group-read-group 5000 t sent-group-name )))))
 
 
 (defun gnus-filter-groups (pred)
