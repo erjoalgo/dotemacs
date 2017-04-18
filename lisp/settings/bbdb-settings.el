@@ -7,3 +7,4 @@
 (setq bbdb-update-records-p 'create)
 
 (add-hook 'message-setup-hook 'bbdb-mail-aliases)
+(setf bbdb-silent t)
