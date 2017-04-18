@@ -1,7 +1,7 @@
 
 
 (defun apply-eshell-alias-no-save (alias &rest definition)
-  "basically taken from eshell/alias function, which does not separate applying alias from storing it persistently"
+  "basically taken from `eshell/alias' function, which does not separate applying alias from storing it persistently"
   (if (not definition)
       (setq eshell-command-aliases-list
 	    (delq (assoc alias eshell-command-aliases-list)
