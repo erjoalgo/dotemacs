@@ -178,16 +178,12 @@
     ;;(mml-attach-file FILE &optional TYPE DESCRIPTION DISPOSITION)
     (mml-attach-file file type description disposition)))
 
-(defun gmail-search-query (query)
-  (interactive "sEnter search query to send to gmail: ")
-  (let* (
-	 (group-spec `((,inbox-group (,inbox-group-name))))
-	 (query-spec `((query . ,query)))
-	 )
-    (gnus-group-make-nnir-group
-     nil
-     (cons 'nnir-specs (list (cons 'nnir-query-spec query-spec)
-			     (cons 'nnir-group-spec group-spec))))))
+(defun gmail-search-query ()
+  (interactive )
+  (with-current-buffer "*Group*"
+    (save-excursion (goto-char (point-min))
+		    (re-search-forward "^[ 	]+[0-9]+:.*INBOX$")
+		    (call-interactively 'gnus-group-make-nnir-group))))
 
 (defun gnus-mime-save-all-attachmnets (dir)
   ;;(interactive "GEnter destination directory to save attachments: " )
