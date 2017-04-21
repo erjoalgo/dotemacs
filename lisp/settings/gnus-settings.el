@@ -187,7 +187,7 @@
   (interactive )
   (with-current-buffer "*Group*"
     (save-excursion (goto-char (point-min))
-		    (re-search-forward "^[ 	]+[0-9]+:.*INBOX$")
+		    (re-search-forward "^[ 	]+\\([0-9]+\\|[*]\\):.*INBOX$")
 		    (call-interactively 'gnus-group-make-nnir-group))))
 
 (defun gnus-mime-save-all-attachmnets (dir)
