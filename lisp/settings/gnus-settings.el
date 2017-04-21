@@ -64,6 +64,8 @@
 	 (inbox-buffer (format "*Summary %s*" inbox)))
     (if (get-buffer inbox-buffer)
 	(switch-to-buffer inbox-buffer)
+      (when (get-buffer "*Group*")
+	(kill-buffer "*Group*"))
       (gnus-select-init-filename)
       (load gnus-init-file)
       (gnus)
