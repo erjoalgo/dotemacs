@@ -69,9 +69,10 @@
       (gnus-select-init-filename)
       (load gnus-init-file)
       (gnus)
+      ;; (gnus-group-read-group 5000 t sent-group-name )
       (gnus-group-read-group 1000 t inbox )
       ;;(gnus-summary-sort-by-most-recent-date)
-      (gnus-group-read-group 5000 t sent-group-name ))))
+      )))
 
 
 (defun gnus-filter-groups (pred)
