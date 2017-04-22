@@ -36,7 +36,7 @@
 
 (defun gnus-select-init-filename ()
   (interactive)
-  (let* ((cands (remove-if-not (lambda (fn) (string-match "^[.]?gnus-.*" fn))
+  (let* ((cands (remove-if-not (lambda (fn) (string-match "^[.]?gnus-?.*" fn))
 			       (directory-files (expand-file-name "~"))))
 	 (selection (completing-read "select ~/.gnus init file: " cands
 				     nil t (longest-common-prefix cands) nil (car cands)))
