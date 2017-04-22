@@ -27,10 +27,10 @@
   (when cands
     (loop with min-len = (apply 'min (mapcar 'length cands))
 	  with i = 0
-	  as char = (aref (car cands) i)
 	  while (and (< i min-len)
-		     (every (lambda (s) (eql (aref s i) char))
-			    cands))
+		     (let ((char (aref (car cands) i)))
+		       (every (lambda (s) (eql (aref s i) char))
+			      cands)))
 	  do (incf i)
 	  finally (return (substring (or (car cands) "") 0 i)))))
 
