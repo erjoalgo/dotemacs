@@ -38,8 +38,11 @@
   (interactive)
   (let* ((cands (remove-if-not (lambda (fn) (string-match "^[.]?gnus-?.*" fn))
 			       (directory-files (expand-file-name "~"))))
-	 (selection (completing-read "select ~/.gnus init file: " cands
-				     nil t (longest-common-prefix cands) nil (car cands)))
+	 (selection (cond
+		     ((null cands) (error "no ~/.gnus* found"))
+		     ((null (cdr cands)) (car cands))
+		     (t (completing-read "select ~/.gnus init file: " cands
+					 nil t (longest-common-prefix cands) nil (car cands)))))
 	 (filename (f-join "~" selection)))
     (setf gnus-init-file filename)
     ))
