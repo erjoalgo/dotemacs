@@ -124,14 +124,13 @@
 (put 'upcase-region 'disabled nil)
 
 (defun firefox-new-tab (url &optional unknown-arg)
-  (let ((new-tab "netcat-firefox-mozrepl"))
-    (start-process new-tab new-tab
-		   "nc" "localhost" "4242" "-q" "1")
-    (process-send-string new-tab
-			 (format
-			  ;;newline is important
-			  "gBrowser.selectedTab = gBrowser.addTab(\"%s\");\n"
-			  url))))
+  (let ((proc
+	 (open-network-stream "netcat-firefox-mozrepl" nil "127.0.0.1" 4242))
+	(payload (format
+		  ;;newline is important
+		  "gBrowser.selectedTab = gBrowser.addTab(\"%s\");\n"
+		  url)))
+    (process-send-string proc payload)))
 
 (setq browse-url-browser-function 'firefox-new-tab)
 (provide 'my-emacs-settings)
