@@ -212,6 +212,8 @@
 	   (global-erjoalgo-command-mode 0))))
 
   ([f1] global-erjoalgo-command-mode-toggle);; f1 toggle command mode
+
+  ("y" search-engine-search)
   )
 
 

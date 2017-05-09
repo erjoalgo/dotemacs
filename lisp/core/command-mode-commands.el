@@ -394,5 +394,25 @@
                         thereis (and (eq (current-buffer) buff) i)))
             (switch-to-buffer nil)))))
 
+(defun uri-encode (search-terms)
+  (reduce
+   (lambda (string from-to)
+     (replace-regexp-in-string (car from-to) (cadr from-to) string nil t))
+   '(("%" "%25")
+     (" " "%20")
+     ("[+]" "%2B"))
+   :initial-value search-terms))
+
+(defvar search-engine-query-url-format
+  "https://duckduckgo.com/lite/?q=%s")
+
+(defun search-engine-search (term)
+  (interactive (list (if (region-active-p)
+			 (buffer-substring (region-beginning) (region-end))
+		       (read-string "enter search terms: " (car kill-ring)))))
+  (firefox-new-tab (format search-engine-query-url-format
+			   (uri-encode term))))
+
+
 (provide 'command-mode-commands)
 ;;; command-mode-commands.el ends here
