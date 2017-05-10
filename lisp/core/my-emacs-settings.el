@@ -35,7 +35,7 @@
       auto-save-file-name-transforms
       `((".*" ,emacs-backups-dir t))
 
-      setq auto-save-list-file-prefix
+      auto-save-list-file-prefix
       emacs-backups-dir)
 ;;taken from the internet
 (setq
