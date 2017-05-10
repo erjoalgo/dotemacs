@@ -122,7 +122,7 @@
       (progn (insert line "\n") (backward-char))
       (goto-char (+ (line-beginning-position) middle)))))
 
-(setq kill-surrounding-cum-count)
+(defvar kill-surrounding-cum-count)
 (defun kill-surrounding-sexp (arg)
   (interactive "P")
   (setq kill-surrounding-cum-count
