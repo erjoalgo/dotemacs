@@ -266,10 +266,16 @@
   (unless directory
     (setf directory (expand-file-name default-directory)))
   (message directory)
-  (start-process "findiregex" "findiregex" "find"
-		 directory "-iregex" (format ".*%s.*" regex))
-  (switch-to-buffer "findiregex")
-  (beginning-of-buffer))
+  (let ((buff-name "findiregex"))
+    (when (or t clear-buffer)
+      (with-current-buffer buff-name
+	(erase-buffer)))
+
+    (start-process buff-name buff-name "find"
+		   directory "-iregex" (format ".*%s.*" regex))
+    (switch-to-buffer buff-name)
+    (beginning-of-buffer)))
+
 
 (defun gen-new-buffer (&optional name)
   (generate-new-buffer (generate-new-buffer-name (or name "new-buffer"))))
