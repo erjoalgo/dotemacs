@@ -1,11 +1,11 @@
-(defvar *file-programs*
+(setf *file-programs*
   '(
    ("zathura" "pdf" )
    ("libreoffice" "doc" "ppt" "odt" "docx"  "pptx")
    ("evince" "ps" "eps")
    ("eog" "png" "pgm" "tif" "jpg" "jpeg")
    ("aplay" "wav")
-   ("firefox-new-tab.sh" "html")
+   (firefox-new-tab "html")
    ("vlc" "mp4" )))
 
 (defun get-file-program (fn)
@@ -19,7 +19,8 @@
   (let ((program (get-file-program fn)))
     (if (not program)
 	(error (concat "no program known for file: " fn))
-      (start-process program nil program fn))))
+      (if (functionp program) (funcall program fn)
+	(start-process program nil program fn)))))
 
 (with-eval-after-load "dired"
   (define-key dired-mode-map "q" 'dired-up-directory)
