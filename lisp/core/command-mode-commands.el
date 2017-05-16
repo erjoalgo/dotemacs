@@ -415,7 +415,8 @@
 
 (defun search-engine-search (term)
   (interactive (list (if (region-active-p)
-			 (buffer-substring (region-beginning) (region-end))
+			 (buffer-substring-no-properties
+			  (region-beginning) (region-end))
 		       (read-string "enter search terms: " (car kill-ring)))))
   (firefox-new-tab (format search-engine-query-url-format
 			   (uri-encode
