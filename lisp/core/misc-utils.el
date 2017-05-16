@@ -134,6 +134,8 @@
 	      thereis (and
 		       (not (get-buffer-process buff))
 		       (not (string-match "^[[:space:]]*[*].*[*]$" (buffer-name buff)))
+		       (not (string-match "^[ ]*[*]mm[*]-[0-9]+" (buffer-name buff)))
+		       (not (string-match "^[ ][*]nnimap" (buffer-name buff)))
 		       (not (member (buffer-local-value 'major-mode buff) '(dired-mode)))
 		       (or (not (buffer-file-name buff))
 			   (buffer-modified-p buff))
