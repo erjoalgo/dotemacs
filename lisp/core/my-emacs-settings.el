@@ -99,6 +99,7 @@
 (add-to-list 'auto-mode-alist '("\\.cs$" . java-mode))
 (add-to-list 'auto-mode-alist '("\\.graphml$" . nxml-mode))
 (add-to-list 'auto-mode-alist '("[.]y$" . bison-mode))
+(add-to-list 'auto-mode-alist '("[.]ya?ml$" . conf-colon-mode))
 
 (when (get-buffer "*scratch*") (kill-buffer "*scratch*"))
 
