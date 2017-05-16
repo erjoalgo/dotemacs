@@ -244,7 +244,7 @@
 	    (t `((find-file ,fn))))))
   ("e" "~/.emacs")
   ("E" "~/repos/emacs-dirty/.emacs-bloated.el")
-  ("C" (join-base-dir "erjoalgo-command-mode.el"))
+  ("C" (:buffer "*ansi-term*"))
   ;; ("c" (join-base-dir "command-mode-commands.el"))
   ("c" (:buffer "*Compilation*"))
   ("b" "~/.bashrc")
