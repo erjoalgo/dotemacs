@@ -50,9 +50,10 @@
 
 (defun yank-or-pop ()
   (interactive)
-   (if (eq last-command 'yank)
-       (yank-pop)
-     (yank)))
+  (cond
+   ((eq major-mode 'term-mode) (term-paste))
+   ((eq last-command 'yank) (yank-pop))
+   (t (yank))))
 
 (defun my-kill-whole-line (arg)
   (interactive "P")
