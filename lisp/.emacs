@@ -70,7 +70,7 @@
   (require 'dash)
   (require 'dash-functional))
 
-(unless (boundp 'with-eval-after-load)
+(unless (fboundp 'with-eval-after-load)
   (defmacro with-eval-after-load (feature &rest forms)
     `(eval-after-load ,feature '(progn ,@forms))))
 
