@@ -267,8 +267,9 @@
   (unless directory
     (setf directory (expand-file-name default-directory)))
   (message directory)
-  (let ((buff-name "findiregex"))
-    (when (or t clear-buffer)
+  (let ((buff-name "find-iregex"))
+    (when (and (get-buffer buff-name)
+	       (or t clear-buffer))
       (with-current-buffer buff-name
 	(erase-buffer)))
 
