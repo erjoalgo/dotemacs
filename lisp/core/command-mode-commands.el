@@ -301,6 +301,15 @@
 
 
 (require 'f)
+(defun buffer-relativize-path-names (dir &optional buffer)
+  (with-current-buffer (or buffer (current-buffer))
+    (save-excursion
+      (goto-char (point-min))
+      (while (re-search-forward
+	      (concat "^" (regexp-quote dir) "/?")
+	      nil t)
+	(replace-match "")))))
+
 (defun grep-recursive (extension pattern dir &optional clear-buffer)
   ;;TODO colored output
   (interactive
@@ -340,16 +349,10 @@
     (set-process-sentinel proc
 			  `(lambda (proc change)
 			     (switch-to-buffer ,buff-name)
-			     (save-excursion
-			       (progn (goto-char (point-max))
+			     (buffer-relativize-path-names ,dir)
+			     (progn (goto-char (point-max))
 				      (insert "DONE"))
-			       (goto-char (point-min))
-			       (while (re-search-forward
-				       ,(concat "^" (regexp-quote dir) "/?")
-				       nil t)
-				 (replace-match "")))
 			     (beginning-of-buffer)))
-
     '(start-process buff-name buff-name
 		    "grep" "-RHins" pattern dir)
     ;(set (make-local-variable 'window-point-insertion-type) t)
