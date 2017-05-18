@@ -273,10 +273,17 @@
       (with-current-buffer buff-name
 	(erase-buffer)))
 
-    (start-process buff-name buff-name "find"
-		   directory "-iregex" (format ".*%s.*" regex))
-    (switch-to-buffer buff-name)
-    (beginning-of-buffer)))
+    (let ((proc
+	   (start-process buff-name buff-name "find"
+			  directory "-iregex" (format ".*%s.*" regex))))
+      (set-process-sentinel
+       proc
+       `(lambda (proc change)
+	  (switch-to-buffer ,buff-name)
+	  (buffer-relativize-path-names ,directory)
+	  (progn (goto-char (point-max))
+		   (insert "DONE"))
+	  (beginning-of-buffer))))))
 
 
 (defun gen-new-buffer (&optional name)
