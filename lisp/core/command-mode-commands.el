@@ -280,6 +280,7 @@
        proc
        `(lambda (proc change)
 	  (switch-to-buffer ,buff-name)
+	  (setf default-directory ,directory)
 	  (buffer-relativize-path-names ,directory)
 	  (progn (goto-char (point-max))
 		   (insert "DONE"))
