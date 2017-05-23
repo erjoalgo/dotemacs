@@ -266,6 +266,9 @@
 		   (read-directory-name "enter directory: ")))))
   (unless directory
     (setf directory (expand-file-name default-directory)))
+  (when (string-match "^/sudo:root@[^:]+:\\(.*\\)" directory)
+    (setf directory (match-string 1 directory)))
+
   (message directory)
   (let ((buff-name "find-iregex"))
     (when (and (get-buffer buff-name)
