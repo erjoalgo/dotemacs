@@ -23,11 +23,11 @@
 			(list (region-beginning) (region-end))
 		      (list (line-beginning-position)
 			    (line-end-position)))))
-	(buf "*Async Shell Command*"))
+	(buf "*Async Shell Command*")
+	(kill-buffer-query-functions
+	 (delq 'process-kill-buffer-query-function kill-buffer-query-functions)))
     (when (get-buffer buf)
-      (when (get-buffer-process buf)
-	(kill-process (get-buffer-process buf))
-	(kill-buffer buf)))
+      (kill-buffer buf))
     (message "cmd is: %s" cmd)
     (async-shell-command cmd)))
 
