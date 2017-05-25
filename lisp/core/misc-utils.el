@@ -15,10 +15,19 @@
   (recover-this-file);;TODO ignore prompt
   (diff-buffer-with-file))
 
-(defun shell-command-of-region (a b)
+(defun shell-command-of-region ()
   "compare to shell-command-on-region"
-  (interactive "r")
-  (let ((cmd (buffer-substring a b)))
+  (interactive)
+  (let ((cmd (apply 'buffer-substring-no-properties
+		    (if (region-active-p)
+			(list (region-beginning) (region-end))
+		      (list (line-beginning-position)
+			    (line-end-position)))))
+	(buf "*Async Shell Command*"))
+    (when (get-buffer buf)
+      (when (get-buffer-process buf)
+	(kill-process (get-buffer-process buf))
+	(kill-buffer buf)))
     (message "cmd is: %s" cmd)
     (async-shell-command cmd)))
 
@@ -26,13 +35,6 @@
   "like shell-command-of-region"
   (interactive)
   (shell-command-of-region (point-min) (point-max)))
-
-(defun shell-command-of-current-line ()
-  "like shell-command-of-region"
-  (interactive)
-  (shell-command-of-region
-   (line-beginning-position)
-   (line-end-position)))
 
 (defun lnabs (source &optional prompt)
   ;;(interactive "fEnter soft link source: ")
