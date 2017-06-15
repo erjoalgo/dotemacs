@@ -276,4 +276,13 @@ machine smtp.gmail.com login %s password %s port 587"
 ;; https://www.emacswiki.org/emacs/GnusSpeed#toc3
 (setq gc-cons-threshold 3500000)
 (setq gnus-use-correct-string-widths nil)
+
+(setf gnus-activate-level 1)
+(with-eval-after-load "gnus-start"
+  (dolist (group '("INBOX" "[Gmail]/Sent Mail"))
+    (gnus-group-change-level
+     group level (or (gnus-group-group-level) gnus-level-killed))
+
+    (gnus-group-change-level group 1)))
+
 '(require erjoalgo-indent-mode)
