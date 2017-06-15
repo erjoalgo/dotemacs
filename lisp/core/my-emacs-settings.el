@@ -131,7 +131,9 @@
 		  ;;newline is important
 		  "gBrowser.selectedTab = gBrowser.addTab(\"%s\");\n"
 		  url)))
-    (process-send-string proc payload)))
+    (process-send-string proc payload)
+    (sit-for 10)
+    (delete-process proc)))
 
 (setq browse-url-browser-function 'firefox-new-tab)
 (provide 'my-emacs-settings)
