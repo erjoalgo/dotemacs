@@ -342,3 +342,8 @@ Center command to run on each file: ")
 		 (message "killing buffer: %s " (buffer-name buff))
 		 (kill-buffer buff))))
 	 (mapc kill-func buffers)))
+
+(defun ispell-spanish ()
+  (interactive)
+  (ispell-change-dictionary "castellano8")
+  (ispell))
