@@ -1,4 +1,4 @@
-;;; zoom-global.el --- 
+;;; zoom-global.el ---
 
 ;; Copyright (C) 2016  Ernesto Alfonso <erjoalgo@gmail.com>
 
@@ -26,11 +26,11 @@
 
 
 
-(define-globalized-minor-mode 
+(define-globalized-minor-mode
     global-text-scale-mode
     text-scale-mode
     (lambda () (text-scale-mode 1)))
-  
+
 (defun global-text-scale-adjust (inc) (interactive)
     (text-scale-set 1)
     (kill-local-variable 'text-scale-mode-amount)
