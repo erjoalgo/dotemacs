@@ -88,5 +88,6 @@
 	    for fn in (directory-files top)
 	    as fn = (f-join top fn)
 	    if (and (file-regular-p fn)
-		    (equal "el" (f-ext fn))) do
+		    (equal "el" (f-ext fn)))
+	    do
 	    (funcall safe-load fn)))
