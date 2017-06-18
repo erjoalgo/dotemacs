@@ -1,7 +1,7 @@
 (setf *file-programs*
   '(
    ("zathura" "pdf" )
-   ("libreoffice" "doc" "ppt" "odt" "docx"  "pptx" "xls")
+   ("libreoffice" "doc" "ppt" "odt" "docx"  "pptx" "xls" "ods")
    ("evince" "ps" "eps")
    ("eog" "png" "pgm" "tif" "jpg" "jpeg")
    ("aplay" "wav")
