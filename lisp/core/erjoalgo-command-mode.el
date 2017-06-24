@@ -246,7 +246,7 @@
   ("E" "~/repos/emacs-dirty/.emacs-bloated.el")
   ("C" (:buffer "*ansi-term*"))
   ;; ("c" (join-base-dir "command-mode-commands.el"))
-  ("c" (:buffer "*Compilation*"))
+  ("c" (:buffer "*compilation*"))
   ("b" "~/.bashrc")
   ("a" "~/.bash_aliases")
   ("m" (:buffer "*Messages*"))
