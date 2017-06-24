@@ -258,6 +258,12 @@
   "Revert buffer without confirmation."
   (interactive) (revert-buffer t t))
 
+(defun sanitize-filename (fn)
+  (-> (if (string-match "^/sudo:root@[^:]+:\\(.*\\)" fn)
+	  (match-string 1 fn)
+	fn)
+      expand-file-name))
+
 (defun find-iregex (regex directory)
   (interactive (list
 		(read-string "enter regex: ")
@@ -339,9 +345,10 @@
 	  (ext (and nil (read-string
 			 "enter extension (eg 'js'): "
 			 (f-ext (or (buffer-file-name (current-buffer)) "")))))
-	  (dir (if current-prefix-arg
-		   (read-directory-name "enter directory: ")
-		 default-directory)))
+	  (dir (-> (if current-prefix-arg
+		       (read-directory-name "enter directory: ")
+		     default-directory)
+		   sanitize-filename)))
      (list  (and (not (string= "" ext)) ext) pattern (expand-file-name dir) t)))
 
   (let ((buff-name "grep-recursive")
