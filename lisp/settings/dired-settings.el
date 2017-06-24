@@ -5,7 +5,8 @@
    ("evince" "ps" "eps")
    ("eog" "png" "pgm" "tif" "jpg" "jpeg")
    ("aplay" "wav")
-   (firefox-new-tab "html")
+   ((lambda (fn)
+      (firefox-new-tab (format "file://%s" fn))) "html")
    ("vlc" "mp4" )))
 
 (defun get-file-program (fn)
