@@ -130,7 +130,8 @@
 		       ("a" nil )
 		       ("M" nil)
 		       ((kbd "s-a") 'gnus-attach-file-simple)
-		       ((kbd "M-c") 'message-send-and-exit))
+		       ((kbd "M-c") 'message-send-and-exit)
+		       ((kbd "s-h") 'gnus-insert-html-from-file))
 		      (add-hook 'message-mode-hook
 				(lambda ()
 				  (erjoalgo-indent-mode 1)
@@ -284,5 +285,15 @@ machine smtp.gmail.com login %s password %s port 587"
      group level (or (gnus-group-group-level) gnus-level-killed))
 
     (gnus-group-change-level group 1)))
+
+(defun gnus-insert-html-from-file (filename)
+  (interactive "fenter filename: ")
+  (mml-insert-tag 'part
+		  'type "text/html"
+		  'disposition "inline")
+  (destructuring-bind (_ len)
+      (insert-file-contents filename nil nil nil)
+    (goto-char (+ (point) len))
+    (mml-insert-tag '/part)))
 
 '(require erjoalgo-indent-mode)
