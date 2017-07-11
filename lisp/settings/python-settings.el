@@ -28,3 +28,5 @@ if breakpoints are present in `python-mode' files"
       py-smart-indentation nil))
 
 (add-hook 'python-mode-hook 'my-python-indentation)
+(setf python-check-command
+      "bash \"pylint $1 | sed 's/^[A-Z]: *\([0-9]*\),/$1:\1/'\"")
