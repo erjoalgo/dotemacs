@@ -7,6 +7,7 @@
    ("aplay" "wav")
    ((lambda (fn)
       (firefox-new-tab (format "file://%s" fn))) "html")
+   ("gimp" "xcf")
    ("vlc" "mp4" )))
 
 (defun get-file-program (fn)
