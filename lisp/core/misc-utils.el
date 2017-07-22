@@ -278,7 +278,8 @@ Center command to run on each file: ")
 		       (with-temporary-open-file
 			fn
 			(incf ,count-sym (regexp-replace-current-buffer from to pause))
-			(save-buffer)))))
+			 (when (buffer-modified-p)
+			   (save-buffer))))))
     (message "%d occurrences replaced" (symbol-value count-sym))))
 
 (defun regexp-replace-current-buffer (from to &optional pause)
