@@ -289,7 +289,7 @@ machine smtp.gmail.com login %s password %s port 587"
 
 (with-eval-after-load "gnus-start"
   (condition-case ex (gnus-prioritize-inbox)
-    (error (warn "(gnus-prioritize-inbox) failed: %s" ex)))))
+    (error (warn "(gnus-prioritize-inbox) failed: %s" ex))))
 
 (defun gnus-insert-html-from-file (filename)
   (interactive "fenter filename: ")
