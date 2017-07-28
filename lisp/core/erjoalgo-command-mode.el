@@ -331,7 +331,7 @@
   ;; ("b" matlab-shell)
   ;; ("B"  run-octave)
   ("b" ,(run-or-switch-cmd "*Inferior Octave*" 'inferior-octave))
-  ("3" (run-or-switch-cmd "*eww*")))
+  ("3" ,(run-or-switch-cmd "*eww*" 'eww)))
 
 
 
