@@ -3,7 +3,8 @@
   ;;  (concat (expand-file-name ".") "/"))
   (let ((ealfonso
 	(file-name-directory (file-truename "~ealfonso/.emacs"))))
-    (if (file-exists-p ealfonso) ealfonso
+    (if (and (file-regular-p ealfonso) (file-exists-p ealfonso))
+	ealfonso
       (file-name-directory (file-truename "~/.emacs")))))
 
 
