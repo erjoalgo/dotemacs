@@ -54,7 +54,7 @@ See Info node `(octave)Function Files'."
   (interactive)
   (when buffer-file-name
     (let* ((java-public-class-regexp
-	    "class[[:space:]]+\\([^[:space:]\n{]+\\)")
+	    "class[[:space:]]+\\([^[:space:]\n{]+\\){")
 	   (java-class-name
 	    (save-excursion
 	      (goto-char (point-min))
