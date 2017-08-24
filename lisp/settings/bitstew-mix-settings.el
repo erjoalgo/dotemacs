@@ -15,5 +15,4 @@
       (firefox-new-tab url))))
  erjoalgo-compile-cmd-for-buffer)
 
-(add-to-list 'auto-mode-alist '("[.]mxh$" . nxml-mode))
-(add-to-list 'auto-mode-alist '("[.]mxd$" . nxml-mode))
+(add-to-list 'auto-mode-alist '("[.]mx[hd]$" . nxml-mode))
