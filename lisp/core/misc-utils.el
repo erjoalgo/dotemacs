@@ -348,3 +348,11 @@ Center command to run on each file: ")
   (interactive)
   (ispell-change-dictionary "castellano8")
   (ispell))
+
+(defun lpr-buffer-no-confirm ()
+;; /usr/local/share/emacs/25.2/lisp/lpr.el.gz
+  "Print buffer contents without pagination or page headers.
+See the variables `lpr-switches' and `lpr-command'
+for customization of the printer command."
+  (interactive)
+  (print-region-1 (point-min) (point-max) lpr-switches nil))
