@@ -26,3 +26,17 @@
 	(find-file-existing-other-name nil))
     (find-file (f-join test-dir (f-filename filename)))))
 
+(defun jmx-to-xml ()
+  (interactive)
+  (multi-regexp-replace '(("&lt;" "<")
+			  ("&gt;" ">")
+			  ("&quot;" "\"")
+			  ("&#xd;" "")
+			  ("&apos;" "'")
+			  ("__UUID()" "nQeP2xMTsxz0V")
+			  ("__time(yyyy-MM-dd'T'HH:mm:ssZ)};"
+			   "2017-08-28T0:17:38UTC")))
+
+  (goto-char (point-min))
+  (while (re-search-forward "[$]{.*?}" nil t)
+    (replace-match (int-to-string (random 900)))))
