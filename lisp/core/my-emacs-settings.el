@@ -100,6 +100,7 @@
 (add-to-list 'auto-mode-alist '("\\.graphml$" . nxml-mode))
 (add-to-list 'auto-mode-alist '("[.]y$" . bison-mode))
 (add-to-list 'auto-mode-alist '("[.]ya?ml$" . conf-colon-mode))
+(add-to-list 'auto-mode-alist '("[.]log$" . auto-revert-mode));;auto tail file
 
 (when (get-buffer "*scratch*") (kill-buffer "*scratch*"))
 
@@ -119,8 +120,7 @@
 (add-hook-to-modes 'highlight-long-lines source-modes)
 (add-hook-to-modes (lambda () (setf show-trailing-whitespace t)) source-modes)
 
-;;auto tail file
-(add-to-list 'auto-mode-alist '("\\.log\\'" . auto-revert-mode))
+
 
 (put 'upcase-region 'disabled nil)
 
