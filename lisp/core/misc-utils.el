@@ -356,3 +356,17 @@ See the variables `lpr-switches' and `lpr-command'
 for customization of the printer command."
   (interactive)
   (print-region-1 (point-min) (point-max) lpr-switches nil))
+
+(defun multi-regexp-replace (text-replacement-alist)
+  (cl-labels
+      ((ors-regexp (regexps)
+		   (s-join "\\|" (mapcar 'regexp-quote regexps))))
+    (let ((regexp (ors-regexp (mapcar 'car text-replacement-alist))))
+      (while (re-search-forward regexp nil t)
+	(let* ((text (match-string 0))
+	       (_ (message "text is %s" text))
+	      (replacement (cadr (assoc text text-replacement-alist))))
+	  (replace-match replacement))))))
+
+'(multi-regexp-replace '(("defun" "tayfun")
+			("interactive" "petaluma")))
