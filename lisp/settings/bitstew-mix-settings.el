@@ -16,3 +16,13 @@
  erjoalgo-compile-cmd-for-buffer)
 
 (add-to-list 'auto-mode-alist '("[.]mx[hd]$" . nxml-mode))
+
+(defun bitstew-hard-link-template-to-test-dir (filename &optional test-dir)
+  (interactive (list (buffer-file-name nil)))
+  (setf test-dir (or test-dir "/repos/grid-director/test/"))
+  (shell-command-to-string-message
+   (format "sudo ln %s %s" filename test-dir))
+  (let ((find-file-suppress-same-file-warnings t)
+	(find-file-existing-other-name nil))
+    (find-file (f-join test-dir (f-filename filename)))))
+
