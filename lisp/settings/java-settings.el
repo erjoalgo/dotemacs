@@ -1,10 +1,12 @@
 
-(add-hook 'java-mode-hook (lambda ()
-			    ;(setf tab-width 8)
-			     (setf tab-width 2)
-			     (setf c-basic-offset 2)
+(defun java-set-indentation ()
+					;(setf tab-width 8)
+  (setf tab-width 2)
+  (setf c-basic-offset 2)
 					;(setf indent-tabs-mode t)
-			     (setf indent-tabs-mode nil)))
+  (setf indent-tabs-mode nil))
+
+(add-hook 'java-mode-hook 'java-set-indentation)
 
 (defun buffer-indentations ()
   (save-excursion
