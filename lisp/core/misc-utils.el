@@ -370,3 +370,7 @@ for customization of the printer command."
 
 '(multi-regexp-replace '(("defun" "tayfun")
 			("interactive" "petaluma")))
+
+(defun flush-empty-lines ()
+  (interactive)
+  (flush-lines "^$" (point-min) (point-max)))
