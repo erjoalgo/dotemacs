@@ -247,6 +247,7 @@
   ("C" (:buffer "*ansi-term*"))
   ;; ("c" (join-base-dir "command-mode-commands.el"))
   ("c" (:buffer "*compilation*"))
+  ("r" (:buffer "*Backtrace*"))
   ("b" "~/.bashrc")
   ("a" "~/.bash_aliases")
   ("m" (:buffer "*Messages*"))
