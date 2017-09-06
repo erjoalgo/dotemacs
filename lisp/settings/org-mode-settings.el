@@ -27,7 +27,8 @@
 
   ("s-l" 'org-insert-link)
   ("s-0" 'org-ctrl-c-ctrl-c)
-  ("<s-return>" 'browse-url-at-point))
+  ("<s-return>" 'browse-url-at-point)
+  ("s-s" 'org-insert-last-scrot))
 
 (setq org-blank-before-new-entry
       ;;don't add extra newlines
@@ -128,3 +129,57 @@
      "/DONE" scope)
     (when (fboundp 'check-unsaved-buffers)
       (check-unsaved-buffers))))
+
+(defun org-insert-inline-image (caption filename)
+  (interactive "senter caption for image: \nfenter image filename: ")
+  "     #+CAPTION: This is the caption for the next figure link (or table)
+     #+NAME:
+     [[./img/a.jpg]]"
+  (insert "#+CAPTION: " caption) (newline-and-indent)
+  (insert "#+NAME: fig:SED-HR4049") (newline-and-indent)
+  (insert (format "[[%s]]" filename)) (newline-and-indent)
+  )
+
+(defun file-modification-timestamp (filename)
+  (string-to-number
+   (shell-command-to-string
+    (format "stat '%s' -c '%%Y'" filename))))
+
+(defun last-file-name (files)
+  (let* ((files-modified-alist
+	  (mapcar (lambda (file)
+		    (cons file (file-modification-timestamp file)))
+		  files)))
+    (caar (sort files-modified-alist (lambda (a b) (> (cdr a) (cdr b)))))))
+
+(defvar auto-scrots-dir
+  (f-expand "~/pictures/auto-scrots"))
+
+
+(defun directory-files-exclude-dots (top)
+  (remove-if (lambda (filename) (member filename '("." "..")))
+	       (directory-files top)))
+
+(defun last-file-name-in-directory (top)
+  (last-file-name (mapcar (lambda (basename) (f-join top basename))
+			  (directory-files-exclude-dots top))))
+
+(defun last-scrot-filename ()
+  (last-file-name-in-directory auto-scrots-dir))
+
+(defun org-insert-last-scrot ()
+  "also move last scrot to current directory"
+  ;; (interactive "senter caption for image: ")
+  (interactive)
+  (let* ((filename (last-scrot-filename))
+	 (basename (f-filename filename))
+	 (basename-noext (f-no-ext basename))
+	 (caption (replace-regexp-in-string "-" " " basename-noext))
+	 (destination "images")
+	 (org-image-filename (concat "./"
+				     (f-join "./" destination basename))))
+    (unless (zerop (call-process "mv" nil nil nil "-t" destination filename))
+      (error "failed to  move %s to %s" filename default-directory))
+    (org-insert-inline-image caption org-image-filename)))
+
+
