@@ -28,7 +28,8 @@
   ("s-l" 'org-insert-link)
   ("s-0" 'org-ctrl-c-ctrl-c)
   ("<s-return>" 'browse-url-at-point)
-  ("s-s" 'org-insert-last-scrot))
+  ("s-s" 'org-insert-last-scrot)
+  ("s-." 'my-org-shift-right))
 
 (setq org-blank-before-new-entry
       ;;don't add extra newlines
@@ -183,3 +184,7 @@
     (org-insert-inline-image caption org-image-filename)))
 
 
+(defun my-org-shift-right (arg a b)
+  (interactive "p\nr")
+  (replace-regexp "^" (make-string (or arg 1) (string-to-char " ")) nil a b)
+  )
