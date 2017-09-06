@@ -25,32 +25,27 @@
 
 (require 'f)
 
-(defcustom plusx-interpreter-line-rules
-  '(("[.]py$" "#!/usr/bin/python")
-    ("[.]sh$" "#!/bin/bash")
-    ("[.]bash$" "#!/bin/bash")
-    ("[.]lisp$" "#!/usr/bin/sbcl --script")
-    ("[.]perl$" "#!/usr/bin/perl")
+(defcustom plusx-interpreter-line-alist
+  '((python-mode "#!/usr/bin/python")
+    (sh-mode "#!/bin/bash")
+    (lisp-mode)
+    (perl-mode "#!/usr/bin/perl")
     )
-  "regexp --> shebang")
+  "major-mode --> shebang string")
 
 
 (defun plusx-maybe-insert-interpreter-line ()
   (interactive)
   (let* ((fn (buffer-file-name (current-buffer)))
 	 (shebang
-	  (loop for (regexp shebang) in plusx-interpreter-line-rules
-		thereis (and (string-match regexp fn) shebang))))
+	  (cadr (assoc major-mode plusx-interpreter-line-alist))))
 
-    (if (not shebang) (message "no match for %s" fn)
-      (save-excursion
-	(goto-char (point-min))
-	(unless (looking-at "#!")
-	  (insert shebang)
-	  (open-line 1)
-	  ;;(save-buffer)
-	  ;;(chmodx)
-	  )))))
+    (unless shebang (error "no match for %s" major-mode))
+    (save-excursion
+      (goto-char (point-min))
+      (unless (looking-at "#!")
+	(insert shebang)
+	(open-line 1)))))
 
 
 (defun plusx (fn &optional link-bin-p)
