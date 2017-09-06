@@ -70,7 +70,8 @@
 ;;TODO the same for async-shell-command file names
 
 (require 'server)
-(unless (server-running-p)
+(progn
+  (server-force-delete)
   (server-start))
 
 ;(setq split-window-preferred-function 'split-window-vertically) doesn't work
