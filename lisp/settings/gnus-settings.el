@@ -187,11 +187,13 @@
     ;;(mml-attach-file FILE &optional TYPE DESCRIPTION DISPOSITION)
     (mml-attach-file file type description disposition)))
 
-(defun gmail-search-query ()
-  (interactive )
+(defun gmail-search-query (arg)
+  (interactive "P")
   (with-current-buffer "*Group*"
     (save-excursion (goto-char (point-min))
-		    (re-search-forward "^[ 	]+\\([0-9]+\\|[*]\\):.*INBOX$")
+		    (re-search-forward
+		     (format "^[ 	]+\\([0-9]+\\|[*]\\):.*%s$"
+			     (regexp-quote (if arg sent-group-name "INBOX"))))
 		    (call-interactively 'gnus-group-make-nnir-group))))
 
 (defun gnus-mime-save-all-attachmnets (dir)
