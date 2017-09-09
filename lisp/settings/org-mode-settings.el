@@ -194,5 +194,14 @@
 
 (defun my-org-shift-right (arg a b)
   (interactive "p\nr")
-  (replace-regexp "^" (make-string (or arg 1) (string-to-char " ")) nil a b)
-  )
+  (save-excursion
+    (replace-regexp "^"
+		    (make-string (or arg 1) (string-to-char " "))
+		    nil a b)))
+
+(defun my-org-shift-left (arg a b)
+  (interactive "p\nr")
+  (save-excursion
+    (replace-regexp (format "^ \\{%d\\}" (or arg 1))
+		    ""
+		    nil a b)))
