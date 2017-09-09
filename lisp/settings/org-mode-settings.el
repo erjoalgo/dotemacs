@@ -88,10 +88,15 @@
 (define-key org-mode-map (kbd "M-c") 'org-export-mine)
 (setq org-html-validation-link nil)
 
+(make-file-local-variable-flag-toggle-command
+ org-treat-as-readme-p)
+
 (defun maybe-export-to-markdown ()
   (when (and (eq major-mode 'org-mode)
-	     (equal (f-filename (buffer-file-name))
-		    "README.org"))
+	     (or (equal (f-filename (buffer-file-name))
+			"README.org")
+		 (and (boundp 'org-treat-as-readme-p)
+		      org-treat-as-readme-p)))
     (let ((dont-ask-user-about-supersession-threat t))
       (org-md-export-to-markdown)
       (org-html-export-to-html))))
