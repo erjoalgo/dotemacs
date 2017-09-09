@@ -69,7 +69,7 @@ See Info node `(octave)Function Files'."
                (file (file-name-sans-extension
                       (file-name-nondirectory buffer-file-name)))
                (help-form (format "\
-a: Use function name `%s'
+a: Use java class name `%s'
 b: Use file name `%s'
 q: Don't fix\n" func file))
                (c (unless (equal file func)
