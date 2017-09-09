@@ -185,7 +185,9 @@
 	 (destination "images")
 	 (org-image-filename (concat "./"
 				     (f-join "./" destination basename))))
-    (unless (zerop (call-process "mv" nil nil nil "-t" destination filename))
+    (unless (file-exists-p destination)
+      (make-directory destination))
+    (unless (zerop (call-process "mv" nil t nil "-t" destination filename))
       (error "failed to  move %s to %s" filename default-directory))
     (org-insert-inline-image caption org-image-filename)))
 
