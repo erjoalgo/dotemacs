@@ -374,3 +374,31 @@ for customization of the printer command."
 (defun flush-empty-lines ()
   (interactive)
   (flush-lines "^$" (point-min) (point-max)))
+
+(defmacro make-file-local-variable-set-command
+    (file-local-var-sym &optional prompt prompt-fun set-or-toggle)
+  "defun a command which sets a given file-local-variable
+`prompt-fun' is the function to call to prompt for a new value.
+it is called with 2 arguments, the prompt, and the current value
+of the variable, or nil if unbound.
+`prompt-fun' defaults to `read-string'"
+  (let* ((var-sym-name (symbol-name file-local-var-sym))
+	 (set-or-toggle (or set-or-toggle 'set))
+	 (fun-sym (intern (format "file-local-%s-%s"
+				  (symbol-name set-or-toggle)
+				  var-sym-name)))
+	 (prompt (or prompt (format "enter new value for %s: "
+				    var-sym-name)))
+	 (prompt-fun (or prompt-fun 'read-string)))
+    `(defun ,fun-sym (arg)
+       (interactive "P")
+       (let* ((curr-value (when (boundp ',file-local-var-sym)
+			   ,file-local-var-sym))
+	     (new-value (funcall ',prompt-fun ,prompt curr-value)))
+	 (add-file-local-variable ',file-local-var-sym new-value)
+	 (setf ,file-local-var-sym new-value)))))
+
+(defmacro make-file-local-variable-flag-toggle-command
+    (file-local-var-sym)
+  `(make-file-local-variable-set-command
+    ,file-local-var-sym nil (lambda (_ curr) (not curr)) toggle))
