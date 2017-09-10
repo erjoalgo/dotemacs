@@ -412,6 +412,8 @@
                                  (buffer-list)))
             (nth-mod (lambda (n list) (nth (mod n (length list)) list)))
             (direction (if arg -1 1)))
+	 (unless (> (length buf-list) 1)
+		  (error "no more buffers"))
         (if (member last-command '(cycle-buffer 'cycle-prev-buffer))
             (progn
               (incf cycle-buffer-index direction)
