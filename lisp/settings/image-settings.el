@@ -70,8 +70,19 @@
 
 (add-hook 'image-mode-hook 'turn-off-erjoalgo-cmd-mode)
 
+(defvar image-share-image-directory "./share")
+
+(defun image-set-share-current-image-directory (directory)
+  (interactive "Denter directory ")
+  "specify the destination directory for symlinking images to share via
+share-current-image"
+  (setf image-share-image-directory
+	(expand-file-name directory)))
+
 (defun share-current-image ()
+  "symlink current image to the specified directory"
   (interactive)
-  (let ((cmd (format "ln -s %s ./share" (buffer-file-name nil))))
+  (let ((cmd (format "ln -s %s %s" (buffer-file-name nil)
+		     image-share-image-directory)))
     (message "%s" cmd)
     (shell-command cmd)))
