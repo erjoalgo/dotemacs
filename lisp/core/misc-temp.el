@@ -27,12 +27,15 @@
 
 
 
-(defun process-filter-line-buffer (real-filter)
+(defun process-filter-line-buffer (real-filter &optional separator-char)
+  "a wrapper on top of a process filter function which ensures
+the original filter function is called exactly once for each complete line
+of process output. the return value is a new process-filter function"
 	 (let ((cum-string-sym (gensym "proc-filter-buff"))
-	       (newline (string-to-char "\n"))
+	(newline (or separator-char (string-to-char "\n")))
 	       (string-indexof (lambda (string char start)
 				 (loop for i from start below (length string)
-				       thereis (and (eq char (aref string i))
+				thereis (when (eq char (aref string i))
 						    i)))))
 	   (set cum-string-sym "")
 	   `(lambda (proc string)
