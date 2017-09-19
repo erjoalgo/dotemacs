@@ -32,7 +32,10 @@
 		       (,(first (s-split " " user-full-name)) "MY-FIRST-NAME")
 		       (,(second (s-split " " user-full-name)) "MY-LAST-NAME")))
 	(regexps `(("[[:alnum:]]+@[[:alnum:]]+[.][[:alnum:]]+" "user@example.com")
-		   ("@[[:alnum:]]+[.][[:alnum:]]+" "@example.com")))
+		   ("@[[:alnum:]]+[.][[:alnum:]]+" "@example.com")
+		   ("http://[^/[:space:]]+" "http://example.com")
+		   ("https://[^/[:space:]]+" "https://example.com")
+		   ))
 	(total-count 0))
 
     (setf words (loop for (word replacement) in words
