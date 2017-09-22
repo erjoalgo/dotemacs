@@ -65,7 +65,7 @@
   (ensure-packages-exist
    '(company legalese magit dash dash-functional go-mode calfw calfw-gcal
 	     ;; gnus-desktop-notify
-	     java-imports bbdb))
+	     java-imports bbdb nginx-mode))
 
   (funcall (safe-fun 'require) 'company)
   (require 'dash)
