@@ -36,6 +36,7 @@
 		   ("@[[:alnum:]]+[.][[:alnum:]]+" "@example.com")
 		   ("http://[^/[:space:]]+" "http://example.com")
 		   ("https://[^/[:space:]]+" "https://example.com")
+		   ("\\(\\([0-9a-fA-F]\\{2\\}:\\)\\{5\\}[0-9a-fA-F]\\)" "00:00:00:00:00:00")
 		   ))
 	(total-count 0))
 
