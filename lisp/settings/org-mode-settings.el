@@ -174,14 +174,15 @@
 (defun last-scrot-filename ()
   (last-file-name-in-directory auto-scrots-dir))
 
-(defun org-insert-last-scrot ()
+(defun org-insert-last-scrot (&optional caption)
   "also move last scrot to current directory"
-  ;; (interactive "senter caption for image: ")
-  (interactive)
+  (interactive (list (read-string "enter caption for image: "
+				  (x-get-clipboard))))
   (let* ((filename (last-scrot-filename))
 	 (basename (f-filename filename))
 	 (basename-noext (f-no-ext basename))
-	 (caption (replace-regexp-in-string "-" " " basename-noext))
+	 (caption (or caption
+		      (replace-regexp-in-string "-" " " basename-noext)))
 	 (destination "images")
 	 (org-image-filename (concat "./"
 				     (f-join "./" destination basename))))
