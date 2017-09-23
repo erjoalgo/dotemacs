@@ -72,6 +72,11 @@
   (goto-char (point-max))
   (insert body))
 
+(defun debian-file->string (filename)
+    (with-temp-buffer
+      (insert-file-contents-literally filename)
+      (buffer-string)))
+
 (defun translation-wdiff (name)
   (interactive (list (f-base default-directory)))
   (let* (
