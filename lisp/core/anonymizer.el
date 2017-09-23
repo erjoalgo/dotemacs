@@ -23,8 +23,10 @@
 ;;; Code:
 
 
-(defun anonymizer-anonymize ()
-  (interactive)
+(defun anonymizer-anonymize (a b)
+  (interactive "r")
+  (unless (region-active-p)
+    (setf a nil b nil))
   (let ((words `((,system-name "my-hostname")
 		       (,user-login-name "MY-NAME" )
 		       (,user-real-login-name "MY-NAME")
@@ -47,8 +49,8 @@
 					  (message "replacing occurrences of '%s'" regexp)
 					  (let ((count 0))
 					    (save-excursion
-					      (beginning-of-buffer)
-					      (while (re-search-forward regexp nil t)
+					      (goto-char (or a (point-min)))
+					      (while (re-search-forward regexp b t)
 						(let* ((match (match-string 0))
 						      (replacement (funcall replacement match)))
 						  (assert replacement nil "no replacement for '%s'" match)
