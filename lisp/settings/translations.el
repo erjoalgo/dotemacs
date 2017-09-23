@@ -1,30 +1,60 @@
-(defun translation-new (name text-original text-english)
-  (interactive (list (read-string "enter name of translation (no spaces): ")
-		     nil nil))
-  (let* ((dir (f-join "~/git/translations/" name))
-	(original (f-join dir (concat name "-original.txt")))
-	(correction (f-join dir (concat name "-corrección.txt")))
-	(english (f-join dir (concat name "-english.txt"))))
-    (make-directory dir)
+(defvar
+  translation-suffixes
+  '((original . "-original.txt")
+    (correction . "-corrección.txt")
+    (english . "-english.txt")
+    (spanish . "-spanish.txt")
+    (wdiff . "-wdiff.txt")))
 
-    (find-file original)
-    (if text-original
-	(insert text-original)
-      (progn (message "paste original translation")
-	     (clipboard-yank)
-	     (recursive-edit)))
-    (save-buffer)
+(defvar translations-home
+  (expand-file-name "~/git/translations/"))
 
-    (find-file english)
-    (if text-english
-	(insert text-english)
-      (progn (message "paste english source")
-	     (recursive-edit)))
-    (save-buffer)
+(defun translation-suffix (name suffix-sym)
+  (let ((suffix (cdr (assoc suffix-sym translation-suffixes)))
+	filename )
+    (f-join translations-home
+	    name ;;directory
+	    (concat name suffix));;file bassename
+    ))
 
-    (find-file correction)
-    (insert-file original)
-    (message "start working!")))
+(defun translation-interactive-create-file (filename &optional text)
+  (find-file filename)
+  (if text
+      (insert text)
+    (progn (message (format "enter %s contents" (f-base filename)))
+	   (clipboard-yank)
+	   (recursive-edit)))
+  (save-buffer)
+  (buffer-string))
+
+(defun translation-mkdir (name)
+  (let ((dir (f-join translations-home name)))
+    (unless (file-exists-p dir)
+      (make-directory dir))))
+
+(defun translation-new (name &optional text-english)
+  (interactive "senter name of translation: ")
+  (translation-mkdir name)
+  (translation-interactive-create-file
+   (translation-suffix name 'english) text-english)
+
+  (translation-interactive-create-file
+   (translation-suffix name 'spanish) ""))
+
+(defun translation-new-correction
+    (name &optional text-original text-english)
+  (interactive "senter name of translation: ")
+  (translation-mkdir name)
+
+  (setf text-original
+	(translation-interactive-create-file
+	 (translation-suffix name 'original) text-original))
+
+  (translation-interactive-create-file
+   (translation-suffix name 'english) text-english)
+
+  (find-file (translation-suffix name 'correction))
+  (insert text-original))
 
 (defun translation-publish (subject body address)
   (interactive
@@ -41,3 +71,16 @@
    address subject nil)
   (goto-char (point-max))
   (insert body))
+
+(defun translation-wdiff (name)
+  (interactive (list (f-base default-directory)))
+  (let* (
+	 (wdiff-file-name (translation-suffix "name" 'wdiff))
+	 (cmd (format "wdiff %s %s > %s"
+		      (translation-suffix name 'original)
+		      (translation-suffix name 'correction)
+		      wdiff-file-name)))
+    (message "cmd %s" cmd)
+    (shell-command cmd)
+    (kill-new (debian-file->string wdiff-file-name))
+    (message "yanked wdif output")))
