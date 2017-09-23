@@ -119,15 +119,17 @@
 			(eq major-mode 'fundamental-mode))
 		    (read-symbol-completing "enter mode: ")
 		  major-mode)))
-  ;;first load mode to set the right comment-start
-  (funcall mode)
-  (let ((mode-sans-mode
-	 (let ((mode-name (symbol-name mode)))
-	   (string-match
-				"\\(.*\\)-mode"
-				mode-name)
-	   (intern (match-string 1 mode-name)))))
-    (add-file-local-variable 'mode mode-sans-mode)))
+  (if (not (eq mode major-mode))
+      (add-file-local-variable mode t)
+    ;;first load mode to set the right comment-start
+    (funcall mode)
+    (let ((mode-sans-mode
+	   (let ((mode-name (symbol-name mode)))
+	     (string-match
+	      "\\(.*\\)-mode"
+	      mode-name)
+	     (intern (match-string 1 mode-name)))))
+      (add-file-local-variable 'mode mode-sans-mode))))
 
 (defun check-unsaved-buffers ()
   (interactive)
