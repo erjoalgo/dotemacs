@@ -303,4 +303,23 @@ machine smtp.gmail.com login %s password %s port 587"
     (goto-char (+ (point) len))
     (mml-insert-tag '/part)))
 
+(defvar gnus-email-templates-home
+  (expand-file-name "~/.gnus-templates"))
+
+(defun message-mode-maybe-insert-email-template ()
+  (let ((to-addr (message-fetch-field "To")))
+    (when to-addr
+      (let* ((hostname (cadr (split-string to-addr "@")))
+	     (filename (f-join gnus-email-templates-home hostname)))
+	(when (file-exists-p filename)
+	  ;; TODO how to insert this before the body?
+	  (message "inserting template from %s" filename)
+	  (end-of-buffer)
+	  (insert-file (expand-file-name filename)))))))
+
+
+(add-hook 'message-signature-setup-hook
+	  'message-mode-maybe-insert-email-template)
+
+
 '(require erjoalgo-indent-mode)
