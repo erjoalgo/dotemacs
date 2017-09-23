@@ -185,6 +185,8 @@
 	 (destination "images")
 	 (org-image-filename (concat "./"
 				     (f-join "./" destination basename))))
+    (unless (member (downcase (f-ext filename)) '("jpeg" "jpg" "png" "gif"))
+      (error "last file is not an image: %s" filename))
     (unless (file-exists-p destination)
       (make-directory destination))
     (unless (zerop (call-process "mv" nil t nil "-t" destination filename))
