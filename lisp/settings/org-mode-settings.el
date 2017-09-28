@@ -163,7 +163,9 @@
     (caar (sort files-modified-alist (lambda (a b) (> (cdr a) (cdr b)))))))
 
 (defvar auto-scrots-dir
-  (f-expand "~/pictures/auto-scrots"))
+  ;; (f-expand "~/pictures/auto-scrots")
+  (f-expand "~/Downloads")
+)
 
 
 (defun directory-files-exclude-dots (top)
