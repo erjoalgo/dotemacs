@@ -66,6 +66,7 @@
 
 (define-key global-map [f1] 'global-erjoalgo-command-mode-toggle)
 (define-key global-map [f12] 'global-erjoalgo-command-mode-toggle)
+(define-key global-map (kbd "ë") 'global-erjoalgo-command-mode-toggle)
 
 '(defun define-key-tuples (kbd-cmd-tuples &optional kmap)
   (unless kmap (setq kmap (make-sparse-keymap)))
@@ -211,7 +212,9 @@
 	 (unless arg
 	   (global-erjoalgo-command-mode 0))))
 
+  ;; ([f1] nil);; f1 toggle command mode
   ([f1] global-erjoalgo-command-mode-toggle);; f1 toggle command mode
+  ([ë] global-erjoalgo-command-mode-toggle);; f1 toggle command mode
 
   ("y" search-engine-search)
   )
