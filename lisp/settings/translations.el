@@ -80,7 +80,7 @@
 (defun translation-wdiff (name)
   (interactive (list (f-base default-directory)))
   (let* (
-	 (wdiff-file-name (translation-suffix "name" 'wdiff))
+	 (wdiff-file-name (translation-suffix name 'wdiff))
 	 (cmd (format "wdiff %s %s > %s"
 		      (translation-suffix name 'original)
 		      (translation-suffix name 'correction)
