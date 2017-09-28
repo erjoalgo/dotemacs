@@ -172,9 +172,10 @@
   (remove-if (lambda (filename) (member filename '("." "..")))
 	       (directory-files top)))
 
-(defun last-file-name-in-directory (top)
-  (last-file-name (mapcar (lambda (basename) (f-join top basename))
-			  (directory-files-exclude-dots top))))
+(defun last-file-name-in-directories (top-dirs)
+  (last-file-name (loop for top in top-dirs nconc
+			(loop for basename in (directory-files-exclude-dots top)
+			      collect (f-join top basename)))))
 
 (defun last-scrot-filename ()
   (last-file-name-in-directory auto-scrots-dir))
