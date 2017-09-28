@@ -210,6 +210,18 @@
 		    ""
 		    nil a b)))
 
+(defun org-texinfo-export-to-texinfo-and-html ()
+  (interactive)
+  (org-texinfo-export-to-texinfo)
+  (let ((texi-file (concat
+		    (f-base (buffer-file-name)) ".texi")))
+    (shell-command (format (concat "texi2html " texi-file
+				   " --no-number-sections"
+				   " --split node"
+				   " --css-include img.css")
+			   ))
+    ))
+
 (defun my-org-redisplay-inline-images (limit)
   (when (and org-inline-image-overlays
 	     (eq 'org-self-insert-command this-command)
