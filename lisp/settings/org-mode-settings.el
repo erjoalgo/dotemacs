@@ -59,6 +59,9 @@
     ("s-2" (lambda () (interactive) (org-agenda-todo 2)));;tag DONE
     ))
 
+(with-eval-after-load (symbol-file 'org-mode)
+  (require 'ox-texinfo))
+
 
 (setf search-invisible nil)
 (setf org-hide-leading-stars t)
