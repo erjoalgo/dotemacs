@@ -27,7 +27,7 @@
 
   ("s-l" 'org-insert-link)
   ("s-0" 'org-ctrl-c-ctrl-c)
-  ("<s-return>" 'browse-url-at-point)
+  ;; ("<s-return>" 'browse-url-at-point)
   ("s-s" 'org-insert-last-scrot)
   ("s-[" 'my-org-shift-left)
   ("s-]" 'my-org-shift-right))
