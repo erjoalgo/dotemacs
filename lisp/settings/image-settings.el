@@ -10,10 +10,9 @@
      (error "non-zero exit from %s" ',cmd-forms)))
 
 (defun exif-set-tag (jpg-file tag value)
-  (ensure-zero-exit
-   (shell-command
-    (format "exiv2 -M'set Exif.Photo.%s %s' %s"
-	    tag value jpg-file))))
+  (shell-command
+   (format "exiv2 -M'set Exif.Photo.%s %s' %s"
+	   tag value jpg-file)))
 
 (defun exif-get-tag (jpeg-file tag)
   (shell-command-to-string
