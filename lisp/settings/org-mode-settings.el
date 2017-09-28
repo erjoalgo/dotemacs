@@ -210,6 +210,15 @@
 		    ""
 		    nil a b)))
 
+(defun my-org-redisplay-inline-images (limit)
+  (when (and org-inline-image-overlays
+	     (eq 'org-self-insert-command this-command)
+	     (eql 91 (char-after)))
+    (org-redisplay-inline-images)))
+
+(add-hook 'org-font-lock-hook
+	  'my-org-redisplay-inline-images)
+
 (defun org-toggle-list-heading ()
   (interactive)
   (let* ((elm-at-point (org-element-at-point))
