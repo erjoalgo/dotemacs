@@ -83,7 +83,7 @@
 (setf show-paren-style 'expression)
 (setf show-paren-delay 0)
 
-(setq enable-local-variables :safe)
+(setf enable-local-variables t)
 
 (put 'erase-buffer 'disabled nil)
 (put 'downcase-region 'disabled nil)
