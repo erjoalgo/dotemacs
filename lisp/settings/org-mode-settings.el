@@ -208,3 +208,24 @@
     (replace-regexp (format "^ \\{%d\\}" (or arg 1))
 		    ""
 		    nil a b)))
+
+(defun org-toggle-list-heading ()
+  (interactive)
+  (let* ((elm-at-point (org-element-at-point))
+	 (at-list-p (case (car elm-at-point)
+		      ((item paragraph) t)
+		      (headline nil)
+		      (t (error "unknown element %s: "
+				(car elm-at-point))))))
+    (save-excursion
+      (save-match-data
+	(re-search-backward "^\\([*]+\\|\\([ ]+[-]\\)\\)"
+			    (line-beginning-position))
+	(let* ((matched-len (length (match-string 0)))
+	       (new-string (if at-list-p
+			       (make-string matched-len
+					    (string-to-char "*"))
+			     (concat
+			      (make-string (1- matched-len)
+					   (string-to-char " ")) "-"))))
+	  (replace-match new-string t t))))))
