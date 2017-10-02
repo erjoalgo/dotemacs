@@ -352,11 +352,11 @@
      (list  (and (not (string= "" ext)) ext) pattern (expand-file-name dir) t)))
 
   (let ((buff-name "grep-recursive")
-	(default-directory dir)
 	proc)
     (when clear-buffer
       (switch-to-buffer buff-name)
       (erase-buffer))
+    (setf default-directory dir)
 
     (setf proc (apply 'start-process buff-name buff-name
 		   (append
@@ -367,6 +367,7 @@
     (set-process-sentinel proc
 			  `(lambda (proc change)
 			     (switch-to-buffer ,buff-name)
+			     ;; (setf default-directory ,dir)
 			     (buffer-relativize-path-names ,dir)
 			     (progn (goto-char (point-max))
 				      (insert "DONE"))
