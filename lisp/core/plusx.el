@@ -27,7 +27,7 @@
 
 (setf plusx-interpreter-line-alist
   '((python-mode "#!/usr/bin/python")
-    (sh-mode "#!/bin/bash -x\nset -euo pipefail")
+    (sh-mode "#!/bin/bash -x\n\nset -euo pipefail")
     (lisp-mode)
     (perl-mode "#!/usr/bin/perl")
     ))
