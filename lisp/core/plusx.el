@@ -25,9 +25,9 @@
 
 (require 'f)
 
-(defcustom plusx-interpreter-line-alist
+(setf plusx-interpreter-line-alist
   '((python-mode "#!/usr/bin/python")
-    (sh-mode "#!/bin/bash")
+    (sh-mode "#!/bin/bash -x\nset -euo pipefail")
     (lisp-mode)
     (perl-mode "#!/usr/bin/perl")
     )
