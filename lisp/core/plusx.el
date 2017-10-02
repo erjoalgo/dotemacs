@@ -61,7 +61,9 @@
     (when (and link-bin-p
 	       (not (file-exists-p bin-link)))
       (message "creating symlink for %s" fn)
-      (shell-command (format "ln -s %s %s" fn bin-link)))))
+      (shell-command (format "ln -s %s %s" fn bin-link)))
+    (unless (f-ext fn)
+      (add-file-local-variable-mode major-mode))))
 
 (defun plusx-and-link (fn)
   (plusx fn))
