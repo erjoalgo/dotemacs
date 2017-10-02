@@ -30,8 +30,8 @@
     (sh-mode "#!/bin/bash -x\nset -euo pipefail")
     (lisp-mode)
     (perl-mode "#!/usr/bin/perl")
-    )
-  "major-mode --> shebang string")
+    ))
+  ;; "major-mode --> shebang string")
 
 
 (defun plusx-maybe-insert-interpreter-line ()
