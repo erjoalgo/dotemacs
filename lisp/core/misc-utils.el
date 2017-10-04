@@ -438,6 +438,5 @@ of the variable, or nil if unbound.
   `(make-file-local-variable-set-command
     ,file-local-var-sym nil (lambda (_ curr) (not curr)) toggle))
 
-(defun insert-uuid ()
-  (interactive)
-  (shell-command "uuidgen" t))
+(defun uuid ()
+  (shell-command-to-string "uuidgen| tr -d '\n'"))
