@@ -9,3 +9,8 @@
 	    (let ((erc-login ad-do-it))
 	      (with-temp-file fn (insert (prin1-to-string erc-login)))
 	      erc-login)))))
+
+(setq erc-autojoin-channels-alist
+      '(("freenode.net"
+	 "#emacs"
+	 "#stumpwm")))
