@@ -37,3 +37,18 @@ if breakpoints are present in `python-mode' files"
 	    (format "pylint %s | sed 's/^[A-Z]: *\\([0-9]*\\),/%s:\\1: /g'"
 		    basename basename)))))
 
+(defvar python-argparse-template
+  "import argparse
+parser = argparse.ArgumentParser()
+parser.add_argument(\"line\", help = \"universally unique line\")
+parser.add_argument(\"filename\", help = \"input/output file\")
+parser.add_argument(\"-b\", \"--begining_append\",  action=\"store_true\",
+                    help = \"preppend instead of append\")
+parser.add_argument(\"-o\", \"--output\",
+                    help = \"specify a different output file\")
+parser.add_argument(\"-n\", \"--no_strip_newline\",  action=\"store_true\",
+                    help = \"don't strip trailing newline from stdin\")
+
+args=vars(parser.parse_args())
+globals().update(args)
+")
