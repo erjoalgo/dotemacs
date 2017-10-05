@@ -29,27 +29,33 @@
 
 
 (cl-defun gnus-gen-dot-gnus (email &key smtp imap dot-gnus
-				   inbox-group-name sent-group-name)
-  (let ((form (gnus-imap-smtp-form email smtp imap))
-	(dot-gnus (f-expand (or dot-gnus "~/.gnus"))))
-    (unless (or (not (file-exists-p dot-gnus))
-		(when (y-or-n-p (format "%s file exists. overwrite?" dot-gnus))
+				   inbox-group-name sent-group-name
+				   (if-file-exists prompt))
+  (let* ((form (gnus-imap-smtp-form email smtp imap))
+	 (dot-gnus (f-expand (or dot-gnus "~/.gnus"))))
+    (when (or (not (file-exists-p dot-gnus))
+	      (when
+	       (case if-file-exists
+		(overwrite t)
+		(ignore nil)
+		(prompt (y-or-n-p (format "%s file exists. overwrite?" dot-gnus))))
+	       (progn
 		  (funcall (if (fboundp 'shred-rec) 'shred-rec 'delete-file) dot-gnus)
-		  t))
-      (error "~/.gnus already exists"))
+		 t)))
     (with-temp-file dot-gnus
       (insert (pp form))
       (insert (pp `(setf inbox-group-name ,inbox-group-name)))
       (insert (pp `(setf sent-group-name ,sent-group-name)))
       (add-file-local-variable 'mode 'emacs-lisp))
-    (message "wrote to %s" dot-gnus)))
+    (message "wrote to %s" dot-gnus))))
 
-'(gnus-gen-dot-gnus "erjoalgo@gmail.com"
+(gnus-gen-dot-gnus "erjoalgo@gmail.com"
 		    :smtp '("smtp.gmail.com" . 587)
 		   :imap '("imap.gmail.com" . 993)
 		   :dot-gnus "~/.gnus-gmail"
 		   :inbox-group-name "INBOX"
-		   :sent-group-name "[Gmail]/Sent Mail")
+		   :sent-group-name "[Gmail]/Sent Mail"
+		   :if-file-exists 'ignore)
 
 
 
