@@ -335,7 +335,10 @@
   ;; ("b" matlab-shell)
   ;; ("B"  run-octave)
   ("b" ,(run-or-switch-cmd "*Inferior Octave*" 'inferior-octave))
-  ("3" ,(run-or-switch-cmd "*eww*" 'eww)))
+  ("3" ,(run-or-switch-cmd "*eww*" 'eww))
+  ("d" (lambda () (interactive)
+		(setf debug-on-error t)
+		(message "debug on error on..."))))
 
 
 
