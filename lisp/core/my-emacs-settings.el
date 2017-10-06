@@ -24,28 +24,23 @@
 ;;; Code:
 
 
-
-(defconst emacs-backups-dir "~/.emacs-backups")
-
-;; Save all tempfiles in $TMPDIR/emacs$UID/
-
-(setq backup-directory-alist
-      `((".*" . ,emacs-backups-dir))
-
-      auto-save-file-name-transforms
-      `((".*" ,emacs-backups-dir t))
-
-      auto-save-list-file-prefix
-      emacs-backups-dir)
-;;taken from the internet
-(setq
- backup-by-copying t      ; don't clobber symlinks
- ;backup-directory-alist
- ;`(("." . ,emacs-backups-dir))    ; don't litter my fs tree
- delete-old-versions t
- kept-new-versions 6
- kept-old-versions 2
- version-control t)       ; use versioned backups
+(let ((backups-dir (expand-file-name "~/.emacs.backups"))
+      (auto-save-dir (expand-file-name "~/.emacs.auto-save"))
+      (tmp-files-dir (expand-file-name "~/.emacs.tmp")))
+  (dolist (dir (list temporary-file-directory
+		     backups-dir
+		     tmp-files-dir))
+    (unless (file-exists-p dir) (make-directory dir)))
+  (setq backup-directory-alist `((".*" . ,backups-dir))
+	auto-save-file-name-transforms `((".*" ,backups-dir t))
+	auto-save-list-file-prefix (concat backups-dir "/")
+	backup-by-copying t
+	delete-old-versions t
+	kept-new-versions 6
+	kept-old-versions 2
+	version-control t
+	temporary-file-directory tmp-files-dir
+	))
 
 
 
