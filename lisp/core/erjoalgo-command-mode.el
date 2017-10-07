@@ -306,7 +306,7 @@
   ("a" async-shell-command)
   ("v" revert-buffer-no-confirm)
   ("n" find-new-buffer)
-  ("D" (lambda () (interactive)(call-interactively 'pdb)))
+  ("D" edebug-set-breakpoint)
   ("g" grep-recursive)
   ("f" find-iregex)
   ("u" universal-argument)
