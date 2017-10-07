@@ -443,6 +443,7 @@
 			 (buffer-substring-no-properties
 			  (region-beginning) (region-end))
 		       (read-string "enter search terms: " (car kill-ring)))))
+  (message "searching for %s..." term)
   (firefox-new-tab (format search-engine-query-url-format
 			   (uri-encode
 			    (replace-regexp-in-string "[\n]" "" term)))))
