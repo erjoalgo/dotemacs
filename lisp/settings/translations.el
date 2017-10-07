@@ -30,7 +30,7 @@
 (defun translation-mkdir (name)
   (let ((dir (f-join translations-home name)))
     (unless (file-exists-p dir)
-      (make-directory dir))))
+      (make-directory dir t))))
 
 (defun translation-new (name &optional text-english)
   (interactive "senter name of translation: ")
