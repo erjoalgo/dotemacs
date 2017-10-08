@@ -1,6 +1,6 @@
 (cl-defun erc-login-to-string (&key server password nick port)
   "this should be an anonymous function"
-  (format "%s:%s (%s:%s)" server port nick nil))
+  (format "%s:%s (%s:%s)" server port nick "HIDDEN"))
 
 (defun erc-select-server-login (&optional fn)
   (interactive)
