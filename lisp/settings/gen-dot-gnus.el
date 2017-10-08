@@ -57,6 +57,15 @@
 		   :sent-group-name "[Gmail]/Sent Mail"
 		   :if-file-exists 'ignore)
 
+'(gnus-gen-dot-gnus "ealfonso@alumni.cmu.edu"
+		   :smtp '("smtp.gmail.com" . 587)
+		   :imap '("imap.gmail.com" . 993)
+		   :dot-gnus "~/.gnus-cmu"
+		   :inbox-group-name "INBOX"
+		   :sent-group-name "[Gmail]/Sent Mail")
+
+
+
 
 
 ;; Local Variables:
