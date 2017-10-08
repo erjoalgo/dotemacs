@@ -306,7 +306,9 @@
   ("a" async-shell-command)
   ("v" revert-buffer-no-confirm)
   ("n" find-new-buffer)
-  ("D" edebug-set-breakpoint)
+  ("D" (lambda () (interactive) (require 'edebug)
+	 (eval-defun t);;instrument first
+	 (edebug-set-breakpoint nil)))
   ("g" grep-recursive)
   ("f" find-iregex)
   ("u" universal-argument)
