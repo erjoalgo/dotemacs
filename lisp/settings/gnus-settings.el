@@ -173,7 +173,7 @@
 		       gnus-article-mode-map
 		       ("F" 'gnus-summary-mail-forward)
 		       ("R" 'gnus-article-wide-reply-with-original)
-		       ((kbd "s-s") 'gnus-mime-save-all-attachmnets)))
+		       ((kbd "s-s") 'gnus-mime-save-all-attachments)))
 
 
 
@@ -196,7 +196,7 @@
 			     (regexp-quote (if arg sent-group-name "INBOX"))))
 		    (call-interactively 'gnus-group-make-nnir-group))))
 
-(defun gnus-mime-save-all-attachmnets (dir)
+(defun gnus-mime-save-all-attachments (dir)
   ;;(interactive "GEnter destination directory to save attachments: " )
   (interactive (list (read-directory-name
 		      "Enter destination directory to save attachments: "
