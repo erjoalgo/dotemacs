@@ -7,8 +7,9 @@
   (setf fn (or fn (expand-file-name "~/.ercrc")))
   (when (file-exists-p fn)
     (message "reading erc login from %s..." fn)
-    (let* ((logins (read (with-temp-buffer (insert-file-contents-literally fn)
-					   (buffer-string))))
+    (let* ((logins (with-temp-buffer
+		     (insert-file-contents-literally fn)
+		     (mapcar 'read (split-string (buffer-string) "\n" t))))
 	   (selected (if (not (consp (car logins)))
 			 logins
 		       ;; we have a list of servers
@@ -35,8 +36,3 @@
 	 "#emacs"
 	 "#stumpwm")))
 
-(defvar erc-select-server-login-example-list
-  '(
-   (:server "irc.freenode.net" :port 6667 :nick "ealfonso" :password "ooizew")
-   (:server "user.com" :port 6667 :nick "" :password ""))
-  "examples of ~/.erc contents, plus a quote")
