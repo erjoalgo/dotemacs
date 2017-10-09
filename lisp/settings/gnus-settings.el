@@ -196,13 +196,24 @@
 			     (regexp-quote (if arg sent-group-name "INBOX"))))
 		    (call-interactively 'gnus-group-make-nnir-group))))
 
+(defvar gnus-mime-save-all-attachments-prompt-mkdir-p nil)
+
+(defun gnus-dir-name-for-message ()
+  (let* ((from (message-fetch-field "From"))
+	(date (message-fetch-field "Date"))
+	(from-nw (gnus-replace-in-string from ".*<\\(.*\\)>.*" "\\1"))
+	(date-nw (-> date
+		     (gnus-replace-in-string "^.*?, \\(.*\\) [+].*" "\\1")
+		     (gnus-replace-in-string " " "-"))))
+    (format "%s-%s" from-nw date-nw)))
+
+
 (defun gnus-mime-save-all-attachments (dir)
   ;;(interactive "GEnter destination directory to save attachments: " )
-  (interactive (list (read-directory-name
-		      "Enter destination directory to save attachments: "
-		      gnus-attachments-default ) ))
+  (interactive (list (gnus-dir-name-for-message) ))
   (unless (file-exists-p dir)
-    (unless (y-or-n-p (format "making directory %s" dir) )
+    (unless (or (not gnus-mime-save-all-attachments-prompt-mkdir-p)
+		 (y-or-n-p (format "making directory %s" dir)))
       (error "failed to confirm"))
     (mkdir dir t))
   (gnus-summary-save-parts ".*" dir nil )
