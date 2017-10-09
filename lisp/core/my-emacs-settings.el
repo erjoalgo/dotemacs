@@ -132,5 +132,11 @@
     (delete-process proc)))
 
 (setq browse-url-browser-function 'firefox-new-tab)
+
+(setq custom-file "~/.emacs-custom.el")
+(when (f-exists? custom-file)
+  (load custom-file))
+
+
 (provide 'my-emacs-settings)
 ;;; emacs-settings.el ends here
