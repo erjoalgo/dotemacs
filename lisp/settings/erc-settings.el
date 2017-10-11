@@ -38,3 +38,11 @@
 	("erjoalgo.com"
 	 "#kiwiirc-default")))
 
+(with-eval-after-load 'erc
+  (push 'notifications erc-modules)
+  (push 'match erc-modules)
+  (push 'pal erc-beep-match-types)
+  '(push 'pal erc-notification-match-types)
+  (erc-update-modules))
+(push 'pal erc-beep-match-types)
+'(push 'pal erc-notification-match-types)
