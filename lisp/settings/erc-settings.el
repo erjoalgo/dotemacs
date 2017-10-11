@@ -38,11 +38,16 @@
 	("erjoalgo.com"
 	 "#kiwiirc-default")))
 
+(defun erc-my-message-notify (match-type nickuserhost msg)
+  ;; dbus rarely works reliably
+  (destructuring-bind (nick user host) (erc-parse-user nickuserhost)
+    (message "%s says: %s" nick (s-trim msg))))
+
 (with-eval-after-load 'erc
   (push 'notifications erc-modules)
   (push 'match erc-modules)
   (push 'pal erc-beep-match-types)
-  '(push 'pal erc-notification-match-types)
+  ;; (push 'pal erc-notification-match-types)
+  ;; (push 'erc-beep-on-match erc-text-matched-hook)
+  (push 'erc-my-message-notify erc-text-matched-hook)
   (erc-update-modules))
-(push 'pal erc-beep-match-types)
-'(push 'pal erc-notification-match-types)
