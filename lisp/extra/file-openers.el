@@ -1,4 +1,4 @@
-(defvar *file-programs*
+(setf *file-programs*
   '(
    ("zathura" "pdf" )
    ("libreoffice" "doc" "ppt" "odt" "docx"  "pptx")
