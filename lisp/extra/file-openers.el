@@ -3,7 +3,7 @@
    ("zathura" "pdf" )
    ("libreoffice" "doc" "ppt" "odt" "docx"  "pptx")
    ("evince" "ps" "eps")
-   ("eog" "png" "pgm" "tif" "jpg" "jpeg")
+   ("eog" "png" "pgm" "tif" "jpg" "jpeg" "gif")
    ("aplay" "wav")
    ("firefox" "html")
    ("vlc" "mp4" )))
