@@ -39,7 +39,8 @@
    (translation-suffix name 'english) text-english)
 
   (translation-interactive-create-file
-   (translation-suffix name 'spanish) ""))
+   (translation-suffix name 'spanish) "")
+  (visual-line-mode 1))
 
 (defun translation-new-correction
     (name &optional text-original text-english)
