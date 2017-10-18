@@ -1,4 +1,4 @@
-(setf gnus-attachments-default
+(setf gnus-attachments-top
       (expand-file-name
        "~/Downloads/gnus-attachments/"))
 
@@ -50,8 +50,8 @@
 (setf gnus-init-file
       (gnus-init-filename))
 
-(unless (f-exists? gnus-attachments-default)
-  (mkdir gnus-attachments-default t))
+(unless (f-exists? gnus-attachments-top)
+  (mkdir gnus-attachments-top t))
 
 (setf mm-default-directory (expand-file-name "~/Downloads"))
 
