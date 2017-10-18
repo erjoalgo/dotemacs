@@ -205,7 +205,7 @@
 	(date-nw (-> date
 		     (gnus-replace-in-string "^.*?, \\(.*\\) [+].*" "\\1")
 		     (gnus-replace-in-string " " "-"))))
-    (f-join gnus-attachments-top (format "%s-%s" from-nw date-nw))))
+    (f-join gnus-attachments-top from-nw date-nw)))
 
 
 (defun gnus-mime-save-all-attachments (dir)
