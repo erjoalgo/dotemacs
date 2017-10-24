@@ -443,3 +443,10 @@ of the variable, or nil if unbound.
   (let ((uuid (shell-command-to-string "uuidgen| tr -d '\n'")))
     (when insert (insert uuid))
     uuid))
+
+(defun new-buffer-focus ()
+  "switch to the next new buffer"
+  (interactive)
+  (switch-to-buffer (loop for buff in (buffer-list)
+			  thereis
+			  (and (s-starts-with-p "new-buffer" (buffer-name buff)) buff))))
