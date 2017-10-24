@@ -307,9 +307,10 @@
     (auto-save-mode 1)))
 
 (defun sudo-buffer () (interactive)
-       (let ((curr-fn (if (eq major-mode 'dired-mode)
-			  dired-directory
-			(buffer-file-name (current-buffer)))))
+       (let ((curr-fn (expand-file-name
+		       (if (eq major-mode 'dired-mode)
+			   dired-directory
+			 (buffer-file-name (current-buffer))))))
 
 	 (unless (s-starts-with-p "/sudo" curr-fn)
 	   (let ((pos (point)))
