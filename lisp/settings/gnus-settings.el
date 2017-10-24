@@ -200,11 +200,12 @@
 
 (defun gnus-dir-name-for-message ()
   (let* ((from (message-fetch-field "From"))
-	(date (message-fetch-field "Date"))
-	(from-nw (gnus-replace-in-string from ".*<\\(.*\\)>.*" "\\1"))
-	(date-nw (-> date
-		     (gnus-replace-in-string "^.*?, \\(.*\\) [+].*" "\\1")
-		     (gnus-replace-in-string " " "-"))))
+	 (date (message-fetch-field "Date"))
+	 (from-nw (gnus-replace-in-string from ".*<\\(.*\\)>.*" "\\1"))
+	 (date-nw (-> date
+		      (gnus-replace-in-string "^.*?, \\(.*? [^(]*\\).*" "\\1")
+		      s-trim
+		      (gnus-replace-in-string "[ :]" "-"))))
     (f-join gnus-attachments-top from-nw date-nw)))
 
 
