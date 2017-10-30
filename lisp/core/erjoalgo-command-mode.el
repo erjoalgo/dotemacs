@@ -155,6 +155,7 @@
   ("c" cycle-buffer);; cycle buffers
   ("C" duplicate-current-buffer);; open current buffer in split-window-below
   ("z" kill-this-buffer);;originally C-x k
+  ("Z" new-buffer-focus)
   ("q" bury-buffer);; move current buffer to end of the list
 
 
