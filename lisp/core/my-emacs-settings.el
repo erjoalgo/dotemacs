@@ -27,8 +27,8 @@
 (let ((backups-dir (expand-file-name "~/.emacs.backups"))
       (auto-save-dir (expand-file-name "~/.emacs.auto-save"))
       (tmp-files-dir (expand-file-name "~/.emacs.tmp")))
-  (dolist (dir (list temporary-file-directory
-		     backups-dir
+  (dolist (dir (list backups-dir
+		     auto-save-dir
 		     tmp-files-dir))
     (unless (file-exists-p dir) (make-directory dir)))
   (setq backup-directory-alist `((".*" . ,backups-dir))
