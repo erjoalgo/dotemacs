@@ -41,6 +41,7 @@
 	  plusx
 	  dash
 	  dash-functional
+	  dedicated
 	  ))
 
 (when (>= emacs-major-version 24)
@@ -65,7 +66,9 @@
   (ensure-packages-exist
    '(company legalese magit dash dash-functional go-mode calfw calfw-gcal
 	     ;; gnus-desktop-notify
-	     java-imports bbdb nginx-mode))
+	     java-imports bbdb nginx-mode
+	     dedicated
+	     ))
 
   (funcall (safe-fun 'require) 'company)
   (require 'dash)
