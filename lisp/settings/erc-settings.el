@@ -43,7 +43,7 @@
   (destructuring-bind (nick user host) (erc-parse-user nickuserhost)
     (message "%s says: %s" nick (s-trim msg))))
 
-(with-eval-after-load 'erc
+'(with-eval-after-load 'erc
   (push 'notifications erc-modules)
   (push 'match erc-modules)
   (push 'pal erc-beep-match-types)
