@@ -450,3 +450,13 @@ of the variable, or nil if unbound.
   (switch-to-buffer (loop for buff in (buffer-list)
 			  thereis
 			  (and (s-starts-with-p "new-buffer" (buffer-name buff)) buff))))
+
+(defun perf-test (source-buff)
+  (interactive (list (current-buffer)))
+  (while t
+    (switch-to-buffer source-buff)
+    (erjoalgo-compile-compile nil)
+    (switch-to-buffer "*compilation*")
+    (sit-for 3)
+    (comint-interrupt-subjob)
+    (read-key "cont: ")))
