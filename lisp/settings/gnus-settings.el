@@ -334,4 +334,32 @@ machine smtp.gmail.com login %s password %s port 587"
 	  'message-mode-maybe-insert-email-template)
 
 
+(defun gnus-save-all-mail-from-to (addresses &optional summary-buffer)
+  (let* ((summary-buffer (or summary-buffer "*Summary INBOX*"))
+	 (summary-name (gnus-replace-in-string
+			(buffer-name (get-buffer summary-buffer))
+			"[*]Summary \\(.*\\)[*]" "\\1"))
+	 (article-buffer (format "*Article %s*" summary-name))
+	 (gnus-prompt-before-saving nil)
+	 )
+    (loop
+     do (progn
+	  (switch-to-buffer summary-buffer)
+	  (gnus-summary-prev-article)
+	  (switch-to-buffer article-buffer)
+	  (let ((art-addresses
+		 (concat (message-fetch-field "From")
+			 (message-fetch-field "Cc")
+			 (message-fetch-field "CC")
+			 (message-fetch-field "Bcc")
+			 (message-fetch-field "BCC")
+			 (message-fetch-field "To"))))
+	    (when (zerop (length art-addresses))
+	      (error "unable to fetch message fields"))
+	    (when (loop for addr in addresses thereis
+			(s-contains-p addr art-addresses))
+	      (message "saving  %s" (message-fetch-field "Subject")
+		       (gnus-mime-save-all-attachments (gnus-dir-name-for-message))
+		       (gnus-summary-save-article-mail))))))))
+
 '(require erjoalgo-indent-mode)
