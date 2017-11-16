@@ -255,5 +255,9 @@
 					   (string-to-char " ")) "-"))))
 	  (replace-match new-string t t))))))
 
+(defun org-insert-file-link (filename)
+  (interactive "fenter filename: ")
+  (org-insert-link filename filename (f-base filename)))
+
 (with-eval-after-load (symbol-file 'org-mode)
   (require 'ox-texinfo))
