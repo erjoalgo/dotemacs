@@ -52,3 +52,27 @@
 
 (with-eval-after-load "clojure-mode"
   (define-key clojure-mode-map (kbd "TAB") 'completion-at-point))
+
+(defun cider-buffer-load (file)
+  (let ((buf (find-file file)))
+    '(when
+	 (eq 'new
+	     (cider-find-reusable-repl-buffer nil
+					      (clojure-project-dir (cider-current-dir))))
+       (cider-jack-in))
+    (push buf cider-load-buffers-list)
+    (cider-jack-in)
+    ))
+
+
+
+(defvar cider-load-buffers-list nil
+  "list of buffers to eval upon cider-connected-hook")
+
+(defun cider-load-buffers ()
+  (dolist (buf cider-load-buffers-list)
+  (message "cider loading %s..." buf)
+    (cider-load-buffer buf))
+  (setf cider-load-buffers nil))
+
+(add-hook 'cider-connected-hook 'cider-load-buffers)
