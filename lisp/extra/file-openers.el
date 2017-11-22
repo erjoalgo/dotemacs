@@ -8,6 +8,7 @@
    ((lambda (fn)
       (firefox-new-tab (format "file://%s" fn))) "html")
    ("gimp" "xcf")
+   ("mpg321" "mp3")
    ("vlc" "mp4" )))
 
 (defun get-file-program (fn)
