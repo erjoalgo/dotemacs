@@ -9,3 +9,4 @@
 (add-hook 'message-setup-hook 'bbdb-mail-aliases)
 (setf bbdb-silent t)
 (setf bbdb-allow-duplicates t)
+(setf bbdb-mua-pop-up nil)
