@@ -90,3 +90,24 @@
     (shell-command cmd)
     (kill-new (debian-file->string wdiff-file-name))
     (message "yanked wdif output")))
+
+(defun translation-english-trim-non-article-text ()
+  (interactive)
+  (goto-char (point-min))
+  (let* ((s (buffer-string))
+	 (pre-line "\nDownload PDF flyer\n")
+	 (post-line "\n[a-z ]+, [a-z ,]+\n")
+	 (wildcard "\\(.\\|\n\\)")
+	 (regexp (concat
+		  (format "^%s*" wildcard)
+		  pre-line
+		  (format "\\(%s+?\\)" wildcard)
+		  post-line
+		  ))
+	 )
+    (let ((m (string-match regexp s)))
+      (assert m)
+      (erase-buffer)
+      (insert (match-string 2 s))
+      (save-buffer))
+    ))
