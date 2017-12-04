@@ -129,7 +129,8 @@
 		  url)))
     (process-send-string proc payload)
     (sit-for 10)
-    (delete-process proc)))
+    (delete-process proc)
+     (message "opened %s" url)))
 
 (setq browse-url-browser-function 'firefox-new-tab)
 
