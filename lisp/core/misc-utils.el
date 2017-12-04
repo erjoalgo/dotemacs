@@ -460,3 +460,7 @@ of the variable, or nil if unbound.
     (sit-for 3)
     (comint-interrupt-subjob)
     (read-key "cont: ")))
+
+(defun path-append-directory (dir)
+  (interactive "Denter directory: ")
+  (setenv "PATH" (concat (getenv "PATH") ":" dir)))
