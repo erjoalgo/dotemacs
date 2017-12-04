@@ -1,5 +1,7 @@
+(defmacro push-last (elt place)
+  `(setf ,place (append ,place (list ,elt))))
 
-(push
+(push-last
  (buffer-major-mode-matcher
   'nxml-mode
   (lambda ()
