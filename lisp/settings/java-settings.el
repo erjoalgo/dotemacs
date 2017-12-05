@@ -96,3 +96,8 @@ q: Don't fix\n" func file))
 (add-hook 'java-mode-hook
 	  (lambda ()
 	    (add-hook 'before-save-hook 'java-sync-function-file-names nil t)))
+
+
+(make-file-local-variable-set-command mvn-extra-args
+				      "enter additional mvn args: "
+				      read-string set)
