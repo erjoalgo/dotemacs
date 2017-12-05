@@ -56,7 +56,7 @@ See Info node `(octave)Function Files'."
   (interactive)
   (when buffer-file-name
     (let* ((java-public-class-regexp
-	    "class[ \t\n]+\\([^ \t\n]+\\)\\([ \t\n]+extends[ \t\n]+[a-zA-Z]+\\)?[ \t\n]*{")
+	    "class[ \t\n]+\\([^ \t\n]+\\)\\([ \t\n]+\\(extends\\|implements\\)[ \t\n]+[a-zA-Z]+\\)[ \t\n]*{")
 	   (java-class-name
 	    (save-excursion
 	      (goto-char (point-min))
