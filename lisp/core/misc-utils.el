@@ -431,7 +431,9 @@ of the variable, or nil if unbound.
 			   ,file-local-var-sym))
 	     (new-value (funcall ',prompt-fun ,prompt curr-value)))
 	 (add-file-local-variable ',file-local-var-sym new-value)
-	 (setf ,file-local-var-sym new-value)))))
+	 (setf ,file-local-var-sym new-value)))
+    (make-variable-buffer-local file-local-var-sym)
+    ))
 
 (defmacro make-file-local-variable-flag-toggle-command
     (file-local-var-sym)
