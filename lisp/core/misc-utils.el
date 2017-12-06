@@ -425,15 +425,14 @@ of the variable, or nil if unbound.
 	 (prompt (or prompt (format "enter new value for %s: "
 				    var-sym-name)))
 	 (prompt-fun (or prompt-fun 'read-string)))
+    (make-variable-buffer-local file-local-var-sym)
     `(defun ,fun-sym (arg)
        (interactive "P")
        (let* ((curr-value (when (boundp ',file-local-var-sym)
 			   ,file-local-var-sym))
 	     (new-value (funcall ',prompt-fun ,prompt curr-value)))
 	 (add-file-local-variable ',file-local-var-sym new-value)
-	 (setf ,file-local-var-sym new-value)))
-    (make-variable-buffer-local file-local-var-sym)
-    ))
+	 (setf ,file-local-var-sym new-value)))))
 
 (defmacro make-file-local-variable-flag-toggle-command
     (file-local-var-sym)
