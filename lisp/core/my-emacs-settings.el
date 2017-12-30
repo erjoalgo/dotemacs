@@ -132,6 +132,10 @@
     (delete-process proc)
      (message "opened %s" url)))
 
+(defun firefox-new-tab (url &optional unknown-arg)
+  (call-process "chromium" nil nil nil url)
+  (message "opened %s" url))
+
 (setq browse-url-browser-function 'firefox-new-tab)
 
 (setq custom-file "~/.emacs-custom.el")
