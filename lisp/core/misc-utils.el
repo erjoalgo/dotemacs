@@ -8,7 +8,7 @@
 
     (when (called-interactively-p 'interactively)
       (message "%s" dirs))
-  dirs))
+    dirs))
 
 (defun recover-this-file-and-diff ()
   (interactive)
@@ -94,20 +94,20 @@
       (call-interactively 'revert-buffer))))
 
 (cl-defun sort-key (list key &key descending (pred '<))
-  (let* ((sorted-tuples (sort (mapcar (lambda (el)
-				(cons el (funcall key el)))
-			      list)
-		      (lambda (a b)
-			(funcall pred (cdr a) (cdr b)))))
-	(sorted (mapcar 'car sorted-tuples)))
+  (let* ((sorted-tuples
+	  (sort (mapcar (lambda (el)
+			  (cons el (funcall key el))) list)
+		(lambda (a b)
+		  (funcall pred (cdr a) (cdr b)))))
+	 (sorted (mapcar 'car sorted-tuples)))
     (if descending (reverse sorted)
       sorted)))
 
 (defun directory-files-sort-by-ctime-descending (dir)
   (let ((files (directory-files dir)))
     (reverse (sort-key files (lambda (fn)
-		  (let ((attrs (file-attributes (f-join dir fn))))
-		    (nth 6 attrs)))))))
+			       (let ((attrs (file-attributes (f-join dir fn))))
+				 (nth 6 attrs)))))))
 
 (defun read-symbol-completing (prompt &optional default)
   (intern
@@ -220,29 +220,29 @@ Center command to run on each file: ")
 		     (unless was-modified (save-buffer))
 		     (unless was-open (kill-buffer buffer)))))))
   (lexical-let ((fun fun))
-  (loop with front = (list top)
-	with new-front = nil
-	while front do
-	(loop while front
-	      as dir = (pop front)
-	      as files = (progn (assert (f-dir? dir))
-				(directory-files dir))
-	      do (loop for base in files
-		       as fn = (f-join dir base)
-		       do (if (f-dir? fn)
-			      (unless (member base '(".." "."))
-				(push fn new-front))
-			    (unless (auto-save-file-name-p base)
-			      (funcall fun fn)))))
-	do (setf front new-front
-		 new-front nil))))
+    (loop with front = (list top)
+	  with new-front = nil
+	  while front do
+	  (loop while front
+		as dir = (pop front)
+		as files = (progn (assert (f-dir? dir))
+				  (directory-files dir))
+		do (loop for base in files
+			 as fn = (f-join dir base)
+			 do (if (f-dir? fn)
+				(unless (member base '(".." "."))
+				  (push fn new-front))
+			      (unless (auto-save-file-name-p base)
+				(funcall fun fn)))))
+	  do (setf front new-front
+		   new-front nil))))
 
 (defun completing-read-single-char (prompt candidates)
   (let* ((alist (mapcar (lambda (cand)  (cons (substring cand 0 1) cand))
-		       candidates))
-	(prompt (format "%s\nenter char: " (s-join "\n" (mapcar 'prin1-to-string alist))))
-	(chars (mapcar 'car alist))
-	char)
+			candidates))
+	 (prompt (format "%s\nenter char: " (s-join "\n" (mapcar 'prin1-to-string alist))))
+	 (chars (mapcar 'car alist))
+	 char)
     (loop as char = (read-char prompt)
 	  as pair =  (assoc (and char (char-to-string char)) alist)
 	  until pair
@@ -276,10 +276,10 @@ Center command to run on each file: ")
     (set count-sym 0)
     (walk-dir-tree dir
 		   `(lambda (fn)
-		     (when (or (null extension) (string= (f-ext fn) extension))
-		       (with-temporary-open-file
-			fn
-			(incf ,count-sym (regexp-replace-current-buffer from to pause))
+		      (when (or (null extension) (string= (f-ext fn) extension))
+			(with-temporary-open-file
+			 fn
+			 (incf ,count-sym (regexp-replace-current-buffer from to pause))
 			 (when (buffer-modified-p)
 			   (save-buffer))))))
     (message "%d occurrences replaced" (symbol-value count-sym))))
@@ -319,7 +319,7 @@ Center command to run on each file: ")
        (let ((a (min (mark) (point)))
 	     (b (max (mark) (point))))
 	 (list a b))
-	 (list (point-min) (point-max))))
+     (list (point-min) (point-max))))
   (save-excursion
     (goto-char a)
     (while (search-forward-regexp "[ \t]+$" b t)
@@ -331,20 +331,20 @@ Center command to run on each file: ")
 
 (defun kill-buffers-regex (regex)
   (interactive "senter regex to kill buffers: ")
-       (let* ((regex (format ".*%s.*" regex))
-	      (buffers (remove-if-not
-			(lambda (buff) (string-match regex (buffer-name buff)))
-			(buffer-list)))
-	      (kill-func
-	       (lambda (buff)
-		 (let* ((proc (get-buffer-process buff)))
-		   (when proc
-		     (message "killing %s" (process-name proc))
-		     (interrupt-process proc)
-		     (kill-process proc)))
-		 (message "killing buffer: %s " (buffer-name buff))
-		 (kill-buffer buff))))
-	 (mapc kill-func buffers)))
+  (let* ((regex (format ".*%s.*" regex))
+	 (buffers (remove-if-not
+		   (lambda (buff) (string-match regex (buffer-name buff)))
+		   (buffer-list)))
+	 (kill-func
+	  (lambda (buff)
+	    (let* ((proc (get-buffer-process buff)))
+	      (when proc
+		(message "killing %s" (process-name proc))
+		(interrupt-process proc)
+		(kill-process proc)))
+	    (message "killing buffer: %s " (buffer-name buff))
+	    (kill-buffer buff))))
+    (mapc kill-func buffers)))
 
 (defun ispell-spanish ()
   (interactive)
@@ -352,7 +352,7 @@ Center command to run on each file: ")
   (ispell))
 
 (defun lpr-buffer-no-confirm ()
-;; /usr/local/share/emacs/25.2/lisp/lpr.el.gz
+  ;; /usr/local/share/emacs/25.2/lisp/lpr.el.gz
   "Print buffer contents without pagination or page headers.
 See the variables `lpr-switches' and `lpr-command'
 for customization of the printer command."
@@ -369,8 +369,8 @@ for customization of the printer command."
 	       (_ (message "text is %s" text))
 	       (replacement (save-match-data
 			      (loop for (regexp replacement) in text-replacement-alist
-				  thereis (when (string-match regexp text)
-					    replacement)))))
+				    thereis (when (string-match regexp text)
+					      replacement)))))
 	  (replace-match replacement))))))
 
 (defun url-unescape ()
@@ -404,7 +404,7 @@ for customization of the printer command."
      ("%7E" "~"))))
 
 '(multi-regexp-replace '(("defun" "tayfun")
-			("interactive" "petaluma")))
+			 ("interactive" "petaluma")))
 
 (defun flush-empty-lines ()
   (interactive)
@@ -429,8 +429,8 @@ of the variable, or nil if unbound.
     `(defun ,fun-sym (arg)
        (interactive "P")
        (let* ((curr-value (when (boundp ',file-local-var-sym)
-			   ,file-local-var-sym))
-	     (new-value (funcall ',prompt-fun ,prompt curr-value)))
+			    ,file-local-var-sym))
+	      (new-value (funcall ',prompt-fun ,prompt curr-value)))
 	 (add-file-local-variable ',file-local-var-sym new-value)
 	 (setf ,file-local-var-sym new-value)))))
 
