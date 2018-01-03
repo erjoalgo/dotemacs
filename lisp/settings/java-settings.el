@@ -61,7 +61,7 @@ See Info node `(octave)Function Files'."
 	    (save-excursion
 	      (goto-char (point-min))
 	      (if (re-search-forward
-		   java-public-class-regexp nil)
+		   java-public-class-regexp nil t)
 		  (match-string 2)
 		(prog1 nil (warn "no class name found"))))))
       (when java-class-name
