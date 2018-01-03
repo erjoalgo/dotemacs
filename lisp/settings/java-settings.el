@@ -56,13 +56,13 @@ See Info node `(octave)Function Files'."
   (interactive)
   (when buffer-file-name
     (let* ((java-public-class-regexp
-	    "class[ \t\n]+\\([^ \t\n]+\\)[^{]*{")
+	    "\\(class\\|interface\\)[ \t\n]+\\([^ \t\n]+\\)[^{]*{")
 	   (java-class-name
 	    (save-excursion
 	      (goto-char (point-min))
 	      (if (re-search-forward
 		   java-public-class-regexp nil)
-		  (match-string 1)
+		  (match-string 2)
 		(prog1 nil (warn "no class name found"))))))
       (when java-class-name
         (let* ((func java-class-name)
@@ -91,7 +91,7 @@ q: Don't fix\n" func file))
 		   (goto-char (point-min))
 		   (re-search-forward
 		    java-public-class-regexp nil)
-		   (replace-match file t t nil 1)))))))))
+		   (replace-match file t t nil 2)))))))))
 
 (add-hook 'java-mode-hook
 	  (lambda ()
