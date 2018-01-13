@@ -131,7 +131,7 @@
 		       ("M" nil)
 		       ((kbd "s-a") 'gnus-attach-file-simple)
 		       ((kbd "M-c") 'message-send-and-exit)
-		       ((kbd "s-h") 'gnus-insert-html-from-file))
+		       ((kbd "s-A") 'gnus-insert-html-from-file))
 		      (add-hook 'message-mode-hook
 				(lambda ()
 				  (erjoalgo-indent-mode 1)
