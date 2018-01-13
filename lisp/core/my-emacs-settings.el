@@ -132,8 +132,16 @@
     (delete-process proc)
      (message "opened %s" url)))
 
+(defun which (&rest names)
+  (-> (shell-command-to-string (concat "which " (s-join " " names)
+				       " 2> /dev/null"))
+      s-trim))
+
+(setf browser-name
+      (which "chromium" "chromium-browser" "chrome"))
+
 (defun firefox-new-tab (url &optional unknown-arg)
-  (call-process "chromium" nil nil nil url)
+  (call-process browser-name nil nil nil url)
   (message "opened %s" url))
 
 (setq browse-url-browser-function 'firefox-new-tab)
