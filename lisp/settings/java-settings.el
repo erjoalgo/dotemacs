@@ -1,8 +1,8 @@
 
 (defun java-set-indentation ()
 					;(setf tab-width 8)
-  (setf tab-width 2)
-  (setf c-basic-offset 2)
+  (setf tab-width 4)
+  (setf c-basic-offset 4)
 					;(setf indent-tabs-mode t)
   (setf indent-tabs-mode nil))
 
