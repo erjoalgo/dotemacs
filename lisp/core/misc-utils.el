@@ -373,6 +373,14 @@ for customization of the printer command."
 					      replacement)))))
 	  (replace-match replacement))))))
 
+(defun multi-regexp-replace-sequential (text-replacement-alist
+					&optional a b)
+  (unless a (setf a (point-min) b (point-max)))
+  (loop for (regexp replacement) in text-replacement-alist
+	do (progn (goto-char a)
+		  (while (re-search-forward regexp b t)
+		    (replace-match replacement)))))
+
 (defun url-unescape ()
   (interactive)
   (multi-regexp-replace
