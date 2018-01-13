@@ -137,12 +137,16 @@
       (check-unsaved-buffers))))
 
 (defun org-insert-inline-image (caption filename)
-  (interactive "senter caption for image: \nfenter image filename: ")
+  (interactive "senter caption for image:
+fenter image filename:
+nwidth (in px) if any: ")
   "     #+CAPTION: This is the caption for the next figure link (or table)
      #+NAME:
      [[./img/a.jpg]]"
   (insert "#+CAPTION: " caption) (newline-and-indent)
   (insert "#+NAME: fig:SED-HR4049") (newline-and-indent)
+  (when width
+    (insert (format "#+ATTR_HTML: :width %s" width)) (newline-and-indent))
   (insert (format "[[file:%s]]" filename)) (newline-and-indent)
   )
 
