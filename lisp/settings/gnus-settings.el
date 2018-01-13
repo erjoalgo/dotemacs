@@ -362,4 +362,11 @@ machine smtp.gmail.com login %s password %s port 587"
 		       (gnus-mime-save-all-attachments (gnus-dir-name-for-message))
 		       (gnus-summary-save-article-mail))))))))
 
+(defun gnus-insert-base64-image-src (filename)
+  (interactive "fenter image: ")
+  (let ((ext (f-ext filename))
+	(base64 (shell-command-to-string (format "base64 %s | tr -d '\\n'" filename))))
+    ;; "data:image/jpg;base64,/*base64-data-string here*/"
+    (insert (format "\"data:image/%s;base64,%s\"" ext base64))))
+
 '(require erjoalgo-indent-mode)
