@@ -150,6 +150,8 @@
 (when (f-exists? custom-file)
   (load custom-file))
 
+;; disable annoying tutorial
+(define-key help-map (kbd "t") nil)
 
 (provide 'my-emacs-settings)
 ;;; emacs-settings.el ends here
