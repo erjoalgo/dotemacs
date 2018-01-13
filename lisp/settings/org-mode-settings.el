@@ -143,7 +143,7 @@
      [[./img/a.jpg]]"
   (insert "#+CAPTION: " caption) (newline-and-indent)
   (insert "#+NAME: fig:SED-HR4049") (newline-and-indent)
-  (insert (format "[[%s]]" filename)) (newline-and-indent)
+  (insert (format "[[file:%s]]" filename)) (newline-and-indent)
   )
 
 (defun file-modification-timestamp (filename)
