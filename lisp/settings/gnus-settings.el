@@ -306,7 +306,7 @@ machine smtp.gmail.com login %s password %s port 587"
     (error (warn "(gnus-prioritize-inbox) failed: %s" ex))))
 
 (defun gnus-insert-html-from-file (filename)
-  (interactive "fenter filename: ")
+  (interactive "fenter html filename: ")
   (mml-insert-tag 'part
 		  'type "text/html"
 		  'disposition "inline")
