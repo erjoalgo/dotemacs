@@ -1,14 +1,14 @@
 (defmacro case-equal (expr-form &rest cases)
   (when cases
-    `(if (equal ,expr-form ,(caar cases))
+    `(if (member ,expr-form (list ,@(caar cases)))
 	 (progn ,@(cdar cases))
        (case-equal ,expr-form ,@(cdr cases)))))
 
 (case-equal
   system-name
-  ("SFO1212556701M"
+ (("SFO1212556701M" "sfo1212556701m.attlocal.net")
    (setenv "PATH" (concat "/usr/local/bin:" (getenv "PATH")))
    (setq proxy-mode-proxy company-proxy))
 
-  ("debian-vm"
+ (("debian-vm")
    (setq proxy-mode-proxy company-proxy)))
