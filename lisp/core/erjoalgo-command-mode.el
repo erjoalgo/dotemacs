@@ -284,6 +284,7 @@
   ("o" "~/repos/dotemacs/org/notes.org")
   ("T" (:exec (org-todo-list org-match)))
   ("O" nil)
+  ("j" (:buffer "*-jabber-roster-*"))
   )
 
 (defmacro run-or-switch-cmd (string command &optional regex)
