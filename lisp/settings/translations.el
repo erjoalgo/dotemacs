@@ -75,6 +75,52 @@
   (goto-char (point-max))
   (insert body))
 
+(defun message-text ()
+  (save-excursion (goto-char (point-min))
+		  (re-search-forward "^Date")
+		  (next-logical-line 1)
+		  (buffer-substring-no-properties (point) (point-max))))
+
+(defun translation-santize-subject (subject &optional manual-sanitize)
+  (let ((sanitized (-> subject
+		       (gnus-replace-in-string "[^[:alnum:]]" "-")
+		       (gnus-replace-in-string "traducci.n-" "")
+		       downcase)))
+    (when manual-sanitize
+      (setf sanitized (read-string "enter translation name: "
+				   sanitized)))
+    sanitized
+    ))
+
+(defun translation-new-correction-from-article ()
+  (interactive)
+  (let ((text-original (message-text))
+	(translation-name (translation-santize-subject
+			   (message-fetch-field "Subject") t)))
+    (translation-new-correction translation-name
+				text-original nil)))
+
+(defun translation-new-correction-from-docx-attachment ()
+  (interactive)
+  (let ((attachments-dir (gnus-dir-name-for-message)))
+    (gnus-mime-save-all-attachments attachments-dir)
+    (let ((cands
+	   (remove-if-not (lambda (fn) (string-match ".*[.]docx?" fn))
+			  (directory-files attachments-dir)))
+	  (default-directory attachments-dir))
+      (when (or (null cands) (cdr cands))
+	(error "not exactly one docx? file found"))
+      (let ((docx (car cands)))
+	(call-process "docx2txt" nil nil nil docx)
+	(let* ((translation-name (translation-santize-subject docx t))
+	       (txt (concat (f-base docx) ".txt"))
+	       ;; (text (debian-file->string txt))
+	       (text (with-temp-buffer
+		       (insert-file-contents txt)
+		       (buffer-string))))
+	  (kill-new text)
+	  (translation-new-correction translation-name nil nil))))))
+
 (defun debian-file->string (filename)
     (with-temp-buffer
       (insert-file-contents-literally filename)
