@@ -55,7 +55,9 @@
    (translation-suffix name 'english) text-english)
 
   (find-file (translation-suffix name 'correction))
-  (insert text-original))
+  (insert text-original)
+
+  (translation-correction-fix-paragraphs))
 
 (defun translation-publish (subject body address)
   (interactive
