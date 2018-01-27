@@ -39,8 +39,7 @@
    (translation-suffix name 'english) text-english)
 
   (translation-interactive-create-file
-   (translation-suffix name 'spanish) "")
-  (visual-line-mode 1))
+   (translation-suffix name 'spanish) ""))
 
 (defun translation-new-correction
     (name &optional text-original text-english)
@@ -57,7 +56,8 @@
   (find-file (translation-suffix name 'correction))
   (insert text-original)
 
-  (translation-correction-fix-paragraphs))
+  (translation-correction-fix-paragraphs)
+  (visual-line-mode t))
 
 (defun translation-publish (subject body address)
   (interactive
