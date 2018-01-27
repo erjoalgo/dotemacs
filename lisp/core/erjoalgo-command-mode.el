@@ -241,11 +241,23 @@
 (define-key-tuples-macro
   open-init-files-map
   (lambda (fn)
-    `(lambda () (interactive)
-       ,@(case (and (consp fn) (car fn))
-	    (:exec (cdr fn))
-	    (:buffer `((switch-to-buffer ,(cadr fn))))
-	    (t `((find-file ,fn))))))
+    (let* ((desc-form
+	    (case (and (consp fn) (car fn))
+	      (:exec `("exec" ,(cdr fn)))
+	      (:buffer (let ((buff (cadr fn)))
+			 `(,(concat "switch-to-buffer" buff)
+			   (switch-to-buffer ,buff))))
+	      (t `(,(concat "find-file-" (eval fn))
+		   (find-file ,fn)))))
+	   (sym (gensym (format "%s-" (car desc-form))))
+	   )
+
+      (progn
+	(eval `(defun ,sym  () (interactive)
+		      ,(car desc-form)
+		      ,@(cdr desc-form)))
+	sym)))
+
   ("e" "~/.emacs")
   ("E" "~/repos/emacs-dirty/.emacs-bloated.el")
   ("C" (:buffer "*ansi-term*"))
