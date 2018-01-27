@@ -6,7 +6,7 @@
    ("eog" "png" "pgm" "tif" "jpg" "jpeg" "gif")
    ("aplay" "wav")
    ((lambda (fn)
-      (firefox-new-tab (format "file://%s" fn))) "html")
+      (browser-new-tab (format "file://%s" fn))) "html")
    ("gimp" "xcf")
    ("mpg321" "mp3")
    ("vlc" "mp4" )))

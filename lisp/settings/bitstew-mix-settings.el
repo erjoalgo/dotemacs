@@ -14,7 +14,7 @@
 	    (->> (buffer-file-name)
 		 sanitize-filename
 		 (concat run-template-prefix))))
-      (firefox-new-tab url))))
+      (browser-new-tab url))))
  erjoalgo-compile-cmd-for-buffer)
 
 (add-to-list 'auto-mode-alist '("[.]mx[hd]$" . nxml-mode))

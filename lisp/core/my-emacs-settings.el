@@ -140,11 +140,13 @@
 (setf browser-name
       (which "chromium" "chromium-browser" "chrome"))
 
-(defun firefox-new-tab (url &optional unknown-arg)
-  (call-process browser-name nil nil nil url)
+(defun chromium-new-tab (url &optional unknown-arg)
+  (start-process "browse-url" nil "chromium" url)
   (message "opened %s" url))
 
-(setq browse-url-browser-function 'firefox-new-tab)
+(fset 'browser-new-tab #'chromium-new-tab)
+
+(setq browse-url-browser-function 'browser-new-tab)
 
 (setq custom-file "~/.emacs-custom.el")
 (when (f-exists? custom-file)
