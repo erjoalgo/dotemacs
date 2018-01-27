@@ -272,8 +272,8 @@
 
     (unless (funcall truename-exists-p authinfo-fn)
       (funcall maybe-unlink authinfo-fn)
-      (when (boundp 'firefox-new-tab)
-	(firefox-new-tab gmail-app-specific-url))
+      (when (boundp 'browser-new-tab)
+	(browser-new-tab gmail-app-specific-url))
 
       (let ((pass (read-string
 		   (format "enter gmail app-specific pass (%s): "
