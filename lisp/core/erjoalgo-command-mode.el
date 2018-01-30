@@ -218,6 +218,8 @@
   ([ë] global-erjoalgo-command-mode-toggle);; f1 toggle command mode
 
   ("y" search-engine-search)
+
+  ("J" join-line)
   )
 
 
