@@ -141,7 +141,7 @@
       (which "chromium" "chromium-browser" "chrome"))
 
 (defun chromium-new-tab (url &optional unknown-arg)
-  (start-process "browse-url" nil "chromium" url)
+  (start-process "browse-url" nil browser-name url)
   (message "opened %s" url))
 
 (fset 'browser-new-tab #'chromium-new-tab)
