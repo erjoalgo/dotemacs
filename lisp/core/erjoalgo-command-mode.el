@@ -262,7 +262,7 @@
 
   ("e" "~/.emacs")
   ("E" "~/repos/emacs-dirty/.emacs-bloated.el")
-  ("C" (:buffer "*ansi-term*"))
+  ("C" (:buffer "regexp:[*]ansi-term[*].*"))
   ;; ("c" (join-base-dir "command-mode-commands.el"))
   ("c" (:buffer "*compilation*"))
   ("r" (:buffer "*Backtrace*"))
