@@ -248,7 +248,7 @@
 	      (:exec `("exec" ,(cdr fn)))
 	      (:buffer (let ((buff (cadr fn)))
 			 `(,(concat "switch-to-buffer" buff)
-			   (switch-to-buffer ,buff))))
+			   (switch-to-buffer-matching ,buff))))
 	      (t `(,(concat "find-file-" (eval fn))
 		   (find-file ,fn)))))
 	   (sym (gensym (format "%s-" (car desc-form))))
