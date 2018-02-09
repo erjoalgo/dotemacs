@@ -289,12 +289,26 @@
   ("j" (:buffer "*-jabber-roster-*"))
   )
 
-(defmacro run-or-switch-cmd (string command &optional regex)
+(defun buffer-matching (string &optional regexp-p)
+  (let ((prefix "regexp:"))
+
+    (when (s-starts-with-p prefix string)
+	(setf regexp-p t
+	      string (substring string (length prefix))))
+
+    (if (not regexp-p) (get-buffer string)
+      (loop for buff in (buffer-list) thereis
+	    (and (string-match string (buffer-name buff))
+		 buff)))))
+
+
+(defun switch-to-buffer-matching (string &optional regexp-p)
+  (switch-to-buffer
+   (buffer-matching string regexp-p)))
+
+(defmacro run-or-switch-cmd (string command &optional regexp-p)
   `(lambda () (interactive)
-     (let ((existing (loop for buff in (buffer-list) thereis
-			   (and ,(if regex `(string-match string (buffer-name buff))
-				   `(string= ,string (buffer-name buff)))
-				buff))))
+     (let ((existing (buffer-matching ,string ,regexp-p)))
        (if existing (switch-to-buffer existing)
 	 (call-interactively ,command)))))
 
@@ -406,6 +420,7 @@
 			   (funcall ,fun)
 			   (remove-hook ,hook ,fun-sym)))
 	   (add-hook hook fun-sym)))
+
 (add-hook 'apropos-mode-hook
 	  (lambda ()
 	    (add-one-time-hook
