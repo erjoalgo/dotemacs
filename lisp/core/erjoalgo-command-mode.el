@@ -219,7 +219,7 @@
 
   ("y" search-engine-search)
 
-  ("J" join-line)
+  ("J" (lambda () (interactive)(join-line '(4))))
   )
 
 
