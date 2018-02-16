@@ -155,5 +155,7 @@
 ;; disable annoying tutorial
 (define-key help-map (kbd "t") nil)
 
+(setq-default indent-tabs-mode nil)
+
 (provide 'my-emacs-settings)
 ;;; emacs-settings.el ends here
