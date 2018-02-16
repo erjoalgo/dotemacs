@@ -103,8 +103,6 @@
 (setf find-function-C-source-directory
       (expand-file-name "~/programs/source/emacs/emacs24-24.4+1/src/"))
 
-(defun highlight-long-lines ()
-  (highlight-lines-matching-regexp ".\\{81\\}" 'hi-yellow))
 
 (defun highlight-long-lines ()
   (interactive)
