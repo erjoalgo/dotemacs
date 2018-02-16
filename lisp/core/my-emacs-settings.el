@@ -103,10 +103,12 @@
 (setf find-function-C-source-directory
       (expand-file-name "~/programs/source/emacs/emacs24-24.4+1/src/"))
 
+(setf max-source-line-width 80)
 
 (defun highlight-long-lines ()
   (interactive)
-  (highlight-lines-matching-regexp ".\\{81\\}" 'hi-yellow))
+  (highlight-lines-matching-regexp
+   (format ".\\{%d\\}" (1+ max-source-line-width)) 'hi-yellow))
 
 (setf source-modes
       '(emacs-lisp-mode clojure-mode go-mode java-mode js-mode c-mode
