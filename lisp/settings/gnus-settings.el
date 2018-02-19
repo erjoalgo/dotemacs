@@ -318,16 +318,36 @@ machine smtp.gmail.com login %s password %s port 587"
 (defvar gnus-email-templates-home
   (expand-file-name "~/.gnus-templates"))
 
+(defun gnus-email-templates-toaddress-to-hostname (toaddr)
+  (cadr (split-string toaddr "@")))
+
+(defun gnus-email-templates-hostname-to-filename (hostname)
+  (f-join gnus-email-templates-home hostname))
+
+(defun gnus-email-templates-filename-to-hostname (filename)
+  (->> filename f-name))
+
 (defun message-mode-maybe-insert-email-template ()
   (let ((to-addr (message-fetch-field "To")))
     (when to-addr
-      (let* ((hostname (cadr (split-string to-addr "@")))
-	     (filename (f-join gnus-email-templates-home hostname)))
+      (let ((filename
+	     (-> to-addr
+		 gnus-email-templates-toaddress-to-hostname
+		 gnus-email-templates-hostname-to-filename)))
 	(when (file-exists-p filename)
 	  ;; TODO how to insert this before the body?
 	  (message "inserting template from %s" filename)
 	  (end-of-buffer)
 	  (insert-file (expand-file-name filename)))))))
+
+(defun gnus-templates-add-template (hostname &optional text)
+  (interactive
+   (list (read-string "enter 'To' field hostname: "
+		     (when (x-get-selection)
+		       (let ((toaddr (x-get-selection)))
+			 (gnus-email-templates-toaddress-to-hostname toaddr))))))
+  (find-file (gnus-email-templates-hostname-to-filename hostname))
+  (when text (insert text)))
 
 
 (add-hook 'message-signature-setup-hook
