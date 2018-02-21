@@ -180,3 +180,11 @@
 (defun translation-fix-quotes ()
   (interactive)
   (query-replace-regexp "\"\\(.*?\\)\"" "“\\1”"))
+
+(defun translation-new-inline-correction (filename)
+  (interactive (list (dired-file-name-at-point)))
+  (let* ((correction-filename
+          (concat (f-base filename)
+                  (cdr (assoc 'correction translation-suffixes)))))
+    (copy-file (expand-file-name filename) correction-filename)
+    (find-file correction-filename)))
