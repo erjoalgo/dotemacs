@@ -154,6 +154,8 @@
 
 ;; disable annoying tutorial
 (define-key help-map (kbd "t") nil)
+;; disable accidentally entering h h
+(define-key help-map (kbd "h") nil)
 
 (setq-default indent-tabs-mode nil)
 
