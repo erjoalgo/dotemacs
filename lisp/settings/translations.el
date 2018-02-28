@@ -100,6 +100,16 @@
     (translation-new-correction translation-name
 				text-original nil)))
 
+(defun docx2txt (docx &optional filename-mapper)
+  (interactive (list (dired-file-name-at-point)))
+  (let* ((docx (expand-file-name docx))
+         (dest-dir (f-dirname docx))
+         (translation-name (funcall (or filename-mapper 'identity) (f-base docx)))
+         (dest-fn (f-join dest-dir (concat translation-name ".txt"))))
+    (call-process "docx2txt" nil "buffer" nil docx dest-fn)
+    (assert (file-exists-p dest-fn))
+    dest-fn))
+
 (defun translation-new-correction-from-docx-attachment ()
   (interactive)
   (let ((attachments-dir (gnus-dir-name-for-message)))
@@ -110,16 +120,14 @@
 	  (default-directory attachments-dir))
       (when (or (null cands) (cdr cands))
 	(error "not exactly one docx? file found"))
-      (let ((docx (car cands)))
-	(call-process "docx2txt" nil nil nil docx)
-	(let* ((translation-name (translation-santize-subject docx t))
-	       (txt (concat (f-base docx) ".txt"))
-	       ;; (text (debian-file->string txt))
-	       (text (with-temp-buffer
-		       (insert-file-contents txt)
-		       (buffer-string))))
-	  (kill-new text)
-	  (translation-new-correction translation-name nil nil))))))
+      (let* ((docx (car cands))
+             (translation-name (translation-santize-subject (f-base docx) t))
+             (txt (docx2txt docx (lambda (fname) translation-name)))
+            (text (with-temp-buffer
+                    (insert-file-contents txt)
+                    (buffer-string))))
+        (kill-new text)
+	(translation-new-correction translation-name  nil nil)))))
 
 (defun debian-file->string (filename)
     (with-temp-buffer
