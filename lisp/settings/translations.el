@@ -191,6 +191,10 @@
 
 (defun translation-new-inline-correction (filename)
   (interactive (list (dired-file-name-at-point)))
+  (when (equal "docx" (f-ext filename))
+    (setf filename
+          (docx2txt filename (lambda (fname)
+                               (translation-santize-subject fname t)))))
   (let* ((correction-filename
           (concat (f-base filename)
                   (cdr (assoc 'correction translation-suffixes)))))
