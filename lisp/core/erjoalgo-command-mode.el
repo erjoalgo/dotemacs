@@ -305,8 +305,9 @@
 
 
 (defun switch-to-buffer-matching (string &optional regexp-p)
-  (switch-to-buffer
-   (buffer-matching string regexp-p)))
+  (let ((match (buffer-matching string regexp-p)))
+    (when match (switch-to-buffer match))))
+
 
 (defmacro run-or-switch-cmd (string command &optional regexp-p)
   `(lambda () (interactive)
