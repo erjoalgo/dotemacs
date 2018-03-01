@@ -246,9 +246,11 @@
     (let* ((desc-form
 	    (case (and (consp fn) (car fn))
 	      (:exec `("exec" ,(cdr fn)))
-	      (:buffer (let ((buff (cadr fn)))
+	      (:buffer (let ((buff (cadr fn))
+                             (cmd (caddr fn)))
 			 `(,(concat "switch-to-buffer" buff)
-			   (switch-to-buffer-matching ,buff))))
+			   (or (switch-to-buffer-matching ,buff)
+                               ,(when cmd cmd)))))
 	      (t `(,(concat "find-file-" (eval fn))
 		   (find-file ,fn)))))
 	   (sym (gensym (format "%s-" (car desc-form))))
