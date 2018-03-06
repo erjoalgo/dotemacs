@@ -51,10 +51,7 @@
     (let (refreshed-p)
       (dolist (package packages)
 	(when
-	    (and (not (package-installed-p package))
-		 (loop for i below 2 always
-		       (y-or-n-p (format "connect to the internet to install %s? (%d)"
-					 package i))))
+	    (and (not (package-installed-p package)))
 	  (condition-case ex
 	      (progn (or refreshed-p (progn
 				       (package-refresh-contents)
