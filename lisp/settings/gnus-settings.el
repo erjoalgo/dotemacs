@@ -44,8 +44,7 @@
 		     (t (completing-read "select ~/.gnus init file: " cands
 					 nil t (longest-common-prefix cands) nil (car cands)))))
 	 (filename (f-join "~" selection)))
-    (setf gnus-init-file filename)
-    ))
+    (setf gnus-init-file filename)))
 
 (setf gnus-init-file
       (gnus-init-filename))
@@ -104,7 +103,6 @@
   ;;(gnus-group-quit)
   (gnus-group-exit)
   (gnus-goto-inbox))
-
 
 (defun ispell-mail ()
   ;;why not just (ispell-buffer) or (ispell)?
