@@ -219,7 +219,8 @@
 
   ("y" search-engine-search)
 
-  ("J" (lambda () (interactive)(join-line '(4))))
+  ("J" (lambda (arg) (interactive "P")(loop for _ below (or arg 1) do
+                                     (join-line '(4)))))
   )
 
 
