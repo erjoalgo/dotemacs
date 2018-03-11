@@ -169,8 +169,7 @@
       (assert m)
       (erase-buffer)
       (insert (match-string 2 s))
-      (save-buffer))
-    ))
+      (save-buffer))))
 
 (defun translation-correction-fix-paragraphs ()
   (interactive)
