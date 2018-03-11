@@ -4,7 +4,8 @@
     (correction . "-corrección.txt")
     (english . "-english.txt")
     (spanish . "-spanish.txt")
-    (wdiff . "-wdiff.txt")))
+    (wdiff . "-wdiff.txt")
+    (wdiff-html . "-wdiff.html")))
 
 (defvar translations-home
   (expand-file-name "~/git/translations/"))
@@ -134,18 +135,21 @@
       (insert-file-contents-literally filename)
       (buffer-string)))
 
-(defun translation-wdiff (name)
-  (interactive (list (f-base default-directory)))
-  (let* (
-	 (wdiff-file-name (translation-suffix name 'wdiff))
-	 (cmd (format "wdiff %s %s > %s"
-		      (translation-suffix name 'original)
-		      (translation-suffix name 'correction)
-		      wdiff-file-name)))
-    (message "cmd %s" cmd)
-    (shell-command cmd)
-    (kill-new (debian-file->string wdiff-file-name))
-    (message "yanked wdif output")))
+(defun translation-wdiff (directory)
+  (interactive (list default-directory))
+  (let* ((name (f-base directory))
+         (cmd-fmt (format "%%s %s %s > %%s"
+                          (translation-suffix name 'original)
+                          (translation-suffix name 'correction))))
+    (loop for (program out-filename) in
+          `(("html-wdiff" ,(translation-suffix name 'wdiff-html))
+            ("wdiff" ,(translation-suffix name 'wdiff)))
+          as cmd = (format cmd-fmt program out-filename)
+          do (progn
+               (let ((default-directory directory))
+                 (shell-command cmd))
+               (kill-new (debian-file->string out-filename))
+               (message "yanked wdif output")))))
 
 (defun translation-english-trim-non-article-text ()
   (interactive)
