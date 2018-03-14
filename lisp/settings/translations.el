@@ -86,6 +86,7 @@
   (let ((sanitized (-> subject
 		       (gnus-replace-in-string "[^[:alnum:]]" "-")
 		       (gnus-replace-in-string "traducci.n-" "")
+                       (gnus-replace-in-string "-+" "-")
 		       downcase)))
     (when manual-sanitize
       (setf sanitized (read-string "enter translation name: "
