@@ -203,4 +203,5 @@
           (concat (f-base filename)
                   (cdr (assoc 'correction translation-suffixes)))))
     (copy-file (expand-file-name filename) correction-filename)
-    (find-file correction-filename)))
+    (find-file correction-filename)
+    (visual-line-mode)))
