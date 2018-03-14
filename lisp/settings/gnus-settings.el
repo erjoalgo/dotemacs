@@ -202,7 +202,7 @@
 	 (subject (message-fetch-field "Subject"))
 	 (from-nw (gnus-replace-in-string from ".*<\\(.*\\)>.*" "\\1"))
 	 (date-nw (-> date
-		      (gnus-replace-in-string "^[A-Z][a-z]\\{2\\}, \\([0-9]+ [A-Z][a-z]+ [0-9]\\{4\\} [0-9]\\{2\\}:[0-9]\\{2\\}:[0-9]\\{2\\} [-+][0-9]\\{4\\} ([A-Z]\\{3\\})\\).*" "\\1")
+		      (gnus-replace-in-string "^[A-Z][a-z]\\{2\\}, \\([0-9]+ [A-Z][a-z]+ [0-9]\\{4\\} [0-9]\\{2\\}:[0-9]\\{2\\}:[0-9]\\{2\\} [-+][0-9]\\{4\\} \\(([A-Z]\\{3\\})\\)?\\).*" "\\1")
                       (concat subject " ")
 		      s-trim
 		      (gnus-replace-in-string "[^a-z-A-Z0-9+-]" "-"))))
