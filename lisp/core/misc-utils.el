@@ -473,3 +473,15 @@ of the variable, or nil if unbound.
 (defun path-append-directory (dir)
   (interactive "Denter directory: ")
   (setenv "PATH" (concat (getenv "PATH") ":" dir)))
+
+(defun source-bashrc (&optional bashrc)
+  (interactive)
+  (loop with cmd = (format "source %s &> /dev/null; env" (or bashrc "~/.bashrc"))
+        with env = (s-split "\n" (shell-command-to-string cmd) t)
+
+        for var-val in env
+        do (string-match "\\([^=]+\\)=\\(.*\\)" var-val)
+        as var = (match-string 1 var-val)
+        as val = (match-string 2 var-val)
+        do (message "setting %s to %s" var val)
+        do (setenv var val)))
