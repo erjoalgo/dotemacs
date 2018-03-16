@@ -177,20 +177,22 @@
 
 (defun translation-correction-fix-paragraphs ()
   (interactive)
-  (save-excursion
-    (goto-char (point-min))
-    (replace-regexp "\n" "XXX")
-    (goto-char (point-min))
-    (replace-regexp "XXXXXX" "\n\n")
-    (goto-char (point-min))
-    (replace-regexp "XXX" " ")
+  (when (re-search-forward "\n\n" nil t)
+    (save-excursion
+      (goto-char (point-min))
+      (replace-regexp "\n" "XXX")
+      (goto-char (point-min))
+      (replace-regexp "XXXXXX" "\n\n")
+      (goto-char (point-min))
+      (replace-regexp "XXX" " ")
 
-    (goto-char (point-min))
-    (replace-regexp " +" " ")
+      (goto-char (point-min))
+      (replace-regexp " +" " ")
 
-    (goto-char (point-min))
-    (replace-regexp "^ +" "")
-    (visual-line-mode 1)))
+      (goto-char (point-min))
+      (replace-regexp "^ +" "")
+      ))
+  (visual-line-mode 1))
 
 (defun translation-fix-quotes ()
   (interactive)
