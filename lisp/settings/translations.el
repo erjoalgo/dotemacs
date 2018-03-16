@@ -10,11 +10,11 @@
 (defvar translations-home
   (expand-file-name "~/git/translations/"))
 
-(defun translation-suffix (name suffix-sym)
+(defun translation-suffix (name suffix-sym &optional path)
   (let ((suffix (cdr (assoc suffix-sym translation-suffixes)))
-	filename )
+	filename)
     (f-join translations-home
-	    name ;;directory
+            (or path name)
 	    (concat name suffix));;file bassename
     ))
 
@@ -28,33 +28,37 @@
   (save-buffer)
   (buffer-string))
 
-(defun translation-mkdir (name)
-  (let ((dir (f-join translations-home name)))
+(defun translation-mkdir (name &optional path)
+  (unless path
+    (setf path (read-file-name "enter path: " translations-home "")))
+  (assert (s-starts-with? (f-full translations-home) (f-full path)))
+  (let ((dir (f-join path name)))
     (unless (file-exists-p dir)
-      (make-directory dir t))))
+      (make-directory dir t))
+    dir))
 
-(defun translation-new (name &optional text-english)
+(defun translation-new (name &optional text-english dir)
   (interactive "senter name of translation: ")
-  (translation-mkdir name)
+  (setf dir (translation-mkdir name dir))
   (translation-interactive-create-file
-   (translation-suffix name 'english) text-english)
+   (translation-suffix name 'english dir) text-english)
 
   (translation-interactive-create-file
-   (translation-suffix name 'spanish) ""))
+   (translation-suffix name 'spanish dir) ""))
 
 (defun translation-new-correction
-    (name &optional text-original text-english)
+    (name &optional text-original text-english dir)
   (interactive "senter name of translation: ")
-  (translation-mkdir name)
+  (setf dir (translation-mkdir name dir))
 
   (setf text-original
 	(translation-interactive-create-file
-	 (translation-suffix name 'original) text-original))
+	 (translation-suffix name 'original dir) text-original))
 
   (translation-interactive-create-file
-   (translation-suffix name 'english) text-english)
+   (translation-suffix name 'english dir) text-english)
 
-  (find-file (translation-suffix name 'correction))
+  (find-file (translation-suffix name 'correction dir))
   (insert text-original)
 
   (translation-correction-fix-paragraphs)
@@ -91,8 +95,7 @@
     (when manual-sanitize
       (setf sanitized (read-string "enter translation name: "
 				   sanitized)))
-    sanitized
-    ))
+    sanitized))
 
 (defun translation-new-correction-from-article ()
   (interactive)
@@ -140,11 +143,11 @@
   (interactive (list default-directory))
   (let* ((name (f-base directory))
          (cmd-fmt (format "%%s %s %s > %%s"
-                          (translation-suffix name 'original)
-                          (translation-suffix name 'correction))))
+                          (translation-suffix name 'original directory)
+                          (translation-suffix name 'correction directory))))
     (loop for (program out-filename) in
-          `(("html-wdiff" ,(translation-suffix name 'wdiff-html))
-            ("wdiff" ,(translation-suffix name 'wdiff)))
+          `(("html-wdiff" ,(translation-suffix name 'wdiff-html directory))
+            ("wdiff" ,(translation-suffix name 'wdiff directory)))
           as cmd = (format cmd-fmt program out-filename)
           do (progn
                (let ((default-directory directory))
