@@ -208,3 +208,14 @@
     (copy-file (expand-file-name filename) correction-filename)
     (find-file correction-filename)
     (visual-line-mode)))
+
+(defun translation-new-correction-from-file (filename)
+  (interactive (list (dired-file-name-at-point)))
+  (when (equal "docx" (f-ext filename))
+    (setf filename
+          (docx2txt filename (lambda (fname)
+                               (translation-santize-subject fname t)))))
+  (let* ((name (f-base filename))
+         (text-original (debian-file->string filename t)))
+    (translation-new-correction name text-original nil nil)))
+
