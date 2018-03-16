@@ -180,6 +180,7 @@
   (when (re-search-forward "\n\n" nil t)
     (save-excursion
       (goto-char (point-min))
+      (replace-regexp "^ \\{25,\\}" "\n")
       (replace-regexp "\n" "XXX")
       (goto-char (point-min))
       (replace-regexp "XXXXXX" "\n\n")
