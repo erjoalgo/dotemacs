@@ -219,3 +219,7 @@
          (text-original (debian-file->string filename t)))
     (translation-new-correction name text-original nil nil)))
 
+(defun translation-fix-quotes ()
+  (interactive)
+  (query-replace-regexp "\"\\(.*?\\)\"" "“\\1”")
+  (query-replace-regexp "--" "—"))
