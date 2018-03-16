@@ -134,9 +134,9 @@
         (kill-new text)
 	(translation-new-correction translation-name  nil nil)))))
 
-(defun debian-file->string (filename)
+(defun debian-file->string (filename &optional not-literal-p)
     (with-temp-buffer
-      (insert-file-contents-literally filename)
+      (funcall (if not-literal-p 'insert-file-contents 'insert-file-contents-literally) filename)
       (buffer-string)))
 
 (defun translation-wdiff (directory)
