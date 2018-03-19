@@ -492,7 +492,8 @@
 	    (< current-hour 9))
     ;;this theme is nice. text easy to read, dark background
     ;;only load at night?
-    (load-theme 'wombat)))
+    ;; (load-theme 'wombat)
+    ))
 
 
 
