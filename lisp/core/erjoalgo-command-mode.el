@@ -274,7 +274,6 @@
   ("a" "~/.bash_aliases")
   ("A" "~/.my-bash-funs")
   ("m" (:buffer "*Messages*"))
-  ;("s" (:buffer "*scratch*"))
   ("s" (:buffer "*Org Agenda*"))
   ("S" (:buffer "*Org Agenda*"))
   ("t" (f-join emacs-top "settings" "buttons-data.el"))
