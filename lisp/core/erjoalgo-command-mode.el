@@ -321,10 +321,7 @@
   open-interpreter-map
   nil
   ("s" (lambda (arg)(interactive "P")(eshell arg)))
-  ("p"  (lambda () (interactive)
-	  (let ((python-buff (get-buffer "*Python*")))
-	    (if python-buff (switch-to-buffer python-buff)
-	      (call-interactively 'run-python)))))
+  ("p"  ,(run-or-switch-cmd "*Python*" run-python))
   ("P"  message-current-buffer-process)
   ;;("p" 'run-python)
   ("i" ielm)
