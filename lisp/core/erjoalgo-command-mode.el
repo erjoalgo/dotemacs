@@ -320,7 +320,7 @@
   open-interpreter-map
   nil
   ("s" (lambda (arg)(interactive "P")(eshell arg)))
-  ("p"  ,(run-or-switch-cmd "*Python*" run-python))
+  ("p"  ,(run-or-switch-cmd "*Python*" 'run-python))
   ("P"  message-current-buffer-process)
   ;;("p" 'run-python)
   ("i" ielm)
