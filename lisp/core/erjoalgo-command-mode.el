@@ -274,7 +274,7 @@
   ("a" "~/.bash_aliases")
   ("A" "~/.my-bash-funs")
   ("m" (:buffer "*Messages*"))
-  ("s" (:buffer "*Org Agenda*"))
+  ("s" (:buffer "*Org Agenda*" (org-todo-list)))
   ("S" (:buffer "*Org Agenda*"))
   ("t" (f-join emacs-top "settings" "buttons-data.el"))
   ("M" (concat "/var/mail/" (getenv "USER")))
