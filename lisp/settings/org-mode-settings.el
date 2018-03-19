@@ -112,7 +112,7 @@
 
 
 (when (file-exists-p org-top-dir)
-  (push org-top-dir org-agenda-files)
+  (pushnew org-top-dir org-agenda-files)
   '(org-todo-list org-match)
 
   (setq initial-buffer-choice
