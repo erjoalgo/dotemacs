@@ -2,13 +2,18 @@
 
 (add-hook 'lisp-mode-hook 'slime-mode)
 
-(defun upcase-last ()
+(defun upcase-last (&optional capitalize)
   (interactive)
-  (save-excursion
-    (upcase-region (point)
-		   (progn
-		     (backward-sexp)
-		     (point)))))
+  (let ((fun (if capitalize 'capitalize-region 'upcase-region)))
+    (save-excursion
+      (funcall fun (point)
+               (progn
+                 (backward-sexp)
+                 (point))))))
+
+(defun capitalize-last (arg)
+  (interactive "P")
+  (upcase-last (not arg)))
 
 (defun bash-identifier-current-line  ()
   (let ((line
