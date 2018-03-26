@@ -237,7 +237,3 @@
     (copy-file filename dir)
     (translation-new name nil (f-dirname dir))))
 
-(defun translation-fix-quotes ()
-  (interactive)
-  (query-replace-regexp "\"\\(.*?\\)\"" "“\\1”")
-  (query-replace-regexp "--" "—"))
