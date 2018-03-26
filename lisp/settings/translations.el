@@ -226,6 +226,12 @@
 (defun translation-new-correction-from-file (filename)
   (translation-new-from-file filename t))
 
+(defun translation-new-from-image (filename)
+  (interactive (list (dired-file-name-at-point)))
+  (let* ((name (translation-santize-subject (f-base filename) t))
+         (dir (translation-mkdir name)))
+    (copy-file filename dir)
+    (translation-new name nil (f-dirname dir))))
 
 (defun translation-fix-quotes ()
   (interactive)
