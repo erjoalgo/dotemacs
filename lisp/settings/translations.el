@@ -197,7 +197,11 @@
 
 (defun translation-fix-quotes ()
   (interactive)
-  (query-replace-regexp "\"\\(.*?\\)\"" "“\\1”"))
+  (save-excursion
+    (goto-char (point-min))
+    (query-replace-regexp "\"\\(.*?\\)\"" "“\\1”")
+    (goto-char (point-min))
+    (query-replace-regexp "--" "—")))
 
 (defun translation-new-inline-correction (filename)
   (interactive (list (dired-file-name-at-point)))
