@@ -212,15 +212,20 @@
     (find-file correction-filename)
     (visual-line-mode)))
 
-(defun translation-new-correction-from-file (filename)
+(defun translation-new-from-file (filename &optional correction-p)
   (interactive (list (dired-file-name-at-point)))
   (when (equal "docx" (f-ext filename))
     (setf filename
           (docx2txt filename (lambda (fname)
                                (translation-santize-subject fname t)))))
   (let* ((name (f-base filename))
-         (text-original (debian-file->string filename t)))
-    (translation-new-correction name text-original nil nil)))
+         (text-original (debian-file->string filename t))
+         (fun (if correction-p 'translation-new-correction translation-new)))
+    (funcall fun name text-original nil nil)))
+
+(defun translation-new-correction-from-file (filename)
+  (translation-new-from-file filename t))
+
 
 (defun translation-fix-quotes ()
   (interactive)
