@@ -102,7 +102,7 @@ q: Don't fix\n" func file))
 				      "enter additional mvn args: "
 				      read-string set)
 
-(defun java-camel-case (string)
+(defun underscore-to-camel-case (string)
   (replace-regexp-in-string "[-_]\\([a-z]\\)"
                             (lambda (match) (upcase (match-string 1 match)))
                             (downcase string)))
