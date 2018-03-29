@@ -106,3 +106,15 @@ q: Don't fix\n" func file))
   (replace-regexp-in-string "[-_]\\([a-z]\\)"
                             (lambda (match) (upcase (match-string 1 match)))
                             (downcase string)))
+
+(defun camel-case-to-underscore (a b &optional use-dash)
+  (interactive "r")
+  (save-excursion
+    (let ((sep (if use-dash "-" "_"))
+          (case-fold-search nil))
+      (goto-char a)
+      (while (re-search-forward "\\([[a-z]\\)\\([A-Z][a-z]\\)" b t)
+        (replace-match (concat (match-string 1) sep
+                               (downcase (match-string 2))))
+        (backward-char); avoid skipping overlap
+        (incf b (length sep))))))
