@@ -486,4 +486,6 @@ of the variable, or nil if unbound.
         as var = (match-string 1 var-val)
         as val = (match-string 2 var-val)
         do (message "setting %s to %s" var val)
-        do (setenv var val)))
+        do (setenv var val))
+  (loop for dir in (s-split ":" (getenv "PATH") t)
+        do (add-to-list 'exec-path dir)))
