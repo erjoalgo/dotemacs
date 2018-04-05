@@ -474,9 +474,11 @@ of the variable, or nil if unbound.
   (interactive "Denter directory: ")
   (setenv "PATH" (concat (getenv "PATH") ":" dir)))
 
-(defun source-bashrc (&optional bashrc)
-  (interactive)
-  (loop with cmd = (format "source %s &> /dev/null; env" (or bashrc "~/.bashrc"))
+(defun source-bashrc (bashrc)
+  (interactive (list
+                (read-file-name "enter bash file to source: "
+                                "~/.bashrc")))
+  (loop with cmd = (format "source %s &> /dev/null; env" bashrc)
         with env = (s-split "\n" (shell-command-to-string cmd) t)
 
         for var-val in env
