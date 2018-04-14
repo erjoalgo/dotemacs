@@ -160,6 +160,13 @@
                (mapcar suffix (translation-suffix  suffix directory))
                '(original correction wdiff wdiff-html)))))
 
+(defun translation-submission (directory)
+  "return the result of my work, whether a correction or
+a translation from scratch"
+  (let ((name (f-base directory))
+        (correction (translation-suffix name 'correction directory))
+        (spanish (translation-suffix name 'spanish directory)))
+    (if (file-exists-p correction) correction spanish)))
 
 (defun translation-english-trim-non-article-text ()
   (interactive)
