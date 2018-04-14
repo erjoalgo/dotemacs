@@ -139,21 +139,27 @@
       (funcall (if not-literal-p 'insert-file-contents 'insert-file-contents-literally) filename)
       (buffer-string)))
 
+(defun wdiff (a b dest-txt dest-html)
+  (loop
+   with cmd-fmt =  (format "%%s %s %s > %%s" a b)
+   for (program out-filename) in
+   `(("html-wdiff" ,dest-html)
+     ("wdiff" ,dest-txt))
+   as cmd = (format cmd-fmt program out-filename)
+   if out-filename
+   do (progn
+        (let ((default-directory directory))
+          (shell-command cmd))
+        (kill-new (debian-file->string out-filename))
+        (message "yanked wdif output"))))
+
 (defun translation-wdiff (directory)
   (interactive (list default-directory))
-  (let* ((name (f-base directory))
-         (cmd-fmt (format "%%s %s %s > %%s"
-                          (translation-suffix name 'original directory)
-                          (translation-suffix name 'correction directory))))
-    (loop for (program out-filename) in
-          `(("html-wdiff" ,(translation-suffix name 'wdiff-html directory))
-            ("wdiff" ,(translation-suffix name 'wdiff directory)))
-          as cmd = (format cmd-fmt program out-filename)
-          do (progn
-               (let ((default-directory directory))
-                 (shell-command cmd))
-               (kill-new (debian-file->string out-filename))
-               (message "yanked wdif output")))))
+  (let ((name (f-base directory))
+        (apply 'wdiff
+               (mapcar suffix (translation-suffix  suffix directory))
+               '(original correction wdiff wdiff-html)))))
+
 
 (defun translation-english-trim-non-article-text ()
   (interactive)
