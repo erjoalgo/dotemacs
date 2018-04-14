@@ -1,11 +1,14 @@
-(defvar
+(setf
   translation-suffixes
   '((original . "-original.txt")
     (correction . "-corrección.txt")
     (english . "-english.txt")
     (spanish . "-spanish.txt")
     (wdiff . "-wdiff.txt")
-    (wdiff-html . "-wdiff.html")))
+    (wdiff-html . "-wdiff.html")
+    (final . "-final.txt")
+    (wdiff-final . "-final-wdiff.txt")
+    (wdiff-final-html . "-final-wdiff.html")))
 
 (defvar translations-home
   (expand-file-name "~/git/translations/"))
@@ -159,6 +162,18 @@
         (apply 'wdiff
                (mapcar suffix (translation-suffix  suffix directory))
                '(original correction wdiff wdiff-html)))))
+
+(defun translation-wdiff-final (directory)
+  (interactive (list default-directory))
+  (let* ((name (f-base directory))
+        (final (translation-suffix name 'final directory)))
+    (unless (file-exists-p final)
+      (translation-interactive-create-file final))
+    (wdiff
+     (translation-submission directory)
+     final
+     nil
+     (translation-suffix name 'wdiff-final-html directory))))
 
 (defun translation-submission (directory)
   "return the result of my work, whether a correction or
