@@ -158,10 +158,10 @@
 
 (defun translation-wdiff (directory)
   (interactive (list default-directory))
-  (let ((name (f-base directory))
-        (apply 'wdiff
-               (mapcar suffix (translation-suffix  suffix directory))
-               '(original correction wdiff wdiff-html)))))
+  (let ((name (f-base directory)))
+    (apply 'wdiff
+           (mapcar (lambda (suffix) (translation-suffix name suffix directory))
+                   '(original correction wdiff wdiff-html)))))
 
 (defun translation-wdiff-final (directory)
   (interactive (list default-directory))
