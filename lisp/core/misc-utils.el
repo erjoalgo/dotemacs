@@ -489,3 +489,11 @@ of the variable, or nil if unbound.
         do (setenv var val))
   (loop for dir in (s-split ":" (getenv "PATH") t)
         do (add-to-list 'exec-path dir)))
+
+(defun diff-buffer-with-another-file (buffer file)
+  "View the differences between BUFFER and another file.
+This requires the external program `diff' to be in your `exec-path'."
+  (interactive "bBuffer: \nfFile: ")
+  (with-current-buffer (get-buffer (or buffer (current-buffer)))
+    (diff file (current-buffer) nil 'noasync)))
+
