@@ -13,14 +13,14 @@
 		      (buffer-name buff))
 		     buff)))
 
-(defun slime-sbcl ()
-  (interactive)
+(defun slime-sbcl (arg)
+  (interactive "P")
   (require 'slime)
   (let* ((slime-sbcl-buffer-name "*slime-repl sbcl")
 	 (slime-sbcl-buffer
 	  (find-buffer-by-starts-with slime-sbcl-buffer-name)))
 
-    (if slime-sbcl-buffer
+    (if (and (null arg) slime-sbcl-buffer)
 	(switch-to-buffer slime-sbcl-buffer)
       ;;(add-hook 'slime-connected-hook 'load-compiler-hook)
       (slime))))
