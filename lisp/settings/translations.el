@@ -265,3 +265,7 @@ a translation from scratch"
     (copy-file filename dir)
     (translation-new name nil (f-dirname dir))))
 
+(defun translation-commit (directory)
+  (interactive (list default-directory))
+  (let ((default-directory directory))
+    (shell-command (format "git add .; git commit -m '%s'" directory))))
