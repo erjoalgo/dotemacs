@@ -497,3 +497,7 @@ This requires the external program `diff' to be in your `exec-path'."
   (with-current-buffer (get-buffer (or buffer (current-buffer)))
     (diff file (current-buffer) nil 'noasync)))
 
+(defmacro comp (comps-sym &optional default)
+  `(completing-read ,(format "complete from %s: " comps-sym)
+                    ,comps-sym
+                    nil t nil nil (list ,default)))
