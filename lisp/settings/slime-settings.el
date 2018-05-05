@@ -27,12 +27,12 @@
 
 (defvar *stumpwm-swank-port* 4005)
 
-(defun slime-stumpwm ()
-  (interactive)
+(defun slime-stumpwm (arg)
+  (interactive "P")
   (require 'slime)
   (let ((slime-stumpwm-buffer
 	 (find-buffer-by-starts-with "*slime-repl sbcl")))
-    (if slime-stumpwm-buffer
+    (if (and (not arg) slime-stumpwm-buffer)
 	(switch-to-buffer slime-stumpwm-buffer)
 
       ;;doesn't work since slime-connect does async stuff
