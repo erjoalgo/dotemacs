@@ -269,3 +269,8 @@ a translation from scratch"
   (interactive (list default-directory))
   (let ((default-directory directory))
     (shell-command (format "git add .; git commit -m '%s'" directory))))
+
+
+;; * TODO ensure month, nationalities aren't capitalized
+;; * TODO spell-check english words, names accepted by ispell-spanish
+;; * TODO verify country names translate
