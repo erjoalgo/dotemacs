@@ -381,7 +381,7 @@ for customization of the printer command."
 		  (while (re-search-forward regexp b t)
 		    (replace-match replacement)))))
 
-(defun url-unescape ()
+(defun url-decode ()
   (interactive)
   (multi-regexp-replace
    '(("%20" " " )
@@ -409,7 +409,8 @@ for customization of the printer command."
      ("%2F" "/" )
      ("%7D" "}")
      ("%3A" ":" )
-     ("%7E" "~"))))
+     ("%7E" "~")
+     )))
 
 '(multi-regexp-replace '(("defun" "tayfun")
 			 ("interactive" "petaluma")))
