@@ -436,18 +436,24 @@
      ("[+]" "%2B"))
    :initial-value search-terms))
 
-(defvar search-engine-query-url-format
-  "https://duckduckgo.com/lite/?q=%s")
+(setf engine-alist
+  ;; search-engine-query-url-format
+  '(
+    ("ddg" . "https://duckduckgo.com/lite/?q=%s")
+    )
+ )
 
-(defun search-engine-search (term)
+(defun search-engine-search (term &optional engine)
   (interactive (list (if (region-active-p)
 			 (buffer-substring-no-properties
 			  (region-beginning) (region-end))
-		       (read-string "enter search terms: " (car kill-ring)))))
+		       (read-string "enter search terms: " (car kill-ring)))
+                     "ddg"))
+  (let ((search-engine-query-url-format (cdr (assoc-string engine engine-alist))))
   (message "searching for %s..." term)
   (browser-new-tab (format search-engine-query-url-format
 			   (uri-encode
-			    (replace-regexp-in-string "[\n]" "" term)))))
+			    (replace-regexp-in-string "[\n]" "" term))))))
 
 
 (provide 'command-mode-commands)
