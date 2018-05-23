@@ -233,10 +233,14 @@ a translation from scratch"
 (defun translation-fix-quotes ()
   (interactive)
   (save-excursion
-    (goto-char (point-min))
-    (query-replace-regexp "\"\\(.*?\\)\"" "“\\1”")
-    (goto-char (point-min))
-    (query-replace-regexp "--" "—")))
+    (loop for (from . to) in '(
+                               ("\"\\(.*?\\)\"" "“\\1”")
+                               ("--" "—")
+                               )
+          do
+          (progn
+            (goto-char (point-min))
+            (query-replace-regexp from to)))))
 
 (defun translation-new-inline-correction (filename)
   (interactive (list (dired-file-name-at-point)))
