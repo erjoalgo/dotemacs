@@ -158,8 +158,10 @@
    do (progn
         (let ((default-directory directory))
           (shell-command cmd))
-        (kill-new (debian-file->string out-filename))
-        (message "yanked wdif output"))))
+        (when (s-ends-with-p ".html" out-filename)
+          (let ((url (concat "file://" out-filename)))
+            (message "url %s" url)
+            (browse-url url))))))
 
 (defun translation-wdiff (directory)
   (interactive (list default-directory))
