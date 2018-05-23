@@ -43,8 +43,10 @@
     dir))
 
 (defun translation-new (name &optional text-english dir)
-  (interactive "senter name of translation: ")
+  (interactive `(nil))
+  (setf name (or name (read-string "senter name of translation: ")))
   (setf dir (translation-mkdir name dir))
+
   (translation-interactive-create-file
    (translation-suffix name 'english dir) text-english)
 
