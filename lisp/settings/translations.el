@@ -293,6 +293,11 @@ a translation from scratch"
   (let ((default-directory directory))
     (shell-command (format "git add .; git commit -m '%s'" directory))))
 
+(defun translation-prepare ()
+  (interactive)
+  (ispell-spanish)
+  (translation-fix-quotes)
+  )
 
 ;; * TODO ensure month, nationalities aren't capitalized
 ;; * TODO spell-check english words, names accepted by ispell-spanish
