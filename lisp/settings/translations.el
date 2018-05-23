@@ -269,6 +269,7 @@ a translation from scratch"
     (funcall fun name text-original nil nil)))
 
 (defun translation-new-correction-from-file (filename)
+  (interactive (list (dired-file-name-at-point)))
   (translation-new-from-file filename t))
 
 (defun translation-new-from-image (filename)
