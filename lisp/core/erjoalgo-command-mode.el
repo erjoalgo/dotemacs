@@ -217,8 +217,8 @@
   ([f1] global-erjoalgo-command-mode-toggle);; f1 toggle command mode
   ([ë] global-erjoalgo-command-mode-toggle);; f1 toggle command mode
 
-  ("y" search-engine-search)
-  ("Y" search-engine-search)
+  ("y" ,(search-engine-search-cmd "ddg"))
+  ("Y" ,(search-engine-search-cmd "linguee"))
 
   ("J" (lambda (arg) (interactive "P")(loop for _ below (or arg 1) do
                                      (join-line '(4)))))
