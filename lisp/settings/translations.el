@@ -279,6 +279,15 @@ a translation from scratch"
     (copy-file filename dir)
     (translation-new name nil (f-dirname dir))))
 
+(defun translation-new-from-url (url)
+  (interactive (list (url-get-url-at-point)))
+  (translation-new
+   nil
+   (with-current-buffer (url-retrieve-synchronously url)
+     (prog1
+         (buffer-string)
+       (kill-buffer)))))
+
 (defun translation-commit (directory)
   (interactive (list default-directory))
   (let ((default-directory directory))
