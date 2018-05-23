@@ -71,7 +71,7 @@
   (translation-correction-fix-paragraphs)
   (visual-line-mode t))
 
-(defun translation-publish (subject body address)
+(defun translation-publish-commit (subject body address)
   (interactive
    (save-excursion
      (let ((subject
@@ -82,6 +82,7 @@
 	   (body (buffer-substring-no-properties (point) (point-max))))
        (list subject body
 	     "libnews.wp.1423124091423874123@gmail.com"))))
+  (translation-commit default-directory)
   (compose-mail
    address subject nil)
   (goto-char (point-max))
