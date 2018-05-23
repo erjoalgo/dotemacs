@@ -16,6 +16,8 @@
 (defun translation-suffix (name suffix-sym &optional path)
   (let ((suffix (cdr (assoc suffix-sym translation-suffixes)))
 	filename)
+    (when (and (null name) path)
+      (setf name (f-base path)))
     (f-join translations-home
             (or path name)
 	    (concat name suffix));;file bassename
