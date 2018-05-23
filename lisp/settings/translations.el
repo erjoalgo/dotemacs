@@ -236,6 +236,7 @@ a translation from scratch"
     (loop for (from . to) in '(
                                ("\"\\(.*?\\)\"" "“\\1”")
                                ("--" "—")
+                               ("\\([\"”]\\)\\([.,:]\\)" "\\2\\1")
                                )
           do
           (progn
