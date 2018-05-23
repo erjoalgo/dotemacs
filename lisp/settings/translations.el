@@ -258,7 +258,7 @@ a translation from scratch"
     (visual-line-mode)))
 
 (defun translation-new-from-file (filename &optional correction-p)
-  (interactive (list (dired-file-name-at-point)))
+  (interactive (list (dired-file-name-at-point) prefix-arg))
   (when (equal "docx" (f-ext filename))
     (setf filename
           (docx2txt filename (lambda (fname)
