@@ -218,6 +218,7 @@
   ([ë] global-erjoalgo-command-mode-toggle);; f1 toggle command mode
 
   ("y" search-engine-search)
+  ("Y" search-engine-search)
 
   ("J" (lambda (arg) (interactive "P")(loop for _ below (or arg 1) do
                                      (join-line '(4)))))

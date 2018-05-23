@@ -440,6 +440,7 @@
   ;; search-engine-query-url-format
   '(
     ("ddg" . "https://duckduckgo.com/lite/?q=%s")
+    ("linguee" . "https://www.linguee.com/english-spanish/search?source=auto&query=%s")
     )
  )
 
@@ -448,7 +449,7 @@
 			 (buffer-substring-no-properties
 			  (region-beginning) (region-end))
 		       (read-string "enter search terms: " (car kill-ring)))
-                     "ddg"))
+                     (if (equal "Y" (this-command-keys)) "linguee" "ddg")))
   (let ((search-engine-query-url-format (cdr (assoc-string engine engine-alist))))
   (message "searching for %s..." term)
   (browser-new-tab (format search-engine-query-url-format
