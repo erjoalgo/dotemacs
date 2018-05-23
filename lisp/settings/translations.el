@@ -95,8 +95,8 @@
                             (recursive-edit)
                             (current-buffer))
                      ))
-  (translation-commit directory)
   (translation-wdiff directory)
+  (translation-commit directory)
   (with-current-buffer gnus-message-mode-buffer
     (let ((wdiff-html (translation-suffix nil 'wdiff-html directory))
           (correction (translation-suffix nil 'correction directory)))
