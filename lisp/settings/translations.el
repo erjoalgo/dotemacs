@@ -280,8 +280,8 @@ a translation from scratch"
                                (translation-santize-subject fname t)))))
   (let* ((name (f-base filename))
          (text-original (debian-file->string filename t))
-         (fun (if correction-p 'translation-new-correction translation-new)))
-    (funcall fun name text-original nil nil)))
+         (fun (if correction-p 'translation-new-correction 'translation-new)))
+    (apply fun name text-original nil)))
 
 (defun translation-new-correction-from-file (filename)
   (interactive (list (dired-file-name-at-point)))
