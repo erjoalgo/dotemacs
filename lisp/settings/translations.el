@@ -88,7 +88,7 @@
   (goto-char (point-max))
   (insert body))
 
-(defun translation-correction-reply (directory gnus-buffer)
+(defun translation-correction-reply (directory gnus-message-mode-buffer)
   (interactive (list (read-directory-name "enter translation directory: "
                                           default-directory)
                      (progn (message "navigate to gnus reply buffer...")
@@ -97,11 +97,12 @@
                      ))
   (translation-commit directory)
   (translation-wdiff directory)
-  (let ((wdiff-html (translation-suffix nil 'wdiff-html directory))
-        (correction (translation-suffix nil 'correction directory)))
-    (goto-char (point-max))
-    (gnus-insert-html-from-file wdiff-html)
-    (gnus-attach-file-simple correction)))
+  (with-current-buffer gnus-message-mode-buffer
+    (let ((wdiff-html (translation-suffix nil 'wdiff-html directory))
+          (correction (translation-suffix nil 'correction directory)))
+      (goto-char (point-max))
+      (gnus-insert-html-from-file wdiff-html)
+      (gnus-attach-file-simple correction))))
 
 (defun message-text ()
   (save-excursion (goto-char (point-min))
