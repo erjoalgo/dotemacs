@@ -33,7 +33,6 @@
 	  quick-yes
 	  cl-lib
 	  cl
-	  erjoalgo-command-mode
 	  zoom-global
 	  isearch-fast-reverse
 	  my-emacs-settings
