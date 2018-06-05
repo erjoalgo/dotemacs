@@ -88,6 +88,10 @@
   (goto-char (point-max))
   (insert body))
 
+(defun translation-correction-p (directory)
+  (file-exists-p
+   (translation-suffix nil 'correction directory)))
+
 (defun translation-correction-reply (directory gnus-message-mode-buffer)
   (interactive (list (read-directory-name "enter translation directory: "
                                           default-directory)
