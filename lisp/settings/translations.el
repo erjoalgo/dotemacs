@@ -97,24 +97,22 @@
                                           default-directory)
                      (progn (message "navigate to gnus reply buffer...")
                             (recursive-edit)
-                            (current-buffer))
-                     ))
-  (translation-wdiff directory)
+                            (current-buffer))))
 
   (let ((correction-p (translation-correction-p directory)))
 
     (when correction-p
       (translation-wdiff directory))
 
-  (translation-commit directory)
+    (translation-commit directory)
 
-  (with-current-buffer gnus-message-mode-buffer
+    (with-current-buffer gnus-message-mode-buffer
       (let (wdiff-html text)
         (if correction-p
             (setf wdiff-html (translation-suffix nil 'wdiff-html directory)
                   text (translation-suffix nil 'correction directory))
           (setf text (translation-suffix nil 'spanish directory)))
-      (goto-char (point-max))
+        (goto-char (point-max))
         (when wdiff-html
           (gnus-insert-html-from-file wdiff-html))
         (gnus-attach-file-simple text)))))
