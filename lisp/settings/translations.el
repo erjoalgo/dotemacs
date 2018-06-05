@@ -92,7 +92,7 @@
   (file-exists-p
    (translation-suffix nil 'correction directory)))
 
-(defun translation-correction-reply (directory gnus-message-mode-buffer)
+(defun translation-reply (directory gnus-message-mode-buffer)
   (interactive (list (read-directory-name "enter translation directory: "
                                           default-directory)
                      (progn (message "navigate to gnus reply buffer...")
@@ -100,13 +100,25 @@
                             (current-buffer))
                      ))
   (translation-wdiff directory)
+
+  (let ((correction-p (translation-correction-p directory)))
+
+    (when correction-p
+      (translation-wdiff directory))
+
   (translation-commit directory)
+
   (with-current-buffer gnus-message-mode-buffer
-    (let ((wdiff-html (translation-suffix nil 'wdiff-html directory))
-          (correction (translation-suffix nil 'correction directory)))
+      (let (wdiff-html text)
+        (if correction-p
+            (setf wdiff-html (translation-suffix nil 'wdiff-html directory)
+                  text (translation-suffix nil 'correction directory))
+          (setf text (translation-suffix nil 'spanish directory)))
       (goto-char (point-max))
-      (gnus-insert-html-from-file wdiff-html)
-      (gnus-attach-file-simple correction))))
+        (when wdiff-html
+          (gnus-insert-html-from-file wdiff-html))
+        (gnus-attach-file-simple text)))))
+
 
 (defun message-text ()
   (save-excursion (goto-char (point-min))
