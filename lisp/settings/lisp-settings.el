@@ -22,12 +22,12 @@
          retval)
      ,@clean-up))
 
-(defmacro with-highlight-region (a b &body body)
+(defmacro with-highlight-region (a b body)
   (let ((overlay (gensym "overlay")))
     `(let ((,overlay (make-overlay ,a ,b)))
        (overlay-put ,overlay 'priority 1001)
        (overlay-put ,overlay 'face 'query-replace)
-       (safe-wrap ,@body (delete-overlay ,overlay)))))
+       (safe-wrap ,body (delete-overlay ,overlay)))))
 
 (defun vom-define-log-levels ()
   (interactive)
