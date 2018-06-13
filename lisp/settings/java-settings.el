@@ -102,10 +102,32 @@ q: Don't fix\n" func file))
 				      "enter additional mvn args: "
 				      read-string set)
 
-(defun underscore-to-camel-case (string)
-  (replace-regexp-in-string "[-_]\\([a-z]\\)"
-                            (lambda (match) (upcase (match-string 1 match)))
-                            (downcase string)))
+(defmacro def-region-regexp-cmd (name regexp replacement &optional body)
+  (let* ((a-sym (gensym "a"))
+         (b-sym (gensym "b"))
+         (replace-form
+          `(save-excursion
+             (goto-char ,a-sym)
+             (while (re-search-forward ,regexp ,b-sym t)
+               (replace-match ,replacement))))
+         (replacement-placeholder-sym 'DO-REPLACEMENT)
+         (new-body
+          (if (null body)
+              replace-form
+            (loop for elt in body collect
+                  (if (eq elt replacement-placeholder-sym)
+                      replace-form elt)))))
+  `(defun ,name (,a-sym ,b-sym)
+     (interactive "r")
+     ,new-body)))
+
+(def-region-regexp-cmd underscore-to-camel-case
+  "[-_]\\([a-z]\\)"
+  (upcase (match-string 1))
+
+  (progn
+    (downcase-region (region-beginning) (region-end))
+    DO-REPLACEMENT))
 
 (defun camel-case-to-underscore (a b &optional use-dash)
   (interactive "r")
