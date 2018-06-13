@@ -129,6 +129,12 @@ q: Don't fix\n" func file))
     (downcase-region (region-beginning) (region-end))
     DO-REPLACEMENT))
 
+(def-region-regexp-cmd underscore-to-dash
+  "_" "-")
+
+(def-region-regexp-cmd dash-to-underscore
+  "-" "_")
+
 (defun camel-case-to-underscore (a b &optional use-dash)
   (interactive "r")
   (save-excursion
