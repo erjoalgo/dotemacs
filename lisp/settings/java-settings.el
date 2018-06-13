@@ -136,7 +136,9 @@ q: Don't fix\n" func file))
   "-" "_")
 
 (defun camel-case-to-underscore (a b &optional use-dash)
-  (interactive "r")
+  (interactive (list (region-beginning)
+                     (region-end)
+                     current-prefix-arg))
   (save-excursion
     (let ((sep (if use-dash "-" "_"))
           (case-fold-search nil))
