@@ -310,7 +310,7 @@ a translation from scratch"
     (translation-new name nil (f-dirname dir))))
 
 (defun translation-new-from-url (url)
-  (interactive (list (url-get-url-at-point)))
+  (interactive (list (browse-url-url-at-point)))
   (translation-new
    nil
    (with-current-buffer (url-retrieve-synchronously url)
