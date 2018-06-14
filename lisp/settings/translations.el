@@ -264,7 +264,7 @@ a translation from scratch"
   (interactive)
   (save-excursion
     (loop for (from . to) in '(
-                               ("\"\\(.*?\\)\"" "“\\1”")
+                               ("\"\\(\\(.\\|\n\\)*?\\)\"" "“\\1”")
                                ("\"" (lambda (&rest args)
                                        (error "unbalanced quotes in line %s"
                                               (line-number-at-pos (match-beginning 0)))))
