@@ -279,6 +279,14 @@ a translation from scratch"
             (goto-char (point-min))
             (query-replace-regexp from to)))))
 
+(defvar translation-manual-checklist
+  '("ensure nationalities not capitalized"
+    "ensure months not capitalized"
+    "ensure dates are not in 'Month Day, Year' format")
+  "items pending automation"
+  )
+
+
 (defun translation-new-inline-correction (filename)
   (interactive (list (dired-file-name-at-point)))
   (when (equal "docx" (f-ext filename))
