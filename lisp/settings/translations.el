@@ -269,6 +269,7 @@ a translation from scratch"
                                        (error "unbalanced quotes in line %s"
                                               (line-number-at-pos (match-beginning 0)))))
                                ("'\\(.*?\\)'" "‘\\1’")
+                               ("'" "’")
                                (" *-- *" "—")
                                ("\\([\"”]\\)\\([.,:]\\)" "\\2\\1")
                                ("[.]\\{3\\}" "…")
