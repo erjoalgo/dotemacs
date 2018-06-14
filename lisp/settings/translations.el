@@ -329,9 +329,8 @@ a translation from scratch"
 
 (defun translation-prepare ()
   (interactive)
-  (ispell-spanish)
-  (translation-fix-quotes)
-  )
+  (when (eq 0 (ispell-spanish))
+    (translation-fix-quotes)))
 
 ;; * TODO ensure month, nationalities aren't capitalized
 ;; * TODO spell-check english words, names accepted by ispell-spanish
