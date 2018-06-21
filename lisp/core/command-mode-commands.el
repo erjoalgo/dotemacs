@@ -246,7 +246,7 @@
   (cond
    ((and (boundp 'slime-mode) slime-mode)
     (let ((slime-load-failed-fasl 'always))
-      (call-interactively 'slime-compile-and-load-file)))
+      (call-interactively 'slime-eval-defun)))
 
    ((and (boundp 'cider-mode) cider-mode)
     (call-interactively 'cider-eval-defun-at-point))
