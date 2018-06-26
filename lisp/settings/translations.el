@@ -263,21 +263,26 @@ a translation from scratch"
       ))
   (visual-line-mode 1))
 
+(defvar translation-regexp-rules-alist)
+(setf translation-regexp-rules-alist
+      '(
+        ("\"\\(\\(.\\|\n\\)*?\\)\"" "“\\1”")
+        ("\"" (lambda (&rest args)
+                (error "unbalanced quotes in line %s"
+                       (line-number-at-pos (match-beginning 0)))))
+        ("'\\(.*?\\)'" "‘\\1’")
+        ("'" "’")
+        (" *-- *" "—")
+        ("\\([\"”]\\)\\([.,:]\\)" "\\2\\1")
+        ("[.]\\{3\\}" "…")
+        ("^\\([A-Z][a-z]* .\\{,100\\}[.]\\)$" "\\1")
+        ;; (", y" "y")
+        ))
+
 (defun translation-fix-quotes ()
   (interactive)
   (save-excursion
-    (loop for (from . to) in '(
-                               ("\"\\(\\(.\\|\n\\)*?\\)\"" "“\\1”")
-                               ("\"" (lambda (&rest args)
-                                       (error "unbalanced quotes in line %s"
-                                              (line-number-at-pos (match-beginning 0)))))
-                               ("'\\(.*?\\)'" "‘\\1’")
-                               ("'" "’")
-                               (" *-- *" "—")
-                               ("\\([\"”]\\)\\([.,:]\\)" "\\2\\1")
-                               ("[.]\\{3\\}" "…")
-                               ("^\\([A-Z][a-z]* .\\{,100\\}[.]\\)$" "\\1")
-                               )
+    (loop for (from . to) in translation-regexp-rules-alist
           do
           (progn
             (goto-char (point-min))
