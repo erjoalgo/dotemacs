@@ -279,10 +279,29 @@ a translation from scratch"
         ;; (", y" "y")
         ))
 
+(setf translation-capitalized-phrases
+      (loop for phrase in '("estados unidos")
+            collect
+            (list (regexp-quote phrase)
+                  (lambda (&rest args)
+                    (capitalize (match-string 0))))))
+
+(setf translation-lowercase-phrases
+      (loop for phrase in '("Enero" "Febrero" "Marzo" "Abril"
+                            "Mayo" "Junio" "Julio" "Agosto"
+                            "Septiembre" "Octubre" "Noviembre" "Diciembre")
+            collect
+            (list (regexp-quote phrase)
+                  (lambda (&rest args)
+                    (downcase (match-string 0))))))
+
 (defun translation-fix-quotes ()
   (interactive)
   (save-excursion
-    (loop for (from . to) in translation-regexp-rules-alist
+    (loop for (from . to) in (append
+                              translation-regexp-rules-alist
+                              translation-capitalized-phrases
+                              translation-lowercase-phrases)
           do
           (progn
             (goto-char (point-min))
