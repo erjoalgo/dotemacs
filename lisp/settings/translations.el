@@ -115,7 +115,6 @@
             (setf wdiff-html (translation-suffix nil 'wdiff-html directory)
                   text (translation-suffix nil 'correction directory))
           (setf text (translation-suffix nil 'spanish directory)))
-        (goto-char (point-max))
         (when wdiff-html
           (gnus-insert-html-from-file wdiff-html))
         (gnus-attach-file-simple text)))))
