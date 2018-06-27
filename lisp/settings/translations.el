@@ -263,44 +263,43 @@ a translation from scratch"
   (visual-line-mode 1))
 
 (defvar translation-regexp-rules-alist)
+
+(defun translation-phrases-to-rules (fun phrases)
+  (mapcar (lambda (phrase)
+            (list (regexp-quote phrase)
+                  `(lambda (&rest args)
+                     (,fun (match-string 0)))))
+          phrases))
+
 (setf translation-regexp-rules-alist
-      '(
-        ("\"\\(\\(.\\|\n\\)*?\\)\"" "“\\1”")
-        ("\"" (lambda (&rest args)
-                (error "unbalanced quotes in line %s"
-                       (line-number-at-pos (match-beginning 0)))))
-        ("'\\(.*?\\)'" "‘\\1’")
-        ("'" "’")
-        (" *-- *" "—")
-        ("\\([\"”]\\)\\([.,:]\\)" "\\2\\1")
-        ("[.]\\{3\\}" "…")
-        ("^\\([A-Z][a-z]* .\\{,100\\}[.]\\)$" "\\1")
-        ;; (", y" "y")
-        ))
+      (append
+       '(
+         ("\"\\(\\(.\\|\n\\)*?\\)\"" "“\\1”")
+         ("\"" (lambda (&rest args)
+                 (error "unbalanced quotes in line %s"
+                        (line-number-at-pos (match-beginning 0)))))
+         ("'\\(.*?\\)'" "‘\\1’")
+         ("'" "’")
+         (" *--+ *" "—")
+         (" +-+ +" "—")
+         ("\\([\"”]\\)\\([.,:]\\)" "\\2\\1")
+         ("[.]\\{3\\}" "…")
+         ("^\\([A-Z][a-z]* .\\{,100\\}\\)[.]$" "\\1")
+         (", y" "y")
+         )
 
-(setf translation-capitalized-phrases
-      (loop for phrase in '("estados unidos")
-            collect
-            (list (regexp-quote phrase)
-                  (lambda (&rest args)
-                    (capitalize (match-string 0))))))
+       (translation-phrases-to-rules
+        'capitalize '("estados unidos"))
 
-(setf translation-lowercase-phrases
-      (loop for phrase in '("Enero" "Febrero" "Marzo" "Abril"
-                            "Mayo" "Junio" "Julio" "Agosto"
-                            "Septiembre" "Octubre" "Noviembre" "Diciembre")
-            collect
-            (list (regexp-quote phrase)
-                  (lambda (&rest args)
-                    (downcase (match-string 0))))))
+       (translation-phrases-to-rules
+        'downcase '("Enero" "Febrero" "Marzo" "Abril"
+                    "Mayo" "Junio" "Julio" "Agosto"
+                    "Septiembre" "Octubre" "Noviembre" "Diciembre"))))
 
 (defun translation-fix-quotes ()
   (interactive)
   (save-excursion
-    (loop for (from . to) in (append
-                              translation-regexp-rules-alist
-                              translation-capitalized-phrases
-                              translation-lowercase-phrases)
+    (loop for (from . to) in translation-regexp-rules-alist
           do
           (progn
             (goto-char (point-min))
