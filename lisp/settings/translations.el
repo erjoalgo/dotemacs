@@ -1,14 +1,14 @@
 (setf
-  translation-suffixes
-  '((original . "-original.txt")
-    (correction . "-corrección.txt")
-    (english . "-english.txt")
-    (spanish . "-spanish.txt")
-    (wdiff . "-wdiff.txt")
-    (wdiff-html . "-wdiff.html")
-    (final . "-final.txt")
-    (wdiff-final . "-final-wdiff.txt")
-    (wdiff-final-html . "-final-wdiff.html")))
+ translation-suffixes
+ '((original . "-original.txt")
+   (correction . "-corrección.txt")
+   (english . "-english.txt")
+   (spanish . "-spanish.txt")
+   (wdiff . "-wdiff.txt")
+   (wdiff-html . "-wdiff.html")
+   (final . "-final.txt")
+   (wdiff-final . "-final-wdiff.txt")
+   (wdiff-final-html . "-final-wdiff.html")))
 
 (defvar translations-home
   (expand-file-name "~/git/translations/"))
@@ -20,8 +20,8 @@
       (setf name (f-base path)))
     (f-join translations-home
             (or path name)
-	    (concat name suffix));;file bassename
-    ))
+            ;;file bassename
+	    (concat name suffix))))
 
 (defun translation-interactive-create-file (filename &optional text)
   (find-file filename)
@@ -168,16 +168,16 @@
       (let* ((docx (car cands))
              (translation-name (translation-santize-subject (f-base docx) t))
              (txt (docx2txt docx (lambda (fname) translation-name)))
-            (text (with-temp-buffer
-                    (insert-file-contents txt)
-                    (buffer-string))))
+             (text (with-temp-buffer
+                     (insert-file-contents txt)
+                     (buffer-string))))
         (kill-new text)
 	(translation-new-correction translation-name  nil nil)))))
 
 (defun debian-file->string (filename &optional not-literal-p)
-    (with-temp-buffer
-      (funcall (if not-literal-p 'insert-file-contents 'insert-file-contents-literally) filename)
-      (buffer-string)))
+  (with-temp-buffer
+    (funcall (if not-literal-p 'insert-file-contents 'insert-file-contents-literally) filename)
+    (buffer-string)))
 
 (defun wdiff (a b dest-txt dest-html)
   (loop
@@ -205,7 +205,7 @@
 (defun translation-wdiff-final (directory)
   (interactive (list default-directory))
   (let* ((name (f-base directory))
-        (final (translation-suffix name 'final directory)))
+         (final (translation-suffix name 'final directory)))
     (unless (file-exists-p final)
       (translation-interactive-create-file final))
     (wdiff
@@ -233,9 +233,7 @@ a translation from scratch"
 		  (format "^%s*" wildcard)
 		  pre-line
 		  (format "\\(%s+?\\)" wildcard)
-		  post-line
-		  ))
-	 )
+		  post-line)))
     (let ((m (string-match regexp s)))
       (assert m)
       (erase-buffer)
@@ -258,8 +256,7 @@ a translation from scratch"
       (replace-regexp " +" " ")
 
       (goto-char (point-min))
-      (replace-regexp "^ +" "")
-      ))
+      (replace-regexp "^ +" "")))
   (visual-line-mode 1))
 
 (defvar translation-regexp-rules-alist)
@@ -285,8 +282,7 @@ a translation from scratch"
          ("\\([\"”]\\)\\([.,:]\\)" "\\2\\1")
          ("[.]\\{3\\}" "…")
          ("^\\([A-Z][a-z]* .\\{,100\\}\\)[.]$" "\\1")
-         (", y" "y")
-         )
+         (", y" "y"))
 
        (translation-phrases-to-rules
         'capitalize '("estados unidos"))
@@ -310,8 +306,7 @@ a translation from scratch"
   '("ensure nationalities not capitalized"
     "ensure months not capitalized"
     "ensure dates are not in 'Month Day, Year' format")
-  "items pending automation"
-  )
+  "items pending automation")
 
 
 (defun translation-new-inline-correction (filename)
