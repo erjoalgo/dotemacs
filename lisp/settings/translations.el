@@ -303,7 +303,8 @@ a translation from scratch"
           do
           (progn
             (goto-char (point-min))
-            (query-replace-regexp from to)))))
+            (let ((case-fold-search nil))
+              (query-replace-regexp from to))))))
 
 (defvar translation-manual-checklist
   '("ensure nationalities not capitalized"
