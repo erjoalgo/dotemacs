@@ -219,7 +219,8 @@
      (translation-submission directory)
      final
      nil
-     (translation-suffix name 'wdiff-final-html directory))))
+     (translation-suffix name 'wdiff-final-html directory))
+    (translation-commit directory)))
 
 (defun translation-submission (directory)
   "return the result of my work, whether a correction or
