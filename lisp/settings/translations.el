@@ -71,25 +71,32 @@
   (translation-correction-fix-paragraphs)
   (visual-line-mode t))
 
-(defvar translation-submissions-address)
+(defvar translation-submissions-address-alist)
 
-(defun translation-publish-commit (subject body address)
+(defun translation-publish-commit (subject body address attachment-type)
   (interactive
    (save-excursion
-     (let ((subject
-	    (progn
-	      (goto-char (point-min))
-	      (end-of-line)
-	      (buffer-substring-no-properties (point-min) (point))))
-	   (body (buffer-substring-no-properties (point) (point-max)))
-           (address translation-submissions-address))
-       (list subject body address))))
+     (let* ((subject
+             (progn
+               (goto-char (point-min))
+               (end-of-line)
+               (buffer-substring-no-properties (point-min) (point))))
+            (body (buffer-substring-no-properties (point) (point-max)))
+            (address (completing-read "select submission address: "
+                                      (mapcar 'car translation-submissions-address-alist)))
+            (attachment-type (or
+                              (cdr (assoc address translation-submissions-address-alist))
+                              'plaintext)))
+       (list subject body address attachment-type))))
   (assert translation-submissions-address)
   (translation-commit default-directory)
   (compose-mail
    address subject nil)
   (goto-char (point-max))
-  (insert body))
+  (case attachment-type
+    ('plaintext (insert body))
+    ('attachment (gnus-attach-file-simple body))
+    (t (error "unknown attachment-type: %s" attachment-type))))
 
 (defun translation-correction-p (directory)
   (file-exists-p
