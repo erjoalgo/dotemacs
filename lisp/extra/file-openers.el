@@ -30,4 +30,5 @@
     (if (not program)
 	(error (concat "no program known for file: " fn))
       (if (functionp program) (funcall program fn)
-	(start-process program nil program fn)))))
+	(progn (message "%s %s" program fn)
+               (start-process program nil program fn))))))
