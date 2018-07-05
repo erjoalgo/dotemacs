@@ -16,10 +16,17 @@
     (loop for (program . exts) in *file-programs* thereis
 	  (and (member ext exts) program))))
 
+(defvar open-exe
+  (s-trim (shell-command-to-string "which open")))
+
+(defun coalesce (&rest strings)
+  (loop for s in strings
+        thereis (and s (> (length s) 0) s)))
+
 (defun open-file (fn)
   (interactive (list (dired-file-name-at-point)))
   (setf fn (expand-file-name fn))
-  (let ((program (get-file-program fn)))
+  (let ((program (coalesce open-exe (get-file-program fn))))
     (if (not program)
 	(error (concat "no program known for file: " fn))
       (if (functionp program) (funcall program fn)
