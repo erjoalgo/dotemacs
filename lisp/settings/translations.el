@@ -291,6 +291,7 @@ a translation from scratch"
          ("[.]\\{3\\}" "…")
          ("^\\([A-Z][a-z]* .\\{,100\\}\\)[.]$" "\\1")
          (", y" " y")
+         ("ee.uu." "EE. UU.")
 
        (translation-phrases-to-rules
         'capitalize '("estados unidos"))
