@@ -292,6 +292,8 @@ a translation from scratch"
          ("^\\([A-Z][a-z]* .\\{,100\\}\\)[.]$" "\\1")
          (", y" " y")
          ("ee.uu." "EE. UU.")
+         ("[?][?]" (lambda (&rest args)
+                     (error "?? exists"))))
 
        (translation-phrases-to-rules
         'capitalize '("estados unidos"))
