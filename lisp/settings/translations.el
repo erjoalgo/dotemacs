@@ -88,7 +88,7 @@
                               (cdr (assoc address translation-submissions-address-alist))
                               'plaintext)))
        (list subject body address attachment-type))))
-  (assert translation-submissions-address)
+  (assert address)
   (translation-commit default-directory)
   (compose-mail
    address subject nil)
