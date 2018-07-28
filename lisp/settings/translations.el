@@ -299,6 +299,9 @@ a translation from scratch"
         'capitalize '("estados unidos"))
 
        (translation-phrases-to-rules
+        'upcase '("ee. uu."))
+
+       (translation-phrases-to-rules
         'downcase '("Enero" "Febrero" "Marzo" "Abril"
                     "Mayo" "Junio" "Julio" "Agosto"
                     "Septiembre" "Octubre" "Noviembre" "Diciembre"))))
