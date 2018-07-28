@@ -290,7 +290,7 @@ a translation from scratch"
          ("\\([\"”]\\)\\([.,:]\\)" "\\2\\1")
          ("[.]\\{3\\}" "…")
          ("^\\([A-Z][a-z]* .\\{,100\\}\\)[.]$" "\\1")
-         (", y" "y"))
+         (", y" " y")
 
        (translation-phrases-to-rules
         'capitalize '("estados unidos"))
