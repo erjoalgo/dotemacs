@@ -18,6 +18,9 @@
   ("C-M-]" 'org-demote-subtree);;promote
   ("C-M-[" 'org-promote-subtree);;demote
 
+  ("C-M-n" 'org-metadown);;promote
+  ("C-M-p" 'org-metaup);;demote
+
   ("RET" 'org-meta-return);;insert new
 					;use C-j to add text
 
