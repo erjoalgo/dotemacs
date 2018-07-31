@@ -11,13 +11,15 @@
    ("mpg321" "mp3")
    ("vlc" "mp4" )))
 
-(defun get-file-program (fn)
-  (let ((ext (downcase (file-name-extension fn))))
-    (loop for (program . exts) in *file-programs* thereis
-	  (and (member ext exts) program))))
-
 (defvar open-exe
   (s-trim (shell-command-to-string "which open")))
+
+(defun get-file-program (fn)
+  (if (equal system-type 'darwin)
+      open-exe
+    (let ((ext (downcase (file-name-extension fn))))
+      (loop for (program . exts) in *file-programs* thereis
+            (and (member ext exts) program)))))
 
 (defun coalesce (&rest strings)
   (loop for s in strings
@@ -26,7 +28,7 @@
 (defun open-file (fn)
   (interactive (list (dired-file-name-at-point)))
   (setf fn (expand-file-name fn))
-  (let ((program (coalesce open-exe (get-file-program fn))))
+  (let ((program (get-file-program fn)))
     (if (not program)
 	(error (concat "no program known for file: " fn))
       (if (functionp program) (funcall program fn)
