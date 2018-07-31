@@ -268,3 +268,6 @@ nwidth (in px) if any: ")
 
 (with-eval-after-load (symbol-file 'org-mode)
   (require 'ox-texinfo))
+
+(setq org-refile-targets
+      '(("master.org" :maxlevel . 3)))
