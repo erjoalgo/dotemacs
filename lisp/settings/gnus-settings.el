@@ -2,6 +2,16 @@
       (expand-file-name
        "~/Downloads/gnus-attachments/"))
 
+(defun string-to-int (string)
+  "only works for positive numbers"
+  (loop with number = 0
+        with zero = (string-to-char "0")
+        for c across string
+        as dig = (- c zero)
+        do (setf number (+ (* 10 number)
+                           dig))
+        finally (return number)))
+
 (defun gnus-init-filename ()
   "return a ~/.gnus filename based on the current emacs session"
   (let* ((emacs-self-pid (emacs-pid))
