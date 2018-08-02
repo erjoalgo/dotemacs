@@ -8,7 +8,7 @@
 	 (all-emacs-pids (->> (shell-command-to-string "pidof emacs")
 			      s-trim
 			      (s-split " ")
-			      (mapcar 'string-to-int)
+			      (mapcar 'string-to-number)
 			      reverse))
 	 (gnus-init-idx (loop for i from 0
 			      for pid in all-emacs-pids
