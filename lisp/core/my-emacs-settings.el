@@ -138,7 +138,7 @@
       s-trim))
 
 (setf browser-name
-      (which "chromium" "chromium-browser" "chrome"))
+      (which "chromium" "chromium-browser" "chrome" "google-chrome"))
 
 (defun chromium-new-tab (url &optional unknown-arg)
   (start-process "browse-url" nil browser-name url)
