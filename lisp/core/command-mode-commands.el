@@ -353,6 +353,7 @@
      (list  (and (not (string= "" ext)) ext) pattern (expand-file-name dir) t)))
 
   (let ((buff-name "grep-recursive")
+        (sudo-p (when (s-starts-with-p "sudo" tramp-current-method) '("sudo")))
 	proc)
     (when clear-buffer
       (switch-to-buffer buff-name)
@@ -361,10 +362,10 @@
 
     (setf proc (apply 'start-process buff-name buff-name
 		   (append
-		    `("find" ,dir "-name" ".git" "-prune" "-o")
+		    `(,@sudo-p "find" ,dir "-name" ".git" "-prune" "-o")
 		    (when extension
 		      (list "-name" (concat "*" extension)))
-		    (list "-exec" "grep" "-HinsI" pattern "{}" ";"))))
+		    `("-exec" ,@sudo-p "grep" "-HinsI" ,pattern "{}" ";"))))
     (set-process-sentinel proc
 			  `(lambda (proc change)
 			     (switch-to-buffer ,buff-name)
