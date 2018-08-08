@@ -57,11 +57,11 @@
 	     :hostname hostname
 	     :title (s-join " " title))))))
 
-(defun which (program)
+(defun program-exists-p (program)
   (zerop (call-process "which" nil nil nil program)))
 
 (defun wm-window-ensure-wmctrl-exists ()
-  (unless (which "wmctrl")
+  (unless (program-exists-p "wmctrl")
     (error "wmctrl not available")))
 
 (defun wm-window-raise (wm-window)
