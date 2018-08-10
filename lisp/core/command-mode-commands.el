@@ -328,6 +328,18 @@
 	      nil t)
 	(replace-match "")))))
 
+(defun buffer-add-space-before-line-number (&optional buffer)
+  ;; TODO fix in find-file-at-point
+  "workaround to make `find-file-at-point' provide a filename that exists"
+  (with-current-buffer (or buffer (current-buffer))
+    (save-excursion
+      (goto-char (point-min))
+      (while (re-search-forward
+              "^[^:]+\\(:[0-9]+:\\)"
+	      nil t)
+        (message "match found")
+	(replace-match " \\1" nil nil nil 1)))))
+
 (defun grep-recursive (extension pattern dir &optional clear-buffer)
   ;;TODO colored output
   (interactive
@@ -371,6 +383,7 @@
 			     (switch-to-buffer ,buff-name)
 			     ;; (setf default-directory ,dir)
 			     (buffer-relativize-path-names ,dir)
+                             (buffer-add-space-before-line-number)
 			     (progn (goto-char (point-max))
 				      (insert "DONE"))
 			     (beginning-of-buffer)))
