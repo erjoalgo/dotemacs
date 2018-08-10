@@ -365,7 +365,8 @@
      (list  (and (not (string= "" ext)) ext) pattern (expand-file-name dir) t)))
 
   (let ((buff-name "grep-recursive")
-        (sudo-p (when (s-starts-with-p "sudo" tramp-current-method) '("sudo")))
+        (sudo-p (and (file-remote-p default-directory)
+                     (list (file-remote-p default-directory 'method))))
 	proc)
     (when clear-buffer
       (switch-to-buffer buff-name)
