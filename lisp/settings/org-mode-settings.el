@@ -139,19 +139,28 @@
     (when (fboundp 'check-unsaved-buffers)
       (check-unsaved-buffers))))
 
-(defun org-insert-inline-image (caption filename)
-  (interactive "senter caption for image:
-fenter image filename:
-nwidth (in px) if any: ")
+(defun org-insert-inline-image (caption filename width)
+  (interactive
+   (let ((caption (read-string "enter caption for image: "))
+         (filename (let ((cand (car kill-ring))
+                         default-dir initial)
+                     (when (and cand (file-exists-p cand))
+                       ;;TODO
+                       (setf default-dir (concat (f-dirname cand) "/")
+                             initial (f-filename cand)))
+                       (read-file-name  "enter image filename: " default-dir cand t  initial)))
+         (width (read-number "width (in px): " 0)))
+     (list caption filename width)))
+
   "     #+CAPTION: This is the caption for the next figure link (or table)
      #+NAME:
      [[./img/a.jpg]]"
-  (insert "#+CAPTION: " caption) (newline-and-indent)
+
+  (insert "#+CAPTION: " (or caption "")) (newline-and-indent)
   (insert "#+NAME: fig:SED-HR4049") (newline-and-indent)
-  (when width
-    (insert (format "#+ATTR_HTML: :width %s" width)) (newline-and-indent))
-  (insert (format "[[file:%s]]" filename)) (newline-and-indent)
-  )
+  (when (not (zerop width))
+    (inert (format "#+ATTR_HTML: :width %d" width)) (newline-and-indent))
+  (insert (format "[[file:%s]]" filename)) (newline-and-indent))
 
 (defun file-modification-timestamp (filename)
   (string-to-number
