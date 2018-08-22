@@ -150,7 +150,7 @@
                              initial (f-filename cand)))
                        (read-file-name  "enter image filename: " default-dir cand t  initial)))
          (width (read-number "width (in px): " 0)))
-     (list caption filename width)))
+     (list caption filename (when (not (zerop width)) width))))
 
   "     #+CAPTION: This is the caption for the next figure link (or table)
      #+NAME:
@@ -158,7 +158,7 @@
 
   (insert "#+CAPTION: " (or caption "")) (newline-and-indent)
   (insert "#+NAME: fig:SED-HR4049") (newline-and-indent)
-  (when (not (zerop width))
+  (when width
     (inert (format "#+ATTR_HTML: :width %d" width)) (newline-and-indent))
   (insert (format "[[file:%s]]" filename)) (newline-and-indent))
 
