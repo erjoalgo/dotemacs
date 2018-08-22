@@ -148,7 +148,7 @@
                        ;;TODO
                        (setf default-dir (concat (f-dirname cand) "/")
                              initial (f-filename cand)))
-                       (read-file-name  "enter image filename: " default-dir cand t  initial)))
+                     (read-file-name  "enter image filename: " default-dir cand t  initial)))
          (width (read-number "width (in px): " 0)))
      (list caption filename (when (not (zerop width)) width))))
 
@@ -160,7 +160,8 @@
   (insert "#+NAME: fig:SED-HR4049") (newline-and-indent)
   (when width
     (inert (format "#+ATTR_HTML: :width %d" width)) (newline-and-indent))
-  (insert (format "[[file:%s]]" filename)) (newline-and-indent))
+  (insert (format "[[file:%s]]" filename))
+  (newline-and-indent))
 
 (defun file-modification-timestamp (filename)
   (string-to-number
