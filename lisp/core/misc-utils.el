@@ -119,6 +119,9 @@
 			(eq major-mode 'fundamental-mode))
 		    (read-symbol-completing "enter mode: ")
 		  major-mode)))
+  (unless (or (eq mode major-mode)
+              (member mode minor-mode-list))
+    (funcall mode))
   (if (not (eq mode major-mode))
       (add-file-local-variable mode t)
     ;;first load mode to set the right comment-start
