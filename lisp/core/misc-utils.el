@@ -114,11 +114,7 @@
    (completing-read prompt obarray nil nil (and default (symbol-name default)))))
 
 (defun add-file-local-variable-mode (mode)
-  (interactive (list
-		(if (or current-prefix-arg
-			(eq major-mode 'fundamental-mode))
-		    (read-symbol-completing "enter mode: ")
-		  major-mode)))
+  (interactive (list (read-symbol-completing "enter mode: " major-mode)))
   (unless (or (eq mode major-mode)
               (member mode minor-mode-list))
     (funcall mode))
