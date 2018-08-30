@@ -477,8 +477,8 @@ of the variable, or nil if unbound.
 (defun source-bashrc (bashrc)
   (interactive (list
                 (read-file-name "enter bash file to source: "
-                                "~/.bashrc")))
-  (loop with cmd = (format "source %s &> /dev/null; env" bashrc)
+                                 "~/.bashrc" "~/.bashrc")))
+  (loop with cmd = (format "bash -i 'source %s &> /dev/null; env'" bashrc)
         with env = (s-split "\n" (shell-command-to-string cmd) t)
 
         for var-val in env
