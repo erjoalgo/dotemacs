@@ -44,9 +44,13 @@
     (dired-change-marks dired-tmp-char dired-mark-char)
     t))
 
-(defun dired-tagger-tag-loop ()
-  (interactive)
-  (loop while (call-interactively 'dired-mark-file-as)))
+(defun dired-tagger-tag-loop (&optional open)
+  (interactive "P")
+  (loop
+   as buf = (when open (dired-find-file))
+   as char = (dired-tagger-read-char)
+   when buf do (kill-buffer buf)
+   while (and char (dired-mark-file-as char))))
 
 (defun dired-tagger-move ()
   (interactive)
