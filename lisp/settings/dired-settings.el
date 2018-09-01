@@ -31,9 +31,13 @@
 (setf dired-tmp-char 31)
 (setf dired-mark-char 42)
 
+(defun dired-tagger-read-char ()
+  (let ((char (read-char "enter lowercase char, q to quit: ")))
+    (unless (member char '(Quit 113)) char)))
+
 (defun dired-mark-file-as (dest-char)
-  (interactive "center lowercase char, q to quit: ")
-  (unless (member dest-char '(Quit 113))
+  (interactive (list (dired-tagger-read-char)))
+  (when dest-char
     (dired-change-marks dired-mark-char dired-tmp-char)
     (dired-mark nil)
     (dired-change-marks dired-mark-char dest-char)
