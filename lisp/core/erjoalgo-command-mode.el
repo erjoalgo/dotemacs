@@ -287,7 +287,7 @@
   ;;("c" "/sudo::/etc/anacrontab")
   ;;("C" "/sudo::/etc/crontab")
   ("8" "~/repos/starter/data/packages")
-  ("o" "~/git/org/master.org")
+  ("o" "~/private-data/org/master.org")
   ("T" (:exec (org-todo-list org-match)))
   ("O" nil)
   ("j" (:buffer "*-jabber-roster-*"))
