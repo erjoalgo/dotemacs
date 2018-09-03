@@ -44,6 +44,8 @@
   (destructuring-bind (nick user host) (erc-parse-user nickuserhost)
     (message "%s says: %s" nick (s-trim msg))))
 
+;; TODO /msg nickserv ghost USER PASSWORD
+
 '(with-eval-after-load 'erc
   (push 'notifications erc-modules)
   (push 'match erc-modules)
