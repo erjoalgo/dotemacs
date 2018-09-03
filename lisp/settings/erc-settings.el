@@ -34,7 +34,8 @@
 (setq erc-autojoin-channels-alist
       '(("freenode.net"
 	 "#emacs"
-	 "#stumpwm")
+	 "#stumpwm"
+         "#lisp")
 	("erjoalgo.com"
 	 "#kiwiirc-default")))
 
