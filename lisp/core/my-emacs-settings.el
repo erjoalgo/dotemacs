@@ -133,12 +133,13 @@
      (message "opened %s" url)))
 
 (defun which (&rest names)
-  (-> (shell-command-to-string (concat "which " (s-join " " names)
-				       " 2> /dev/null"))
-      s-trim))
+  (let* ((cmd (format "which %s 2> /dev/null" (s-join " " names) ))
+         (out (shell-command-to-string cmd)))
+    (s-split "\n" out t)))
+
 
 (setf browser-name
-      (which "chromium" "chromium-browser" "chrome" "google-chrome"))
+      (car (which "chromium" "chromium-browser" "chrome" "google-chrome")))
 
 (defun chromium-new-tab (url &optional unknown-arg)
   (start-process "browse-url" nil browser-name url)
