@@ -182,7 +182,7 @@
     (message "%s" kmap-to-key-alist)
     kmap-to-key-alist))
 
-(defun current-active-maps-symbols ()
+(defun keymap-current-active-keymap-symbols ()
   (interactive)
   (let ((symbols (keymap-symbol (current-active-maps))))
     (when (called-interactively-p 'any)
