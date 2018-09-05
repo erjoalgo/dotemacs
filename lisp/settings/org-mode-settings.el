@@ -141,15 +141,15 @@
 
 (defun org-insert-inline-image (caption filename width)
   (interactive
-   (let ((caption (read-string "enter caption for image: "))
-         (filename (let ((cand (car kill-ring))
-                         default-dir initial)
-                     (when (and cand (file-exists-p cand))
-                       ;;TODO
-                       (setf default-dir (concat (f-dirname cand) "/")
-                             initial (f-filename cand)))
-                     (read-file-name  "enter image filename: " default-dir cand t  initial)))
-         (width (read-number "width (in px): " 0)))
+   (let* ((filename (let ((cand (car kill-ring))
+                          default-dir initial)
+                      (when (and cand (file-exists-p cand))
+                        ;;TODO
+                        (setf default-dir (concat (f-dirname cand) "/")
+                              initial (f-filename cand)))
+                      (read-file-name  "enter image filename: " default-dir cand t  initial)))
+          (caption (read-string "enter caption for image: " (f-base filename)))
+          (width (read-number "width (in px): " 0)))
      (list caption filename (when (not (zerop width)) width))))
 
   "     #+CAPTION: This is the caption for the next figure link (or table)
