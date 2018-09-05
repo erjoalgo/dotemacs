@@ -2,7 +2,8 @@
   "start or restart the server on USR1"
   (interactive)
   (message "got sigusr1!")
-  (server-start t t))
+  (server-force-delete)
+  (server-start))
 
 (define-key special-event-map [sigusr1] 'sig-usr1)
 
@@ -15,4 +16,4 @@
     (when cands
       (shell-command (format "kill -USR1 %d" (car cands))))))
 
-(add-hook 'kill-emacs-query-functions 'server-give-up-daemon)
+(add-hook 'kill-emacs-hook 'server-give-up-daemon)
