@@ -1,0 +1,18 @@
+(defun sig-usr1 ()
+  "start or restart the server on USR1"
+  (interactive)
+  (message "got sigusr1!")
+  (server-start t t))
+
+(define-key special-event-map [sigusr1] 'sig-usr1)
+
+(defun server-give-up-daemon ()
+  "pass daemon to another emacs process"
+  (let ((cands (->>
+                (s-split "\n" (shell-command-to-string "pidof emacs") t)
+                (mapcar 'string-to-int)
+                (remove-if (lambda (pid) (= (emacs-pid) pid))))))
+    (when cands
+      (shell-command (format "kill -USR1 %d" (car cands))))))
+
+(add-hook 'kill-emacs-query-functions 'server-give-up-daemon)
