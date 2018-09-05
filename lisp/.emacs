@@ -81,8 +81,10 @@
       (add-to-list 'load-path fn))
 
 (loop with safe-load = (safe-fun 'load)
-      for dir in '("vars" "core" "private" "settings" "extra")
-      as top = (f-join emacs-top dir)
+      for dir in `("core" "private" "settings" "extra"
+                   ,(expand-file-name "~/private-data/emacs-lisp"))
+      as top = (if (file-name-absolute-p dir) dir
+                 (f-join emacs-top dir))
       if (file-exists-p top) do
       (loop when (file-exists-p top)
 	    for fn in (directory-files top)
