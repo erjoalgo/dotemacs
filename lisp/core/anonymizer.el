@@ -28,7 +28,7 @@
   (unless (region-active-p)
     (setf a nil b nil))
   (let ((words `((,system-name "my-hostname")
-		       (,user-login-name "MY-NAME" )
+		       (,user-login-name "USER" )
 		       (,user-real-login-name "MY-NAME")
 		       (,user-mail-address "me@example.com")
 		       (,(first (s-split " " user-full-name)) "MY-FIRST-NAME")
