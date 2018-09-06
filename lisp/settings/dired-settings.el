@@ -21,7 +21,6 @@
 (defun dired-recursive-du ()(interactive)
 	      (let ((dired-dir dired-directory)
 		    (du-buffer "dired-rec-du"))
-		;;(shell-command (format "du -ah -d 1 %s | sort -h -r" dired_dir) dubuffer dubuffer )
 		(shell-command (format "du -ah --max-depth 1 %s | sort -h" dired-dir) du-buffer du-buffer )
 		(set-buffer du-buffer )
 		(replace-string dired-dir "" nil (point-min) (point-max))

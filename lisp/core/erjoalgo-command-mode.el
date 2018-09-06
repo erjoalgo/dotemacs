@@ -333,7 +333,6 @@
   ("x" execute-extended-command)
   ("X" sudo-buffer)
   (";" eval-expression)
-  ;;("m" switch_to_planner)
   ("M" (lambda () (interactive) (call-interactively 'man)))
   ("a" async-shell-command)
   ("v" revert-buffer-no-confirm)
@@ -345,7 +344,6 @@
   ("f" find-iregex)
   ("u" universal-argument)
   ([f2] call-last-kbd-macro)
-  ("z" airmacs_read_key)
   ("l" alert)
   ;;("w" switch-to-slime-repl)
 
