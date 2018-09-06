@@ -1,7 +1,7 @@
 (defun sig-usr1 ()
   "start or restart the server on USR1"
   (interactive)
-  (message "got sigusr1!")
+  (message "got sigusr1! at %s" (format-time-string "%H:%M:%S"))
   (server-force-delete)
   (server-start))
 
