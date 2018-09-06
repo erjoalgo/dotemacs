@@ -291,7 +291,7 @@ a translation from scratch"
          ("[.]\\{3\\}" "…")
          ("[.]\\{2\\}" ".")
          ("^\\([A-Z][a-z]* .\\{,100\\}\\)[.]$" "\\1")
-         (", y" " y")
+         (", y " " y ")
          ("ee.uu." "EE. UU.")
          ("[?][?]" (lambda (&rest args)
                      (error "?? exists"))))
