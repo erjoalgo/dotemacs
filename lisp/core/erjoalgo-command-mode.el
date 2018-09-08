@@ -379,8 +379,12 @@
 (global-set-key [escape] 'exit-recursive-edit)
 (global-set-key [f4] 'keyboard-escape-quit)
 (define-key 'help-command "y" 'find-function);;find source for function-at-point
-(global-set-key [s-backspace] (string-insert-command "`"))
-(global-set-key (kbd "s-SPC") (string-insert-command ", "))
+
+(buttons-macrolet
+ ()
+ (global-set-key [s-backspace] (cmd (ins "`")))
+ (global-set-key (kbd "s-SPC") (cmd (ins ", "))))
+
 (global-set-key (kbd "<C-f11>") 'eval-buffer)
 (global-set-key (kbd "M-SPC") (lambda (arg) (interactive "P")
                               (capitalize-last arg) (insert " ")))
