@@ -68,7 +68,12 @@
 (define-key global-map (kbd "ë") 'global-erjoalgo-command-mode-toggle)
 
 (buttons-macrolet
- ((fnddir (dir) `(find-file-under-dir-completing-read ,dir)))
+ ((fnddir (dir) `(find-file-under-dir-completing-read ,dir))
+  (buff (buff &optional on-nonexistent)
+        `(cmd (or (switch-to-buffer-matching ,buff)
+                  ,on-nonexistent
+                  (error (format "no such buffer: %s" ,buff)))))
+  (file (file) `(cmd (find-file ,file))))
  (defbuttons
    erjoalgo-command-mode-buttons
    nil
@@ -156,139 +161,123 @@
 
     ("g" 'goto-line)
 
-    ("x" open-interpreter-map);;custom map
-    ("m" open-init-files-map);;custom map
 
     ("	" 'indent-for-tab-command)
 
     ("9" (cmd (ins "(")));; insert "("
     ("0" (cmd (ins "))")));; insert ")"
 
-     ("" 'universal-argument)
-     ("u" 'universal-argument)
+    ("" 'universal-argument)
+    ("u" 'universal-argument)
 
-     ("'" (cmd (ins "\"")));; insert double-quote
+    ("'" (cmd (ins "\"")));; insert double-quote
 
-     ("i" 'one-char-insert-mode)
+    ("i" 'one-char-insert-mode)
 
-     ("h" (lambda (arg) (interactive "P")
-            "with prefix arg, keep erjoalgo-command-mode while on help-command map
+    ("h" (lambda (arg) (interactive "P")
+           "with prefix arg, keep erjoalgo-command-mode while on help-command map
 	  ie for inspecting erjoalgo-command-mode bindings
 	  ie u h k g
 	  g runs the command goto-line, which is an interactive compiled Lisp..."
-            (set-temporary-overlay-map 'help-command)
-            (unless arg
-              (global-erjoalgo-command-mode 0))))
+           (set-temporary-overlay-map 'help-command)
+           (unless arg
+             (global-erjoalgo-command-mode 0))))
 
-     ;; ([f1] nil);; f1 toggle command mode
-     ([f1] 'global-erjoalgo-command-mode-toggle);; f1 toggle command mode
-     ([s-f11] 'global-erjoalgo-command-mode-toggle);; f1 toggle command mode
-     ([ë] 'global-erjoalgo-command-mode-toggle);; f1 toggle command mode
+    ;; ([f1] nil);; f1 toggle command mode
+    ([f1] 'global-erjoalgo-command-mode-toggle);; f1 toggle command mode
+    ([s-f11] 'global-erjoalgo-command-mode-toggle);; f1 toggle command mode
+    ([ë] 'global-erjoalgo-command-mode-toggle);; f1 toggle command mode
 
-     ("y" (search-engine-search-cmd "ddg"))
-     ("Y" (search-engine-search-cmd "linguee"))
+    ("y" (search-engine-search-cmd "ddg"))
+    ("Y" (search-engine-search-cmd "linguee"))
 
-     ("J" (cmd (loop for _ below (or arg 1)
-                     do (join-line '(4))))))))
+    ("J" (cmd (loop for _ below (or arg 1)
+                    do (join-line '(4)))))
+
+    ("m"
+     (buttons-make
+      nil
+      ("e" (file "~/.emacs"))
+      ("E" (file "~/repos/emacs-dirty/.emacs-bloated.el"))
+      ("C" (buff "regexp:[*]ansi-term[*].*" (ansi-term "/bin/bash")))
+      ("c" (buff "*compilation*"))
+      ("r" (buff "*Backtrace*"))
+      ("b" (file "~/.bashrc"))
+      ("a" (file "~/.bash_aliases"))
+      ("A" (file "~/.my-bash-funs"))
+      ("m" (buff "*Messages*"))
+      ("s" (buff "*Org Agenda*" (org-todo-list)))
+      ("S" (buff "*Org Agenda*"))
+      ("t" (file (f-join emacs-top "settings" "buttons-data.el")))
+      ("M" (file (concat "/var/mail/" (getenv "USER"))))
+      ("x" (file (concat  "~/.stumpwmrc.d/inits/.xmodmap/")))
+      ;;("y" (file (concat stumpwm_dir ".my_startups.sh")))
+      ("l" (file "/sudo::/var/log/syslog"))
+      ("v" (file "~/.stumpwmrc.d/keynavs/.keynavrc"))
+      ("w" (file "~/.stumpwmrc.d/lisp/.stumpwmrc"))
+      ;;("c" (file "/sudo::/etc/anacrontab"))
+      ;;("C" (file "/sudo::/etc/crontab"))
+      ("8" (file "~/repos/starter/data/packages"))
+      ("o" (file "~/private-data/org/master.org"))
+      ("T" (cmd (org-todo-list org-match)))
+      ("O" nil)
+      ("j" (buff "*-jabber-roster-*"))))
+    ("x"
+     (buttons-make
+      nil
+      ("s" (lambda (arg)(interactive "P")(eshell arg)))
+      ("p"  (buff "*Python*" (call-interactively 'run-python)))
+      ("P" 'message-current-buffer-process)
+      ;;("p" 'run-python)
+      ("i" 'ielm)
+      ("I" 'load-dark-theme-toggle)
+      ("c" 'music-player-play-songs)
+      ("C" 'kill-current-buffer-filename)
+      ("e" 'my-eval-defun)
+      ("E" (cmd (eval-defun t)))
+      ("x" 'execute-extended-command)
+      ("X" 'sudo-buffer)
+      (";" 'eval-expression)
+      ("M" 'man)
+      ("a" 'async-shell-command)
+      ("v" 'revert-buffer-no-confirm)
+      ("n" 'find-new-buffer)
+      ("D" (cmd
+            (require 'edebug)
+            (eval-defun t);;instrument first
+            (edebug-set-breakpoint nil)))
+      ("g" 'grep-recursive)
+      ("f" 'find-iregex)
+      ("u" 'universal-argument)
+      ([f2] 'call-last-kbd-macro)
+      ("l" 'alert)
+      ;;("w" switch-to-slime-repl)
+
+      ("w" (buttons-make
+            nil
+            ("1" 'slime-sbcl)
+            ("2" 'slime-stumpwm)
+            ("3" 'cider-buffer-or-jack-in)))
+
+      ("S" 'goto-slime-buffer)
+      ("t" 'untarprogram)
+      ("r" 'replace-regexp)
+      ("R" 'query-replace-regexp)
+                                        ;("R" erc-autologin)
+      ("A" (buff "[*]Async Shell Command[*]"))
+      ;;("k" wiki)
+      ("o" 'gnus-goto-inbox)
+      ("0" 'open-google-calendar)
+      ;;("P" (lambda () (interactive)(message "point is %d" (point))))
+      ;; ("b" matlab-shell)
+      ;; ("B"  run-octave)
+      ("b" (buff "*Inferior Octave*" (inferior-octave t)))
+      ("3" (buff "*eww*" (call-interactively 'eww))))))))
 
 (defun find-file-under-dir-completing-read (dir)
   (find-file (f-join dir
 		     (completing-read (concat dir ": ")
 				      (directory-files dir)))))
-
-;;TODO load this from a tsv file
-(buttons-macrolet;;TODO macrolet only
- ((buff (buff &optional on-nonexistent)
-        `(cmd (or (switch-to-buffer-matching ,buff)
-                  ,on-nonexistent
-                  (error (format "no such buffer: %s" ,buff)))))
-  (file (file) `(cmd (find-file ,file))))
- (defbuttons
-   open-init-files-map
-   nil
-   nil
-   (buttons-make
-    nil
-    ("e" (file "~/.emacs"))
-    ("E" (file "~/repos/emacs-dirty/.emacs-bloated.el"))
-    ("C" (buff "regexp:[*]ansi-term[*].*" (ansi-term "/bin/bash")))
-    ("c" (buff "*compilation*"))
-    ("r" (buff "*Backtrace*"))
-    ("b" (file "~/.bashrc"))
-    ("a" (file "~/.bash_aliases"))
-    ("A" (file "~/.my-bash-funs"))
-    ("m" (buff "*Messages*"))
-    ("s" (buff "*Org Agenda*" (org-todo-list)))
-    ("S" (buff "*Org Agenda*"))
-    ("t" (file (f-join emacs-top "settings" "buttons-data.el")))
-    ("M" (file (concat "/var/mail/" (getenv "USER"))))
-    ("x" (file (concat  "~/.stumpwmrc.d/inits/.xmodmap/")))
-    ;;("y" (file (concat stumpwm_dir ".my_startups.sh")))
-    ("l" (file "/sudo::/var/log/syslog"))
-    ("v" (file "~/.stumpwmrc.d/keynavs/.keynavrc"))
-    ("w" (file "~/.stumpwmrc.d/lisp/.stumpwmrc"))
-    ;;("c" (file "/sudo::/etc/anacrontab"))
-    ;;("C" (file "/sudo::/etc/crontab"))
-    ("8" (file "~/repos/starter/data/packages"))
-    ("o" (file "~/private-data/org/master.org"))
-    ("T" (cmd (org-todo-list org-match)))
-    ("O" nil)
-    ("j" (buff "*-jabber-roster-*"))))
-
- (defbuttons
-   open-interpreter-map
-   nil
-   nil
-   (buttons-make
-    nil
-    ("s" (lambda (arg)(interactive "P")(eshell arg)))
-    ("p"  (buff "*Python*" (call-interactively 'run-python)))
-    ("P" 'message-current-buffer-process)
-    ;;("p" 'run-python)
-    ("i" 'ielm)
-    ("I" 'load-dark-theme-toggle)
-    ("c" 'music-player-play-songs)
-    ("C" 'kill-current-buffer-filename)
-    ("e" 'my-eval-defun)
-    ("E" (cmd (eval-defun t)))
-    ("x" 'execute-extended-command)
-    ("X" 'sudo-buffer)
-    (";" 'eval-expression)
-    ("M" 'man)
-    ("a" 'async-shell-command)
-    ("v" 'revert-buffer-no-confirm)
-    ("n" 'find-new-buffer)
-    ("D" (cmd
-          (require 'edebug)
-          (eval-defun t);;instrument first
-          (edebug-set-breakpoint nil)))
-    ("g" 'grep-recursive)
-    ("f" 'find-iregex)
-    ("u" 'universal-argument)
-    ([f2] 'call-last-kbd-macro)
-    ("l" 'alert)
-    ;;("w" switch-to-slime-repl)
-
-    ("w" (buttons-make
-          nil
-          ("1" 'slime-sbcl)
-          ("2" 'slime-stumpwm)
-          ("3" 'cider-buffer-or-jack-in)))
-
-    ("S" 'goto-slime-buffer)
-    ("t" 'untarprogram)
-    ("r" 'replace-regexp)
-    ("R" 'query-replace-regexp)
-                                        ;("R" erc-autologin)
-    ("A" (buff "[*]Async Shell Command[*]"))
-    ;;("k" wiki)
-    ("o" 'gnus-goto-inbox)
-    ("0" 'open-google-calendar)
-    ;;("P" (lambda () (interactive)(message "point is %d" (point))))
-    ;; ("b" matlab-shell)
-    ;; ("B"  run-octave)
-    ("b" (buff "*Inferior Octave*" (inferior-octave t)))
-    ("3" (buff "*eww*" (call-interactively 'eww))))))
 
 (defun buffer-matching (string &optional regexp-p)
   (let ((prefix "regexp:"))
