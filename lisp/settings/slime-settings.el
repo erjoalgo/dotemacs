@@ -67,3 +67,12 @@
 (add-hook 'sldb-hook 'beginning-of-buffer)
 (define-key slime-repl-mode-map (kbd "s-h") slime-doc-map)
 (setf slime-load-failed-fasl 'never)
+
+(defmacro stumpwm-eval (form)
+  "example: (stumpwm-eval (message \"holaaaaaaa\"))"
+  ;; (stumpwm-eval (message "holaaaaaaa"))
+  (slime-rex ()
+      (`(swank-repl:listener-eval ,(prin1-to-string form))
+       (slime-lisp-package))
+    ((:ok result))
+    ((:abort condition))))
