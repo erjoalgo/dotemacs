@@ -68,20 +68,6 @@
 (define-key global-map (kbd "<s-f11>") 'global-erjoalgo-command-mode-toggle)
 (define-key global-map (kbd "ë") 'global-erjoalgo-command-mode-toggle)
 
-(defmacro define-key-tuples-macro (kmap command-maker &rest kbd-cmd-tuples)
-  (unless command-maker (setq command-maker ''identity))
-  (unless kmap (setq kmap '(make-sparse-keymap)))
-  `(let ((command-maker ,command-maker)
-	 (kmap ,kmap))
-     (loop for (key command) in (backquote ,kbd-cmd-tuples)
-	   do (define-key kmap (if (vectorp key) key (kbd key))
-		(funcall ,command-maker command)))
-     kmap))
-
-(defun string-insert-command (str)
-  `(lambda ()
-     (interactive)(insert ,str)))
-
 (buttons-macrolet
  ((fnddir (dir) `(find-file-under-dir-completing-read ,dir)))
  (defbuttons
@@ -210,15 +196,6 @@
   (find-file (f-join dir
 		     (completing-read (concat dir ": ")
 				      (directory-files dir)))))
-
-(defun curry (fun &rest fixed-args)
-  `(lambda (&rest args)
-     ,(when (commandp fun) '(interactive))
-     (apply ',fun (append (list ,@fixed-args) args))))
-
-
-;(fset 'join-base-dir (curry 'f-join basic-top))
-(fset 'join-base-dir (curry 'concat "~/repos/dotemacs/lisp/core/"))
 
 ;;TODO load this from a tsv file
 (define-key-tuples-macro
