@@ -438,7 +438,7 @@ of the variable, or nil if unbound.
        (interactive "P")
        (let* ((curr-value (when (boundp ',file-local-var-sym)
 			    ,file-local-var-sym))
-	      (new-value (funcall ',prompt-fun ,prompt curr-value)))
+	      (new-value (funcall ,prompt-fun ,prompt curr-value)))
 	 (add-file-local-variable ',file-local-var-sym new-value)
 	 (setf ,file-local-var-sym new-value)))))
 
