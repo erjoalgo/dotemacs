@@ -513,6 +513,14 @@
 (add-hook 'sldb-mode-hook (lambda () (erjoalgo-command-mode 0)))
 (global-erjoalgo-command-mode 1)
 
+(defadvice recursive-edit (around tmp-disable-command-mode activate)
+  (if erjoalgo-command-mode
+      (progn
+        (global-erjoalgo-command-mode 0)
+        ad-do-it
+        (global-erjoalgo-command-mode 1))
+    ad-do-it))
+
 (require 'command-mode-commands);;maybe should not be separate package
 (provide 'erjoalgo-command-mode)
 ;;; erjoalgo-command-mode.el ends here
