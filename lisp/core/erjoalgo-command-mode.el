@@ -68,12 +68,6 @@
 (define-key global-map (kbd "<s-f11>") 'global-erjoalgo-command-mode-toggle)
 (define-key global-map (kbd "ë") 'global-erjoalgo-command-mode-toggle)
 
-'(defun define-key-tuples (kbd-cmd-tuples &optional kmap)
-  (unless kmap (setq kmap (make-sparse-keymap)))
-  (loop for (key command) in kbd-cmd-tuples
-	do (define-key (kbd key) kmap command))
-  kmap)
-
 (defmacro define-key-tuples-macro (kmap command-maker &rest kbd-cmd-tuples)
   (unless command-maker (setq command-maker ''identity))
   (unless kmap (setq kmap '(make-sparse-keymap)))
