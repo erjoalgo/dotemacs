@@ -32,7 +32,6 @@
 (defvar erjoalgo-command-mode-map (make-sparse-keymap))
 
 ;;sub maps
-(defvar open-init-files-map (make-sparse-keymap))
 (defvar open-interpreter-map (make-sparse-keymap))
 
 (define-minor-mode erjoalgo-command-mode
@@ -198,56 +197,43 @@
 				      (directory-files dir)))))
 
 ;;TODO load this from a tsv file
-(define-key-tuples-macro
-  open-init-files-map
-  (lambda (fn)
-    (let* ((desc-form
-	    (case (and (consp fn) (car fn))
-	      (:exec `("exec" ,(cdr fn)))
-	      (:buffer (let ((buff (cadr fn))
-                             (cmd (caddr fn)))
-			 `(,(concat "switch-to-buffer" buff)
-			   (or (switch-to-buffer-matching ,buff)
-                               ,(when cmd cmd)
-                               (error (format "no such buffer: %s" ,buff))))))
-	      (t `(,(concat "find-file-" (eval fn))
-		   (find-file ,fn)))))
-	   (sym (gensym (format "%s-" (car desc-form))))
-	   )
-
-      (progn
-	(eval `(defun ,sym  () (interactive)
-		      ,(car desc-form)
-		      ,@(cdr desc-form)))
-	sym)))
-
-  ("e" "~/.emacs")
-  ("E" "~/repos/emacs-dirty/.emacs-bloated.el")
-  ("C" (:buffer "regexp:[*]ansi-term[*].*" (ansi-term "/bin/bash")))
-  ;; ("c" (join-base-dir "command-mode-commands.el"))
-  ("c" (:buffer "*compilation*"))
-  ("r" (:buffer "*Backtrace*"))
-  ("b" "~/.bashrc")
-  ("a" "~/.bash_aliases")
-  ("A" "~/.my-bash-funs")
-  ("m" (:buffer "*Messages*"))
-  ("s" (:buffer "*Org Agenda*" (org-todo-list)))
-  ("S" (:buffer "*Org Agenda*"))
-  ("t" (f-join emacs-top "settings" "buttons-data.el"))
-  ("M" (concat "/var/mail/" (getenv "USER")))
-  ("x" (concat  "~/.stumpwmrc.d/inits/.xmodmap/"))
-  ;;("y" (concat stumpwm_dir ".my_startups.sh"))
-  ("l" "/sudo::/var/log/syslog")
-  ("v" "~/.stumpwmrc.d/keynavs/.keynavrc")
-  ("w" "~/.stumpwmrc.d/lisp/.stumpwmrc")
-  ;;("c" "/sudo::/etc/anacrontab")
-  ;;("C" "/sudo::/etc/crontab")
-  ("8" "~/repos/starter/data/packages")
-  ("o" "~/private-data/org/master.org")
-  ("T" (:exec (org-todo-list org-match)))
-  ("O" nil)
-  ("j" (:buffer "*-jabber-roster-*"))
-  )
+(buttons-macrolet;;TODO macrolet only
+ ((buff (buff &optional on-nonexistent)
+        `(cmd (or (switch-to-buffer-matching ,buff)
+                  ,on-nonexistent
+                  (error (format "no such buffer: %s" ,buff)))))
+  (file (file) `(cmd (find-file ,file))))
+ (defbuttons
+   open-init-files-map
+   nil
+   nil
+   (buttons-make
+    nil
+    ("e" (file "~/.emacs"))
+    ("E" (file "~/repos/emacs-dirty/.emacs-bloated.el"))
+    ("C" (buff "regexp:[*]ansi-term[*].*" (ansi-term "/bin/bash")))
+    ("c" (buff "*compilation*"))
+    ("r" (buff "*Backtrace*"))
+    ("b" (file "~/.bashrc"))
+    ("a" (file "~/.bash_aliases"))
+    ("A" (file "~/.my-bash-funs"))
+    ("m" (buff "*Messages*"))
+    ("s" (buff "*Org Agenda*" (org-todo-list)))
+    ("S" (buff "*Org Agenda*"))
+    ("t" (file (f-join emacs-top "settings" "buttons-data.el")))
+    ("M" (file (concat "/var/mail/" (getenv "USER"))))
+    ("x" (file (concat  "~/.stumpwmrc.d/inits/.xmodmap/")))
+    ;;("y" (file (concat stumpwm_dir ".my_startups.sh")))
+    ("l" (file "/sudo::/var/log/syslog"))
+    ("v" (file "~/.stumpwmrc.d/keynavs/.keynavrc"))
+    ("w" (file "~/.stumpwmrc.d/lisp/.stumpwmrc"))
+    ;;("c" (file "/sudo::/etc/anacrontab"))
+    ;;("C" (file "/sudo::/etc/crontab"))
+    ("8" (file "~/repos/starter/data/packages"))
+    ("o" (file "~/private-data/org/master.org"))
+    ("T" (cmd (org-todo-list org-match)))
+    ("O" nil)
+    ("j" (buff "*-jabber-roster-*")))))
 
 (defun buffer-matching (string &optional regexp-p)
   (let ((prefix "regexp:"))
