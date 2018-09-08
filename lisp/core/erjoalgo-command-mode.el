@@ -65,7 +65,7 @@
 
 
 (define-key global-map [f1] 'global-erjoalgo-command-mode-toggle)
-(define-key global-map [f12] 'global-erjoalgo-command-mode-toggle)
+(define-key global-map (kbd "<s-f11>") 'global-erjoalgo-command-mode-toggle)
 (define-key global-map (kbd "ë") 'global-erjoalgo-command-mode-toggle)
 
 '(defun define-key-tuples (kbd-cmd-tuples &optional kmap)
@@ -169,7 +169,6 @@
 
   ("s" save-buffer);;originally C-x s
 
-
   ("l" recenter-top-bottom);;originally C-l
   ("d" delete-char);;originally C-d
   ("M-d" kill-word);;originally M-d
@@ -215,6 +214,7 @@
 
   ;; ([f1] nil);; f1 toggle command mode
   ([f1] global-erjoalgo-command-mode-toggle);; f1 toggle command mode
+  ([s-f11] global-erjoalgo-command-mode-toggle);; f1 toggle command mode
   ([ë] global-erjoalgo-command-mode-toggle);; f1 toggle command mode
 
   ("y" ,(search-engine-search-cmd "ddg"))
@@ -385,6 +385,9 @@
       (add-to-list 'minor-mode-map-alist mykeys))))
 
 (define-key global-map [f2] 'other-window)
+(define-key global-map (kbd "<s-f12>") (lambda () (interactive)
+                                         (save-buffer)
+                                         (erjoalgo-command-mode 1)))
 
 (add-hook 'after-load-functions
 	  '(lambda (something)
