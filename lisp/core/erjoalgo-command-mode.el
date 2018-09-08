@@ -68,7 +68,7 @@
 (define-key global-map (kbd "ë") 'global-erjoalgo-command-mode-toggle)
 
 (buttons-macrolet
- ((fnddir (dir) `(find-file-under-dir-completing-read ,dir))
+ ((dir (dir) `(find-file-under-dir-completing-read ,dir))
   (buff (buff &optional on-nonexistent)
         `(cmd (or (switch-to-buffer-matching ,buff)
                   ,on-nonexistent
@@ -135,8 +135,8 @@
 
     ("3" 'find-file-at-point-cmd);;originally C-x f
     ("4" 'switch-to-buffer);;originally C-x b
-    ("5" (cmd (fnddir "~/repos")))
-    ("6" (cmd (fnddir (f-join emacs-top ".." "org"))))
+    ("5" (cmd (dir "~/repos")))
+    ("6" (cmd (dir (f-join emacs-top ".." "org"))))
 
 
     ("s" 'save-buffer);;originally C-x s
@@ -291,11 +291,9 @@
 	    (and (string-match string (buffer-name buff))
 		 buff)))))
 
-
 (defun switch-to-buffer-matching (string &optional regexp-p)
   (let ((match (buffer-matching string regexp-p)))
     (when match (switch-to-buffer match))))
-
 
 ;;http://stackoverflow.com/questions/683425/globally-override-key-binding-in-emacs/5340797#5340797
 (defun force-mode-first (mode-symbol)
