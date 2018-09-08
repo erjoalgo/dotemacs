@@ -47,7 +47,7 @@
 (setf org-top-dir
   (f-expand "~/private-data/org"))
 
-(defvar *org-todo-first-todo-line-number* 3)
+(setf *org-todo-first-todo-line-number* 3)
 
 (defun org-todo-promote-top ()
   (interactive)
