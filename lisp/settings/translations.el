@@ -350,6 +350,33 @@ a translation from scratch"
          (fun (if correction-p 'translation-new-correction 'translation-new)))
     (apply fun name text-original nil)))
 
+(cl-defun translation-google-translate
+    (api-key source-text
+             &key
+             (lang-code-source "en")
+             (lang-code-target "es")
+             (format "text"))
+  (let ((url-request-method        "POST")
+        (url-request-extra-headers `(("Content-Type" . "application/json")))
+        (url-request-data          "field1=Hello&field2=from&field3=Emacs"))
+    (with-current-buffer (url-retrieve-synchronously url)
+      (buffer-string))))
+
+(defun translation-new-google-translate-correction (url)
+  (interactive "senter document url: ")
+  (let ((html-content
+         ;; text-content
+         ;; (shell-command-to-string
+         ;;  (format "html-url-extract-text.py %s" url))
+         (url-retrieve url))
+        (google-translate-post-endpoint
+         "https://translation.googleapis.com/language/translate/v2")
+        (params `(("target" "es")
+                  ("format" "html")
+                  ("source" "en")
+                  ("key" ,google-translate-api-key)
+                  ("q" ,html-content))))))
+
 (defun translation-new-correction-from-file (filename)
   (interactive (list (dired-file-name-at-point)))
   (translation-new-from-file filename t))
