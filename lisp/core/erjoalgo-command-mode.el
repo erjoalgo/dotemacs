@@ -416,10 +416,6 @@
     ;; (load-theme 'wombat)
     ))
 
-
-
-
-
 ;;automatically disable erjoalgo-command-mode when entering minibuffer
 ;;on minibuffer-exit, enable it if it was originally on
 (defvar was-in-erjoalgo-command-mode-before-minibuf)
