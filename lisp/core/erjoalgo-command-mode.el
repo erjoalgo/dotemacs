@@ -233,7 +233,62 @@
     ("o" (file "~/private-data/org/master.org"))
     ("T" (cmd (org-todo-list org-match)))
     ("O" nil)
-    ("j" (buff "*-jabber-roster-*")))))
+    ("j" (buff "*-jabber-roster-*"))))
+
+ (defbuttons
+   open-interpreter-map
+   nil
+   nil
+   (buttons-make
+    nil
+    ("s" (lambda (arg)(interactive "P")(eshell arg)))
+    ("p"  (buff "*Python*" (call-interactively 'run-python)))
+    ("P" 'message-current-buffer-process)
+    ;;("p" 'run-python)
+    ("i" 'ielm)
+    ("I" 'load-dark-theme-toggle)
+    ("c" 'music-player-play-songs)
+    ("C" 'kill-current-buffer-filename)
+    ("e" 'my-eval-defun)
+    ("E" (cmd (eval-defun t)))
+    ("x" 'execute-extended-command)
+    ("X" 'sudo-buffer)
+    (";" 'eval-expression)
+    ("M" 'man)
+    ("a" 'async-shell-command)
+    ("v" 'revert-buffer-no-confirm)
+    ("n" 'find-new-buffer)
+    ("D" (cmd
+          (require 'edebug)
+          (eval-defun t);;instrument first
+          (edebug-set-breakpoint nil)))
+    ("g" 'grep-recursive)
+    ("f" 'find-iregex)
+    ("u" 'universal-argument)
+    ([f2] 'call-last-kbd-macro)
+    ("l" 'alert)
+    ;;("w" switch-to-slime-repl)
+
+    ("w" (buttons-make
+          nil
+          ("1" 'slime-sbcl)
+          ("2" 'slime-stumpwm)
+          ("3" 'cider-buffer-or-jack-in)))
+
+    ("S" 'goto-slime-buffer)
+    ("t" 'untarprogram)
+    ("r" 'replace-regexp)
+    ("R" 'query-replace-regexp)
+                                        ;("R" erc-autologin)
+    ("A" (buff "[*]Async Shell Command[*]"))
+    ;;("k" wiki)
+    ("o" 'gnus-goto-inbox)
+    ("0" 'open-google-calendar)
+    ;;("P" (lambda () (interactive)(message "point is %d" (point))))
+    ;; ("b" matlab-shell)
+    ;; ("B"  run-octave)
+    ("b" (buff "*Inferior Octave*" (inferior-octave t)))
+    ("3" (buff "*eww*" (call-interactively 'eww))))))
 
 (defun buffer-matching (string &optional regexp-p)
   (let ((prefix "regexp:"))
@@ -251,70 +306,6 @@
 (defun switch-to-buffer-matching (string &optional regexp-p)
   (let ((match (buffer-matching string regexp-p)))
     (when match (switch-to-buffer match))))
-
-
-(defmacro run-or-switch-cmd (string command &optional regexp-p)
-  `(lambda () (interactive)
-     (let ((existing (buffer-matching ,string ,regexp-p)))
-       (if existing (switch-to-buffer existing)
-	 (call-interactively ,command)))))
-
-(define-key-tuples-macro
-  open-interpreter-map
-  nil
-  ("s" (lambda (arg)(interactive "P")(eshell arg)))
-  ("p"  ,(run-or-switch-cmd "*Python*" 'run-python))
-  ("P"  message-current-buffer-process)
-  ;;("p" 'run-python)
-  ("i" ielm)
-  ("I" load-dark-theme-toggle)
-  ("c" music-player-play-songs)
-  ("C" kill-current-buffer-filename)
-  ("e" my-eval-defun)
-  ("E" (lambda () (interactive)(eval-defun t)))
-  ("x" execute-extended-command)
-  ("X" sudo-buffer)
-  (";" eval-expression)
-  ("M" (lambda () (interactive) (call-interactively 'man)))
-  ("a" async-shell-command)
-  ("v" revert-buffer-no-confirm)
-  ("n" find-new-buffer)
-  ("D" (lambda () (interactive) (require 'edebug)
-	 (eval-defun t);;instrument first
-	 (edebug-set-breakpoint nil)))
-  ("g" grep-recursive)
-  ("f" find-iregex)
-  ("u" universal-argument)
-  ([f2] call-last-kbd-macro)
-  ("l" alert)
-  ;;("w" switch-to-slime-repl)
-
-  ("w" ,(let ((kmap (make-sparse-keymap)))
-	 (define-key kmap (kbd "1") 'slime-sbcl)
-	 (define-key kmap (kbd "2") 'slime-stumpwm)
-	 (define-key kmap (kbd "3") 'cider-buffer-or-jack-in)
-	 kmap))
-
-  ("S" goto-slime-buffer)
-  ("t" untarprogram)
-  ("r" replace-regexp)
-  ("R" query-replace-regexp)
-  ;("R" erc-autologin)
-  ("A" (lambda () (interactive)
-	 (switch-to-buffer (get-buffer-by-regex "\\*Async Shell Command\\*"))))
-  ;;("k" wiki)
-  ("o" gnus-goto-inbox)
-  ("0" open-google-calendar)
-  ;("P" (lambda () (interactive)(message "point is %d" (point))))
-  ;; ("b" matlab-shell)
-  ;; ("B"  run-octave)
-  ("b" ,(run-or-switch-cmd "*Inferior Octave*" 'inferior-octave))
-  ("3" ,(run-or-switch-cmd "*eww*" 'eww)))
-
-
-
-
-
 
 
 ;;http://stackoverflow.com/questions/683425/globally-override-key-binding-in-emacs/5340797#5340797
