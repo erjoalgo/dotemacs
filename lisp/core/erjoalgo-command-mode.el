@@ -362,20 +362,16 @@
   (set-temporary-overlay-map global-map))
 
 
-(defun define-sfn-prefix-args-to-map (kmap)
-  "installs s-f[1-9] command-repeat prefixes
-  eg s-f3 K kills next 3 lines"
-  (loop for i from 1 to 9 do
-	(define-key kmap (kbd (format "<s-f%d>" i))
-	  `(lambda () (interactive)
-	     (setf prefix-arg ,i)))))
+(setf super-fn-prefix-arg-map
+      (loop with kmap = (make-sparse-keymap)
+            for i from 1 to 9 do
+            (define-key kmap (kbd (format "<s-f%d>" i))
+              `(lambda () (interactive)
+                 (setf prefix-arg ,i)))
+            finally (return kmap)))
 
-
-(mapc 'define-sfn-prefix-args-to-map
-      (list erjoalgo-command-mode-map global-map))
-      ;(list erjoalgo-command-mode-map global-map isearch-mode-map))
-
-
+(define-keymap-onto-keymap super-fn-prefix-arg-map erjoalgo-command-mode-map)
+(define-keymap-onto-keymap super-fn-prefix-arg-map global-map)
 
 ;;this is actually part of erjoalgo-command-mode
 ;;make mode-line text very big and easy to read
