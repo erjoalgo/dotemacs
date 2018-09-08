@@ -52,8 +52,7 @@
 (defun org-todo-promote-top ()
   (interactive)
   (save-excursion
-    (move-line-up (- (line-number-at-pos)
-		     *org-todo-first-todo-line-number*))))
+    (while (org-move-subtree-up))))
 
 (with-eval-after-load 'org-agenda
   (define-key org-agenda-mode-map (kbd "s-q") 'org-todo-promote-top)
