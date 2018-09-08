@@ -207,7 +207,6 @@
                      do (join-line '(4))))))))
 
 (defun find-file-under-dir-completing-read (dir)
-  ;;(read-file-name "repo: " "~/repos/")
   (find-file (f-join dir
 		     (completing-read (concat dir ": ")
 				      (directory-files dir)))))
