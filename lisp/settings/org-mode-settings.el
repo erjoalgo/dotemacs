@@ -26,10 +26,11 @@
 
   ("s-1" (lambda () (interactive) (org-todo 1)));;tag TODO
   ("s-2" (lambda () (interactive) (org-todo 2)));;tag DONE
+  ("s-0" (lambda () (interactive) (let ((current-prefix-arg 0))
+                                    (org-todo ""))))
   ("s-d" 'org-deadline)
 
   ("s-l" 'org-insert-link)
-  ("s-0" 'org-ctrl-c-ctrl-c)
   ;; ("<s-return>" 'browse-url-at-point)
   ("s-s" 'org-insert-last-scrot)
   ("s-[" 'my-org-shift-left)
