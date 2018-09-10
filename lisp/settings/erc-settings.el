@@ -2,9 +2,12 @@
   "this should be an anonymous function"
   (format "%s:%s (%s:%s)" server port nick "HIDDEN"))
 
+(defvar erc-logins-filename nil
+  "filename where to store erc login information")
+
 (defun erc-select-server-login (&optional fn)
   (interactive)
-  (setf fn (or fn (expand-file-name "~/.ercrc")))
+  (setf fn (or fn erc-logins-filename (expand-file-name "~/.ercrc")))
   (when (file-exists-p fn)
     (message "reading erc login from %s..." fn)
     (let* ((logins (with-temp-buffer
