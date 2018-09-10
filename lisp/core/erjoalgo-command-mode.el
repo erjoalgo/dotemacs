@@ -299,11 +299,7 @@
                               (capitalize-last arg) (insert " ")))
 
 (loop for map in (list global-map erjoalgo-command-mode-map)
-      do (define-key map [f5] (lambda ()
-			      (interactive)
-			      (insert "(")
-			      (recursive-edit)
-			      (insert ")"))))
+      do (define-key map [f5] nil))
 
 
 ;;apropos
