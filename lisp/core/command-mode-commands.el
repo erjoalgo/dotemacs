@@ -463,14 +463,16 @@
   (cdr (assoc (completing-read prompt (mapcar 'car alist)
                    nil t (caar alist)))))
 
-(defun search-engine-search (term &optional engine)
-  (interactive (list (if (region-active-p)
-			 (buffer-substring-no-properties
-			  (region-beginning) (region-end))
-		       (read-string "enter search terms: " (car kill-ring)))
+(defun search-engine-search (engine term)
+  (interactive (list )
                      (if (boundp 'engine) engine
-                       (completing-read-alist
-                        "select search engine: " engine-alist))))
+                       ))
+  (assert engine)
+  (unless term
+    (if (region-active-p)
+        (buffer-substring-no-properties
+         (region-beginning) (region-end))
+      (read-string "enter search terms: " (car kill-ring))))
   (let ((search-engine-query-url-format (cdr (assoc-string engine engine-alist))))
   (message "searching for %s..." term)
   (browser-new-tab (format search-engine-query-url-format
@@ -483,6 +485,17 @@
      (interactive)
      (let ((engine ,engine))
        (call-interactively 'search-engine-search))))
+
+
+(call-interactively 'previous-matching-killring-element)
+(defun kill-ring-completing-read ()
+  (let ((kill-ring-strings (mapcar (lambda (elt)
+                                     (if (stringp elt) elt
+                                       (car elt)))
+                                   kill-ring)))
+    (completing-read "search kill ring: "
+                     kill-ring-strings
+                     nil t nil)))
 
 
 
