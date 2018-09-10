@@ -82,7 +82,8 @@
 
 (loop with safe-load = (safe-fun 'load)
       for dir in `("core" "private" "settings" "extra"
-                   ,(expand-file-name "~/private-data/emacs-lisp"))
+                   ,(expand-file-name "~/private-data/emacs-lisp")
+                   ,(expand-file-name "~/private-data-one-way/emacs-lisp"))
       as top = (if (file-name-absolute-p dir) dir
                  (f-join emacs-top dir))
       if (file-exists-p top) do
