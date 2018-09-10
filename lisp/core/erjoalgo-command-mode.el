@@ -203,7 +203,9 @@
     ("y" (search-engine-search-cmd "ddg"))
     ("Y" (search-engine-search-cmd "linguee"))
 
-    ("J" (cmd (loop for _ below (or arg 1)
+    ("J" (lambda (arg)
+           (interactive "P")
+           (loop for _ below (or arg 1)
                     do (join-line '(4)))))
 
     ("m"
