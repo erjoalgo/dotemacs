@@ -161,5 +161,7 @@
 
 (setq-default indent-tabs-mode nil)
 
+(setq ring-bell-function 'ignore)
+
 (provide 'my-emacs-settings)
 ;;; emacs-settings.el ends here
