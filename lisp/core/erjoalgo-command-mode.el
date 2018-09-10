@@ -49,10 +49,7 @@
   (let ((color (if erjoalgo-command-mode
 		   *erjoalgo-command-mode-color-on*
 		 *erjoalgo-command-mode-color-off*)))
-					;(let ((color (if erjoalgo-command-mode "dark blue" "dark gray")))
-    (set-face-background 'mode-line color)
-    (when nil
-	'(set-cursor-color color))))
+    (set-face-background 'mode-line color)))
 
 (add-hook 'erjoalgo-command-mode-hook 'erjoalgo-command-mode-hook-add-color)
 
