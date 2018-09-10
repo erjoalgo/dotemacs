@@ -129,10 +129,11 @@
     ("q" 'bury-buffer);; move current buffer to end of the list
     ("3" 'find-file-at-point-cmd);;originally C-x f
     ("4" 'switch-to-buffer);;originally C-x b
-    ("5" (cmd (dir "~/repos")))
     ("6" (cmd (dir (f-join emacs-top ".." "org"))))
-
-
+    ("5" (buttons-make
+          nil
+          ("r" (cmd (dir "~/repos")))
+          ("l" (cmd (dir "~/private-data/leet/")))))
     ("s" 'save-buffer);;originally C-x s
     ("l" 'recenter-top-bottom);;originally C-l
     ("d" 'delete-char);;originally C-d
