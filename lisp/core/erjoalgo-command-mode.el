@@ -421,15 +421,6 @@
 	  (setf *erjoalgo-command-mode-color-on* "light green"
 		*erjoalgo-command-mode-color-off* "light gray")))))
 
-(let ((current-hour
-       (third (decode-time (current-time)))))
-  (when (or (> current-hour 17)
-	    (< current-hour 9))
-    ;;this theme is nice. text easy to read, dark background
-    ;;only load at night?
-    ;; (load-theme 'wombat)
-    ))
-
 ;;automatically disable erjoalgo-command-mode when entering minibuffer
 ;;on minibuffer-exit, enable it if it was originally on
 (defvar was-in-erjoalgo-command-mode-before-minibuf)
