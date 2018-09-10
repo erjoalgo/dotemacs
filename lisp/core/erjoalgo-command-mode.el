@@ -191,7 +191,8 @@
 	  ie u h k g
 	  g runs the command goto-line, which is an interactive compiled Lisp..."
            (set-temporary-overlay-map 'help-command)
-           (unless arg
+           (unless (or arg
+                       global-erjoalgo-command-mode)
              (global-erjoalgo-command-mode 0))))
 
     ;; ([f1] nil);; f1 toggle command mode
