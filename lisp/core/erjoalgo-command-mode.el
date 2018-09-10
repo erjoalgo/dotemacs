@@ -111,35 +111,22 @@
     ((kbd "M-f") 'forward-sexp);;originally C-M-f
     ((kbd "M-b") 'backward-sexp);;originally C-M-b
     ((kbd "M-k") 'kill-sexp);;originally C-M-k
-                                        ;("DEL" backward-delete-char)
-                                        ;([127] backward-delete-char)
     ((kbd "M-DEL") 'backward-kill-sexp);;originally ESC C-backspace
     ("r" 'set-mark-command);;originally C-SPC
-                                        ;("r" nil)
-                                        ;("SPC" set-mark-command)
-                                        ;("SPC" nil)
-
     ("w" 'kill-ring-save);;originally M-w
-
     ;; incrementally kill backward-sexp. incrementally displays what is being killed
     ("W" 'kill-surrounding-sexp)
-
     ((kbd "M-w") 'kill-region);;originally C-w
-
     ((kbd "M-1") 'delete-other-windows);;originally C-x 1
     ((kbd "M-2") 'my-split-window-below);;originally C-x 2
     ((kbd "M-3") 'my-split-window-right);;originally C-x 3
     ((kbd "M-q") 'delete-window);;originally C-x 0
     ([f2] 'other-window);;originally C-x o
-
-
     ("c" 'cycle-buffer);; cycle buffers
     ("C" 'duplicate-current-buffer);; open current buffer in split-window-below
     ("z" (cmd (kill-buffer (current-buffer))));;originally C-x k
     ("Z" 'new-buffer-focus)
     ("q" 'bury-buffer);; move current buffer to end of the list
-
-
     ("3" 'find-file-at-point-cmd);;originally C-x f
     ("4" 'switch-to-buffer);;originally C-x b
     ("5" (cmd (dir "~/repos")))
@@ -147,44 +134,26 @@
 
 
     ("s" 'save-buffer);;originally C-x s
-
     ("l" 'recenter-top-bottom);;originally C-l
     ("d" 'delete-char);;originally C-d
     ((kbd "M-d") 'kill-word);;originally M-d
     ("D" 'my-forward-delete);;like kill-word, but sexp, and no kill.
-
-
-                                        ;("," tags-loop-continue)
-					;("" my-backward-delete)
-
     ;; type "yes RET" for those annoying prompts. the key is s-SPC (super space)
-    ;; ((kbd "M-y") 'quick-yes-answer-yes)
     ((kbd "s-SPC") 'quick-yes-answer-yes)
-
-
-
     ("-" 'global-text-scale-lower);; increase text size
     ("=" 'global-text-scale-higher);; decrease text size
-
     ("g" 'goto-line)
-
-
     ("	" (lambda ()
             (interactive)
             (if (eq major-mode 'help-mode)
               (call-interactively 'forward-button)
               (call-interactively indent-for-tab-command))))
-
     ("9" (cmd (ins "(")));; insert "("
     ("0" (cmd (ins ")")));; insert ")"
-
     ("" 'universal-argument)
     ("u" 'universal-argument)
-
     ("'" (cmd (ins "\"")));; insert double-quote
-
     ("i" 'one-char-insert-mode)
-
     ("h" (lambda (arg) (interactive "P")
            "with prefix arg, keep erjoalgo-command-mode while on help-command map
 	  ie for inspecting erjoalgo-command-mode bindings
@@ -194,20 +163,16 @@
            (unless (or arg
                        global-erjoalgo-command-mode)
              (global-erjoalgo-command-mode 0))))
-
     ;; ([f1] nil);; f1 toggle command mode
     ([f1] 'global-erjoalgo-command-mode-toggle);; f1 toggle command mode
     ([s-f11] 'global-erjoalgo-command-mode-toggle);; f1 toggle command mode
     ([ë] 'global-erjoalgo-command-mode-toggle);; f1 toggle command mode
-
     ("y" (search-engine-search-cmd "ddg"))
     ("Y" (search-engine-search-cmd "linguee"))
-
     ("J" (lambda (arg)
            (interactive "P")
            (loop for _ below (or arg 1)
                     do (join-line '(4)))))
-
     ("m"
      (buttons-make
       nil
@@ -225,12 +190,9 @@
       ("t" (file (f-join emacs-top "settings" "buttons-data.el")))
       ("M" (file (concat "/var/mail/" (getenv "USER"))))
       ("x" (file (concat  "~/.stumpwmrc.d/inits/.xmodmap/")))
-      ;;("y" (file (concat stumpwm_dir ".my_startups.sh")))
       ("l" (file "/sudo::/var/log/syslog"))
       ("v" (file "~/.stumpwmrc.d/keynavs/.keynavrc"))
       ("w" (file "~/.stumpwmrc.d/lisp/.stumpwmrc"))
-      ;;("c" (file "/sudo::/etc/anacrontab"))
-      ;;("C" (file "/sudo::/etc/crontab"))
       ("8" (file "~/repos/starter/data/packages"))
       ("o" (file "~/private-data/org/master.org"))
       ("T" (cmd (org-todo-list org-match)))
@@ -242,7 +204,6 @@
       ("s" (lambda (arg)(interactive "P")(eshell arg)))
       ("p"  (buff "*Python*" (call-interactively 'run-python)))
       ("P" 'message-current-buffer-process)
-      ;;("p" 'run-python)
       ("i" 'ielm)
       ("I" 'load-dark-theme-toggle)
       ("c" 'music-player-play-songs)
@@ -265,8 +226,6 @@
       ("u" 'universal-argument)
       ([f2] 'call-last-kbd-macro)
       ("l" 'alert)
-      ;;("w" switch-to-slime-repl)
-
       ("w" (buttons-make
             nil
             ("1" 'slime-sbcl)
@@ -277,14 +236,9 @@
       ("t" 'untarprogram)
       ("r" 'replace-regexp)
       ("R" 'query-replace-regexp)
-                                        ;("R" erc-autologin)
       ("A" (buff "[*]Async Shell Command[*]"))
-      ;;("k" wiki)
       ("o" 'gnus-goto-inbox)
       ("0" 'open-google-calendar)
-      ;;("P" (lambda () (interactive)(message "point is %d" (point))))
-      ;; ("b" matlab-shell)
-      ;; ("B"  run-octave)
       ("b" (buff "*Inferior Octave*" (inferior-octave t)))
       ("3" (buff "*eww*" (call-interactively 'eww))))))))
 
