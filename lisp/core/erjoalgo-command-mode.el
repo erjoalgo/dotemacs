@@ -148,7 +148,7 @@
             (interactive)
             (if (eq major-mode 'help-mode)
               (call-interactively 'forward-button)
-              (call-interactively indent-for-tab-command))))
+              (call-interactively 'indent-for-tab-command))))
     ("9" (cmd (ins "(")));; insert "("
     ("0" (cmd (ins ")")));; insert ")"
     ("" 'universal-argument)
