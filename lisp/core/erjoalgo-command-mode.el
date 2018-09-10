@@ -64,6 +64,16 @@
 (define-key global-map (kbd "<s-f11>") 'global-erjoalgo-command-mode-toggle)
 (define-key global-map (kbd "ë") 'global-erjoalgo-command-mode-toggle)
 
+(defun erjoalgo-command-mode-meta-pn ()
+  (interactive)
+  (if (member major-mode '(slime-repl-mode))
+      (call-interactively (lookup-key
+                           (symbol-value (intern (format "%s-map" major-mode)))
+                           (this-command-keys-vector)))
+    (call-interactively
+     (if (equal (key-description (this-command-keys-vector)) "M-n")
+         'move-line-down 'move-line-up))))
+
 (buttons-macrolet
  ((dir (dir) `(find-file-under-dir-completing-read ,dir))
   (buff (buff &optional on-nonexistent)
@@ -81,10 +91,10 @@
     ("2" 'scroll-down-keep-cursor);;originally C-v
     ("n" 'next-line);;originally C-n
     ("N" 'copy-line-down);; copy full line down
-    ((kbd "M-n") 'move-line-down);; move line down
+    ((kbd "M-n") 'erjoalgo-command-mode-meta-pn);; move line down
+    ((kbd "M-p") 'erjoalgo-command-mode-meta-pn);; move line up
     ("p" 'previous-line);;originally C-p
     ("P" 'copy-line-up);; copy full line up
-    ((kbd "M-p") 'move-line-up);; move line up
     ("a" 'beginning-of-line);;originally C-a
     ("a" 'my-move-beginning-of-line);;originally C-a
     ("e" 'move-end-of-line);;originally C-e
