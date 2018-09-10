@@ -176,7 +176,7 @@
               (call-interactively indent-for-tab-command))))
 
     ("9" (cmd (ins "(")));; insert "("
-    ("0" (cmd (ins "))")));; insert ")"
+    ("0" (cmd (ins ")")));; insert ")"
 
     ("" 'universal-argument)
     ("u" 'universal-argument)
