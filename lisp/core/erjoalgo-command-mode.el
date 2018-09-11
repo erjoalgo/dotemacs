@@ -389,8 +389,11 @@
 
 (global-erjoalgo-command-mode 1)
 
+(defvar erjoalgo-command-mode-keep-state nil)
+
 (defadvice recursive-edit (around tmp-disable-command-mode activate)
-  (if erjoalgo-command-mode
+  (if (and erjoalgo-command-mode
+           (not erjoalgo-command-mode-keep-state))
       (progn
         (global-erjoalgo-command-mode 0)
         ad-do-it
