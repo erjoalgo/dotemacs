@@ -393,8 +393,10 @@
 
 (defadvice recursive-edit (around tmp-disable-command-mode activate)
   (if (and erjoalgo-command-mode
-           (not erjoalgo-command-mode-keep-state))
+           (not erjoalgo-command-mode-keep-state)
+           (not (member major-mode '(sldb-mode))))
       (progn
+        (message "disabling erjoalgo mode %s" major-mode)
         (global-erjoalgo-command-mode 0)
         ad-do-it
         (global-erjoalgo-command-mode 1))

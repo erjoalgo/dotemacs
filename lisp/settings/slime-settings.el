@@ -67,7 +67,7 @@
   "example: (stumpwm-eval (message \"holaaaaaaa\"))"
   ;; (stumpwm-eval (message "holaaaaaaa"))
   `(slime-rex ()
-      (`(swank-repl:listener-eval ,(prin1-to-string ',form))
+       (`(swank-repl:listener-eval ,(prin1-to-string ,form))
        (slime-lisp-package))
     ((:ok result))
     ((:abort condition))))
@@ -79,3 +79,6 @@
   (slime-eval '(CL:mapcar 'STUMPWM::window-pid
                           (CL:remove-if-not 'STUMPWM::window-visible-p
                                             (STUMPWM::group-windows (STUMPWM:current-group))))))
+
+(defun stumpwm-message (text)
+  (slime-eval `(STUMPWM::message ,text)))
