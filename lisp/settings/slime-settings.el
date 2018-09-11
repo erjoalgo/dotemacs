@@ -27,7 +27,8 @@
 
 (defvar *stumpwm-swank-port* 4005)
 
-(defun slime-stumpwm (arg)
+(defun slime-stumpwm (&optional arg)
+  "switch to a stumpwm slime buffer. if ‘arg' is non-nil, force a new connection"
   (interactive "P")
   (require 'slime)
   (let ((slime-stumpwm-buffer
