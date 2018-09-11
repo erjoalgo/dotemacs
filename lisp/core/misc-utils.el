@@ -130,6 +130,9 @@
 	     (intern (match-string 1 mode-name)))))
       (add-file-local-variable 'mode mode-sans-mode))))
 
+(defvar check-unsaved-buffers-current-buffer nil
+  "the buffer being examined by a ‘check-unsaved-buffers' recursive edit")
+
 (defun check-unsaved-buffers ()
   (interactive)
   (loop as next-buff =
@@ -148,11 +151,19 @@
 	(progn (switch-to-buffer next-buff)
 	       (message "unsaved changes in: %s... close or save, then exit rec-edit"
 			(buffer-name next-buff))
-	       (recursive-edit))
+	       (let ((erjoalgo-command-mode-keep-state t))
+                 (setf check-unsaved-buffers-current-buffer next-buff)
+                 (recursive-edit)))
 	finally (message "done checking buffers"))
   t)
-
 (add-hook 'kill-emacs-query-functions 'check-unsaved-buffers)
+
+(defun check-unsaved-buffers-maybe-exit-recedit ()
+  (when (equal (current-buffer) check-unsaved-buffers-current-buffer)
+      (message "moving onto next check-unsaved-buffers buffer...")
+      ;; (exit-recursive-edit)
+      nil))
+(add-hook 'kill-buffer-hook 'check-unsaved-buffers-maybe-exit-recedit )
 
 (defun diff-sexps (sexp-a sexp-b)
   ;;TODO loop fill in missing length
