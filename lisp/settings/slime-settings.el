@@ -71,3 +71,11 @@
        (slime-lisp-package))
     ((:ok result))
     ((:abort condition))))
+
+
+(defun stumpwm-visible-window-pids ()
+  "return a list of the parent process pids of all visible windows in the current STUMPWM group/workspace"
+  ;; emacs' frame-visible-p does not seem to account for another window raised on top of the emacs frame
+  (slime-eval '(CL:mapcar 'STUMPWM::window-pid
+                          (CL:remove-if-not 'STUMPWM::window-visible-p
+                                            (STUMPWM::group-windows (STUMPWM:current-group))))))
