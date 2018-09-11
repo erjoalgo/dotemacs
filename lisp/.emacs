@@ -18,7 +18,6 @@
 
 (defun safe-fun (fun-sym)
   `(lambda (&rest args)
-     (message "on %s: %s" ',fun-sym args)
      '(unless (member "dark green"
                      (custom-face-attributes-get 'mode-line (selected-frame)))
        (error "err"))
