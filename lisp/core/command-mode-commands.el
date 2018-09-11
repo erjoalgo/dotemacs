@@ -241,8 +241,9 @@
   (let* ((async-shell-command-buffer 'new-buffer))
     (apply 'async-shell-command args)))
 
-(defun my-eval-defun (arg)
+(defun my-eval-defun (&optional arg)
   (interactive "P")
+  "proxy to either slime, cider, or emacs lisp's eval-defun"
   (cond
    ((and (boundp 'slime-mode) slime-mode)
     (let ((slime-load-failed-fasl 'always))
