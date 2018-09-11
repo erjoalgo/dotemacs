@@ -67,7 +67,7 @@
 
 (defun erjoalgo-command-mode-meta-pn ()
   (interactive)
-  (if (member major-mode '(slime-repl-mode))
+  (if (member major-mode '(slime-repl-mode inferior-emacs-lisp-mode))
       (call-interactively (lookup-key
                            (symbol-value (intern (format "%s-map" major-mode)))
                            (this-command-keys-vector)))
