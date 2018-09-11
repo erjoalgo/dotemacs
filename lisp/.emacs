@@ -18,6 +18,11 @@
 
 (defun safe-fun (fun-sym)
   `(lambda (&rest args)
+     (message "on %s: %s" ',fun-sym args)
+     '(unless (member "dark green"
+                     (custom-face-attributes-get 'mode-line (window-frame (get-buffer-window))))
+       (error "err"))
+     ;; (sleep-for .5)
      (condition-case ex (apply ',fun-sym args)
        ('error
 	(warn ,(format "WARNING: unable to %s on args %%s %%s:\n" fun-sym)
