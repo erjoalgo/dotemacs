@@ -87,6 +87,7 @@
 
 (loop with safe-load = (safe-fun 'load)
       for dir in `("core" "private" "settings" "extra"
+                   "experimental"
                    ,(expand-file-name "~/private-data/emacs-lisp")
                    ,(expand-file-name "~/private-data-one-way/emacs-lisp"))
       as top = (if (file-name-absolute-p dir) dir
