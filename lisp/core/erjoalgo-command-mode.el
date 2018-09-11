@@ -52,6 +52,7 @@
     (set-face-background 'mode-line color)))
 
 (add-hook 'erjoalgo-command-mode-hook 'erjoalgo-command-mode-hook-add-color)
+(add-hook 'global-erjoalgo-command-mode-hook 'erjoalgo-command-mode-hook-add-color)
 
 (defun global-erjoalgo-command-mode-toggle ()
   (interactive)
