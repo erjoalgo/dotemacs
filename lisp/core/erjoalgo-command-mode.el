@@ -321,9 +321,9 @@
 	     (lambda ()
 	       (select-window (get-buffer-window "*Apropos*"))))))
 
-(defun one-char-insert-mode ()
+(defun one-char-insert-mode (arg)
   "insert the next char as text"
-  (interactive)
+  (interactive "P")
   (set-temporary-overlay-map global-map))
 
 
