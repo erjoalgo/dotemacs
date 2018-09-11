@@ -71,8 +71,8 @@
 (defmacro stumpwm-eval (form)
   "example: (stumpwm-eval (message \"holaaaaaaa\"))"
   ;; (stumpwm-eval (message "holaaaaaaa"))
-  (slime-rex ()
-      (`(swank-repl:listener-eval ,(prin1-to-string form))
+  `(slime-rex ()
+      (`(swank-repl:listener-eval ,(prin1-to-string ',form))
        (slime-lisp-package))
     ((:ok result))
     ((:abort condition))))
