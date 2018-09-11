@@ -143,7 +143,8 @@
       (car (which "chromium" "chromium-browser" "chrome" "google-chrome")))
 
 (defun chromium-new-tab (url &optional unknown-arg)
-  (assert browser-name)
+  (unless browser-name
+    (error "browser-name is nil"))
   (start-process "browse-url" nil browser-name url)
   (message "opened %s" url))
 
