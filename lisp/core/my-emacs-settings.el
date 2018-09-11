@@ -63,6 +63,7 @@
 (setq vc-follow-symlinks t)
 (setq read-file-name-completion-ignore-case t);;case-insensitive fn completion
 (setq next-error-message-highlight-p t)
+(setf next-error-highlight-no-select t)
 ;;TODO the same for async-shell-command file names
 
 (require 'server)
