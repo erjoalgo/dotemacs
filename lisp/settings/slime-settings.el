@@ -56,13 +56,7 @@
 						(slime-repl-history-replace 'backward nil)))
 
   (define-key slime-repl-mode-map (kbd "M-n") (lambda () (interactive)
-						(slime-repl-history-replace 'forward nil)))
-
-  )
-;;the point of this was to switch back to command mode
-;;after entering sldb choice
-;;(add-hook 'sldb-hook 'switch_back_sldb)
-
+						(slime-repl-history-replace 'forward nil))))
 
 (add-hook 'sldb-hook 'visual-line-mode)
 (add-hook 'sldb-hook 'beginning-of-buffer)
