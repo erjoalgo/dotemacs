@@ -191,6 +191,7 @@
       ("S" (buff "*Org Agenda*"))
       ("t" (file (f-join emacs-top "settings" "buttons-data.el")))
       ((kbd "s-t") (file (f-join emacs-top "core" "erjoalgo-command-mode.el")))
+      ((kbd "s-c") (file (f-join emacs-top "core" "erjoalgo-compile.el")))
       ("M" (file (concat "/var/mail/" (getenv "USER"))))
       ("x" (file (concat  "~/.stumpwmrc.d/inits/.xmodmap/")))
       ("l" (file "/sudo::/var/log/syslog"))
