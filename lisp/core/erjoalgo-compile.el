@@ -1,3 +1,6 @@
+(defvar erjoalgo-compile-post-compile-hook nil
+  "Hook run after all compile commands have finished")
+
 (defun erjoalgo-compile-compile (arg)
   (interactive "P")
   (if (and arg compile-command) (recompile)
@@ -29,6 +32,8 @@
 	     ((functionp cmd) (funcall cmd))
 	     ((null cmd) (error "no compile command found for this buffer"))
 	     (t (error "cmd must be function or string, not %s" cmd))))
+      (run-hook 'erjoalgo-compile-post-compile-hook)
+
       (when (and (boundp 'erjoalgo-compilation-next-buffer)
 		 erjoalgo-compilation-next-buffer)
 	(if (get-buffer erjoalgo-compilation-next-buffer)
