@@ -280,4 +280,5 @@
   (require 'ox-texinfo))
 
 (setq org-refile-targets
-      '(("master.org" :maxlevel . 2)))
+      '(("master.org" :maxlevel . 2)
+        ("work.org" :maxlevel . 2)))
