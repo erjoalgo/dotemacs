@@ -132,7 +132,7 @@
     ("4" 'switch-to-buffer);;originally C-x b
     ("5" (buttons-make
           nil
-          ("r" (cmd (dir "~/repos")))
+          ("g" (cmd (dir "~/git")))
           ("l" (cmd (dir "~/private-data/leet/")))))
     ("6" (cmd (dir org-top-dir)))
     ("s" 'save-buffer);;originally C-x s
