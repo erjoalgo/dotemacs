@@ -20,7 +20,7 @@
   `(lambda (&rest args)
      (message "on %s: %s" ',fun-sym args)
      '(unless (member "dark green"
-                     (custom-face-attributes-get 'mode-line (window-frame (get-buffer-window))))
+                     (custom-face-attributes-get 'mode-line (selected-frame)))
        (error "err"))
      ;; (sleep-for .5)
      (condition-case ex (apply ',fun-sym args)
