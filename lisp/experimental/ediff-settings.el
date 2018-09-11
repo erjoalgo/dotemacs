@@ -14,7 +14,4 @@
                     (ediff-get-region-contents ediff-current-difference 'A ediff-control-buffer)
                     (ediff-get-region-contents ediff-current-difference 'B ediff-control-buffer))))
 
-(push (cons 'ediff-mode-map
-            (lambda ()
-              (define-key ediff-mode-map "s-d" 'ediff-copy-both-to-C)))
-      buttons-after-load-alist)
+(add-hook 'ediff-mode-hook (lambda () (define-key ediff-mode-map "s-d" 'ediff-copy-both-to-C)))
