@@ -123,6 +123,7 @@
     ((kbd "M-3") 'my-split-window-right);;originally C-x 3
     ((kbd "M-q") 'delete-window);;originally C-x 0
     ([f2] 'other-window);;originally C-x o
+    ((kbd "<S-f2>") (cmd (other-window -1)));;originally C-x o
     ("c" 'cycle-buffer);; cycle buffers
     ("C" 'duplicate-current-buffer);; open current buffer in split-window-below
     ("z" (cmd (kill-buffer (current-buffer))));;originally C-x k
