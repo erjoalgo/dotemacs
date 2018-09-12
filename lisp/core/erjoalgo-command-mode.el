@@ -141,7 +141,6 @@
     ((kbd "M-d") 'kill-word);;originally M-d
     ("D" 'my-forward-delete);;like kill-word, but sexp, and no kill.
     ;; type "yes RET" for those annoying prompts. the key is s-SPC (super space)
-    ((kbd "s-SPC") 'quick-yes-answer-yes)
     ("-" 'global-text-scale-lower);; increase text size
     ("=" 'global-text-scale-higher);; decrease text size
     ("g" 'goto-line)
