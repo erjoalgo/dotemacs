@@ -512,3 +512,12 @@ This requires the external program `diff' to be in your `exec-path'."
   `(completing-read ,(format "complete from %s: " comps-sym)
                     ,comps-sym
                     nil t nil nil (list ,default)))
+
+(defun lisp-fmt-fix-hanging-rparen ()
+  (interactive)
+  (save-excursion
+    (goto-char (point-min))
+    ;; (while (re-search-forward "\n^[ 	]*\\()+\\)" nil t)
+    (query-replace-regexp
+     "\n[ 	]*\\()+\\)" "\\1" nil
+     (point-min) (point-max) nil)))
