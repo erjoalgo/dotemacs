@@ -44,9 +44,22 @@
   (interactive "P")
   (delete-region (point) (progn (forward-sexp n) (point))))
 
-(defun duplicate-current-buffer ()
-  (interactive)
-  (switch-to-buffer-other-window (current-buffer)))
+(defmacro with-split-preference (vertical-p &rest body)
+  (let ((w-sym (gensym "w"))
+        (h-sym (gensym "h")))
+    `(let (,w-sym ,h-sym)
+       (if ,vertical-p
+           (setf ,w-sym 0)
+         (setf ,h-sym 0))
+       (let ((split-width-threshold ,w-sym)
+             (split-height-threshold ,h-sym))
+         ,@body))))
+
+
+(defun duplicate-current-buffer (&optional vertical-p)
+  (interactive "P")
+  (with-split-preference vertical-p
+   (switch-to-buffer-other-window (current-buffer))))
 
 (defun yank-or-pop ()
   (interactive)
