@@ -206,48 +206,51 @@
   (nth (mod n (length list)) list))
 
 (defmacro defcommand-cycle-buffer (cmd-name
-				   buffer-pred
+                                   buff-sym
+				   buffer-pred-form
 				   &optional
-				   empty-bufflist-fun)
-  (let* ((cmd-name-fmt-gensym (lambda (suffix)
-				(->> suffix (concat (symbol-name cmd-name))
-				     gensym)))
-	 (pred-sym (funcall cmd-name-fmt-gensym "-prefix-"))
-	 (index-sym (funcall cmd-name-fmt-gensym "-index-"))
-	 (empty-bufflist-sym (funcall cmd-name-fmt-gensym "-empty-bufflist-")))
+				   no-matches-form)
+  "Define a command ‘cmd-name' to switch to the buffer matching
+‘buffer-pred-form', or calls ‘no-matches-form' if none matches
+or if the command was called with a prefix argument.
+If the current buffer matches, ‘cmd-name'
+will prefer to switch to a different buffer"
 
-    (fset pred-sym buffer-pred)
-    (fset empty-bufflist-sym empty-bufflist-fun)
+  (let ((seen-self-sym (gensym "seen-self"))
+        (first-match-sym (gensym "first-match"))
+        (matches-sym (gensym "matches"))
+        (is-curr-sym (gensym "is-curr"))
+        (index-sym (gensym "index-sym"))
+        (buffers-sym (gensym "buffers")))
 
-    `(progn
-       (fset ',pred-sym ,buffer-pred)
-       (fset ',empty-bufflist-sym ,empty-bufflist-fun)
-       (defun ,cmd-name (arg)
-	 (interactive "P")
-	 (if arg (,empty-bufflist-sym)
-	   (progn (setf ,index-sym
-			(loop
-			 with seen-self = nil
-			 with first-match = nil
-			 for i from 0
-			 for buff in (buffer-list)
-			 as matches = (,pred-sym buff)
-			 as is-curr = (eq (current-buffer) buff)
-			 sum (if matches 1 0) into index
-			 when is-curr do (setf seen-self t)
-			 when (and matches (not first-match)) do
-			 (setf first-match i)
-			 thereis (and seen-self (not is-curr) matches i)
-			 finally return first-match))
-		  (if ,index-sym
-		      (-> (nth-mod ,index-sym (buffer-list))
-			  switch-to-buffer)
-		    (,empty-bufflist-sym))))))))
+    `(defun ,cmd-name (arg)
+       (interactive "P")
+       (let (,index-sym
+             (,buffers-sym (buffer-list)))
+         (or
+          (unless arg
+            (loop
+	     with ,seen-self-sym = nil
+	     with ,first-match-sym = nil
+	     for i from 0
+	     for ,buff-sym in ,buffers-sym
+	     as ,matches-sym = ,buffer-pred-form
+	     as ,is-curr-sym = (eq (current-buffer) ,buff-sym)
+	     sum (if ,matches-sym 1 0) into ,index-sym
+	     when ,is-curr-sym do (setf ,seen-self-sym t)
+	     when (and ,matches-sym (not ,first-match-sym)) do
+	     (setf ,first-match-sym i)
+	     thereis (and ,seen-self-sym (not ,is-curr-sym) ,matches-sym i)
+	     finally (return (setf ,index-sym ,first-match-sym))))
+          (if ,index-sym
+	      (switch-to-buffer (nth-mod ,index-sym ,buffers-sym))
+	    ,no-matches-form))))))
 
-(defcommand-cycle-buffer cycle-buffer (lambda (buff)
-					   (-> buff buffer-name
-					       (member cycle-buffer-exclude)
-					       not)))
+
+(defcommand-cycle-buffer cycle-buffer
+  buff
+  (not (member buff cycle-buffer-exclude))
+  (error "no more non-excluded buffers to cycle"))
 
 
 (defun async-shell-command-no-prompt (&rest args)

@@ -7,10 +7,9 @@
 
 (defcommand-cycle-buffer
   cider-buffer-or-jack-in
-  (lambda (buf &rest args)
-    (->> (buffer-name buf)
-	 (s-starts-with? "*cider-repl" )))
-  'cider-jack-in)
+  buff
+  (s-starts-with? "*cider-repl" (buffer-name buff))
+  (call-interactively 'cider-jack-in))
 
 (with-eval-after-load "cider-repl"
   (define-key cider-repl-mode-map (kbd "M-p") (lambda () (interactive)
