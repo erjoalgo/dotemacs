@@ -216,35 +216,25 @@ or if the command was called with a prefix argument.
 If the current buffer matches, ‘cmd-name'
 will prefer to switch to a different buffer"
 
-  (let ((seen-self-sym (gensym "seen-self"))
-        (first-match-sym (gensym "first-match"))
-        (matches-sym (gensym "matches"))
-        (is-curr-sym (gensym "is-curr"))
-        (index-sym (gensym "index-sym"))
-        (buffers-sym (gensym "buffers")))
+  (let ((matching-buff-sym (gensym "matching-buff")))
 
     `(defun ,cmd-name (arg)
        (interactive "P")
-       (let (,index-sym
-             (,buffers-sym (buffer-list)))
-         (or
-          (unless arg
-            (loop
-	     with ,seen-self-sym = nil
-	     with ,first-match-sym = nil
-	     for i from 0
-	     for ,buff-sym in ,buffers-sym
-	     as ,matches-sym = ,buffer-pred-form
-	     as ,is-curr-sym = (eq (current-buffer) ,buff-sym)
-	     sum (if ,matches-sym 1 0) into ,index-sym
-	     when ,is-curr-sym do (setf ,seen-self-sym t)
-	     when (and ,matches-sym (not ,first-match-sym)) do
-	     (setf ,first-match-sym i)
-	     thereis (and ,seen-self-sym (not ,is-curr-sym) ,matches-sym i)
-	     finally (return (setf ,index-sym ,first-match-sym))))
-          (if ,index-sym
-	      (switch-to-buffer (nth-mod ,index-sym ,buffers-sym))
-	    ,no-matches-form))))))
+       (or
+        (unless arg
+          (when-let
+              ((,matching-buff-sym
+                (loop
+	         for ,buff-sym in (buffer-list)
+                 thereis (and (not (eq (current-buffer) ,buff-sym))
+                              ,buffer-pred-form
+                              (switch-to-buffer ,buff-sym))
+                 finally (return
+                          (let ((,buff-sym (current-buffer)))
+                            (when ,buffer-pred-form
+                              (switch-to-buffer ,buff-sym)))))))
+            (switch-to-buffer ,matching-buff-sym)))
+        ,no-matches-form))))
 
 
 (defcommand-cycle-buffer cycle-buffer
