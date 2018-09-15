@@ -94,7 +94,7 @@
 
     ;;((string-match "[*]R[*]" (buffer-name (current-buffer)))
     ('inferior-ess-mode
-     (move-past-prompt "^> " t))
+     (move-to-past-prompt "^> "))
 
     (t
      (if (equal last-command 'my-move-beginning-of-line)
