@@ -521,3 +521,12 @@ This requires the external program `diff' to be in your `exec-path'."
     (query-replace-regexp
      "\n[ 	]*\\()+\\)" "\\1" nil
      (point-min) (point-max) nil)))
+
+(defun print-level-disable-ellipsis (arg)
+  (interactive "P")
+  (dolist (sym
+           '(eval-expression-print-level
+             eval-expression-print-length
+             print-level
+             print-length))
+    (set sym nil)))
