@@ -57,4 +57,4 @@
 
 (global-set-key (kbd "<s-tab>") 'my-indent)
 (define-key global-map (kbd "<backtab>") 'my-indent)
-(setf company-idle-delay .1)
+(setf company-idle-delay .5)
