@@ -63,17 +63,20 @@
 (define-key slime-repl-mode-map (kbd "s-h") slime-doc-map)
 (setf slime-load-failed-fasl 'never)
 
-(defun stumpwm-eval (form)
+(defun stumpwm-eval (form &optional on-ok on-abort)
   "example: (stumpwm-eval '(STUMPWM::message \"hello\"))"
   ;; TODO save-window-excursion won't work since connection is async
   (save-window-excursion
     ;; TODO use slime connections as indicator, not existence of buffer
     (slime-stumpwm)
-    (slime-rex ()
-        (`(swank-repl:listener-eval ,(prin1-to-string form))
-         "STUMPWM")
-      ((:ok result))
-      ((:abort condition)))))
+    (lexical-let ((on-ok on-ok)
+                  (on-abort on-abort))
+      (slime-rex ()
+          (`(swank-repl:listener-eval ,(prin1-to-string form))
+           "STUMPWM")
+        ;; todo not working: result always nil
+        ((:ok result) (when on-ok (funcall on-ok result)))
+        ((:abort condition) (when on-abort (funcall on-ok condition)))))))
 
 (defun stumpwm-visible-window-pids ()
   "return a list of the parent process pids of all visible windows in the current STUMPWM group/workspace"
