@@ -71,7 +71,7 @@
     (slime-stumpwm)
     (slime-rex ()
         (`(swank-repl:listener-eval ,(prin1-to-string form))
-         (slime-lisp-package))
+         "STUMPWM")
       ((:ok result))
       ((:abort condition)))))
 
@@ -89,4 +89,4 @@
                             (concat match
                                     (when (oddp (length match)) "~")))
                           text)))
-    (stumpwm-eval `(STUMPWM::message ,text-cl-escaped))))
+    (stumpwm-eval `(message ,text-cl-escaped))))
