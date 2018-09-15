@@ -64,15 +64,16 @@
 (setf slime-load-failed-fasl 'never)
 
 (defmacro stumpwm-eval (form)
-  "example: (stumpwm-eval (message \"holaaaaaaa\"))"
-  (save-window-excursion
-    (slime-stumpwm)
-    `(slime-rex ()
+  "example: (stumpwm-eval '(STUMPWM::message \"hello\"))"
+  ;; TODO save-window-excursion won't work since connection is async
+  `(save-window-excursion
+     ;; TODO use slime connections as indicator, not existence of buffer
+     (slime-stumpwm)
+     (slime-rex ()
          (`(swank-repl:listener-eval ,(prin1-to-string ,form))
           (slime-lisp-package))
        ((:ok result))
        ((:abort condition)))))
-
 
 (defun stumpwm-visible-window-pids ()
   "return a list of the parent process pids of all visible windows in the current STUMPWM group/workspace"
