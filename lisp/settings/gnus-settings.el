@@ -301,7 +301,7 @@ machine smtp.gmail.com login %s password %s port 587"
 	       gnus-level-killed))
     (gnus-group-change-level group 1)))
 
-(with-eval-after-load "gnus-start"
+'(with-eval-after-load "gnus-start"
   (condition-case ex (gnus-prioritize-inbox)
     (error (warn "(gnus-prioritize-inbox) failed: %s" ex))))
 
