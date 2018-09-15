@@ -81,4 +81,10 @@
                                             (STUMPWM::group-windows (STUMPWM:current-group))))))
 
 (defun stumpwm-message (text)
-  (slime-eval `(STUMPWM::message ,text)))
+  (let ((text-cl-escaped (replace-regexp-in-string
+                          "[~]+"
+                          (lambda (match)
+                            (concat match
+                                    (when (oddp (length match)) "~")))
+                          text)))
+    (slime-eval `(STUMPWM::message ,text-cl-escaped))))
