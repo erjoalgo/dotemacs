@@ -89,4 +89,4 @@
                             (concat match
                                     (when (oddp (length match)) "~")))
                           text)))
-    (slime-eval `(STUMPWM::message ,text-cl-escaped))))
+    (stumpwm-eval `(STUMPWM::message ,text-cl-escaped))))
