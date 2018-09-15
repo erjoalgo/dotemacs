@@ -96,6 +96,9 @@
     ('inferior-ess-mode
      (move-to-past-prompt "^> "))
 
+    ('org-mode
+     (move-to-past-prompt "^\\([*]+ \\)?"))
+
     (t
      (if (equal last-command 'my-move-beginning-of-line)
 
