@@ -44,7 +44,6 @@
 
 
 
-(setq apropos-do-all t);;include functions in apropos, not just commands
 
 ;;disable tool-bars, menu-bars
 (menu-bar-mode -1)
