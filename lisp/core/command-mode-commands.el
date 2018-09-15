@@ -76,6 +76,12 @@
 (defmacro toggle-bool (sym)
   `(setf ,sym (not ,sym)))
 
+(defun move-to-past-prompt (regexp)
+  "move to the beginning of line, then past the prompt if possible."
+  (beginning-of-line)
+  (when (looking-at regexp)
+      (forward-char (length (match-string 0)))))
+
 (defun my-move-beginning-of-line ()
   ;;TODO use mode-hook-initialized variables
   (interactive)
