@@ -22,7 +22,7 @@
       (when next-error-message-highlight-overlay
         (delete-overlay next-error-message-highlight-overlay))
       (save-excursion
-        (goto-char compilation-current-error)
+        (goto-char (point))
         (let ((ol (make-overlay (line-beginning-position) (line-end-position))))
           ;; do not override region highlighting
           (overlay-put ol 'priority -50)
