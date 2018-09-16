@@ -1,3 +1,10 @@
+(defun insert-unique-line ()
+  (interactive)
+  (let* ((initial (concat "# " (uuid) "-"))
+         (line (read-string "enter unique line: " initial))
+         (final (format "insert-text-block '%s' " line)))
+    (insert final)))
+
 (defun bash-update-getopt-optstring (a b)
   (interactive "r")
   "update bash getopt optstring in a region containing a getopts loop
