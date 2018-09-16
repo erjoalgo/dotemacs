@@ -395,7 +395,7 @@
            (not erjoalgo-command-mode-keep-state)
            (not (member major-mode '(sldb-mode))))
       (progn
-        (message "disabling erjoalgo mode %s" major-mode)
+        ;; (message "disabling erjoalgo mode %s" major-mode)
         (global-erjoalgo-command-mode 0)
         ad-do-it
         (global-erjoalgo-command-mode 1))
