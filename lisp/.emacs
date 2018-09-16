@@ -2,23 +2,23 @@
   ;;  find .emacs's real location
   ;;  (concat (expand-file-name ".") "/"))
   (let ((ealfonso
-	(file-name-directory (file-truename "~ealfonso/.emacs"))))
+         (file-name-directory (file-truename "~ealfonso/.emacs"))))
     (if (and (file-regular-p ealfonso) (file-exists-p ealfonso))
 	ealfonso
       (file-name-directory (file-truename "~/.emacs")))))
 
 (defun add-hook-to-modes (hook mode-sym-list)
   (dolist (mode-sym mode-sym-list)
-  (let ((hook-sym (intern (concat (symbol-name mode-sym) "-hook"))))
-    (add-hook hook-sym hook)
-    (when (derived-mode-p mode-sym)
-      (funcall hook)))))
+    (let ((hook-sym (intern (concat (symbol-name mode-sym) "-hook"))))
+      (add-hook hook-sym hook)
+      (when (derived-mode-p mode-sym)
+        (funcall hook)))))
 
 (defun safe-fun (fun-sym)
   `(lambda (&rest args)
      '(unless (member "dark green"
-                     (custom-face-attributes-get 'mode-line (selected-frame)))
-       (error "err"))
+                      (custom-face-attributes-get 'mode-line (selected-frame)))
+        (error "err"))
      ;; (sleep-for .5)
      (condition-case ex (apply ',fun-sym args)
        ('error
@@ -30,20 +30,19 @@
 	       (concat emacs-top dir)))
 
 (mapc (safe-fun 'require)
-	'(f
-	  goto-last-change
-	  quick-yes
-	  cl-lib
-	  cl
-	  zoom-global
-	  isearch-fast-reverse
-	  my-emacs-settings
-	  proxy-mode
-	  plusx
-	  dash
-	  dash-functional
-	  dedicated
-	  ))
+      '(f
+        goto-last-change
+        quick-yes
+        cl-lib
+        cl
+        zoom-global
+        isearch-fast-reverse
+        my-emacs-settings
+        proxy-mode
+        plusx
+        dash
+        dash-functional
+        dedicated))
 
 (when (>= emacs-major-version 24)
   (require 'package)
