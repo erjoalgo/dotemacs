@@ -7,14 +7,12 @@
 	ealfonso
       (file-name-directory (file-truename "~/.emacs")))))
 
-
 (defun add-hook-to-modes (hook mode-sym-list)
   (dolist (mode-sym mode-sym-list)
   (let ((hook-sym (intern (concat (symbol-name mode-sym) "-hook"))))
     (add-hook hook-sym hook)
     (when (derived-mode-p mode-sym)
       (funcall hook)))))
-
 
 (defun safe-fun (fun-sym)
   `(lambda (&rest args)
