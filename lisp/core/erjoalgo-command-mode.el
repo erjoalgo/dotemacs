@@ -182,7 +182,6 @@
      (buttons-make
       nil
       ("e" (file "~/.emacs"))
-      ("E" (file "~/repos/emacs-dirty/.emacs-bloated.el"))
       ("C" (buff "regexp:[*]ansi-term[*].*" (ansi-term "/bin/bash")))
       ("c" (buff "*compilation*"))
       ("r" (buff "*Backtrace*"))
@@ -200,7 +199,6 @@
       ("l" (file "/sudo::/var/log/syslog"))
       ("v" (file "~/.stumpwmrc.d/keynavs/.keynavrc"))
       ("w" (file "~/.stumpwmrc.d/lisp/.stumpwmrc"))
-      ("8" (file "~/repos/starter/data/packages"))
       ("o" (file "~/private-data/org/master.org"))
       ("T" (cmd (org-todo-list org-match)))
       ("O" nil)
@@ -232,15 +230,12 @@
       ("f" 'find-iregex)
       ("u" 'universal-argument)
       ([f2] 'call-last-kbd-macro)
-      ("l" 'alert)
       ("w" (buttons-make
             nil
             ("1" 'slime-sbcl)
             ("2" 'slime-stumpwm)
             ("3" 'cider-buffer-or-jack-in)))
-
       ("S" 'goto-slime-buffer)
-      ("t" 'untarprogram)
       ("r" 'replace-regexp)
       ("R" 'query-replace-regexp)
       ("A" (buff "[*]Async Shell Command[*]"))
