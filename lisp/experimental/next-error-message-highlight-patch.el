@@ -19,15 +19,15 @@
   "Highlight the current error message in the ‘next-error’ buffer."
   (when next-error-message-highlight-p
     (with-current-buffer next-error-last-buffer
-      (when next-error-message-highlight-overlay
-        (delete-overlay next-error-message-highlight-overlay))
-      (save-excursion
-        (goto-char compilation-current-error)
-        (let ((ol (make-overlay (line-beginning-position) (line-end-position))))
-          ;; do not override region highlighting
-          (overlay-put ol 'priority -50)
-          (overlay-put ol 'face 'next-error-message)
-          (overlay-put ol 'window (get-buffer-window))
-          (setf next-error-message-highlight-overlay ol))))))
+      (make-variable-buffer-local 'hl-line-range-function)
+      ;; (message "setting hl-line-range-function")
+      (setf hl-line-range-function
+            (lambda ()
+              (save-excursion
+                (goto-char compilation-current-error)
+                (let ((range
+                       (cons (line-beginning-position) (line-end-position))))
+                  (message "hl-line-range-function caled. range is %s" range)
+                  range)))))))
 
 (add-hook 'next-error-hook 'next-error-message-highlight)
