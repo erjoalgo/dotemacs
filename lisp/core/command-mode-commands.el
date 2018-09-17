@@ -204,12 +204,6 @@
 	  `(->> ,(nconc b (list a)) ,@cde)))
     (first forms)))
 
-(setf cycle-buffer-exclude (list
-			    "*scratch*" "*GNU Emacs*" " *Minibuf-1*"
-			    " *Minibuf-0*" "*Messages*" " *code-conversion-work*"
-			    " *Echo Area 1*" " *Echo Area 0*" "*Completions*"
-			    "*Apropos*" "*Help*"))
-
 
 (defun nth-mod (n list)
   (nth (mod n (length list)) list))
@@ -245,11 +239,18 @@ Buffers other than the current buffer are preferred."
                       (switch-to-buffer ,buff-sym))))))
       ,no-matches-form)))
 
+
+(setf cycle-buffer-exclude
+      (list
+       "*scratch*" "*GNU Emacs*" " *Minibuf-1*"
+       " *Minibuf-0*" " *Minibuf-1*" "*Messages*" " *code-conversion-work*"
+       " *Echo Area 1*" " *Echo Area 0*" "*Completions*"
+       "*Apropos*" "*Help*"))
+
 (defcommand-cycle-buffer cycle-buffer
   buff
   (not (member buff cycle-buffer-exclude))
   (error "no more non-excluded buffers to cycle"))
-
 
 (defun async-shell-command-no-prompt (&rest args)
   (let* ((async-shell-command-buffer 'new-buffer))
