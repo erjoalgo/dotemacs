@@ -343,8 +343,13 @@ otherwise, leave it intact"
               (yank-or-pop)
               (ins ";{inm}")))
     ("1" (cmd (ins "!")))
-    ("n" (cmd (ins "printf(\"{}\\n\"{});")))
-    ("N" (cmd (ins "scanf( \"{}\"{} );")))
+    ("n" (buttons-make
+          super-add
+          ("a" (cmd (ins "absl:PrintF(\"{}\\n\"{});")))
+          ("p" (cmd (ins "printf(\"{}\\n\"{});")))
+          ("s" (cmd (ins "scanf( \"{}\"{} );")))
+          ("," (cmd (ins "cout << {} << endl;{nli}")))
+          ("<" (cmd (ins " << ")))))
     ("l" (cmd (ins "strlen( {} )")))
     ("'" (cmd (ins "/*{}*/{nli}")))
     ("/" nil)
@@ -735,7 +740,6 @@ otherwise, leave it intact"
       super-add
       ("s" (cmd (ins "string ")))))
     ("m" (cmd (ins "using namespace std;{nli}#include <vector>{nli}#include <unordered_map>{nli}#include <iostream>{nli}#define MAX(a, b) ((a)>(b)? (a):(b)){nli}#define MIN(a, b) ((a)<(b)? (a):(b)){nli}#define ABS(a) ((a)>=0? (a):-(a)){nli}")))
-    ("N" (cmd (ins "cout << {} << endl;{nli}")))
     ("l" (cmd (ins ".size()")))
     ("s" (cmd (ins "scanf( \"{inm}{}\", {} )")))
     ("s" (cmd (ins "scanf( \"%d\", &{inm}{} );")))
