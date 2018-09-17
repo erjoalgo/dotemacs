@@ -219,32 +219,31 @@
 				   buffer-pred-form
 				   &optional
 				   no-matches-form)
+
   "Define a command ‘cmd-name' to switch to the buffer matching
 ‘buffer-pred-form', or calls ‘no-matches-form' if none matches
 or if the command was called with a prefix argument.
 If the current buffer matches, ‘cmd-name'
 will prefer to switch to a different buffer"
 
-  (let ((matching-buff-sym (gensym "matching-buff")))
-
-    `(defun ,cmd-name (arg)
-       (interactive "P")
-       (or
-        (unless arg
-          (when-let
-              ((,matching-buff-sym
-                (loop
-	         for ,buff-sym in (buffer-list)
-                 thereis (and (not (eq (current-buffer) ,buff-sym))
-                              ,buffer-pred-form
-                              (switch-to-buffer ,buff-sym))
-                 finally (return
-                          (let ((,buff-sym (current-buffer)))
-                            (when ,buffer-pred-form
-                              (switch-to-buffer ,buff-sym)))))))
-            (switch-to-buffer ,matching-buff-sym)))
-        ,no-matches-form))))
-
+  `(defun ,cmd-name (arg)
+     ,(format "Switch to the buffer matching\n%s,\nor invoke\n%s if no such buffer exists.
+Buffers other than the current buffer are preferred."
+              buffer-pred-form
+              no-matches-form)
+     (interactive "P")
+     (or
+      (unless arg
+        (loop
+	 for ,buff-sym in (buffer-list)
+         thereis (and (not (eq (current-buffer) ,buff-sym))
+                      ,buffer-pred-form
+                      (switch-to-buffer ,buff-sym))
+         finally (return
+                  (let ((,buff-sym (current-buffer)))
+                    (when ,buffer-pred-form
+                      (switch-to-buffer ,buff-sym))))))
+      ,no-matches-form)))
 
 (defcommand-cycle-buffer cycle-buffer
   buff
