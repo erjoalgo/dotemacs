@@ -12,6 +12,7 @@ otherwise, leave it intact"
 
 (buttons-macrolet
  ((inm () `(global-erjoalgo-command-mode 0)))
+
  (defbuttons programming-buttons nil nil
    (buttons-make
     super-add
@@ -48,7 +49,14 @@ otherwise, leave it intact"
           ("x" 'xref-find-references)
           ("a" 'xref-find-apropos)
           ("c" 'eglot-code-actions)))
-
+    ("u";; util
+     (buttons-make
+      super-add
+      ("c" ;; case
+       (buttons-make
+        super-add
+        ("u" 'upcase-region)
+        ("d" 'downcase-region)))))
     ((kbd "M-.") (lambda () (interactive)
                    (if (get-buffer "*compilation*")
                        (call-interactively 'next-error)
