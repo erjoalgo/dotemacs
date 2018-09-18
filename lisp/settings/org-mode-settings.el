@@ -87,7 +87,6 @@
       (replace-match
        (concat (make-string (1- (length (match-string 1))) 32) "-")))))
 
-(define-key org-mode-map (kbd "M-c") 'org-export-mine)
 (setq org-html-validation-link nil)
 
 (make-file-local-variable-flag-toggle-command
