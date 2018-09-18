@@ -298,12 +298,6 @@ otherwise, leave it intact"
     ("h"
      (buttons-make
       super-add
-      ("d" (cmd (move-beginning-of-line nil)
-                (ins "(describe '")
-                (move-end-of-line nil)
-                (ins ")")
-                (slime-repl-return)))
-      ("a" (cmd (ins "(apropos \"{}\"){nli}")))
       ("D" (cmd (ins "(declaim (optimize (debug 3) (speed 0)))")))))))
 
  (defbuttons clojure-buttons cl-buttons
@@ -920,4 +914,18 @@ otherwise, leave it intact"
         ("c" (cmd (let ((apropos-do-all nil))
                     (call-interactively 'apropos-command))))
         ;; variables
-        ("v" (cmd (call-interactively 'apropos-variable))))))))))
+        ("v" (cmd (call-interactively 'apropos-variable)))))))))
+
+ (defbuttons slime-buttons
+   nil
+   (slime-mode-map)
+   (buttons
+    super-add
+    ("h"
+     (buttons
+      super-add
+      ("a" 'slime-apropos)
+      ("s" 'slime-describe-symbol)
+      ("f" 'slime-describe-function)
+      ("d" 'slime-documentation-lookup)
+      ("z" 'slime-apropos-all))))))
