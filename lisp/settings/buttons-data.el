@@ -347,7 +347,11 @@ otherwise, leave it intact"
     ("1" (cmd (ins "!")))
     ("n" (buttons-make
           super-add
-          ("a" (cmd (ins "absl:PrintF(\"{}\\n\"{});")))
+          ("a"
+           (buttons-make
+            super-add
+            ("p" (cmd (ins "absl:PrintF(\"{}\\n\"{});")))
+            ("s" (cmd (ins "absl:StrFormat(\"{}\\n\"{});")))))
           ("p" (cmd (ins "printf(\"{}\\n\"{});")))
           ("s" (cmd (ins "scanf( \"{}\"{} );")))
           ("," (cmd (ins "cout << {} << endl;{nli}")))
