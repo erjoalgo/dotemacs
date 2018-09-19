@@ -228,7 +228,7 @@ otherwise, leave it intact"
     ("n"
      (buttons-make
       super-add
-      ("n" (cmd (ins "(format \"{}\"{})")))
+      ("t" (cmd (ins "(format \"{}\"{})")))
       ("m" (cmd (ins "(message \"{}\"{})")))))
     ("\\" (cmd (ins "\\\\({}\\\\)")))
     ("s" (cmd (call-interactively 'insert-emacs-sym)))
