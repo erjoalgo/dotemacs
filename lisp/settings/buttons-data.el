@@ -923,10 +923,10 @@ otherwise, leave it intact"
  (defbuttons slime-buttons
    nil
    (slime-mode-map)
-   (buttons
+   (buttons-make
     super-add
     ("h"
-     (buttons
+     (buttons-make
       super-add
       ("a" 'slime-apropos)
       ("s" 'slime-describe-symbol)
