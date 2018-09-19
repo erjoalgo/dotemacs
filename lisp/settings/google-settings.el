@@ -1,5 +1,6 @@
 (when (require 'google nil t)
-
+  ;; TODO find appropriate modes
+  (push `(".pkgdef$" . borg-mode) auto-mode-alist)
   ;; (push `("[.]sdl" . sql-mode) auto-mode-alist)
   ;; (push `("BUILD" . python-mode) auto-mode-alist)
 
