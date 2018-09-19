@@ -72,8 +72,8 @@
     (let* ((fn (org-html-export-to-html))
 	   (url (format "file://%s" (f-full fn)))
 	   (org-exporting-mine t))
-      (org-latex-export-to-pdf)
-      '(browse-url url))))
+      '(org-latex-export-to-pdf)
+      (browse-url url))))
 
 (defun org-listify-region (a b)
   (interactive "r")
