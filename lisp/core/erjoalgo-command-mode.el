@@ -153,11 +153,11 @@
                ('(help-mode apropos-mode) 'forward-button)
                ('Info-mode 'Info-next-reference)
                (t 'indent-for-tab-command)))))
-    ("9" (cmd (ins "(")));; insert "("
-    ("0" (cmd (ins ")")));; insert ")"
+    ("9" "(");; insert "("
+    ("0" ")");; insert ")"
     ("" 'universal-argument)
     ("u" 'universal-argument)
-    ("'" (cmd (ins "\"")));; insert double-quote
+    ("'" "\"");; insert double-quote
     ("i" 'one-char-insert-mode)
     ("h" (lambda (arg) (interactive "P")
            "with prefix arg, keep erjoalgo-command-mode while on help-command map
