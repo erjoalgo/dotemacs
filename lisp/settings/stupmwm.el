@@ -78,3 +78,12 @@ in the current STUMPWM group/workspace."
                                     (when (oddp (length match)) "~")))
                           text)))
     (stumpwm-eval `(message ,text-cl-escaped))))
+
+(defun stumpwm-auto-doc-el (in out)
+  (interactive
+   (let ((buffer-file-name (current-buffer)))
+     (list filename (concat filename ".texi"))))
+
+  (slime-eval `(STUMPWM::generate-manual
+                :in ,(f-full in)
+                :out ,(f-full out))))
