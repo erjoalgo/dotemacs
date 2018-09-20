@@ -751,7 +751,7 @@ otherwise, leave it intact"
     ("f"
      (buttons-make
       super-add
-      ("F" (cmd (ins "for(auto& {}: {}){cbd}")))))
+      ("a" (cmd (ins "for(auto& {}: {}){cbd}")))))
     ("i"
      (buttons-make
       super-add
