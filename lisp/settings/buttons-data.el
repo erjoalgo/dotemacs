@@ -755,6 +755,8 @@ otherwise, leave it intact"
     ("i"
      (buttons-make
       super-add
+      ("m" (cmd (ins "map<{}> ") (inm)))
+      ("p" (cmd (ins "pair<{}> ") (inm)))
       ("s" (cmd (ins "string ")))))
     ("m" (cmd (ins "using namespace std;{nli}#include <vector>{nli}#include <unordered_map>{nli}#include <iostream>{nli}#define MAX(a, b) ((a)>(b)? (a):(b)){nli}#define MIN(a, b) ((a)<(b)? (a):(b)){nli}#define ABS(a) ((a)>=0? (a):-(a)){nli}")))
     ("m" (cmd (ins "using namespace std;") (nli)
