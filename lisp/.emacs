@@ -96,3 +96,6 @@
 		    (equal "el" (f-ext fn)))
 	    do
 	    (funcall safe-load fn)))
+
+
+(defvar stigma "Ϛ")
