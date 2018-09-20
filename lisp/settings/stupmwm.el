@@ -54,21 +54,18 @@ Example: (stumpwm-eval '(STUMPWM::message \"hello\"))."
         ((:ok result) (when on-ok (funcall on-ok result)))
         ((:abort condition) (when on-abort (funcall on-ok condition)))))))
 
-(defun stumpwm-visible-window-pids ()
+(defun stumpwm-visible-window-ids (&optional pid)
   "Return a list of the parent process pids of all visible windows
 in the current STUMPWM group/workspace."
-  ;; emacs' frame-visible-p does not seem to account for another window raised on top of the emacs frame
-  (slime-eval '(CL:mapcar 'STUMPWM::window-pid
-                          (CL:remove-if-not 'STUMPWM::window-visible-p
-                                            (STUMPWM::group-windows (STUMPWM:current-group))))))
-
-(defun stumpwm-visible-window-ids ()
-  "Return a list of the parent process pids of all visible windows
-in the current STUMPWM group/workspace."
-  ;; emacs' frame-visible-p does not seem to account for another window raised on top of the emacs frame
-  (slime-eval '(CL:mapcar 'STUMPWM::window-id
-                          (CL:remove-if-not 'STUMPWM::window-visible-p
-                                            (STUMPWM::group-windows (STUMPWM:current-group))))))
+  ;; emacs' frame-visible-p does not seem to account
+  ;; for another window raised on top of the emacs frame
+  (slime-eval `(CL:mapcar
+                ',(if pid
+                   'STUMPWM::window-pid
+                   'STUMPWM::window-id)
+                (CL:remove-if-not
+                 'STUMPWM::window-visible-p
+                 (STUMPWM::group-windows (STUMPWM:current-group))))))
 
 (defun stumpwm-message (text)
   (let ((text-cl-escaped (replace-regexp-in-string
