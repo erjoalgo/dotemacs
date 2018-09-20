@@ -64,7 +64,13 @@
 (setf slime-load-failed-fasl 'never)
 
 (defun stumpwm-eval (form &optional on-ok on-abort)
-  "example: (stumpwm-eval '(STUMPWM::message \"hello\"))"
+  "Eval FORM on stumpwm.
+ON-OK is a function that is invoked upon execution with
+FORM's value as the sole argument.
+ON-ABORT is a function that is invoked on error with
+the error condition as the sole argument.
+
+Example: (stumpwm-eval '(STUMPWM::message \"hello\"))."
   ;; TODO save-window-excursion won't work since connection is async
   (save-window-excursion
     ;; TODO use slime connections as indicator, not existence of buffer
@@ -79,7 +85,8 @@
         ((:abort condition) (when on-abort (funcall on-ok condition)))))))
 
 (defun stumpwm-visible-window-pids ()
-  "return a list of the parent process pids of all visible windows in the current STUMPWM group/workspace"
+  "Return a list of the parent process pids of all visible windows
+in the current STUMPWM group/workspace."
   ;; emacs' frame-visible-p does not seem to account for another window raised on top of the emacs frame
   (slime-eval '(CL:mapcar 'STUMPWM::window-pid
                           (CL:remove-if-not 'STUMPWM::window-visible-p
