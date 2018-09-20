@@ -32,6 +32,7 @@ otherwise, leave it intact"
           super-add
           ("s" (cmd (ins "%s")))
           ("d" (cmd (ins "%d")))
+          ("c" (cmd (ins "%c")))
           ("l" (cmd (ins "%ld")))
           ("L" (cmd (ins "%lld")))))
     ("=" (cmd (ins " == ")))
