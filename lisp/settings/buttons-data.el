@@ -766,7 +766,10 @@ otherwise, leave it intact"
               (ins "#define MAX(a, b) ((a)>(b)? (a):(b))") (nli)
               (ins "#define MIN(a, b) ((a)<(b)? (a):(b))") (nli)
               (ins "#define ABS(a) ((a)>=0? (a):-(a))") (nli)))
-    ("l" (cmd (ins ".size()")))
+    ("l" (buttons-make
+          super-add
+          ("s" (cmd (ins ".size()")))
+          ("t" (cmd (ins ".length()")))))
     ("s" (cmd (ins "scanf( \"{inm}{}\", {} )")))
     ("s" (cmd (ins "scanf( \"%d\", &{inm}{} );")))
     ("S" (cmd (ins "int {0}; scanf( \"%d\", &{0} );{nli}")))
