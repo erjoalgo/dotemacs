@@ -149,10 +149,10 @@
             (interactive)
             (call-interactively
              (case major-mode
-               ('Custom-mode 'widget-forward)
-               ('(help-mode apropos-mode) 'forward-button)
-               ('Info-mode 'Info-next-reference)
-               (t 'indent-for-tab-command)))))
+               ((Custom-mode) 'widget-forward)
+               ((help-mode apropos-mode) 'forward-button)
+               ((Info-mode) 'Info-next-reference)
+               ((t) 'indent-for-tab-command)))))
     ("9" "(");; insert "("
     ("0" ")");; insert ")"
     ("" 'universal-argument)
