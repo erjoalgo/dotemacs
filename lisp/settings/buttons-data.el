@@ -405,7 +405,7 @@ otherwise, leave it intact"
      (buttons-make
       super-add
       ("c" (cmd (ins "continue;")))
-      ("b" (cmd (ins "break;")))))))
+      ("k" (cmd (ins "break;")))))))
 
  (defbuttons java-buttons c-buttons
    (java-mode-map)
