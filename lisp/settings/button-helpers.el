@@ -18,7 +18,7 @@
 
 '(setq go-types '("struct" "int" "bool" "string" "float"))
 
-(defun my-comment-out (arg &optional duplicate) (interactive "P")
+(defun my-comment-out (arg &optional duplicate respect-whitespace) (interactive "P")
        (let* ((mode-map-keymap-sym
                (intern (concat (symbol-name major-mode) "-map")))
               (comment-cmd (when (boundp mode-map-keymap-sym)
@@ -43,14 +43,19 @@
                        (line-end-position)))
                 (comment-regexp (concat
                                  "\\`[[:space:]]*"
-                                 (regexp-quote comment-start)))
+                                 (if (not respect-whitespace)
+                                     (replace-regexp-in-string
+                                      "[ 	]+" "[[:space:]]*"
+                                      (regexp-quote comment-start))
+                                   (regexp-quote comment-start))))
                 (text (buffer-substring-no-properties start end))
                 (is-commented (string-match comment-regexp text))
                 (comment-end ""))
            (if (zerop (length text))
                (insert (concat comment-start
-                               (when comment-add comment-start)
-                               " "))
+                               (when (and comment-add (> comment-add 0))
+                                 comment-start)
+                               (unless (s-ends-with-p " " comment-start) " ")))
              (funcall (if is-commented 'uncomment-region 'comment-region)
                       start end nil))
            (when duplicate
