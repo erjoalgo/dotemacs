@@ -157,14 +157,15 @@ otherwise, leave it intact"
       super-add
       ("v" (cmd (ins "(defvar {}){nli}")))
       ("f" (cmd (ins "(defun {} ({}){nli}{})")))
-      ("m" (cmd (ins "(defmacro {} ({}){nli}{})")))))
-    ("u"
-     (buttons-make
-      super-add
-      ("k" (cmd (ins "(defpackage {nli}(:use :cl){})")))
-      ("i" (cmd (ins "(:import-from #:{}")))
-      ("e" (cmd (ins "(:export #:")))
-      ("u" (cmd (ins "(:export #:")))))
+      ("m" (cmd (ins "(defmacro {} ({}){nli}{})")))
+      ("k"
+       (buttons-make
+        super-add
+        ("p" (cmd (ins "(defpackage {}{nli}(:use :cl){})")))
+        ("u" (cmd (ins "(:use :{})")))
+        ("i" (cmd (ins "(in-package #:{})")))
+        ("m" (cmd (ins "(:import-from #:{}")))
+        ("e" (cmd (ins "(:export #:")))))))
     ("w" (cmd (ins "(while {}){nli}")))
     ("a" (cmd (ins "(lambda ({}) {})")))
     ("z" (cmd (ins "(if {})")))
