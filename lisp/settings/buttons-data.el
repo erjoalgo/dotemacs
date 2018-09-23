@@ -263,7 +263,7 @@ otherwise, leave it intact"
       ("d" (cmd (ins "do ")))
       ("o" (cmd (ins "collect ")))
       ("a" (cmd (ins "append ")))
-      ("f" (cmd (ins "finally ")))
+      ("y" (cmd (ins "finally ")))
       ("z" (cmd (ins "if ")))
       ("Z" (cmd (ins "else ")))
       ("x" (cmd (ins "when ")))
