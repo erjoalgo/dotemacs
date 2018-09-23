@@ -898,7 +898,16 @@ otherwise, leave it intact"
     super-add
     ("a" 'sldb-abort)
     ("c" 'sldb-continue)
-    ("q" 'sldb-quit)))
+    ("q" 'sldb-quit)
+    ;; (loop for i below 5 collect
+    ;;       `(,(number-to-string i)
+    ;;         ',(intern (format "sldb-invoke-restart-%d" i))))
+    ("0" 'sldb-invoke-restart-0)
+    ("1" 'sldb-invoke-restart-1)
+    ("2" 'sldb-invoke-restart-2)
+    ("3" 'sldb-invoke-restart-3)
+    ("4" 'sldb-invoke-restart-4)
+    ("5" 'sldb-invoke-restart-5)))
 
  (defbuttons minibuffer-quick-yes-button
    nil
