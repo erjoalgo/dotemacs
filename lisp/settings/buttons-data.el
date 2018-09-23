@@ -301,7 +301,9 @@ otherwise, leave it intact"
     ("h"
      (buttons-make
       super-add
-      ("D" (cmd (ins "(declaim (optimize (debug 3) (speed 0)))")))))))
+      ("D" (cmd (ins "(declaim (optimize (debug 3) (speed 0)))")))))
+    ((kbd "M-.") 'slime-next-note)
+    ((kbd "M-,") 'slime-previous-note)))
 
  (defbuttons clojure-buttons cl-buttons
    (clojure-mode-map cider-repl-mode-map)
