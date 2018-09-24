@@ -620,13 +620,13 @@ otherwise, leave it intact"
               (ins "{nli}")))
     ("g" (cmd (ins "true")))
     ("G" (cmd (ins "false")))
-    ("u" 'insert-unique-line)
     ("C" (cmd (ins "<<EOF{nli}{}{newline}EOF")))
     ;; ( "x" 'shell-command-of-region)
     ("0" (cmd (insert sh-getopt-template)))
     ("t" (buttons-make
           super-add
-          ("t" (cmd (ins "test ") (inm)))))))
+          ("t" (cmd (ins "test ") (inm)))
+          ("u" 'insert-unique-line)))))
 
  (defbuttons tex-buttons programming-buttons
    (tex-mode-map)
