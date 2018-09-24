@@ -246,9 +246,9 @@ otherwise, leave it intact"
     ("p"
      (buttons-make
       super-add
+      ("i" (cmd (ins " in ")))
       ("l" (cmd (ins "(loop {}){nli}")))
       ("f" (cmd (ins "for ")))
-      ("i" (cmd (ins "in ")))
       ("t" (cmd (ins "with {} = ")))
       ("b" (cmd (ins "below ")))
       ("w" (cmd (ins "while ")))
