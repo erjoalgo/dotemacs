@@ -150,7 +150,7 @@
             (call-interactively
              (case major-mode
                ((Custom-mode) 'widget-forward)
-               ((help-mode apropos-mode) 'forward-button)
+               ((help-mode apropos-mode debugger-mode) 'forward-button)
                ((Info-mode) 'Info-next-reference)
                ((t) 'indent-for-tab-command)))))
     ("9" "(");; insert "("
