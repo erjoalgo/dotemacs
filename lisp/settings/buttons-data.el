@@ -149,6 +149,7 @@ otherwise, leave it intact"
       ("v" (cmd (ins "(defvar {}){nli}")))
       ("f" (cmd (ins "(defun {} ({}){nli}{})")))
       ("m" (cmd (ins "(defmacro {} ({}){nli}{})")))
+      ("b" (cmd (ins "(destructuring-bind ({}){})")))
       ("k"
        (buttons-make
         super-add
