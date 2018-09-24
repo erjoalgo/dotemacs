@@ -239,7 +239,14 @@ otherwise, leave it intact"
     ("k" (cmd (ins "(and {})")))
     ("1" (cmd (ins "(not {})")))
     (":" (cmd (ins ": ")))
-    ("'" (cmd (ins "'")))
+    ("'" (cmd (if (region-active-p)
+                  (save-excursion
+                    (let ((region (buffer-substring
+                                   (region-beginning)
+                                   (region-end))))
+                      (delete-active-region)
+                      (insert (format "‘%s'" region))))
+                (ins "'"))))
     ("-" (cmd (ins "(-> {})")))
     ("_" (cmd (ins "(->> {})")))
     ("`" (cmd (ins "`{}'")))
