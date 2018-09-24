@@ -84,3 +84,22 @@ in the current STUMPWM group/workspace."
   (slime-eval `(STUMPWM::generate-manual
                 :in ,(f-full in)
                 :out ,(f-full out))))
+
+(defvar stumpwm-colors
+  '(black
+    red
+    green
+    yellow
+    blue
+    magenta
+    cyan
+    white)
+  "Stumpwm colors.")
+
+(defun stumpwm-color (msg color)
+  (or
+   (loop for clr in stumpwm-colors
+         for idx from 0
+         thereis (when (eq color clr)
+                   (format "^%d%s^*" idx msg)))
+   (error "no such color: %s. options: %s" color stumpwm-colors)))
