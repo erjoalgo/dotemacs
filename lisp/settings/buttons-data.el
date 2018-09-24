@@ -19,7 +19,6 @@ otherwise, leave it intact"
     ("\\" (cmd (ins "\\n")))
     ("%" (cmd (ins "%d")))
     ("3" (cmd (ins "({})")))
-    ("#" (cmd (ins "){}(")))
     ("2" (cmd (ins "\"{}\"")))
     ("@" (cmd (ins "'{}'")))
     ("8" (cmd (ins "*")))
