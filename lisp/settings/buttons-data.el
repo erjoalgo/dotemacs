@@ -202,7 +202,7 @@ otherwise, leave it intact"
       ("e"
        (buttons-make
         super-add
-        ("e" (cmd (ins "(equal {})")))
+        ("u" (cmd (ins "(equal {})")))
         ("q" (cmd (ins "(eq {})")))
         ("=" (cmd (ins "(= {})")))
         ("l" (cmd (ins "(eql {})")))))
