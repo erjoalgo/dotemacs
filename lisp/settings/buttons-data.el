@@ -25,22 +25,14 @@ otherwise, leave it intact"
     ("9" (cmd (ins "[0-9]+")))
     ("e" (cmd (ins " = {inm}")))
     ("4" (cmd (ins "[{}]")))
-    ("r" (cmd (ins "return ")))
     ("SPC" (cmd (ins ", {inm}")))
-    ("5" (buttons-make
-          super-add
-          ("s" (cmd (ins "%s")))
-          ("d" (cmd (ins "%d")))
-          ("c" (cmd (ins "%c")))
-          ("l" (cmd (ins "%ld")))
-          ("L" (cmd (ins "%lld")))))
+    ("5" (cmd (ins "%s")))
+    ("%" (cmd (ins "%d")))
     ("=" (cmd (ins " == ")))
     ("+" (cmd (ins " != ")))
-    ("]" (cmd (ins "[]")))
     ("6" (cmd (ins "[^{}]")))
     ((kbd "M-/") 'my-comment-out)
     ((kbd "M-?") 'my-comment-out-and-duplicate)
-
     ("." (buttons-make
           super-add
           ("f" 'xref-find-definitions)
@@ -308,8 +300,6 @@ otherwise, leave it intact"
    (clojure-mode-map cider-repl-mode-map)
    (buttons-make
     super-add
-    ("5" (cmd (ins "%s")))
-    ("%" (cmd (ins "%d")))
     ("\\" (cmd (ins "\\n")))
     ("l" (cmd (ins "(let [{}]{nli}{}){nli}")))
     ("d"
@@ -404,6 +394,15 @@ otherwise, leave it intact"
               (ins "#define MAX(a, b) ((a)>(b)? (a):(b))") (nli)
               (ins "#define MIN(a, b) ((a)<(b)? (a):(b))") (nli)
               (ins "#define ABS(a) ((a)>=0? (a):-(a))") (nli)))
+    ("r" (cmd (ins "return ")))
+    ("5" (buttons-make
+          super-add
+          ("s" (cmd (ins "%s")))
+          ("d" (cmd (ins "%d")))
+          ("c" (cmd (ins "%c")))
+          ("l" (cmd (ins "%ld")))
+          ("L" (cmd (ins "%lld")))))
+    ("]" (cmd (ins "[]")))
     ("b"
      (buttons-make
       super-add
@@ -447,7 +446,8 @@ otherwise, leave it intact"
     ("m" 'java-imports-add-import-dwim)
     ("t" (cmd (ins "try {cbd}catch ({}){cbd}")))))
 
- (defbuttons xml-buttons nil
+ (defbuttons xml-buttons
+   programming-buttons
    (nxml-mode-map)
    (buttons-make
     super-add
@@ -721,7 +721,9 @@ otherwise, leave it intact"
     ("N" (cmd (ins "disp(sprintf('{}'{}))")))
     ("[" (cmd (insert "{")
               (ins "{}}")))
-    ("5" (cmd (ins "%f")))
+    ("5" (buttons-make
+          super-add
+          ("f" (cmd (ins "%f")))))
     (";" (cmd (ins ": ")))
     ("x" (cmd (ins "elseif ")))))
 
