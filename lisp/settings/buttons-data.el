@@ -353,8 +353,8 @@ otherwise, leave it intact"
           ("a"
            (buttons-make
             super-add
-            ("t" (cmd (ins "absl:PrintF(\"{}\\n\"{});")))
-            ("s" (cmd (ins "absl:StrFormat(\"{}\\n\"{});")))
+            ("t" (cmd (ins "absl::PrintF(\"{}\\n\"{});")))
+            ("s" (cmd (ins "absl::StrFormat(\"{}\\n\"{});")))
             ("m" (cmd (ins "absl::StreamFormat(\"{}\"{});")))))
           ("t" (cmd (ins "printf(\"{}\\n\"{});")))
           ("." (cmd (ins ".c_str()")))
