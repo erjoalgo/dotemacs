@@ -79,5 +79,3 @@ The function is suitable for `erc-after-connect'."
 				       nick-orig password))))))
 
 (add-hook 'erc-after-connect 'erc-ghost-maybe)
-(setf erc-log-channels-directory "~/private-data/irc/")
-(add-hook 'erc-after-connect 'erc-log-enable)
