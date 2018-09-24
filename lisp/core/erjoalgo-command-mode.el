@@ -152,7 +152,7 @@
                ((Custom-mode) 'widget-forward)
                ((help-mode apropos-mode debugger-mode) 'forward-button)
                ((Info-mode) 'Info-next-reference)
-               ((t) 'indent-for-tab-command)))))
+               (t 'indent-for-tab-command)))))
     ("9" "(");; insert "("
     ("0" ")");; insert ")"
     ("" 'universal-argument)
