@@ -621,7 +621,7 @@ otherwise, leave it intact"
     ("g" (cmd (ins "true")))
     ("G" (cmd (ins "false")))
     ("u" 'insert-unique-line)
-    ("C" (cmd (ins "<<EOF{nli}{}EOF")))
+    ("C" (cmd (ins "<<EOF{nli}{}{newline}EOF")))
     ;; ( "x" 'shell-command-of-region)
     ("0" (cmd (insert sh-getopt-template)))
     ("t" (buttons-make
