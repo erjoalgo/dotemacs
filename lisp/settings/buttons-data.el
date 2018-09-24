@@ -149,6 +149,7 @@ otherwise, leave it intact"
       ("v" (cmd (ins "(defvar {}){nli}")))
       ("f" (cmd (ins "(defun {} ({}){nli}{})")))
       ("m" (cmd (ins "(defmacro {} ({}){nli}{})")))
+      ("s" (cmd (ins "(defstruct {}{nli}{})")))
       ("b" (cmd (ins "(destructuring-bind ({}){})")))
       ("k"
        (buttons-make
@@ -273,8 +274,7 @@ otherwise, leave it intact"
       super-add
       ("i" (cmd (ins "(declare (ignore {}))")))
       ("c" (cmd (ins "(defcommand {} ({}) ({}){nli}{})")))
-      ("p" (cmd (ins "(defparameter {})")))
-      ("s" (cmd (ins "(defstruct {}{nli}{})")))))
+      ("p" (cmd (ins "(defparameter {})")))))
     ("n"
      (buttons-make
       super-add
