@@ -384,14 +384,14 @@ otherwise, leave it intact"
      (buttons-make
       super-add
       ("u" (cmd (ins "unsigned ") (inm)))
-      ("n" (cmd (ins "int ") (inm)))
+      ("t" (cmd (ins "int ") (inm)))
       ("3" (cmd (ins "int32 ") (inm)))
       ("6" (cmd (ins "int64 ") (inm)))
       ("l" (cmd (ins "long ") (inm)))
       ("c" (cmd (ins "char ") (inm)))
       ("C" (cmd (ins "char* ") (inm)))
       ("v" (cmd (ins "void ") (inm)))
-      ("t" (cmd (ins "const ") (inm)))
+      ("n" (cmd (ins "const ") (inm)))
       ("b" (cmd (ins "bool ") (inm)))))
     ("s" (cmd (ins "sizeof({})")))
     ("S" (cmd (ins "sizeof({0})/sizeof(*{0})")))
