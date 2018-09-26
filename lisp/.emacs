@@ -42,7 +42,8 @@
         plusx
         dash
         dash-functional
-        dedicated))
+        dedicated
+        buttons))
 
 (when (>= emacs-major-version 24)
   (require 'package)
