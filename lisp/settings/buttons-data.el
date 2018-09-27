@@ -260,7 +260,7 @@ otherwise, leave it intact"
       ("t" (cmd (ins "with {} = ")))
       ("b" (cmd (ins "below ")))
       ("w" (cmd (ins "while ")))
-      ("d" (cmd (ins "do ")))
+      ("d" (cmd (ins " do")))
       ("o" (cmd (ins "collect ")))
       ("a" (cmd (ins "as {} = ")))
       ("p" (cmd (ins "append ")))
