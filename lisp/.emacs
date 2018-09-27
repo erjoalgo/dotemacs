@@ -14,22 +14,20 @@
       (when (derived-mode-p mode-sym)
         (funcall hook)))))
 
-(defun safe-fun (fun-sym)
-  `(lambda (&rest args)
-     '(unless (member "dark green"
-                      (custom-face-attributes-get 'mode-line (selected-frame)))
-        (error "err"))
-     ;; (sleep-for .5)
-     (condition-case ex (apply ',fun-sym args)
-       ('error
-	(warn ,(format "WARNING: unable to %s on args %%s %%s:\n" fun-sym)
-	      args ex)))))
+(defun safe-funcall (fn &rest args)
+  "Wrap funcall in ‘condition-case'."
+  '(unless (member "dark green"
+                   (custom-face-attributes-get 'mode-line (selected-frame)))
+     (error "err"))
+  (condition-case ex (apply fn args)
+    ('error
+     (warn (format "WARNING: unable to (%s %s):  %s:" fn args ex)))))
 
 (dolist (dir '("libs" "core" "extra"))
   (add-to-list 'load-path
 	       (concat emacs-top dir)))
 
-(mapc (safe-fun 'require)
+(mapc (apply-partially 'safe-funcall 'require)
       '(f
         goto-last-change
         quick-yes
@@ -68,7 +66,7 @@
 	     dedicated
 	     ))
 
-  (funcall (safe-fun 'require) 'company)
+  (safe-funcall 'require 'company)
   (require 'dash)
   (require 'dash-functional))
 
