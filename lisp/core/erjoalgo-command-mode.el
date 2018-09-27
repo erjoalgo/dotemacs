@@ -199,6 +199,7 @@
       ("l" (file "/sudo::/var/log/syslog"))
       ("v" (file "~/.stumpwmrc.d/keynavs/.keynavrc"))
       ("w" (file "~/.stumpwmrc.d/lisp/.stumpwmrc"))
+      ("W" (buff "*Warnings*"))
       ("o" (file "~/private-data/org/master.org"))
       ("T" (cmd (org-todo-list org-match)))
       ("O" nil)
