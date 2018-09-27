@@ -80,21 +80,28 @@
       if (file-directory-p fn)  do
       (add-to-list 'load-path fn))
 
-(loop with safe-load = (safe-fun 'load)
-      for dir in `("core" "private" "settings" "extra"
-                   "experimental"
-                   ,(expand-file-name "~/private-data/emacs-lisp")
-                   ,(expand-file-name "~/private-data-one-way/emacs-lisp"))
-      as top = (if (file-name-absolute-p dir) dir
-                 (f-join emacs-top dir))
-      if (file-exists-p top) do
-      (loop when (file-exists-p top)
-	    for fn in (directory-files top)
-	    as fn = (f-join top fn)
-	    if (and (file-regular-p fn)
-		    (equal "el" (f-ext fn)))
-	    do
-	    (funcall safe-load fn)))
+(defun load-rec (top-dir)
+  "Load *.el files under TOP-DIR recursively."
+  (loop for file in (directory-files top-dir)
+        as filename-abs = (f-join top-dir file)
+        if (file-directory-p filename-abs) do
+        (unless (member file '("." ".."))
+          (load-rec filename-abs))
+        else do
+        (when (and (file-regular-p filename-abs)
+                   (equal "el" (f-ext filename-abs)))
+          (safe-funcall 'load filename-abs))))
 
+(let ((default-directory emacs-top))
+  (mapc 'load-rec
+        ;; specifiy order explicitly
+        (remove-if-not
+         'file-exists-p
+         (list
+          "core" "private" "settings" "extra"
+          "extra-dirs"
+          "experimental"
+          (expand-file-name "~/private-data/emacs-lisp")
+          (expand-file-name "~/private-data-one-way/emacs-lisp")))))
 
 (defvar stigma "Ϛ")
