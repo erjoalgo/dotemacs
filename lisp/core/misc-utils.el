@@ -139,14 +139,17 @@
 	(loop for buff in (buffer-list)
 	      thereis (and
 		       (not (get-buffer-process buff))
-		       (not (string-match "^[[:space:]]*[*].*[*]$" (buffer-name buff)))
-		       (not (string-match "^[ ]*[*]mm[*]-[0-9]+" (buffer-name buff)))
-		       (not (string-match "^[ ][*]nnimap" (buffer-name buff)))
-		       (not (member (buffer-local-value 'major-mode buff) '(dired-mode)))
-		       (or (not (buffer-file-name buff))
+                       (or (not (buffer-file-name buff))
 			   (buffer-modified-p buff))
+                       (loop for re in
+                             '("^[[:space:]]*[*].*[*]$"
+                               "^[ ]*[*]mm[*]-[0-9]+"
+                               "^[ ][*]nnimap"
+                               "^[ ][*]nnimap"
+                               "^irc.freenode.net:.*"
+                               )
+                             thereis (string-match  re (buffer-name buff)))
 		       buff))
-
 	while next-buff do
 	(progn (switch-to-buffer next-buff)
 	       (message "unsaved changes in: %s... close or save, then exit rec-edit"
