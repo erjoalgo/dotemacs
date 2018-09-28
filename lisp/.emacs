@@ -105,3 +105,5 @@
           (expand-file-name "~/private-data-one-way/emacs-lisp")))))
 
 (defvar stigma "Ϛ")
+;; irc suggestion eglot
+(setq max-specpdl-size 32000)
