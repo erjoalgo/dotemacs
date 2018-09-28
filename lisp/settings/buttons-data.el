@@ -321,7 +321,14 @@ otherwise, leave it intact"
     ("[" (cmd (insert "{")
               (ins "{}}")))
     ("c" (cmd (ins "(when-not  {})")))
-    ("h" (cmd (ins "(doc  {})")))
+    ("h" (buttons-make
+          super-add
+          ("d" 'cider-doc)
+          ("a" 'cider-apropos-select)
+          ("A" 'cider-apropos-documentation-select)
+          ;; ("A" 'cider-apropos-documentation)
+          ("j" 'cider-javadoc)
+          ("g" 'cider-grimoire)))
     ("{" (cmd (insert "{:keys [")
               (ins "{}]{(nli)}")
               (insert ":or {")
