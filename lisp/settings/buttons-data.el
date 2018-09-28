@@ -334,7 +334,9 @@ otherwise, leave it intact"
               (insert ":or {")
               (ins "{}}}")))
     ("a" (cmd (ins "(fn [{}]{(nli)}{})")))
-    ("e" (cmd (ins "(def {})")))))
+    ("e" (cmd (ins "(def {})")))
+    ((kbd "M-.") 'next-error)
+    ((kbd "M-,") 'previous-error)))
 
  (defbuttons c-buttons programming-buttons
    (c-mode-map)
