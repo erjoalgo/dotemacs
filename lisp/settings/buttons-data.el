@@ -345,12 +345,12 @@ otherwise, leave it intact"
     ("f"
      (but
       super-add
-      ("f" (cmd (ins "for ( int {0} = 0; {0} < {}; {0}++ ){cbd}")))
-      ("F" (cmd (ins "for ( int {0} = {}; {0} >= 0; {0}-- ){cbd}")))))
-    ("w" (cmd (ins "while ({}){cbd}")))
-    ("z" (cmd (ins "if ({}){cbd}")))
-    ("x" (cmd (ins " else if ({}){cbd}")))
-    ("c" (cmd (ins " else {cbd}")))
+      ("f" (cmd (ins "for ( int {0} = 0; {0} < {}; {0}++ ){(cbd)}")))
+      ("F" (cmd (ins "for ( int {0} = {}; {0} >= 0; {0}-- ){(cbd)}")))))
+    ("w" (cmd (ins "while ({}){(cbd)}")))
+    ("z" (cmd (ins "if ({}){(cbd)}")))
+    ("x" (cmd (ins " else if ({}){(cbd)}")))
+    ("c" (cmd (ins " else {(cbd)}")))
     ("v" (cmd (ins "?{}: {}")))
     ("V" (cmd (kill-surrounding-sexp nil)
               (end-of-line)
@@ -388,8 +388,8 @@ otherwise, leave it intact"
     ("d"
      (but
       super-add
-      ("d" (cmd (ins " ( {} ){cbd}")))
-      ("m" (cmd (ins "int main (int argc, char* argv[]){cbd}")))))
+      ("d" (cmd (ins " ( {} ){(cbd)}")))
+      ("m" (cmd (ins "int main (int argc, char* argv[]){(cbd)}")))))
     ("i"
      (but
       super-add
@@ -438,8 +438,8 @@ otherwise, leave it intact"
     ("d"
      (but
       super-add
-      ("d" (cmd (ins " ( {} ){cbd}")))
-      ("m" (cmd (ins "public static void main ( String[] argv){cbd}")))))
+      ("d" (cmd (ins " ( {} ){(cbd)}")))
+      ("m" (cmd (ins "public static void main ( String[] argv){(cbd)}")))))
     ("p"
      (but
       super-add
@@ -449,8 +449,8 @@ otherwise, leave it intact"
       ("s" (cmd (ins "static ")))))
     ("s" (cmd (ins "this.{(inm)}")))
     ("S" (cmd (java-new)))
-    ("F" (cmd (ins "for ({}: {}){cbd}")))
-    ("L" (cmd (ins "class {}{cbd}")))
+    ("F" (cmd (ins "for ({}: {}){(cbd)}")))
+    ("L" (cmd (ins "class {}{(cbd)}")))
     ("i"
      (but
       super-add
@@ -463,7 +463,7 @@ otherwise, leave it intact"
     ("-" (cmd (ins " -> ")))
     ("m" (cmd (ins "import {};")))
     ("m" 'java-imports-add-import-dwim)
-    ("t" (cmd (ins "try {cbd}catch ({}){cbd}")))))
+    ("t" (cmd (ins "try {(cbd)}catch ({}){(cbd)}")))))
 
  (defbuttons xml-buttons
    programming-buttons
@@ -499,15 +499,15 @@ otherwise, leave it intact"
    (js-mode-map)
    (but
     super-add
-    ("d" (cmd (ins "function {} ( {} ){cbd}")))
+    ("d" (cmd (ins "function {} ( {} ){(cbd)}")))
     ("a" (cmd (ins "function({}")
               (insert "){")
               (ins "{}}")))
     ("." (cmd (ins "debugger;{(nli)}")))
     ("n" (cmd (ins "console.log( \"{}\"{} );")))
-    ("T" (cmd (ins "try{cbd}catch(err){cbd}")))
-    ("f" (cmd (ins "for (var {0} = 0; {0}<{}; {0}++){cbd}")))
-    ("F" (cmd (ins "for (var {} in {}){cbd}")))
+    ("T" (cmd (ins "try{(cbd)}catch(err){(cbd)}")))
+    ("f" (cmd (ins "for (var {0} = 0; {0}<{}; {0}++){(cbd)}")))
+    ("F" (cmd (ins "for (var {} in {}){(cbd)}")))
     ("l" (cmd (ins ".length")))
     ("r" (cmd (ins "return {};")))
     ("Z" (cmd (ins "if ( {}")
@@ -544,8 +544,8 @@ otherwise, leave it intact"
               (ins "{}}")))
     ("s" (cmd (ins ".(*{})")))
     ("E" (cmd (ins " := ")))
-    ("d" (cmd (ins "func {} ( {} ) {}{cbd}")))
-    ("D" (cmd (ins "func Test{} ( t *testing.T ){cbd}")))
+    ("d" (cmd (ins "func {} ( {} ) {}{(cbd)}")))
+    ("D" (cmd (ins "func Test{} ( t *testing.T ){(cbd)}")))
     ("]" (cmd (ins "[]")))
     ("#" (cmd (ins "()")))
     ("#" (cmd (ins "()")))
@@ -553,16 +553,16 @@ otherwise, leave it intact"
     ("M" (cmd (ins "package main{(nli)}")))
     ("m" (cmd (ins "fmt.Sprintf( \"{}\\n\"{} )")))
     ("n" (cmd (ins "fmt.Printf( \"{}\\n\"{} )")))
-    ("x" (cmd (ins "else if {}; {}{cbd}")))
-    ("z" (cmd (ins "if {}; {}{cbd}")))
+    ("x" (cmd (ins "else if {}; {}{(cbd)}")))
+    ("z" (cmd (ins "if {}; {}{(cbd)}")))
     (":" (cmd (ins ": ")))
-    ("Z" (cmd (ins "if {}{cbd}")))
-    ("Z" (cmd (ins "if ; DEBUG{cbd}")))
-    ("F" (cmd (ins "for i := 0; i < {}; i++{cbd}")))
-    ("W" (cmd (ins "switch {cbd}")))
+    ("Z" (cmd (ins "if {}{(cbd)}")))
+    ("Z" (cmd (ins "if ; DEBUG{(cbd)}")))
+    ("F" (cmd (ins "for i := 0; i < {}; i++{(cbd)}")))
+    ("W" (cmd (ins "switch {(cbd)}")))
     ("w" (cmd (ins "case {}:{(nli)}")))
     (";" (cmd (ins ":{(nli)}")))
-    ("T" (cmd (ins "type {} struct {cbd}")))
+    ("T" (cmd (ins "type {} struct {(cbd)}")))
     ("G" (cmd (ins "nil")))
     ("6" (cmd (ins "%v")))
     ("^" (cmd (ins "%#v")))
@@ -572,7 +572,7 @@ otherwise, leave it intact"
     ("R" (cmd (ins "range {(inm)}")))
     ("f11" (cmd (go-run)))
     ("+" (cmd (ins " != ")))
-    ("f" (cmd (ins "for {} := range {}{cbd}")))
+    ("f" (cmd (ins "for {} := range {}{(cbd)}")))
     ("P" (cmd (ins "%p")))
     ("_" (cmd (ins "_, ")))
     ("{" (cmd (ins "&{}")
@@ -619,7 +619,7 @@ otherwise, leave it intact"
     ("\\" (cmd (ins " \\{(nli)}")))
     ("|" (cmd (ins " | ")))
     ("n" (cmd (ins "echo ")))
-    ("d" (cmd (ins "function {}{cbd}")))
+    ("d" (cmd (ins "function {}{(cbd)}")))
     ("l" (cmd (insert " || exit ${LINENO}")))
     ("L" (cmd (ins "echo \"{}")
               (insert "\" && exit ${LINENO}")))
@@ -752,10 +752,10 @@ otherwise, leave it intact"
     super-add
     ("h" (cmd (ins "help.search({(inm)}{})")))
     ("e" (cmd (ins " <- ")))
-    ("d" (cmd (ins " <- function({}){cbd}")))
+    ("d" (cmd (ins " <- function({}){(cbd)}")))
     ("8" (cmd (ins "%*%")))
     ("'" (cmd (ins "t({})")))
-    ("f" (cmd (ins "for({} in as.single({}:{})){cbd}")))
+    ("f" (cmd (ins "for({} in as.single({}:{})){(cbd)}")))
     ("-" (cmd (ins "attr({}, \"{}\" )")))
     ("N" (cmd (ins "print({})")))))
 
@@ -775,7 +775,7 @@ otherwise, leave it intact"
     ("f"
      (but
       super-add
-      ("a" (cmd (ins "for(auto& {}: {}){cbd}")))))
+      ("a" (cmd (ins "for(auto& {}: {}){(cbd)}")))))
     ("i"
      (but
       super-add
