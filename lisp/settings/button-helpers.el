@@ -27,7 +27,8 @@
          (when (and comment-cmd (not (eq comment-cmd (function my-comment-out))))
            (call-interactively comment-cmd)
            (return)))
-       (let ((start-end (if mark-active
+       (let ((comment-start (or comment-start "# "))
+             (start-end (if mark-active
                             (cons (region-beginning)
                                   (region-end))
                           (cons
