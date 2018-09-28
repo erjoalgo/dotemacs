@@ -151,6 +151,7 @@ otherwise, leave it intact"
       ("m" (cmd (ins "(defmacro {} ({}){(nli)}{})")))
       ("s" (cmd (ins "(defstruct {}{(nli)}{})")))
       ("b" (cmd (ins "(destructuring-bind ({}){})")))
+      ("B" (cmd (ins "(multiple-value-bind ({}){})")))
       ("k"
        (but
         super-add
