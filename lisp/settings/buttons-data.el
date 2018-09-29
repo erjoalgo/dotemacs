@@ -291,7 +291,12 @@ otherwise, leave it intact"
       ("f" (cmd (ins "(format fh {})")))
       ("n" (cmd (ins "(format {})")))
       ("[" (cmd (insert "~{~A~^")
-                (ins "{}~}")))))
+                (ins "{}~}")))
+      ("v" (but
+            super-add
+            ("i" (cmd (ins "(vom:info \"{}~%\"")))
+            ("d" (cmd (ins "(vom:debug \"{}~%\"")))
+            ("w" (cmd (ins "(vom:warn \"{}~%\"")))))))
     ("#" (cmd (ins "#:")))
     ("5" (cmd (ins "~A")))
     ("%" (cmd (ins "~D")))
