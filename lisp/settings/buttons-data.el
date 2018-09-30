@@ -229,7 +229,8 @@ otherwise, leave it intact"
         ("d" (cmd (ins "(cdr {})")))
         ("a" (cmd (ins "(car {})")))
         ("c" (cmd (ins "(cons {})")))))
-      ("z" (cmd (ins "(zerop {})")))))
+      ("z" (cmd (ins "(zerop {})")))
+      ("3" (cmd (ins "#P\"{}\"")))))
     ("n"
      (but
       super-add
@@ -271,8 +272,7 @@ otherwise, leave it intact"
       ("Z" (cmd (ins "else ")))
       ("x" (cmd (ins "when ")))
       ("c" (cmd (ins "unless ")))
-      ("r" (cmd (ins "(return {})")))
-      ("3" (cmd (ins "#P\"{}\"")))))))
+      ("r" (cmd (ins "(return {})")))))))
 
  (defbuttons cl-buttons emacs-lisp-buttons
    (lisp-mode-map slime-mode-map)
