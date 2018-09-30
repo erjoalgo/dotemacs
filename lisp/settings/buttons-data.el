@@ -198,7 +198,7 @@ otherwise, leave it intact"
       ("m"
        (but
         super-add
-        ("m" (cmd (ins "(mapcar {}){(nli)}")))
+        ("c" (cmd (ins "(mapcar {}){(nli)}")))
         ("x" (cmd (ins "(macroexpand '{}){(nli)}")))))
       ("g" (cmd (ins "({0}-sym (gensym \"{0}\")){(nli)}")))
       ("e"
