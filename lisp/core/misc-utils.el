@@ -486,7 +486,8 @@ of the variable, or nil if unbound.
 
 (defun path-append-directory (dir)
   (interactive "Denter directory: ")
-  (setenv "PATH" (concat (getenv "PATH") ":" dir)))
+  (setenv "PATH" (concat (getenv "PATH") ":" dir))
+  (push dir exec-path))
 
 (defun source-bashrc (bashrc)
   (interactive (list
