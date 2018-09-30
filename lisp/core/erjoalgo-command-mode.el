@@ -101,7 +101,9 @@
     ("e" 'move-end-of-line);;originally C-e
     ("k" 'kill-line);;originally C-k
     ("K" 'my-kill-whole-line);; kill entire current line
-    ("j" 'newline-and-indent);;originally C-j
+    ("j" (lambda (arg)
+           (interactive "P")
+           (dotimes (_ (or arg 1)) (newline-and-indent))));;originally C-j
     ("o" 'open-line);;originally C-o
     ("v" 'yank-or-pop);;originally C-y (make it like windows Ctrl+v)
     ("." 'end-of-buffer);;originally M->
