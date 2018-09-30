@@ -540,7 +540,42 @@ otherwise, leave it intact"
               (ins "\");")))
     ("s" (cmd (ins "this.")))
     ("i" (cmd (ins "in")))
-    ("p" (cmd (ins ".prototype.")))))
+    ("p" (cmd (ins ".prototype.")))
+    ("t"
+     (but
+      super-add
+      ("x" (cmd
+            (let-when-compile
+                ;; ((buttons-insert-rec-template-directive-regexp "{{\\(.*\\)}}"))
+                ()
+                  (ins
+                   "
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET{0}', {1}, true);
+    xhr.setRequestHeader('Content-type', 'application/json');
+    xhr.onreadystatechange = function() {
+        if(xhr.readyState == 4){
+            if ( xhr.status != 200) {
+                var err = \"{0} {1} failed: \"+xhr.status;
+                console.log(err);
+                alert(err);
+            }else{
+                var {} = JSON.parse(xhr.responseText);
+                {}
+            }
+        }
+        xhr.send(null);
+    };
+"
+                   ))))
+      ("d" (but
+            super-add
+            ("c" (cmd (ins "document.createElement({})")))
+            ("b" (cmd (ins "document.body")))
+            ("g" (cmd (ins "document.getElementById({})")))
+            ("a" (cmd (ins ".appendChild({})")))
+            ("t" (cmd (ins ".textContent({})")))))))))
+
 
  (defbuttons go-buttons c-buttons
    (go-mode-map)
