@@ -247,7 +247,8 @@ otherwise, leave it intact"
                     (let ((region (buffer-substring
                                    (region-beginning)
                                    (region-end))))
-                      (delete-active-region)
+                      (delete-region (region-beginning)
+                                     (region-end))
                       (insert (format "‘%s'" region))))
                 (ins "'"))))
     ("-" (cmd (ins "(-> {})")))
