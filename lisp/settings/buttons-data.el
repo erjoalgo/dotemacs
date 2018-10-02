@@ -372,7 +372,8 @@ otherwise, leave it intact"
             super-add
             ("t" (cmd (ins "absl::PrintF(\"{}\\n\"{});")))
             ("s" (cmd (ins "absl::StrFormat(\"{}\\n\"{});")))
-            ("m" (cmd (ins "absl::StreamFormat(\"{}\"{});")))))
+            ("m" (cmd (ins "absl::StreamFormat(\"{}\"{});")))
+            ("c" (cmd (ins ".c_str()")))))
           ("t" (cmd (ins "printf(\"{}\\n\"{});")))
           ("." (cmd (ins ".c_str()")))
           ("s" (cmd (ins "scanf( \"{}\"{} );")))
