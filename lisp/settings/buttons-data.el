@@ -395,7 +395,7 @@ otherwise, leave it intact"
     ("d"
      (but
       super-add
-      ("d" (cmd (ins " ( {} ){(cbd)}")))
+      ("f" (cmd (ins " ( {} ){(cbd)}")))
       ("m" (cmd (ins "int main (int argc, char* argv[]){(cbd)}")))))
     ("i"
      (but
