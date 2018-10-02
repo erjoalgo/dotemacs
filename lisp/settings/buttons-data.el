@@ -671,8 +671,11 @@ otherwise, leave it intact"
     ("f" (cmd (ins "for {}")
               (upcase-last)
               (ins " in {}; do{(nli)}{}{(nli)}done")))
-    ("H" (cmd (insert "${1} && shift")
-              (ins "{(nli)}")))
+    ("H" (cmd
+          (let-when-compile
+              ((buttons-insert-rec-template-directive-regexp "<\\(.*\\)>"))
+            (ins "<(upcase-last)>=${1} && shift")
+            (ins "<(nli)>"))))
     ("g" (cmd (ins "true")))
     ("G" (cmd (ins "false")))
     ("C" (cmd (ins "<<EOF{(nli)}{}{newline}EOF")))
