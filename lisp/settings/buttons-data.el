@@ -837,7 +837,9 @@ otherwise, leave it intact"
       super-add
       ("m" (cmd (ins "map<{}> ") (inm)))
       ("p" (cmd (ins "pair<{}> ") (inm)))
-      ("s" (cmd (ins "string ")))))
+      ("V" (cmd (ins "vector<{}> ")))
+      ("s" (cmd (ins "string ")))
+      ("S" (cmd (ins "string& ")))))
     ("m" (cmd (ins "#include {}")))
     ("M" (cmd (ins "using namespace std;") (nli)
               (ins "#include <vector>") (nli)
