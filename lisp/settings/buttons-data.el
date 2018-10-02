@@ -840,7 +840,19 @@ otherwise, leave it intact"
       ("p" (cmd (ins "pair<{}> ") (inm)))
       ("V" (cmd (ins "vector<{}> ")))
       ("s" (cmd (ins "string ")))
-      ("S" (cmd (ins "string& ")))))
+      ("S" (cmd (ins "string& ")))
+      ("t" (but
+            super-add
+            ("s" (cmd (ins "std::")))
+            ("g" (but
+                  super-add
+                  ("a" (cmd (ins "absl::")))
+                  ("f"
+                   (but
+                    super-add
+                    ("i" (cmd (ins "flume::")))
+                    ("p" (cmd (ins "flume::PCollection<{}>")))))
+                  ("l" (cmd (ins "logs::")))))))))
     ("m" (cmd (ins "#include {}")))
     ("M" (cmd (ins "using namespace std;") (nli)
               (ins "#include <vector>") (nli)
