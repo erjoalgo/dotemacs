@@ -575,7 +575,9 @@ otherwise, leave it intact"
             ("b" (cmd (ins "document.body")))
             ("g" (cmd (ins "document.getElementById({})")))
             ("a" (cmd (ins ".appendChild({})")))
-            ("t" (cmd (ins ".textContent({})")))))))))
+            ("t" (cmd (ins ".textContent({})")))))
+      ;; node
+      ("y" (cmd (ins "try {(cbd)}catch ({}){(cbd)}")))))))
 
 
  (defbuttons go-buttons c-buttons
