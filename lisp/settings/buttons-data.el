@@ -683,7 +683,15 @@ otherwise, leave it intact"
     ("0" (cmd (insert sh-getopt-template)))
     ("t" (but
           super-add
-          ("t" (cmd (ins "test ") (inm)))
+          ("s"
+           (but
+            super-add
+            ("t" (cmd (ins "test ")))
+            ("j" (cmd (ins " -o ")))
+            ("k" (cmd (ins " -a ")))
+            ("n" (cmd (ins " -n ")))
+            ("z" (cmd (ins " -z ")))
+            ("e" (cmd (ins " -e ")))))
           ("u" 'insert-unique-line)))))
 
  (defbuttons tex-buttons programming-buttons
