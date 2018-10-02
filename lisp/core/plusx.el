@@ -25,14 +25,16 @@
 
 (require 'f)
 
+(defvar plusx-interpreter-line-alist
+  "An alist where each entry is a cons cell of the form
+(MAJOR-MODE . INTERPRETER-LINE)")
+
 (setf plusx-interpreter-line-alist
   '((python-mode "#!/usr/bin/python")
     (sh-mode "#!/bin/bash -x\n\nset -euo pipefail")
     (lisp-mode)
     (perl-mode "#!/usr/bin/perl")
-    ))
-  ;; "major-mode --> shebang string")
-
+    (js-mode "#!/usr/bin/env node")))
 
 (defun plusx-maybe-insert-interpreter-line ()
   (interactive)
