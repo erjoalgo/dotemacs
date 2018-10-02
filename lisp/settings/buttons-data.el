@@ -521,6 +521,7 @@ otherwise, leave it intact"
               (insert " ){ ")
               (ins "{} }")))
     ("v" (cmd (ins "var {(inm)}")))
+    ("V" (cmd (ins "?{}: {}")))
     ("[" (cmd (insert "{}")))
     ("]" (cmd (ins ".format({})")))
     ("{" (cmd (insert "{")
