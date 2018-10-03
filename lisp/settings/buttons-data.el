@@ -261,6 +261,7 @@ otherwise, leave it intact"
       ("i" (cmd (ins " in ")))
       ("l" (cmd (ins "(loop {}){(nli)}")))
       ("f" (cmd (ins "for ")))
+      ("A" (cmd (ins " across ")))
       ("t" (cmd (ins "with {} = ")))
       ("b" (cmd (ins "below ")))
       ("w" (cmd (ins "while ")))
