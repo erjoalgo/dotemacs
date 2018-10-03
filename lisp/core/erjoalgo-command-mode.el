@@ -87,7 +87,6 @@
    nil
    (erjoalgo-command-mode-map)
    (buttons-make
-    nil
     ("1" 'scroll-up-keep-cursor);;originally M-v
     ("2" 'scroll-down-keep-cursor);;originally C-v
     ("n" 'next-line);;originally C-n
@@ -134,7 +133,6 @@
     ("3" 'find-file-at-point-cmd);;originally C-x f
     ("4" 'switch-to-buffer);;originally C-x b
     ("5" (buttons-make
-          nil
           ("g" (cmd (dir "~/git")))
           ("l" (cmd (dir "~/private-data/leet/")))))
     ("6" (cmd (dir org-top-dir)))
@@ -182,7 +180,6 @@
                     do (join-line '(4)))))
     ("m"
      (buttons-make
-      nil
       ("e" (file "~/.emacs"))
       ("C" (buff "regexp:[*]ansi-term[*].*" (ansi-term "/bin/bash")))
       ("c" (buff "*compilation*"))
@@ -208,7 +205,6 @@
       ("j" (buff "*-jabber-roster-*"))))
     ("x"
      (buttons-make
-      nil
       ("s" (lambda (arg)(interactive "P")(eshell arg)))
       ("p"  (buff "*Python*" (call-interactively 'run-python)))
       ("P" 'message-current-buffer-process)
@@ -234,7 +230,6 @@
       ("u" 'universal-argument)
       ([f2] 'call-last-kbd-macro)
       ("w" (buttons-make
-            nil
             ("1" 'slime-sbcl)
             ("2" 'slime-stumpwm)
             ("3" 'cider-buffer-or-jack-in)))
