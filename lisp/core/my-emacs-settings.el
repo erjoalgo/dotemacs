@@ -165,5 +165,6 @@
 
 (setq ring-bell-function 'ignore)
 
+(setq ffap-machine-p-known 'accept)
 (provide 'my-emacs-settings)
 ;;; emacs-settings.el ends here
