@@ -560,7 +560,7 @@ otherwise, leave it intact"
     xhr.onreadystatechange = function() {
         if(xhr.readyState == 4){
             if ( xhr.status != 200) {
-                var err = \"{0} {1} failed: \"+xhr.status;
+                var err = \"{0} \"+{1}+\" failed: \"+xhr.status;
                 console.log(err);
                 alert(err);
             }else{
@@ -568,8 +568,8 @@ otherwise, leave it intact"
                 {}
             }
         }
-        xhr.send(null);
     };
+    xhr.send({});
 "
                    ))))
       ("d" (but
