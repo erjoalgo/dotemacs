@@ -263,7 +263,7 @@ otherwise, leave it intact"
       ("f" (cmd (ins "for ")))
       ("A" (cmd (ins " across ")))
       ("t" (cmd (ins "with {} = ")))
-      ("b" (cmd (ins "below ")))
+      ("b" (cmd (ins " below ")))
       ("w" (cmd (ins "while ")))
       ("d" (cmd (ins " do")))
       ("o" (cmd (ins "collect ")))
