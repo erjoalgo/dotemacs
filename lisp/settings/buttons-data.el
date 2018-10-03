@@ -686,6 +686,7 @@ otherwise, leave it intact"
     ("0" (cmd (insert sh-getopt-template)))
     ("t" (but
           super-add
+          ("0" (cmd (insert "cd \"$( dirname \"${BASH_SOURCE[0]}\" )\"")))
           ("s"
            (but
             super-add
