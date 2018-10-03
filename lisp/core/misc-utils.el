@@ -535,3 +535,25 @@ This requires the external program `diff' to be in your `exec-path'."
              print-level
              print-length))
     (set sym nil)))
+
+(defun buffer-remove-common-prefix (a b)
+  (interactive "r")
+  ;; TODO account for deletions when using b
+  (loop with lines = (s-split "\n" (buffer-string))
+        with longest = (or (car lines) "")
+        with len = (length longest)
+        for line in (cdr lines)
+        minimize
+        (loop for c1 across longest
+              for c2 across line
+              for n below len
+              finally (return n))
+        into len
+        finally
+        (let ((longest (subseq longest 0 len)))
+          '(save-excursion
+             (goto-char (point-min))
+             (while (re-search-forward ""))
+             (while (next-line)))
+          (regexp-replace-current-buffer
+           "^.\\{%d\\}" ""))))
