@@ -228,7 +228,7 @@ otherwise, leave it intact"
         super-add
         ("d" (cmd (ins "(cdr {})")))
         ("a" (cmd (ins "(car {})")))
-        ("c" (cmd (ins "(cons {})")))))
+        ("n" (cmd (ins "(cons {})")))))
       ("z" (cmd (ins "(zerop {})")))
       ("3" (cmd (ins "#P\"{}\"")))))
     ("n"
