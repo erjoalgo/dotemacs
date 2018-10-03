@@ -141,14 +141,15 @@
 		       (not (get-buffer-process buff))
                        (or (not (buffer-file-name buff))
 			   (buffer-modified-p buff))
-                       (loop for re in
-                             '("^[[:space:]]*[*].*[*]$"
-                               "^[ ]*[*]mm[*]-[0-9]+"
-                               "^[ ][*]nnimap"
-                               "^[ ][*]nnimap"
-                               "^irc.freenode.net:.*"
-                               )
-                             thereis (string-match  re (buffer-name buff)))
+                       (not (member (buffer-local-value 'major-mode buff) '(dired-mode)))
+                       (not
+                        (loop for re in
+                              '("^[[:space:]]*[*].*[*]$"
+                                "^[ ]*[*]mm[*]-[0-9]+"
+                                "^[ ][*]nnimap"
+                                "^[ ][*]nnimap"
+                                "^irc.freenode.net:.*")
+                              thereis (string-match  re (buffer-name buff))))
 		       buff))
 	while next-buff do
 	(progn (switch-to-buffer next-buff)
