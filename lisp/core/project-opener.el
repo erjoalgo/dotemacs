@@ -94,14 +94,15 @@
                      (loop for sexp in (read-top-level-sexps (buffer-string))
                         when (and (consp sexp) (member (car sexp) def-syms))
                         collect (cadr sexp)))))
-               (let* ((systems
-                       (read-file-defs-matching file '(defsystem asdf:defsystem)))
+               (let* ((asd-filename file)
                       (packages-filename "packages.lisp")
+                      (systems
+                       (read-file-defs-matching asd-filename '(defsystem asdf:defsystem)))
                       (packages
                        (when (file-exists-p packages-filename)
                          (read-file-defs-matching packages-filename '(defpackage asdf:defpackage))))
                       (sexp `(CL:progn
-                              (CL:load ,file)
+                              (CL:load ,asd-filename)
                               ,@(loop for system in systems collect
                                       `(ql:quickload ',system))))
                       (set-package-sexp
