@@ -479,7 +479,9 @@ otherwise, leave it intact"
               (insert "){")
               (ins "{}}")))
     ("." (cmd (ins "debugger;{(nli)}")))
-    ("n" (cmd (ins "console.log( \"{}\"{} );")))
+    ("n" (but
+          ("c" (cmd (ins "console.log( \"{}\"{} );")))
+          ("a" (cmd (ins "alert(\"{}\");")))))
     ("T" (cmd (ins "try{(cbd)}catch(err){(cbd)}")))
     ("f" (cmd (ins "for (var {0} = 0; {0}<{}; {0}++){(cbd)}")))
     ("F" (cmd (ins "for (var {} in {}){(cbd)}")))
