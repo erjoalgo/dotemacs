@@ -48,7 +48,9 @@ otherwise, leave it intact"
       ("c" ;; case
        (but
         ("u" 'upcase-region)
-        ("d" 'downcase-region)))))
+        ("d" 'downcase-region)
+        ;; "sentence" case
+        ("s" 'capitalize-region)))))
     ((kbd "M-.") (lambda () (interactive)
                    (if (get-buffer "*compilation*")
                        (call-interactively 'next-error)
