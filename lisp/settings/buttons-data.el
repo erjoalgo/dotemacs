@@ -971,9 +971,10 @@ otherwise, leave it intact"
         ;; variables
         ("v" (cmd (call-interactively 'apropos-variable)))))))))
 )
- (defbuttons slime-buttons
+
+(defbuttons slime-buttons
    nil
-   (slime-mode-map)
+   (slime-mode-map slime-repl-mode-map)
    (but
     ("h"
      (but
