@@ -468,6 +468,7 @@ otherwise, leave it intact"
    (html-mode-map)
    (but
     ("\\" (cmd (ins "<br/>")))
+    ("a" (cmd (ins "<a href=\"{}\">{}</a>")))
     ("P" (cmd (ins "<p>{}</p>")))))
 
  (defbuttons js-buttons c-buttons
