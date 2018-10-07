@@ -215,6 +215,7 @@ otherwise, leave it intact"
        (but
         ("d" (cmd (ins "(cdr {})")))
         ("a" (cmd (ins "(car {})")))
+        ("q" (cmd (ins "(cdr (assoc {}))")))
         ("n" (cmd (ins "(cons {})")))))
       ("z" (cmd (ins "(zerop {})")))
       ("3" (cmd (ins "#P\"{}\"")))))
