@@ -545,7 +545,8 @@ otherwise, leave it intact"
             ("a" (cmd (ins ".appendChild({})")))
             ("t" (cmd (ins ".textContent({})")))))
       ;; node
-      ("y" (cmd (ins "try {(cbd)}catch ({}){(cbd)}")))))))
+      ("y" (cmd (ins "try {(cbd)}catch ({}){(cbd)}")))
+      ("p" (cmd (ins "new Promise(function(resolve, reject){(cbd)});")))))))
 
 
  (defbuttons go-buttons c-buttons
