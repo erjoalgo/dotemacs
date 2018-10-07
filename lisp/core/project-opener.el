@@ -79,6 +79,12 @@
    and a list of top-level files/directories.")
 
 (defun project-open-cl (top-level-directory &optional top-level-files)
+  "project-opener matcher for a CL project rooted at
+   TOP-LEVEL-DIRECTORY.
+   Start slime, load the .asd file,
+   quickload all the systems defined in it.
+   Also load a file 'repl-startup.lisp' if it exists."
+
   (loop for file in top-level-files thereis
        (when (equal "asd" (f-ext file))
          (let ((default-directory top-level-directory))
