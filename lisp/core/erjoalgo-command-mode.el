@@ -202,7 +202,8 @@
       ("o" (file "~/private-data/org/master.org"))
       ("T" (cmd (org-todo-list org-match)))
       ("O" nil)
-      ("j" (buff "*-jabber-roster-*"))))
+      ("j" (buff "*-jabber-roster-*"))
+      ("p" 'project-open)))
     ("x"
      (buttons-make
       ("s" (lambda (arg)(interactive "P")(eshell arg)))
