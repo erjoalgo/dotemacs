@@ -11,7 +11,8 @@ otherwise, leave it intact"
         (eval (read (format fmt key-spec)))))))
 
 (buttons-macrolet
- ((inm () `(global-erjoalgo-command-mode 0)))
+ ((inm () `(global-erjoalgo-command-mode 0))
+  (spc? () `(unless (looking-back " ") (insert " "))))
 
 (let-when-compile
      ((*buttons-make-key-mapper* 'super-add))
@@ -240,14 +241,15 @@ otherwise, leave it intact"
     ((kbd "s-\"") (cmd (ins "‘{}'")))
     ("p"
      (but
-      ("i" (cmd (ins " in ")))
+      ("i" (cmd (ins "{(spc?)}in ")))
       ("l" (cmd (ins "(loop {}){(nli)}")))
       ("f" (cmd (ins "for ")))
-      ("A" (cmd (ins " across ")))
+      ("A" (cmd (ins "{(spc?)}across ")))
       ("t" (cmd (ins "with {} = ")))
-      ("b" (cmd (ins " below ")))
+      ("T" (cmd (ins "{(spc?)}thereis")))
+      ("b" (cmd (ins "{(spc?)}below ")))
       ("w" (cmd (ins "while ")))
-      ("d" (cmd (ins " do")))
+      ("d" (cmd (ins "{(spc?)}do")))
       ("o" (cmd (ins "collect ")))
       ("a" (cmd (ins "as {} = ")))
       ("p" (cmd (ins "append ")))
