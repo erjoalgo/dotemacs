@@ -262,14 +262,20 @@ Center command to run on each file: ")
 	  until pair
 	  finally (return (cdr pair)))))
 
-(defmacro with-temporary-open-file (fn &rest body)
-  `(let ((was-open (get-file-buffer ,fn))
-	 buff)
-     (setf buff (find-file ,fn))
-     (save-excursion
-       ,@body)
-     (assert (eq buff (current-buffer)))
-     (unless was-open (kill-buffer buff))))
+(defmacro with-temporary-current-file (filename &rest body)
+  (let ((was-open-sym (gensym "was-open"))
+        (buffer-sym (gensym "buffer"))
+        (ret-val-sym (gensym "ret-val")))
+    ;; (save-find-file-excursion
+    (save-excursion
+      `(let* ((,was-open-sym (get-file-buffer ,filename))
+              (,buffer-sym (or ,was-open-sym
+                               (find-file-noselect ,filename)))
+              ret-val-sym)
+         (with-current-buffer ,buffer-sym
+           (setf ret-val-sym (progn ,@body))
+           (unless ,was-open-sym (kill-buffer ,buffer-sym))
+           ret-val-sym)))))
 
 (defun replace-regexp-dir (dir extension from to &optional pause)
   "basically a recursive sed"
