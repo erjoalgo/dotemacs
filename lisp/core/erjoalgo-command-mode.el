@@ -313,10 +313,10 @@
 	   (add-hook hook fun-sym)))
 
 (add-hook 'apropos-mode-hook
-	  (lambda ()
+	  (lambda (&rest args)
 	    (add-one-time-hook
 	     'post-command-hook
-	     (lambda ()
+	     (lambda (&rest args)
 	       (select-window (get-buffer-window "*Apropos*"))))))
 
 (defun one-char-insert-mode (arg)
