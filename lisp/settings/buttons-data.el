@@ -122,7 +122,8 @@ otherwise, leave it intact"
     ("E" (cmd (ins "raise Exception({})")))
     ("u"
      (but
-      ("a" (cmd (ins "assert({})")))))))
+      ("a" (cmd (ins "assert({})")))
+      ("0" (cmd (ins "from __future__ import print_function")))))))
 
  (defbuttons pdb-buttons python-buttons
    (inferior-python-mode-map)
