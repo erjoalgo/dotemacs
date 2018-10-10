@@ -549,8 +549,10 @@ otherwise, leave it intact"
             ("t" (cmd (ins ".textContent({})")))))
       ;; node
       ("y" (cmd (ins "try {(cbd)}catch ({}){(cbd)}")))
-      ("p" (cmd (ins "new Promise(function(resolve, reject){(cbd)});")))))))
-
+      ("p" (cmd (ins "new Promise(function(resolve, reject){(cbd)});")))
+      ("j" (but
+            ("s" (cmd (ins "JSON.stringify({})")))
+            ("p" (cmd (ins "JSON.parse({})")))))))))
 
  (defbuttons go-buttons c-buttons
    (go-mode-map)
