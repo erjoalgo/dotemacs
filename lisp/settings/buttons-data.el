@@ -190,7 +190,6 @@ otherwise, leave it intact"
       ("1" (cmd (ins "(null {})")))
       ("m"
        (but
-        ("c" (cmd (ins "(mapcar {}){(nli)}")))
         ("x" (cmd (ins "(macroexpand '{}){(nli)}")))))
       ("g" (cmd (ins "({0}-sym (gensym \"{0}\")){(nli)}")))
       ("e"
@@ -218,7 +217,9 @@ otherwise, leave it intact"
         ("d" (cmd (ins "(cdr {})")))
         ("a" (cmd (ins "(car {})")))
         ("q" (cmd (ins "(cdr (assoc {}))")))
-        ("n" (cmd (ins "(cons {})")))))
+        ("n" (cmd (ins "(cons {})")))
+        ("m" (cmd (ins "(mapcar {}){(nli)}")))
+        ("l" (cmd (ins "(dolist {}){(nli)}")))))
       ("z" (cmd (ins "(zerop {})")))
       ("3" (cmd (ins "#P\"{}\"")))))
     ("n"
