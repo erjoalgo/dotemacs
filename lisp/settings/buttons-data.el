@@ -168,6 +168,7 @@ otherwise, leave it intact"
       ("T" (cmd (ins "(let* ({}){(nli)}{}){(nli)}")))
       ("x" (cmd (ins "(lexical-let ({}){(nli)}{}){(nli)}")))
       ("X" (cmd (ins "(lexical-let* ({}){(nli)}{}){(nli)}")))
+      ("m" (cmd (ins "(macrolet ({}){(nli)}{}){(nli)}")))
       ("b" (cmd (ins "(labels ({}){(nli)}{}){(nli)}")))))
     ("e" (cmd (ins "(setf {})")))
     ("E" (cmd (forward-sexp)
