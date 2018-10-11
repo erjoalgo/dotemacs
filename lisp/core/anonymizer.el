@@ -74,9 +74,9 @@
 (defun anonymizer-scramble-region (a b)
   "replace any alnum chars in region with random ones. useful for anonymizing UIDS, RSA keys, while keeping structure"
   (interactive "r")
-  (let ((region (buffer-substring-no-properties a b)))
-    (loop for i below (length region) do
-	  (let ((char-string (substring region i (1+ i)))
+  (let ((scrambled (buffer-substring-no-properties a b)))
+    (loop for i below (length scrambled) do
+	  (let ((char-string (substring scrambled i (1+ i)))
 		bag
 		(case-fold-search nil))
 
@@ -88,13 +88,13 @@
 
 	    (when bag
 	      (let ((new-char (aref bag (random (length bag)))))
-		    (aset region i new-char)))))
-    (delete-region a b)
+		(aset scrambled i new-char)))))
+    (save-excursion
     (goto-char a)
-    (insert region)))
+      (let ((region-text (buffer-substring a b)))
+        (while (search-forward region-text nil t)
+          (replace-match scrambled))))))
 
 
 (provide 'anonymizer)
 ;;; anonymizer.el ends here
-
-
