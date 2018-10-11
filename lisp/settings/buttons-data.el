@@ -381,14 +381,14 @@ otherwise, leave it intact"
     ("i"
      (but
       ("u" (cmd (ins "unsigned ") (inm)))
-      ("t" (cmd (ins "int ") (inm)))
+      ("n" (cmd (ins "int ") (inm)))
       ("3" (cmd (ins "int32 ") (inm)))
       ("6" (cmd (ins "int64 ") (inm)))
       ("l" (cmd (ins "long ") (inm)))
       ("c" (cmd (ins "char ") (inm)))
       ("C" (cmd (ins "char* ") (inm)))
       ("v" (cmd (ins "void ") (inm)))
-      ("n" (cmd (ins "const ") (inm)))
+      ("N" (cmd (ins "const ") (inm)))
       ("b" (cmd (ins "bool ") (inm)))))
     ("s" (cmd (ins "sizeof({})")))
     ("S" (cmd (ins "sizeof({0})/sizeof(*{0})")))
