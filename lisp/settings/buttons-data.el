@@ -833,7 +833,14 @@ otherwise, leave it intact"
               (ins "#include <iostream>") (nli)
               (ins "#include <string>") (nli)
               (ins "#include <assert.h>") (nli)
-              (ins "using namespace std;") (nli)))))
+              (ins "using namespace std;") (nli)))
+    ("t" (but
+          ("g"
+           (but
+            ("t"
+             (but
+              ("c" (cmd (ins "CHECK({})")))
+              ("o" (cmd (ins "CHECK_OK({})")))))))))))
 
  (defbuttons yacc-buttons programming-buttons
    (yacc-mode-map)
