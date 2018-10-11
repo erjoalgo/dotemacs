@@ -36,10 +36,6 @@
   (scroll-up-command (- (* *scroll-amount* (or arg 1)))))
 (setq scroll-error-top-bottom t)
 
-(defun find-file-at-point-cmd ()
-  (interactive)
-  (find-file-at-point))
-
 (defun my-forward-delete (&optional n)
   (interactive "P")
   (delete-region (point) (progn (forward-sexp n) (point))))

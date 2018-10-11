@@ -130,7 +130,7 @@
     ("z" (cmd (kill-buffer (current-buffer))));;originally C-x k
     ("Z" 'new-buffer-focus)
     ("q" 'bury-buffer);; move current buffer to end of the list
-    ("3" 'find-file-at-point-cmd);;originally C-x f
+    ("3" 'find-file-at-point);;originally C-x f
     ("4" 'switch-to-buffer);;originally C-x b
     ("5" (buttons-make
           ("g" (cmd (dir "~/git")))
