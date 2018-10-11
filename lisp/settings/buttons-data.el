@@ -651,7 +651,7 @@ otherwise, leave it intact"
             (ins "<(nli)>"))))
     ("g" (cmd (ins "true")))
     ("G" (cmd (ins "false")))
-    ("C" (cmd (ins "<<EOF{(nli)}{}{newline}EOF")))
+    ("C" (cmd (ins "<<EOF{(nli)}{}{(nli)}EOF")))
     ;; ( "x" 'shell-command-of-region)
     ("0" (cmd (insert sh-getopt-template)))
     ("t" (but
