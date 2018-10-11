@@ -806,6 +806,7 @@ otherwise, leave it intact"
       ("S" (cmd (ins "string& ")))
       ("t" (but
             ("s" (cmd (ins "std::")))
+            ("f" (cmd (ins "file::")))
             ("g" (but
                   ("a" (cmd (ins "absl::")))
                   ("f"
