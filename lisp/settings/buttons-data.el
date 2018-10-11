@@ -351,7 +351,7 @@ otherwise, leave it intact"
            (but
             ("v" (cmd (ins "absl::PrintF(\"value of {0}: %s\\n\", {0});")))
             ("t" (cmd (ins "absl::PrintF(\"{}\\n\"{});")))
-            ("s" (cmd (ins "absl::StrFormat(\"{}\\n\"{});")))
+            ("s" (cmd (ins "absl::StrFormat(\"{}\\n\"{})")))
             ("m" (cmd (ins "absl::StreamFormat(\"{}\"{});")))
             ("c" (cmd (ins ".c_str()")))
             ("r" (cmd (ins "absl::PrintF(\"autogen random marker: {(number-to-string (random 5000))}\\n\");")))))
