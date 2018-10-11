@@ -186,7 +186,7 @@
       ("r" (buff "*Backtrace*"))
       ("b" (file "~/.bashrc"))
       ("a" (file "~/.bash_aliases"))
-      ("A" (file "~/.my-bash-funs"))
+      ("A" (file "~/.bash-funs/.my-bash-funs"))
       ("m" (buff "*Messages*"))
       ("s" (buff "*Org Agenda*" (org-todo-list)))
       ("S" (buff "*Org Agenda*"))
