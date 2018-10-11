@@ -82,15 +82,15 @@
 
 	    (setf bag
 		  (cond
-	     ((string-match "[a-z]" char-string) *genpass-letters-lower*)
-	     ((string-match "[A-Z]" char-string) *genpass-letters-upper*)
-	     ((string-match "[0-9]" char-string) *genpass-num*)))
+	           ((string-match "[a-z]" char-string) *genpass-letters-lower*)
+	           ((string-match "[A-Z]" char-string) *genpass-letters-upper*)
+	           ((string-match "[0-9]" char-string) *genpass-num*)))
 
 	    (when bag
 	      (let ((new-char (aref bag (random (length bag)))))
 		(aset scrambled i new-char)))))
     (save-excursion
-    (goto-char a)
+      (goto-char a)
       (let ((region-text (buffer-substring a b)))
         (while (search-forward region-text nil t)
           (replace-match scrambled))))))
