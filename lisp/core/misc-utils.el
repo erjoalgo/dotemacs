@@ -542,24 +542,68 @@ This requires the external program `diff' to be in your `exec-path'."
              print-length))
     (set sym nil)))
 
-(defun buffer-remove-common-prefix (a b)
-  (interactive "r")
-  ;; TODO account for deletions when using b
-  (loop with lines = (s-split "\n" (buffer-string))
-        with longest = (or (car lines) "")
-        with len = (length longest)
-        for line in (cdr lines)
+(defun common-prefix (strings)
+  (loop with longest = (or (car strings) "")
+        for s in (cdr strings)
         minimize
         (loop for c1 across longest
-              for c2 across line
-              for n below len
+              for c2 across s
+              for n below (or len (length longest))
+              while (eq c1 c2)
               finally (return n))
         into len
-        finally
-        (let ((longest (subseq longest 0 len)))
-          '(save-excursion
-             (goto-char (point-min))
-             (while (re-search-forward ""))
-             (while (next-line)))
-          (regexp-replace-current-buffer
-           "^.\\{%d\\}" ""))))
+        finally (return (subseq longest 0 (or len 0)))))
+
+
+(defun s-match-buffer-all-nonverlapping (regexp)
+  (save-excursion
+    (goto-char (point-min))
+    (loop while (re-search-forward regexp nil t)
+          collect (match-string 0))))
+
+(defun buffer-remove-common-prefix (&optional a b delimiter regexp)
+  (interactive (list (region-beginning)
+                     (region-end)
+                     ?/))
+  ;; TODO account for deletions when using b
+  (let* ((prefix (common-prefix (if (not regexp)
+                                    (remove-if 's-whitespace-p
+                                               (s-split "\n" (buffer-string) t))
+                                  ;; (mapcar 'car (s-match-strings-all regexp (buffer-string)))
+                                  (s-match-buffer-all-nonverlapping regexp))))
+         (len (length prefix)))
+
+    (when delimiter
+      (while (and (not (zerop len))
+                  (not (eq (aref prefix (1- len)) delimiter)))
+        (decf len)))
+
+    (unless (zerop len)
+      (save-excursion
+        (goto-char (or a (point-min)))
+        '(loop with deleted-count = 0
+               as line-len = (- (line-end-position) (line-beginning-position))
+               as new-end = (+ (line-beginning-position) len)
+               while (and (< new-end (line-end-position))
+                          (or (null b)
+                              (<= new-end (+ b deleted-count))))
+               do (progn
+                    (delete-region (line-beginning-position) new-end)
+                    (incf deleted-count line-len))
+               while (zerop (forward-line)))
+        (loop with deleted-count = 0
+              as match = (re-search-forward regexp
+                                            (when b (+ b deleted-count))
+                                            t)
+              while match
+              when match do (replace-match (subseq (match-string 0) len)))))))
+
+(defun s-whitespace-p (s)
+  (string-blank-p (s-trim s)))
+
+(defun s-non-whitespace-p (s)
+  (string-blank-p (s-trim s)))
+
+(defun buffer-remove-common-filename-prefix ()
+  (interactive)
+  (buffer-remove-common-prefix nil nil ?/ "/.*"))
