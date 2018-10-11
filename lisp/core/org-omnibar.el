@@ -35,17 +35,6 @@
 	for org-file in org-files nconc
 	(org-file-headings org-file max-depth)))
 
-(defmacro save-find-file-excursion (filename-form &rest forms)
-  `(save-excursion
-     (let* ((filename ,filename-form)
-	    (was-open (find-buffer-visiting filename))
-	    (buffer (find-file-noselect filename))
-	    retval)
-       (set-buffer buffer)
-       (setf retval (progn ,@forms))
-       (unless was-open (kill-buffer buffer))
-       retval)))
-
 (defun org-file-headings (org-filename &optional max-depth)
   (interactive (list (buffer-file-name)))
   (let ((heading-regexp
@@ -53,7 +42,7 @@
 		 (if (not max-depth) "+"
 		   (format "\\{1,%d\\}" max-depth)))))
     ;;(message "heading regexp: %s" heading-regexp)
-    (save-find-file-excursion
+    (save-excursion-file
      org-filename
      (goto-char (point-min))
      (loop while (search-forward-regexp heading-regexp nil t)

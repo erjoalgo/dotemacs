@@ -607,3 +607,18 @@ This requires the external program `diff' to be in your `exec-path'."
 (defun buffer-remove-common-filename-prefix ()
   (interactive)
   (buffer-remove-common-prefix nil nil ?/ "/.*"))
+
+(defmacro save-excursion-file (filename &rest body)
+  (let ((was-open-p-sym (gensym "was-open-p"))
+        (buff-sym (gensym "buff"))
+        (ret-val-sym (gensym "ret-val")))
+    `(save-excursion
+       (let ((,was-open-p-sym (find-buffer-visiting ,filename))
+             ,ret-val-sym)
+         (setf ,buff-sym
+               (or ,was-open-p-sym
+                   (find-file-noselect filename t)))
+         (setf ,ret-val-sym ,@body)
+         (unless ,was-open-p-sym
+           (kill-buffer ,buff-sym))
+         ,ret-val-sym))))
