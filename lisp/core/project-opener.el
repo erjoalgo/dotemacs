@@ -102,6 +102,7 @@
                         collect (cadr sexp)))))
                (let* ((asd-filename file)
                       (packages-filename "packages.lisp")
+                      (lisp-startup-file "repl-startup.lisp")
                       (systems
                        (read-file-defs-matching asd-filename '(defsystem asdf:defsystem)))
                       (packages
@@ -132,8 +133,8 @@
                      (slime-cd ,top-level-directory)
                      (slime-eval ',sexp)
                      ,@set-package-sexp
-                     (when (file-exists-p "repl-startup.lisp")
-                       (slime-eval '(CL:LOAD "repl-startup.lisp")))))
+                     (when (file-exists-p ,lisp-startup-file)
+                       (slime-eval '(CL:LOAD ,lisp-startup-file)))))
                  (message "dir %s" default-directory)
                  (slime))))
            (find-files-recursively top-level-directory
