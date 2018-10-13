@@ -286,7 +286,8 @@ otherwise, leave it intact"
       ("r" (cmd (ins "(format t \"trace: {(buf)} {(rnd)}~%\")")))
       ("[" (cmd (insert "~{~A~^")
                 (ins "{}~}")))
-      ("v" (but
+      ("v" (cmd (ins "(format t \"value of {0}: ~A~%\" {0})")))
+      ("m" (but
             ("i" (cmd (ins "(vom:info \"{}~%\"")))
             ("d" (cmd (ins "(vom:debug \"{}~%\"")))
             ("w" (cmd (ins "(vom:warn \"{}~%\"")))))))
