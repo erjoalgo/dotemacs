@@ -624,3 +624,43 @@ This requires the external program `diff' to be in your `exec-path'."
          (unless ,was-open-p-sym
            (kill-buffer ,buff-sym))
          ,ret-val-sym))))
+
+(defun buffer-make-prefix-unique (buffer &optional min-prefix-len)
+  "Kill other buffers to make autocompletion easier."
+  (interactive (list (current-buffer) 4))
+  (let* ((buffer (get-buffer (or buffer (current-buffer))))
+         (others (remove buffer (buffer-list)))
+         (buffer-name (buffer-name buffer))
+         points)
+    (loop for len from 1 upto (length buffer-name)
+          ;; as new-others = (remove-if-not (apply-partially 's-starts-with? (subseq buffer 0 len))
+          ;;                               others)
+          as prefix = (subseq buffer-name 0 len)
+          as new-others = (loop for other in others
+                                when (s-starts-with-p prefix (buffer-name other))
+                                collect other)
+          when (not (eq (length others)
+                        (length new-others)))
+          do (progn
+               (unless (zerop (1- len))
+                 (push (cons (1- len) others) points))
+               (setf others new-others))
+          finally (when others
+                    (push (cons len others) points)))
+    (message "value of points: %s" points)
+
+    (let* ((choices (loop for (len . others) in points
+                          when (or (null min-prefix-len)
+                                   (>= len min-prefix-len))
+                          collect (subseq buffer-name 0 len))))
+      (if (null choices)
+          (message "buffer %s is already unique %s"
+                   buffer (if min-prefix-len
+                              (format "up to %s chars" min-prefix-len) ""))
+        (let* ((choice (completing-read "select prefix length: " choices nil t
+                                        (car (reverse choices))))
+               (length (length choice))
+               (others (cdr (assoc length points))))
+          ;; others
+          (message "killing: %s" others)
+          (mapc 'kill-buffer others))))))
