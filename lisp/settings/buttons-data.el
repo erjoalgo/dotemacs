@@ -12,7 +12,9 @@ otherwise, leave it intact"
 
 (buttons-macrolet
  ((inm () `(global-erjoalgo-command-mode 0))
-  (spc? () `(unless (looking-back " ") (insert " "))))
+  (spc? () `(unless (looking-back " ") (insert " ")))
+  (rnd () `(number-to-string (random 500)))
+  (buf () `(buffer-name)))
 
 (let-when-compile
      ((*buttons-make-key-mapper* 'super-add))
@@ -281,6 +283,7 @@ otherwise, leave it intact"
       ("t" (cmd (ins "(format t {})")))
       ("f" (cmd (ins "(format fh {})")))
       ("n" (cmd (ins "(format {})")))
+      ("r" (cmd (ins "(format t \"trace: {(buf)} {(rnd)}~%\")")))
       ("[" (cmd (insert "~{~A~^")
                 (ins "{}~}")))
       ("v" (but
@@ -355,7 +358,7 @@ otherwise, leave it intact"
             ("s" (cmd (ins "absl::StrFormat(\"{}\\n\"{})")))
             ("m" (cmd (ins "absl::StreamFormat(\"{}\"{});")))
             ("c" (cmd (ins ".c_str()")))
-            ("r" (cmd (ins "absl::PrintF(\"ON {(f-base (buffer-file-name))}: {(number-to-string (random 5000))}\\n\");")))))
+            ("r" (cmd (ins "absl::PrintF(\"ON {(buf)}: {(rnd)}\\n\");")))))
           ("t" (cmd (ins "printf(\"{}\\n\"{});")))
           ("." (cmd (ins ".c_str()")))
           ("s" (cmd (ins "scanf( \"{}\"{} );")))
