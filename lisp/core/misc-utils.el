@@ -659,8 +659,10 @@ This requires the external program `diff' to be in your `exec-path'."
                               (format "up to %s chars" min-prefix-len) ""))
         (let* ((choice (completing-read "select prefix length: " choices nil t
                                         (car (reverse choices))))
-               (length (length choice))
-               (others (cdr (assoc length points))))
+               (selected-length (length choice))
+               (others (cdr (assoc selected-length points))))
           ;; others
           (message "killing: %s" others)
-          (mapc 'kill-buffer others))))))
+          (loop for (len . others) in points
+                when (>= len selected-length)
+                do (mapc 'kill-buffer others)))))))
