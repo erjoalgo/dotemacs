@@ -556,6 +556,7 @@ otherwise, leave it intact"
       ;; node
       ("y" (cmd (ins "try {(cbd)}catch ({}){(cbd)}")))
       ("p" (cmd (ins "new Promise(function(resolve, reject){(cbd)});")))
+      ("P" (cmd (ins ".then({})")))
       ("j" (but
             ("s" (cmd (ins "JSON.stringify({})")))
             ("p" (cmd (ins "JSON.parse({})")))))))))
