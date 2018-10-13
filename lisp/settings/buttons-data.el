@@ -489,6 +489,7 @@ otherwise, leave it intact"
     ("." (cmd (ins "debugger;{(nli)}")))
     ("n" (but
           ("c" (cmd (ins "console.log( \"{}\"{} );")))
+          ("v" (cmd (ins "console.log( \"value of: {0}\"+{0} );")))
           ("a" (cmd (ins "alert(\"{}\");")))))
     ("T" (cmd (ins "try{(cbd)}catch(err){(cbd)}")))
     ("f" (cmd (ins "for (var {0} = 0; {0}<{}; {0}++){(cbd)}")))
