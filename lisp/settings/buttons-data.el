@@ -350,7 +350,7 @@ otherwise, leave it intact"
     ("n" (but
           ("a"
            (but
-            ("v" (cmd (ins "absl::PrintF(\"value of {0}: %s\\n\", {0});")))
+            ("v" (cmd (ins "cout << \"value of {0}: \" << {0} << endl;")))
             ("t" (cmd (ins "absl::PrintF(\"{}\\n\"{});")))
             ("s" (cmd (ins "absl::StrFormat(\"{}\\n\"{})")))
             ("m" (cmd (ins "absl::StreamFormat(\"{}\"{});")))
