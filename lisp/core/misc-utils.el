@@ -562,9 +562,11 @@ This requires the external program `diff' to be in your `exec-path'."
           collect (match-string 0))))
 
 (defun buffer-remove-common-prefix (&optional a b delimiter regexp)
-  (interactive (list (region-beginning)
-                     (region-end)
-                     ?/))
+  (interactive (nconc
+                (if (region-active-p)
+                  (list (region-beginning) (region-end))
+                  '(nil nil))
+                '(?/)))
   ;; TODO account for deletions when using b
   (let* ((prefix (common-prefix (if (not regexp)
                                     (remove-if 's-whitespace-p
