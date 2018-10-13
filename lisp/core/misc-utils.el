@@ -594,7 +594,7 @@ This requires the external program `diff' to be in your `exec-path'."
                     (incf deleted-count line-len))
                while (zerop (forward-line)))
         (loop with deleted-count = 0
-              as match = (re-search-forward regexp
+              as match = (re-search-forward (or regexp "^.*[^ \n\t].*$")
                                             (when b (+ b deleted-count))
                                             t)
               while match
