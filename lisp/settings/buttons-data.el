@@ -355,7 +355,7 @@ otherwise, leave it intact"
             ("s" (cmd (ins "absl::StrFormat(\"{}\\n\"{})")))
             ("m" (cmd (ins "absl::StreamFormat(\"{}\"{});")))
             ("c" (cmd (ins ".c_str()")))
-            ("r" (cmd (ins "absl::PrintF(\"autogen random marker: {(number-to-string (random 5000))}\\n\");")))))
+            ("r" (cmd (ins "absl::PrintF(\"ON {(f-base (buffer-file-name))}: {(number-to-string (random 5000))}\\n\");")))))
           ("t" (cmd (ins "printf(\"{}\\n\"{});")))
           ("." (cmd (ins ".c_str()")))
           ("s" (cmd (ins "scanf( \"{}\"{} );")))
