@@ -225,7 +225,8 @@ otherwise, leave it intact"
     ("n"
      (but
       ("t" (cmd (ins "(format \"{}\"{})")))
-      ("m" (cmd (ins "(message \"{}\"{})")))))
+      ("m" (cmd (ins "(message \"{}\"{})")))
+      ("v" (cmd (ins "(message \"value of {0}: %s\" {0})")))))
     ("\\" (cmd (ins "\\\\({}\\\\)")))
     ("s" (cmd (call-interactively 'insert-emacs-sym)))
     ("j" (cmd (ins "(or {})")))
