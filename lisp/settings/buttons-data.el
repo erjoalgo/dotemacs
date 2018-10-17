@@ -359,7 +359,9 @@ otherwise, leave it intact"
            (but
             ("v" (cmd (ins "cout << \"value of {0}: \" << {0} << endl;")))
             ("t" (cmd (ins "absl::PrintF(\"{}\\n\"{});")))
-            ("s" (cmd (ins "absl::StrFormat(\"{}\\n\"{})")))
+            ("s" (cmd (ins "absl::StrFormat(\"{}\"{})")))
+            ;; + operator
+            ("=" (cmd (ins "absl::StrCat(\"{}\"{})")))
             ("m" (cmd (ins "absl::StreamFormat(\"{}\"{});")))
             ("c" (cmd (ins ".c_str()")))
             ("r" (cmd (ins "absl::PrintF(\"ON {(buf)}: {(rnd)}\\n\");")))))
