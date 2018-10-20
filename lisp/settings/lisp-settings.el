@@ -39,5 +39,6 @@
       ;; (replace-highlight)
       (with-highlight-region
        (match-beginning 0) (match-end 0)
-       (when-let ((rep (comp vom-log-levels)))
-         (replace-match (concat "vom:" rep)))))))
+       (let ((rep (comp vom-log-levels)))
+         (when rep
+           (replace-match (concat "vom:" rep))))))))
