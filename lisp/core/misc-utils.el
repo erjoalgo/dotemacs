@@ -349,7 +349,7 @@ Center command to run on each file: ")
   (interactive)
   (erc))
 
-(defun kill-buffers-regex (regex)
+(defun kill-buffers-matching-regexp (regex)
   (interactive "senter regex to kill buffers: ")
   (let* ((regex (format ".*%s.*" regex))
 	 (buffers (remove-if-not

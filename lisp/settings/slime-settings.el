@@ -30,5 +30,5 @@
 
 (defun slime-killall ()
   (interactive)
-  (kill-buffers-regex "[*]\\(slime-repl\\|inferior-lisp\\|slime\\)")
+  (kill-buffers-matching-regexp "[*]\\(slime-repl\\|inferior-lisp\\|slime\\)")
   (slime-disconnect-all))
