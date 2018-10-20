@@ -277,7 +277,9 @@ otherwise, leave it intact"
      (but
       ("i" (cmd (ins "(declare (ignore {}))")))
       ("c" (cmd (ins "(defcommand {} ({}) ({}){(nli)}{})")))
-      ("p" (cmd (ins "(defparameter {})")))))
+      ("p" (cmd (ins "(defparameter {})")))
+      ("t" (cmd (ins "(deftest test-{} (){(nli)}{})")))
+      ("a" (cmd (ins "(defalias {})")))))
     ("n"
      (but
       ("g" (cmd (ins "(format nil {})")))
