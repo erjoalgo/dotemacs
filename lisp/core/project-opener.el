@@ -166,7 +166,7 @@
           (find-files-recursively top-level-directory
                                   (lambda (filename)
                                     (not (file-extension-matches
-                                          "fasl" filenam))))
+                                          "fasl" filename))))
           (let ((default-directory top-level-directory))
             (save-excursion
               (goto-char (point-min))
