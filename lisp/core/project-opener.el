@@ -185,13 +185,13 @@
                                           "~/git/")))
   (loop for matcher in (append project-open-matchers-list
                                (list 'project-open-default-matcher))
-     with top-level-filenames = (directory-files top-level-directory)
-     do (message "trying matcher %s" matcher)
-     thereis (and
-              (funcall matcher top-level-directory
-                       top-level-filenames)
-              (message "matched %s" matcher)
-              t)))
+        with top-level-filenames = (directory-files top-level-directory)
+        do (message "trying matcher %s" matcher)
+        thereis (and
+                 (funcall matcher top-level-directory
+                          top-level-filenames)
+                 (message "matched %s" matcher)
+                 t)))
 
 (provide 'project-opener)
 ;;; project-opener.el ends here
