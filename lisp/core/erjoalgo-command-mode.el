@@ -196,6 +196,7 @@
       ("M" (file (concat "/var/mail/" (getenv "USER"))))
       ("x" (file (concat  "~/.stumpwmrc.d/inits/.xmodmap/")))
       ("l" (file "/sudo::/var/log/syslog"))
+      ("L" (buff "regexp:[*]sldb sbcl/.*[*]"))
       ("v" (file "~/.stumpwmrc.d/keynavs/.keynavrc"))
       ("w" (file "~/.stumpwmrc.d/lisp/.stumpwmrc"))
       ("W" (buff "*Warnings*"))
