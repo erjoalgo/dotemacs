@@ -142,6 +142,7 @@
                     ,@(loop for system in systems collect
                             `(ql:quickload ',system)))))
         (message "sexp: %s" sexp)
+        ;; TODO wrap in handler-case
         (slime-eval sexp))
 
       (when packages
