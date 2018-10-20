@@ -22,7 +22,10 @@
   (condition-case ex (apply fn args)
     ('error
      (warn "WARNING: unable to funcall (%s %s):  %s:" fn args ex)
-     (when debug-on-error (require 'edebug) (edebug)))))
+     (when debug-on-error
+       (error ex)
+       (require 'edebug)
+       (edebug)))))
 
 (dolist (dir '("libs" "core" "extra"))
   (add-to-list 'load-path
