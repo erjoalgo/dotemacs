@@ -36,6 +36,9 @@
     (add-hook hook-var fun-sym)))
 
 (defun add-one-time-log-hooks (hook-syms)
+  (interactive
+   (list (symbols-matching-regexp
+          (read-string "enter hook symbol regexp: " "-hook"))))
   (loop for hook in hook-syms do
         (add-one-time-hook
          hook
