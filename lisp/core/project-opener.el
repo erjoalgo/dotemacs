@@ -81,6 +81,78 @@
    Each matcher is invoked with the project's top-level-directory
    and a list of top-level files/directories.")
 
+(defun file-extension-matches (ext file)
+  (equal (f-ext file) ext))
+
+(defun project-open-cl-post-slime-connected (original-directory
+                                             &optional
+                                             top-level-files
+                                             asd-filename)
+  (setf top-level-files (or top-level-files
+                            (directory-files original-directory))
+        asd-filename (->>
+                      top-level-files
+                      (remove-if-not
+                       (apply-partially 'file-extension-matches "asd"))
+                      car))
+
+  (assert asd-filename)
+
+  (message "on project-open-cl-post-slime-connected")
+
+  (loop for form in '((current-buffer)
+                      major-mode
+                      default-directory
+                      original-directory
+                      asd-filename)
+        do (message "\t%s" (cons form (eval form))))
+
+  (cl-labels
+      ((read-top-level-sexps (string) (read (format "(%s)" string)))
+       (read-file-defs-matching
+        (filename def-syms)
+        (with-temporary-current-file
+         filename
+         (loop for sexp in (read-top-level-sexps (buffer-string))
+               when (and (consp sexp) (member (car sexp) def-syms))
+               collect (cadr sexp)))))
+
+    (let* ((default-directory original-directory)
+           (packages-filename "packages.lisp")
+           (load-candidate-filenames
+            '("repl-load.lisp"
+              "repl-start.lisp"))
+           (load-file-names (-intersection
+                             load-candidate-filenames
+                             top-level-files))
+           (systems
+            (read-file-defs-matching asd-filename '(defsystem asdf:defsystem)))
+           (packages
+            (when (file-exists-p packages-filename)
+              (read-file-defs-matching packages-filename '(defpackage asdf:defpackage)))))
+
+      (message "pacakges %s" packages)
+      (message "systems %s" systems)
+      (message "dir %s" default-directory)
+
+      (slime-change-directory original-directory)
+      (slime-cd original-directory)
+      (let ((sexp `(CL:progn
+                    (CL:load ,asd-filename)
+                    ,@(loop for system in systems collect
+                            `(ql:quickload ',system)))))
+        (message "sexp: %s" sexp)
+        (slime-eval sexp))
+
+      (when packages
+        (slime-repl-set-package
+         (upcase (symbol-name (car packages)))))
+
+      (dolist (filename load-file-names)
+        (when (file-exists-p filename)
+          ;; (message "loading %s %s" filename `(CL:LOAD ,filename))
+          (slime-eval `(CL:LOAD ,filename)))))))
+
 (defun project-open-cl (top-level-directory &optional top-level-files)
   "project-opener matcher for a CL project rooted at
    TOP-LEVEL-DIRECTORY.
@@ -89,62 +161,23 @@
    Also load a file 'repl-startup.lisp' if it exists."
 
   (loop for file in top-level-files thereis
-       (when (equal "asd" (f-ext file))
-         (let ((default-directory top-level-directory))
-           (save-excursion
-             (goto-char (point-min))
-             (cl-labels
-                 ((read-top-level-sexps (string)
-                                        (read (format "(%s)" string)))
-                  (read-file-defs-matching
-                   (filename def-syms)
-                   (with-temporary-current-file
-                       filename
-                     (loop for sexp in (read-top-level-sexps (buffer-string))
-                        when (and (consp sexp) (member (car sexp) def-syms))
-                        collect (cadr sexp)))))
-               (let* ((asd-filename file)
-                      (packages-filename "packages.lisp")
-                      (lisp-startup-file "repl-startup.lisp")
-                      (systems
-                       (read-file-defs-matching asd-filename '(defsystem asdf:defsystem)))
-                      (packages
-                       (when (file-exists-p packages-filename)
-                         (read-file-defs-matching packages-filename '(defpackage asdf:defpackage))))
-                      (sexp `(CL:progn
-                              (CL:load ,asd-filename)
-                              ,@(loop for system in systems collect
-                                      `(ql:quickload ',system))))
-                      (set-package-sexp
-                       (when packages
-                         `((slime-repl-set-package
-                            ,(upcase (symbol-name (car packages))))))))
-                 (message "pacakges %s" packages)
-                 (message "pacakges %s" set-package-sexp)
-                 (message "systems %s" systems)
-                 (message "dir %s" default-directory)
-                 (add-one-time-hook
-                  ;; ' slime-connected-hook
-                  ' slime-editing-mode-hook
-                  `(lambda (&rest args)
-                     (message "on slime hook. current buff %s %s %s %s"
-                              (current-buffer) major-mode
-                              default-directory
-                              ,top-level-directory)
-                     (message "sexp: %s" ',sexp)
-                     (slime-change-directory ,top-level-directory)
-                     (slime-cd ,top-level-directory)
-                     (slime-eval ',sexp)
-                     ,@set-package-sexp
-                     (when (file-exists-p ,lisp-startup-file)
-                       (slime-eval '(CL:LOAD ,lisp-startup-file)))))
-                 (message "dir %s" default-directory)
-                 (slime))))
-           (find-files-recursively top-level-directory
-                                   (lambda (filename)
-                                     (not (equal "fasl"
-                                                 (f-ext filename)))))
-           t))))
+        (when (file-extension-matches "asd" file)
+          (find-files-recursively top-level-directory
+                                  (lambda (filename)
+                                    (not (file-extension-matches
+                                          "fasl" filenam))))
+          (let ((default-directory top-level-directory))
+            (save-excursion
+              (goto-char (point-min))
+              (add-one-time-hook
+               ' slime-editing-mode-hook
+               `(lambda (&rest args)
+                  (project-open-cl-post-slime-connected
+                   ,default-directory
+                   ',top-level-files
+                   ,file)))
+              (slime))
+            t))))
 (add-to-list 'project-open-matchers-list 'project-open-cl)
 
 (defun project-open (top-level-directory)
