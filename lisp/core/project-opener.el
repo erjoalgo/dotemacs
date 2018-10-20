@@ -1,4 +1,4 @@
-;;; project-opener.el --- 
+;;; project-opener.el ---
 
 ;; Copyright (C) 2018  Ernesto Alfonso <erjoalgo@gmail.com>
 
@@ -53,8 +53,6 @@
                                           (string-match regexp (symbol-name atom)))
                                  (push atom syms))))
       syms)))
-
-
 ;; '(add-one-time-hook ' post-command-hook
 ;;                             (lambda () (message "one-time-hook ran")))
 
