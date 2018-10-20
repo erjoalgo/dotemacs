@@ -166,5 +166,9 @@
 (setq ring-bell-function 'ignore)
 
 (setq ffap-machine-p-known 'accept)
+
+;; irc suggestion eglot
+(setq max-specpdl-size 32000)
+
 (provide 'my-emacs-settings)
 ;;; emacs-settings.el ends here
