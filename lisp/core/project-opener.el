@@ -58,15 +58,17 @@
 ;; '(add-one-time-hook ' post-command-hook
 ;;                             (lambda () (message "one-time-hook ran")))
 
-(defun find-files-recursively (top &optional pred)
+(defun find-files-recursively (top &optional pred action)
   (assert (f-absolute? top))
   ;; (lexical-let ((default-directory (f-expand top)))
+  (setf pred (or pred 'identity)
+        action (or action 'find-file-noselect))
+
   (dolist (file (directory-files top))
     (let ((abs (f-join top file)))
       (cond
-       ((f-file? abs) (when (or (null pred)
-                                (funcall pred abs))
-                        (find-file-noselect abs)))
+       ((f-file? abs) (when (funcall pred abs)
+                        (funcall action abs)))
        ((f-directory? abs) (unless (member file '(".." "." ".git"))
                              (find-files-recursively abs pred)))
        ((f-symlink? abs) (warn "broken symlink: %s" abs))
