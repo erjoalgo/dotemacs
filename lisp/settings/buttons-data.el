@@ -479,6 +479,18 @@ otherwise, leave it intact"
  (defbuttons html-buttons xml-buttons
    (html-mode-map)
    (but
+    ("0" (cmd (ins
+               "<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset=\"UTF-8\">
+    <title>{}</title>
+  </head>
+  <body>
+{}
+  </body>
+</html>
+")))
     ("\\" (cmd (ins "<br/>")))
     ("a" (cmd (ins "<a href=\"{}\">{}</a>")))
     ("P" (cmd (ins "<p>{}</p>")))))
