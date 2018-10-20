@@ -31,3 +31,4 @@
           (setf next-error-message-highlight-overlay ol))))))
 
 (add-hook 'next-error-hook 'next-error-message-highlight)
+;; (add-hook 'slime-next- 'next-error-message-highlight)
