@@ -539,6 +539,7 @@ otherwise, leave it intact"
     ("p" (cmd (ins ".prototype.")))
     ("t"
      (but
+      ("u" (cmd (ins "true")))
       ("x" (cmd
             (let-when-compile
                 ;; ((buttons-insert-rec-template-directive-regexp "{{\\(.*\\)}}"))
