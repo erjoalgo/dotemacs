@@ -14,7 +14,7 @@ otherwise, leave it intact"
  ((inm () `(global-erjoalgo-command-mode 0))
   (spc? () `(unless (looking-back " ") (insert " ")))
   (rnd () `(number-to-string (random 500)))
-  (buf () `(buffer-name)))
+  (buf () `(f-base (buffer-name))))
 
 (let-when-compile
      ((*buttons-make-key-mapper* 'super-add))
