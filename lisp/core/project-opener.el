@@ -68,7 +68,7 @@
                                 (funcall pred abs))
                         (find-file-noselect abs)))
        ((f-directory? abs) (unless (member file '(".." "." ".git"))
-                             (find-files-recursively abs)))
+                             (find-files-recursively abs pred)))
        ((f-symlink? abs) (warn "broken symlink: %s" abs))
        (t (require 'edebug) (edebug)
           (error "not a file or directory? %s" abs))))))
