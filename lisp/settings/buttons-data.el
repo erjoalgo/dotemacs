@@ -358,7 +358,7 @@ otherwise, leave it intact"
     ("n" (but
           ("a"
            (but
-            ("v" (cmd (ins "cout << \"value of {0}: \" << {0} << endl;")))
+            ("v" (cmd (ins "cout << \"{(f-base (buffer-file-name))}: value of {0}: \" << {0} << endl;")))
             ("t" (cmd (ins "absl::PrintF(\"{}\\n\"{});")))
             ("s" (cmd (ins "absl::StrFormat(\"{}\"{})")))
             ;; + operator
