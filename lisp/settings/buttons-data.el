@@ -905,7 +905,7 @@ otherwise, leave it intact"
               (ins "#+OPTIONS: toc:nil") (nli)
               (ins "#+OPTIONS: html-postamble:nil") (nli)
               (ins "#+OPTIONS: num:nil") (nli)
-              (ins "#+TITLE: {(buf)}") (nli)))
+              (ins "#+TITLE: {(replace-regexp-in-string \"[_-]\" \" \" (f-base (buffer-file-name)))}") (nli)))
     ("R" (cmd (ins "***REMOVED***")))
     ("p" 'org-todo-promote-top)
     ("r" 'org-refile)
