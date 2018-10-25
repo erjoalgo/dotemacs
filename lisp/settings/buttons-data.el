@@ -14,7 +14,9 @@ otherwise, leave it intact"
  ((inm () `(global-erjoalgo-command-mode 0))
   (spc? () `(unless (looking-back " ") (insert " ")))
   (rnd () `(number-to-string (random 500)))
-  (buf () `(f-base (buffer-name))))
+  (buf () `(f-base (buffer-name)))
+  (nli? (&optional col) `(if (>= (current-column) (or col 60))
+                             (newline-and-indent))))
 
 (let-when-compile
      ((*buttons-make-key-mapper* 'super-add))
@@ -372,6 +374,8 @@ otherwise, leave it intact"
             ("t" (cmd (ins "absl::PrintF(\"{}\\n\"{});")))
             ("v" (cmd (ins "cout << \"{(f-base (buffer-file-name))}: value of {0}: \""
                            "{(nli?)}<< {0} << endl;")))
+            ("V" (cmd (ins "cout << \"{(f-base (buffer-file-name))}: proto {0}: \""
+                           "{(nli?)}<< {0}.DebugString() << endl;")))
             ("s" (cmd (ins "absl::StrFormat(\"{}\"{})")))
             ;; + operator
             ("=" (cmd (ins "absl::StrCat(\"{}\"{})")))
