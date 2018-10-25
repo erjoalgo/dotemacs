@@ -378,15 +378,15 @@ otherwise, leave it intact"
             ("t" (cmd (if t ;; TODO check if on google3. or make it a minor mode
                           (ins "absl::PrintF(\"{}\\n\"{});")
                         (ins "printf(\"{}\\n\"{});"))))
-            ("s" (cmd (ins "absl::StrFormat(\"{}\"{})")))
+            ("s" (cmd (if t
+                          (ins "absl::StrFormat(\"{}\"{})")
+                        ("s" (cmd (ins "scanf( \"{}\"{} );"))))))
             ;; + operator
             ("=" (cmd (ins "absl::StrCat(\"{}\"{})")))
             ("m" (cmd (ins "absl::StreamFormat(\"{}\"{});")))
             ("c" (cmd (ins ".c_str()")))
-            ("r" (cmd (ins "absl::PrintF(\"ON {(buf)}: {(rnd)}\\n\");")))))
-          ("t" (cmd (ins "printf(\"{}\\n\"{});")))
+            ("r" (cmd (ins "absl::PrintF(\"ON {(buf)}: {(rnd)}\\n\");")))
           ("." (cmd (ins ".c_str()")))
-          ("s" (cmd (ins "scanf( \"{}\"{} );")))
           ("," (cmd (ins "<< {} << endl;{(nli)}")))
           ("<" (cmd (ins "cout << ")))))
     ("l" (cmd (ins "strlen( {} )")))
