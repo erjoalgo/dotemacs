@@ -930,7 +930,17 @@ otherwise, leave it intact"
     ("r" 'org-refile)
     ("w" 'org-refile)
     ("c" 'org-clock-in)
-    ("C" 'org-resolve-clocks)))
+    ("C" 'org-resolve-clocks)
+    ("1" (cmd (org-todo 1)));;tag TODO
+    ("2" (cmd (org-todo 2)));;tag DONE
+    ("0" (cmd (let ((current-prefix-arg 0)) (org-todo ""))))
+    ("d" 'org-deadline)
+    ("l" 'org-insert-link)
+    ("L" (cmd (ins "<<{}>>")))
+    ;; ("<s-return>" 'browse-url-at-point)
+    ("s" 'org-insert-last-scrot)
+    ("[" 'my-org-shift-left)
+    ("]" 'my-org-shift-right)))
 
  (defbuttons message-buttons nil
    (message-mode-map)

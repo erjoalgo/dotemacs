@@ -21,20 +21,10 @@
   ("C-M-n" 'org-metadown);;promote
   ("C-M-p" 'org-metaup);;demote
 
-  ("RET" 'org-meta-return);;insert new
-					;use C-j to add text
+  ;;use C-j to add text
 
-  ("s-1" (lambda () (interactive) (org-todo 1)));;tag TODO
-  ("s-2" (lambda () (interactive) (org-todo 2)));;tag DONE
-  ("s-0" (lambda () (interactive) (let ((current-prefix-arg 0))
-                                    (org-todo ""))))
-  ("s-d" 'org-deadline)
-
-  ("s-l" 'org-insert-link)
-  ;; ("<s-return>" 'browse-url-at-point)
-  ("s-s" 'org-insert-last-scrot)
-  ("s-[" 'my-org-shift-left)
-  ("s-]" 'my-org-shift-right))
+  ;;insert new
+  ("RET" 'org-meta-return))
 
 (setq org-blank-before-new-entry
       ;;don't add extra newlines
