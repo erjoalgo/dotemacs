@@ -61,7 +61,8 @@ otherwise, leave it intact"
                    (if (get-buffer "*compilation*")
                        (call-interactively 'previous-error)
                      (call-interactively 'flymake-goto-prev-error))))
-    ("R" (cmd (ins "***REMOVED***")))))
+    ("R" (cmd (ins "***REMOVED***")))
+    ("T" (but ("D" (cmd (ins "{comment-start} TODO ")))))))
 
  (defbuttons python-buttons programming-buttons
    (python-mode-map)
