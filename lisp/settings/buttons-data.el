@@ -289,6 +289,10 @@ otherwise, leave it intact"
       ("c" (cmd (ins "(defcommand {} ({}) ({}){(nli)}{})")))
       ("p" (cmd (ins "(defparameter {})")))
       ("t" (cmd (ins "(deftest test-{} (){(nli)}{})")))
+      ("T" (cmd (ins "(fiasco:define-test-package #:{0}/test{(nli)}"
+                     "(:use #:{0})){(nli)}"
+                     "(in-package #:{0}/test)"
+                     "{(nli)}(run-package-tests :interactive t)")))
       ("a" (cmd (ins "(defalias {})")))))
     ("n"
      (but
