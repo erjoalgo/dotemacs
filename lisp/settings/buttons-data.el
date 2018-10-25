@@ -221,6 +221,7 @@ otherwise, leave it intact"
       ("n" (cmd (insert "~{~A~^")
                 (ins "{}~}")))
       ("a" (cmd (ins "(assert {})")))
+      ("w" (cmd (ins "(warn \"{}\"{})")))
       ("p" (cmd (ins "(push {})")))
       ("c"
        (but
