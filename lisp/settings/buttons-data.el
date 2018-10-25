@@ -232,7 +232,9 @@ otherwise, leave it intact"
         ("m" (cmd (ins "(mapcar {}){(nli)}")))
         ("l" (cmd (ins "(dolist {}){(nli)}")))))
       ("z" (cmd (ins "(zerop {})")))
-      ("3" (cmd (ins "#P\"{}\"")))))
+      ("3" (cmd (ins "#P\"{}\"")))
+      ("." (cmd (ins "(slot-value {} '{})")))
+      ("h" (cmd (ins "(handler-case{}{(nli)}(error (err) {}))")))))
     ("n"
      (but
       ("t" (cmd (ins "(format \"{}\"{})")))
