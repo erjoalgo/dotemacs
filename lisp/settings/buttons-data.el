@@ -296,7 +296,7 @@ otherwise, leave it intact"
       ("a" (cmd (ins "(defalias {})")))))
     ("n"
      (but
-      ("g" (cmd (ins "(format nil {})")))
+      ("g" (cmd (ins "(format nil \"{}\"{})")))
       ("t" (cmd (ins "(format t {})")))
       ("f" (cmd (ins "(format fh {})")))
       ("n" (cmd (ins "(format {})")))
