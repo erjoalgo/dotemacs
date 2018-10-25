@@ -153,6 +153,7 @@ otherwise, leave it intact"
       ("b" (cmd (ins "(destructuring-bind ({}){})")))
       ("B" (cmd (ins "(multiple-value-bind ({}){})")))
       ("t" (cmd (ins "(ert-deftest test-{} (){(nli)}{})")))
+      ("l" (cmd (ins "(defclass ({}){(nli)}{})")))
       ("k"
        (but
         ("p" (cmd (ins "(defpackage {}{(nli)}(:use :cl){})")))
