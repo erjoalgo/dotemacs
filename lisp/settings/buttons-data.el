@@ -199,7 +199,7 @@ otherwise, leave it intact"
       ("m"
        (but
         ("x" (cmd (ins "(macroexpand '{}){(nli)}")))))
-      ("g" (cmd (ins "({0}-sym (gensym \"{0}\")){(nli)}")))
+      ("g" (cmd (ins "({0}-sym (gensym \"{0}-\")){(nli)}")))
       ("e"
        (but
         ("u" (cmd (ins "(equal {})")))
