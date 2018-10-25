@@ -371,11 +371,13 @@ otherwise, leave it intact"
               (ins ";{(inm)}")))
     ("1" (cmd (ins "!")))
     ("n" (but
-            ("t" (cmd (ins "absl::PrintF(\"{}\\n\"{});")))
             ("v" (cmd (ins "cout << \"{(f-base (buffer-file-name))}: value of {0}: \""
                            "{(nli?)}<< {0} << endl;")))
             ("V" (cmd (ins "cout << \"{(f-base (buffer-file-name))}: proto {0}: \""
                            "{(nli?)}<< {0}.DebugString() << endl;")))
+            ("t" (cmd (if t ;; TODO check if on google3. or make it a minor mode
+                          (ins "absl::PrintF(\"{}\\n\"{});")
+                        (ins "printf(\"{}\\n\"{});"))))
             ("s" (cmd (ins "absl::StrFormat(\"{}\"{})")))
             ;; + operator
             ("=" (cmd (ins "absl::StrCat(\"{}\"{})")))
