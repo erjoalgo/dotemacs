@@ -305,9 +305,9 @@ otherwise, leave it intact"
                 (ins "{}~}")))
       ("v" (cmd (ins "(format t \"{(buf)}: value of {0}: ~A~%\" {0})")))
       ("m" (but
-            ("i" (cmd (ins "(vom:info \"{}~%\"")))
-            ("d" (cmd (ins "(vom:debug \"{}~%\"")))
-            ("w" (cmd (ins "(vom:warn \"{}~%\"")))))))
+            ("i" (cmd (ins "(vom:info \"{}~%\"{})")))
+            ("d" (cmd (ins "(vom:debug \"{}~%\"{})")))
+            ("w" (cmd (ins "(vom:warn \"{}~%\"){}")))))))
     ("#" (cmd (ins "#:")))
     ("5" (cmd (ins "~A")))
     ("%" (cmd (ins "~D")))
