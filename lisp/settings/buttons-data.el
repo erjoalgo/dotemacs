@@ -213,6 +213,7 @@ otherwise, leave it intact"
       ("+" (cmd (ins "(1+ {})")))
       ("s" (cmd (ins "(subseq {})")))
       ("r" (cmd (ins "(return {})")))
+      ("R" (cmd (ins "(return-from {})")))
       ("v" (cmd (ins "(values {})")))
       ("V" (cmd (ins "(reverse {})")))
       ("i" (cmd (ins "(insert {})")))
