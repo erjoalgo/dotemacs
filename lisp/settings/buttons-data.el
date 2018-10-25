@@ -369,10 +369,9 @@ otherwise, leave it intact"
               (ins ";{(inm)}")))
     ("1" (cmd (ins "!")))
     ("n" (but
-          ("a"
-           (but
-            ("v" (cmd (ins "cout << \"{(f-base (buffer-file-name))}: value of {0}: \" << {0} << endl;")))
             ("t" (cmd (ins "absl::PrintF(\"{}\\n\"{});")))
+            ("v" (cmd (ins "cout << \"{(f-base (buffer-file-name))}: value of {0}: \""
+                           "{(nli?)}<< {0} << endl;")))
             ("s" (cmd (ins "absl::StrFormat(\"{}\"{})")))
             ;; + operator
             ("=" (cmd (ins "absl::StrCat(\"{}\"{})")))
