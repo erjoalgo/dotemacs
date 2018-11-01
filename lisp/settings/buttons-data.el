@@ -207,7 +207,8 @@ otherwise, leave it intact"
         ("u" (cmd (ins "(equal {})")))
         ("q" (cmd (ins "(eq {})")))
         ("=" (cmd (ins "(= {})")))
-        ("l" (cmd (ins "(eql {})")))))
+        ("l" (cmd (ins "(eql {})")))
+        ("r" (cmd (ins "(error \"{}\"{})")))))
       ("f"
        (but
         ("r" (cmd (ins "(remove-if {})")))
