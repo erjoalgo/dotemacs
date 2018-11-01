@@ -306,12 +306,27 @@
 ;;apropos
 (define-key 'help-command "A" 'apropos-variable)
 
+(defvar temp-buffer-show-hook-unconditional
+  nil
+  "Like ‘temp-buffer-show-hook', but runs unconditionally")
+
+(defadvice with-output-to-temp-buffer (after temp-buffer-show-hook activate)
+  (message "running temp-buffer-show-hook-unconditional...")
+  (run-hooks 'temp-buffer-show-hook-unconditional))
+
+(defun apropos-switch-to-buffer ()
+  (let ((buffer-win
+         (-> "regexp:^[*].*apropos[*]"
+             buffer-matching
+             get-buffer-window)))
+    ;; (assert buffer-win)
+    (when buffer-win (select-window buffer-win))))
+
 (add-hook 'apropos-mode-hook
 	  (lambda (&rest args)
 	    (add-one-time-hook
-	     'post-command-hook
-	     (lambda (&rest args)
-	       (select-window (get-buffer-window "*Apropos*"))))))
+	     ' temp-buffer-show-hook-unconditional
+	     'apropos-switch-to-buffer)))
 
 (defun one-char-insert-mode (arg)
   "insert the next char as text"
