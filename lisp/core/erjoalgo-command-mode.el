@@ -305,13 +305,6 @@
 
 ;;apropos
 (define-key 'help-command "A" 'apropos-variable)
-;;TODO remove this hackery
-(defun add-one-time-hook (hook fun)
-	 (let ((fun-sym (gensym)))
-	   (fset fun-sym `(lambda ()
-			   (funcall ,fun)
-			   (remove-hook ,hook ,fun-sym)))
-	   (add-hook hook fun-sym)))
 
 (add-hook 'apropos-mode-hook
 	  (lambda (&rest args)
