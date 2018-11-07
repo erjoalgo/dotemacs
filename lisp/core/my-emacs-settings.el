@@ -155,7 +155,7 @@
 
 (setq custom-file "~/.emacs-custom.el")
 (when (f-exists? custom-file)
-  (load custom-file))
+  '(load custom-file))
 
 ;; disable annoying tutorial
 (define-key help-map (kbd "t") nil)
