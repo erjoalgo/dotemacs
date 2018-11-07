@@ -271,3 +271,26 @@
 (setq org-refile-targets
       '(("master.org" :maxlevel . 2)
         ("work.org" :maxlevel . 2)))
+
+(defun region-or-clipboard ()
+  (if (region-active-p)
+      (buffer-substring-no-properties (region-beginning)
+                                      (region-end))
+    (car kill-ring)))
+
+(defun org-paste-code-block (mode code indent-level)
+  (interactive (let ((mode (read-symbol-completing "select mode: "))
+                     (code (region-or-clipboard)))
+                 (list
+                  (replace-regexp-in-string "-mode" "" (symbol-name mode))
+                  code
+                  (current-column))))
+  (let* ((SPACE 32)
+         (leading-ws (make-string indent-level SPACE))
+         (text
+          (concat "#+BEGIN_SRC " mode "\n"
+                  (->>
+                   (concat code
+                           "\n" "#+END_SRC")
+                   (replace-regexp-in-string "^" leading-ws)))))
+    (insert text)))
