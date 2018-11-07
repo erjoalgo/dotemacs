@@ -67,14 +67,16 @@ in the current STUMPWM group/workspace."
                  'STUMPWM::window-visible-p
                  (STUMPWM::group-windows (STUMPWM:current-group))))))
 
-(defun stumpwm-message (text)
-  (let ((text-cl-escaped (replace-regexp-in-string
-                          "[~]+"
-                          (lambda (match)
-                            (concat match
-                                    (when (oddp (length match)) "~")))
-                          text)))
-    (stumpwm-eval `(message ,text-cl-escaped))))
+(defun stumpwm-message (text &optional color host port)
+  (let* ((host (or host 'local))
+         (port (or port 1959))
+         (colored (if color (stumpwm-color text color)
+                    text))
+         (proc (make-network-process :host host
+                                     :name "*stumpwm-msg*"
+                                     :service port)))
+    (process-send-string proc colored)
+    (process-send-eof proc)))
 
 (defun stumpwm-auto-doc-el (in out)
   (interactive
