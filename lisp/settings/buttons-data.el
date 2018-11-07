@@ -411,6 +411,7 @@ otherwise, leave it intact"
     ("i"
      (but
       ("u" (cmd (ins "unsigned ") (inm)))
+      ("a" (cmd (ins "auto ") (inm)))
       ("n" (cmd (ins "int ") (inm)))
       ("3" (cmd (ins "int32 ") (inm)))
       ("6" (cmd (ins "int64 ") (inm)))
