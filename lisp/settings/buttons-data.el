@@ -15,7 +15,7 @@ otherwise, leave it intact"
   (spc? () `(unless (looking-back " ") (insert " ")))
   (rnd () `(number-to-string (random 500)))
   (buf () `(f-base (buffer-name)))
-  (nli? (&optional col) `(if (>= (current-column) (or col 60))
+  (nli? (&optional col) `(if (>= (current-column) (or ,col 60))
                              (newline-and-indent))))
 
 (let-when-compile
