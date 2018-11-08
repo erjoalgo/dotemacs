@@ -151,6 +151,7 @@ otherwise, leave it intact"
       ("v" (cmd (ins "(defvar {}){(nli)}")))
       ("f" (cmd (ins "(defun {} ({}){(nli)}{})")))
       ("m" (cmd (ins "(defmacro {} ({}){(nli)}{})")))
+      ("h" (cmd (ins "(defmethod {} ({}){(nli)}{})")))
       ("s" (cmd (ins "(defstruct {}{(nli)}{})")))
       ("b" (cmd (ins "(destructuring-bind ({}){})")))
       ("B" (cmd (ins "(multiple-value-bind ({}){})")))
