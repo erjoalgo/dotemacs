@@ -156,7 +156,8 @@ otherwise, leave it intact"
       ("b" (cmd (ins "(destructuring-bind ({}){})")))
       ("B" (cmd (ins "(multiple-value-bind ({}){})")))
       ("t" (cmd (ins "(ert-deftest test-{} (){(nli)}{})")))
-      ("l" (cmd (ins "(defclass ({}){(nli)}{})")))
+      ("c" (cmd (ins "(defclass {} ({}){(nli)}{})")))
+      ("l" (cmd (ins "(labels ({}){(nli)}{}){(nli)}")))
       ("k"
        (but
         ("p" (cmd (ins "(defpackage {}{(nli)}(:use :cl){})")))
@@ -178,7 +179,6 @@ otherwise, leave it intact"
       ("x" (cmd (ins "(lexical-let ({}){(nli)}{}){(nli)}")))
       ("X" (cmd (ins "(lexical-let* ({}){(nli)}{}){(nli)}")))
       ("m" (cmd (ins "(macrolet ({}){(nli)}{}){(nli)}")))
-      ("a" (cmd (ins "(labels ({}){(nli)}{}){(nli)}")))
       ("d" (cmd (ins "(destructuring-bind ({}){})")))
       ("b" (cmd (ins "(multiple-value-bind ({}){})")))))
     ("e" (cmd (ins "(setf {})")))
@@ -290,7 +290,7 @@ otherwise, leave it intact"
     ("d"
      (but
       ("i" (cmd (ins "(declare (ignore {}))")))
-      ("c" (cmd (ins "(defcommand {} ({}) ({}){(nli)}{})")))
+      ("n" (cmd (ins "(defcommand {} ({}) ({}){(nli)}{})")))
       ("p" (cmd (ins "(defparameter {})")))
       ("t" (cmd (ins "(deftest test-{} (){(nli)}{})")))
       ("T" (cmd (ins "(fiasco:define-test-package #:{0}/test{(nli)}"
