@@ -43,11 +43,11 @@
         ("d" 'downcase-region)
         ;; "sentence" case
         ("s" 'capitalize-region)))))
-    ((kbd "M-.") (lambda () (interactive)
+    ((kbd "M-.") (cmd
                    (if (get-buffer "*compilation*")
                        (call-interactively 'next-error)
                      (call-interactively 'flymake-goto-next-error))))
-    ((kbd "M-,") (lambda () (interactive)
+    ((kbd "M-,") (cmd
                    (if (get-buffer "*compilation*")
                        (call-interactively 'previous-error)
                      (call-interactively 'flymake-goto-prev-error))))
@@ -58,8 +58,7 @@
    (python-mode-map)
    (but
     ("e"
-     (lambda nil
-       (interactive)
+     (cmd
        (insert
         (if
             (looking-back "^[ 	]*[a-zA-Z_.,]+ *")
@@ -906,8 +905,7 @@
     ((kbd "<s-tab>") 'org-indent-block)
     ("return" 'org-toggle-list-heading)
     ("i"
-     (lambda nil
-       (interactive)
+     (cmd
        (if org-inline-image-overlays
            (org-remove-inline-images)
          (org-display-inline-images))))
@@ -943,8 +941,7 @@
    (term-raw-map)
    (but
     ("c"
-     (lambda nil
-       (interactive)
+     (cmd
        "send ^C^C"
        (term-send-raw-string "")
        (term-send-raw-string "")))))
