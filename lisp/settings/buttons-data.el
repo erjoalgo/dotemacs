@@ -960,6 +960,19 @@
     ("p" 'magit-go-backward)
     ("n" 'magit-go-forward)))
 
+ (defun git-hunk-toggle-cmd (dest-indicator)
+   `(lambda (a b)
+      ,(format "make region hunk lines start with '%s'" dest-indicator)
+      (interactive (if (region-active-p)
+                       (list (region-beginning) (region-end))
+                     (list (line-beginning-position)
+                           (line-end-position
+                            (when (numberp current-prefix-arg) current-prefix-arg)))))
+      (save-excursion
+        (goto-char a)
+        (while (re-search-forward "^[-+ ]" b t nil)
+          (replace-match ,dest-indicator t)))))
+
  (defbuttons diff-buttons nil
    (diff-mode-map)
    (but
