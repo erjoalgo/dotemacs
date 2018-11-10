@@ -1,15 +1,3 @@
-(defun super-add (key-spec)
-  "if ‘key-spec' is a string, then prefix it with super
-otherwise, leave it intact"
-  (if (not (stringp key-spec))
-      key-spec
-    (if (equal key-spec "\\")
-        (kbd "s-\\")
-      (let ((fmt
-             (if (equal (length key-spec) 1) "(kbd \"s-%s\")"
-               "(kbd \"<s-%s>\")")))
-        (eval (read (format fmt key-spec)))))))
-
 (buttons-macrolet
  ((inm () `(global-erjoalgo-command-mode 0))
   (spc? () `(unless (looking-back " ") (insert " ")))
@@ -19,7 +7,7 @@ otherwise, leave it intact"
                              (newline-and-indent))))
 
 (let-when-compile
-     ((*buttons-make-key-mapper* 'super-add))
+     ((*buttons-make-key-mapper* 'buttons-modifier-add-super))
 
  (defbuttons programming-buttons nil nil
    (but
