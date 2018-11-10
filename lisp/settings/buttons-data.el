@@ -1029,8 +1029,7 @@
         ("c" (cmd (let ((apropos-do-all nil))
                     (call-interactively 'apropos-command))))
         ;; variables
-        ("v" (cmd (call-interactively 'apropos-variable)))))))))
-)
+        ("v" (cmd (call-interactively 'apropos-variable))))))))))
 
 (defbuttons slime-buttons
    nil
@@ -1042,5 +1041,4 @@
       ("s" 'slime-describe-symbol)
       ("f" 'slime-describe-function)
       ("d" 'slime-documentation-lookup)
-      ("z" 'slime-apropos-all))))))
-)
+      ("z" 'slime-apropos-all)))))))
