@@ -292,7 +292,7 @@
 
 (buttons-macrolet
  ()
- (global-set-key [s-backspace] (cmd (ins "`")))
+ (global-set-key [s-backspace] 'buttons-abort-cmd)
  (global-set-key (kbd "s-SPC") (cmd (ins ", "))))
 
 (global-set-key (kbd "<C-f11>") 'eval-buffer)
