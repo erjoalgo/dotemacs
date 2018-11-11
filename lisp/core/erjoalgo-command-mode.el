@@ -327,8 +327,8 @@
                  (setf prefix-arg ,i)))
             finally (return kmap)))
 
-(define-keymap-onto-keymap super-fn-prefix-arg-map erjoalgo-command-mode-map)
-(define-keymap-onto-keymap super-fn-prefix-arg-map global-map)
+(buttons-define-keymap-onto-keymap super-fn-prefix-arg-map erjoalgo-command-mode-map)
+(buttons-define-keymap-onto-keymap super-fn-prefix-arg-map global-map)
 
 ;;this is actually part of erjoalgo-command-mode
 ;;make mode-line text very big and easy to read
