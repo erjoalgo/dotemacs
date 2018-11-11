@@ -332,26 +332,23 @@
 
 ;;this is actually part of erjoalgo-command-mode
 ;;make mode-line text very big and easy to read
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(mode-line ((t (:background "dark gray"
-			      :foreground "white"
-			      :box (:line-width -1 :style released-button)
-			      :weight normal
-			      :height 2.0
-			      :width extra-expanded))))
- '(mode-line-inactive ((t (:inherit mode-line
-				    :background "grey90"
-				    :foreground "grey20"
-				    :box (:line-width -1 :color "grey75")
-				    :weight light
-				    :height 1.1
-				    :width normal))))
- ;(set-face-attribute 'region nil :background "green")
-'(region ((t :background "#666" :foreground "#ffffff"))))
+(progn
+  (face-spec-set 'mode-line
+                 '((t (:background "dark gray"
+			           :foreground "white"
+			           :box (:line-width -1 :style released-button)
+			           :weight normal
+			           :height 2.0
+			           :width extra-expanded))))
+  (face-spec-set 'mode-line-inactive
+                 '((t (:inherit mode-line
+				:background "grey90"
+				:foreground "grey20"
+				:box (:line-width -1 :color "grey75")
+				:weight light
+				:height 1.1
+				:width normal))))
+  (face-spec-set 'region '((t :background "#666" :foreground "#ffffff"))))
 
 (defun load-dark-theme-toggle ()
   (interactive)
