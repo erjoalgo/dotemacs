@@ -7,7 +7,7 @@
                              (newline-and-indent))))
 
 (let-when-compile
-     ((*buttons-make-key-mapper* 'buttons-modifier-add-super))
+     ((buttons-make-key-mapper 'buttons-modifier-add-super))
 
  (defbuttons programming-buttons nil nil
    (but
@@ -681,7 +681,7 @@
               (ins " in {}; do{(nli)}{}{(nli)}done")))
     ("H" (cmd
           (let-when-compile
-              ((*buttons-insert-rec-template-directive-regexp* "<\\(.*\\)>"))
+              ((buttons-insert-rec-template-directive-regexp "<\\(.*\\)>"))
             (ins "<(upcase-last)>=${1} && shift")
             (ins "<(nli)>"))))
     ("g" "true")
@@ -1011,7 +1011,7 @@
     ("5" 'sldb-invoke-restart-5)))
 
 (let-when-compile
-    ((*buttons-make-key-mapper* nil))
+    ((buttons-make-key-mapper nil))
 
  (defbuttons minibuffer-quick-yes-button
    nil
@@ -1048,7 +1048,7 @@
     ("h"
      (but
       ("a" 'slime-apropos)
-      ("s" 'slime-describe-symbol)
+      ("d" 'slime-describe-symbol)
       ("f" 'slime-describe-function)
       ("d" 'slime-documentation-lookup)
       ("z" 'slime-apropos-all)))))))
