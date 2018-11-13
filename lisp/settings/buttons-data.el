@@ -832,6 +832,7 @@
     ("f"
      (but
       ("a" (cmd (ins "for(auto& {}: {}){(cbd)}")))))
+    ("G" (cmd (ins "nullptr")))
     ("i"
      (but
       ("m" (cmd (ins "map<{}> ") (inm)))
