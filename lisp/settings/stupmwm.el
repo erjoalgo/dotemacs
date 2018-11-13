@@ -59,13 +59,14 @@ Example: (stumpwm-eval '(STUMPWM::message \"hello\"))."
 in the current STUMPWM group/workspace."
   ;; emacs' frame-visible-p does not seem to account
   ;; for another window raised on top of the emacs frame
-  (slime-eval `(CL:mapcar
+  '(slime-eval `(CL:mapcar
                 ',(if pid
                    'STUMPWM::window-pid
                    'STUMPWM::window-id)
                 (CL:remove-if-not
                  'STUMPWM::window-visible-p
-                 (STUMPWM::group-windows (STUMPWM:current-group))))))
+                 (STUMPWM::group-windows (STUMPWM:current-group)))))
+  t)
 
 (defun stumpwm-message (text &optional color host port)
   (let* ((host (or host 'local))
