@@ -42,16 +42,25 @@
       (make-directory dir t))
     dir))
 
+(defun babel-english-to-spanish (text)
+  (interactive "senter english text: ")
+  (let ((english (babel-string text "en" "es" 'google)))
+    (message "translated: %s" english)
+    english))
+
 (defun translation-new (name &optional text-english dir)
   (interactive `(nil))
   (setf name (or name (read-string "senter name of translation: ")))
   (setf dir (translation-mkdir name dir))
 
-  (translation-interactive-create-file
-   (translation-suffix name 'english dir) text-english)
+  (let ((text-english
+         (translation-interactive-create-file
+          (translation-suffix name 'english dir) text-english)))
+        (assert text-english)
+        (translation-interactive-create-file
+         (translation-suffix name 'spanish dir)
+         (babel-english-to-spanish text-english))))
 
-  (translation-interactive-create-file
-   (translation-suffix name 'spanish dir) ""))
 
 (defun translation-new-correction
     (name &optional text-original text-english dir)
