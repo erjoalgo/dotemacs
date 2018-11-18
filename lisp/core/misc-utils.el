@@ -666,3 +666,31 @@ This requires the external program `diff' to be in your `exec-path'."
           (loop for (len . others) in points
                 when (>= len selected-length)
                 do (mapc 'kill-buffer others)))))))
+
+(defun selcand-hints (cands &optional chars)
+  (setf chars (or chars "qwertasdfzxcv1234"))
+  (let* ((w (ceiling (log (length cands) (length chars))))
+         (hints (loop with curr = '("")
+                      for wi below w do
+                      (setf curr
+                            (loop for c across chars
+                                  append (mapcar (apply-partially
+                                                  'concat (char-to-string c))
+                                                 curr)))
+                      finally (return curr))))
+    (loop for hint in hints
+          for cand in cands
+          collect (cons hint cand))))
+
+(defun selcand-select (cands &optional prompt)
+  (let* ((hints-cands (selcand-hints cands))
+         (sep ") ")
+         (choices (loop for (hint . cand) in hints-cands
+                        collect (concat hint sep (prin1-to-string cand))))
+         (prompt (or prompt "select candidate: "))
+         (choice (completing-read prompt choices
+                                  nil
+                                  t))
+         (cand (let* ((hint (car (s-split sep choice))))
+                 (cdr (assoc hint hints-cands #'equal)))))
+    cand))
