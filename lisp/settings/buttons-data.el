@@ -72,7 +72,10 @@
     ("c" (cmd (ins "else:{(nli)}")))
     ("v" (cmd (ins " if {} else {}")))
     ("1" (cmd (ins "not ")))
-    ("d" (cmd (ins "def {}({(inm)}{}):{(nli)}")))
+    ("d"
+     (but
+      ("f" (cmd (ins "def {}({(inm)}{}):{(nli)}")))
+      ("_" (cmd (ins "def __init__(self):{(nli)}")))))
     ("a" (cmd (ins "lambda {}: {(inm)}")))
     ("2" (cmd (ins "\"{}\"")))
     ("@" (cmd (ins "'{}'")))
@@ -90,7 +93,6 @@
     ("'" (cmd (ins "\"\"\"{}\"\"\"{(nli)}")))
     ("W" (cmd (ins "with open({}, \"{}\") as fh:{(nli)}{}{(nli)}")))
     ("SPC" (cmd (ins ", ")))
-    ("I" (cmd (ins "def __init__( self ):{(nli)}")))
     ("0" (cmd (insert python-argparse-template)))
     ("t" (cmd (ins "True")))
     ("g" (cmd (ins "False")))
