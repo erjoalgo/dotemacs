@@ -64,7 +64,7 @@
             (looking-back "^[ 	]*[a-zA-Z_.,]+ *")
             " = " "="))))
     ("f" (cmd (ins "for {} in {}:{(nli)}{}{(nli)}{(idt)}")))
-    ("F" (cmd (ins "[ {} for {} in {} ]")))
+    ("F" (cmd (ins "[{} for {} in {}]")))
     ("w" (cmd (ins "while {}:{(nli)}{}{(nli)}{(idt)}")))
     ("T" (cmd (ins "try:{(nli)}{}{(nli)}{(idt)}except:{(nli)}")))
     ("z" (cmd (ins "if {}:{(nli)}")))
