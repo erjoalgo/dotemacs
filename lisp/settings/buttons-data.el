@@ -117,7 +117,16 @@
     ("u"
      (but
       ("a" (cmd (ins "assert({})")))
-      ("0" (cmd (ins "from __future__ import print_function")))))))
+      ("0" (cmd (ins "from __future__ import print_function")))
+      ("l" (but
+            ("r" (cmd (regexp-replace-select-from-list `
+                       (
+                        (" = " . "=")
+                        ("print ( \\(.*\\) ?)" . "print(\\1)")
+                        ;; "^[ 	]*[a-zA-Z_.,]+ *"
+                        ;;
+                        ("^def \\(.*?\\) ( \\(.*?\\) ):" . "def \\1 (\\2):")))))
+            ("c" 'python-check)))))))
 
  (defbuttons pdb-buttons python-buttons
    (inferior-python-mode-map)
