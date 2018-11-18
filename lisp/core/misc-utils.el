@@ -694,3 +694,10 @@ This requires the external program `diff' to be in your `exec-path'."
          (cand (let* ((hint (car (s-split sep choice))))
                  (cdr (assoc hint hints-cands #'equal)))))
     cand))
+
+(defun regexp-replace-select-from-list (regexp-replacement-alist &optional noquery)
+  (destructuring-bind (regexp . replacement)
+      (selcand-select regexp-replacement-alist)
+    (funcall
+     (if noquery 'replace-regexp 'query-replace-regexp)
+     regexp replacement)))
