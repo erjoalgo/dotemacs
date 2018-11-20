@@ -4,4 +4,4 @@
       '("^\\(.*?\\)(\\([0-9]+\\)): \\(.*\\)" 1 2 nil 3))
 (add-hook 'js-mode-hook 'flymake-jslint-load)
 
-(push jsl-err-line-pattern flymake-proc-err-line-patterns)
+;; (push jsl-err-line-pattern flymake-proc-err-line-patterns)
