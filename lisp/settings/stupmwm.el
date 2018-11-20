@@ -66,7 +66,7 @@ in the current STUMPWM group/workspace."
                 (CL:remove-if-not
                  'STUMPWM::window-visible-p
                  (STUMPWM::group-windows (STUMPWM:current-group)))))
-  t)
+  nil)
 
 (defun stumpwm-message (text &optional color host port)
   (let* ((host (or host 'local))
