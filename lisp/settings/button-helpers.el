@@ -36,7 +36,8 @@
                            (save-excursion
                              (when arg (next-logical-line (1- arg)))
                              (point))))))
-         (let* ((start (save-excursion
+         (let* ((comment-start (or comment-start "# "))
+                (start (save-excursion
                          (goto-char (car start-end))
                          (line-beginning-position)))
                 (end (save-excursion
