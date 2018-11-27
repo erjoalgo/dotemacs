@@ -161,7 +161,7 @@
       ("b" (cmd (ins "(destructuring-bind ({}){})")))
       ("B" (cmd (ins "(multiple-value-bind ({}){})")))
       ("t" (cmd (ins "(ert-deftest test-{} (){(nli)}{})")))
-      ("c" (cmd (ins "(defclass {} ({}){(nli)}{})")))
+      ("c" (cmd (ins "(defclass {} ({}){(nli)}({}))")))
       ("l" (cmd (ins "(labels ({}){(nli)}{}){(nli)}")))
       ("k"
        (but
