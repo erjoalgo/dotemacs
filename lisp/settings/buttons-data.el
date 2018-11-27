@@ -43,16 +43,23 @@
         ("d" 'downcase-region)
         ;; "sentence" case
         ("s" 'capitalize-region)))))
-    ((kbd "M-.") (cmd
-                   (if (get-buffer "*compilation*")
-                       (call-interactively 'next-error)
-                     (call-interactively 'flymake-goto-next-error))))
-    ((kbd "M-,") (cmd
-                   (if (get-buffer "*compilation*")
-                       (call-interactively 'previous-error)
-                     (call-interactively 'flymake-goto-prev-error))))
+    ((kbd "M-.") 'my-next-error)
+    ((kbd "M-,") 'my-prev-error)
     ("R" (cmd (ins "***REMOVED***")))
     ("T" (but ("D" (cmd (ins "{comment-start} TODO ")))))))
+
+ (defun my-next-error (&optional prev)
+   (interactive)
+   (cond
+    ((get-buffer "*compilation*")
+     (call-interactively (if prev 'previous-error 'next-error)))
+    (flycheck-mode (call-interactively
+                    (if prev 'flycheck-goto-prev-error 'flycheck-goto-next-error)))
+    (flymake-mode (if prev flymake-goto-prev-error flymake-goto-next-error))))
+
+ (defun my-prev-error ()
+   (interactive)
+   (my-next-error t))
 
  (defbuttons python-buttons programming-buttons
    (python-mode-map)
