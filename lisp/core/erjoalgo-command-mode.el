@@ -286,7 +286,6 @@
 
 (global-set-key [M-f1] 'goto-last-change)
 
-(global-set-key [escape] 'exit-recursive-edit)
 (global-set-key [f4] 'keyboard-escape-quit)
 (define-key 'help-command "y" 'find-function);;find source for function-at-point
 

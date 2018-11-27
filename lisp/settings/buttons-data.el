@@ -1063,4 +1063,10 @@
       ("d" 'slime-describe-symbol)
       ("f" 'slime-describe-function)
       ("d" 'slime-documentation-lookup)
-      ("z" 'slime-apropos-all)))))))
+      ("z" 'slime-apropos-all)))))
+
+(defbuttons global-buttons
+   nil
+   (global-map)
+   (but
+    ([escape] 'exit-recursive-edit)))))
