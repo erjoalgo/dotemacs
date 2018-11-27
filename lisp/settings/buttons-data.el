@@ -1,3 +1,5 @@
+(require 'buttons)
+
 (buttons-macrolet
  ((inm () `(global-erjoalgo-command-mode 0))
   (spc? () `(unless (looking-back " ") (insert " ")))
