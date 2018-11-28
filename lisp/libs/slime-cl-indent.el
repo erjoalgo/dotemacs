@@ -41,7 +41,7 @@
 
 ;;; Code:
 
-(require 'slime) ; only for its cl-lib loading smartness
+;; (require 'slime) ; only for its cl-lib loading smartness
 (require 'cl-lib)
 (eval-when-compile (require 'cl))
 
