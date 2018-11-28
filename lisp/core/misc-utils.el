@@ -1,3 +1,5 @@
+(require 'cl-lib)
+
 (defun whereis (program)
   (interactive "senter program: ")
   (let ((dirs
