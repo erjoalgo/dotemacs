@@ -56,7 +56,7 @@
     (cond
      ((get-buffer "*compilation*") (if prev 'previous-error 'next-error))
      (flymake-mode (if prev 'flymake-goto-prev-error 'flymake-goto-next-error))
-     (flycheck-mode (if prev 'flycheck-goto-prev-error 'flycheck-goto-next-error)))))
+     (flycheck-mode (if prev 'flycheck-previous-error 'flycheck-next-error)))))
 
  (defun my-prev-error ()
    (interactive)
