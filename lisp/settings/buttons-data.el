@@ -188,7 +188,7 @@
       ("m" (cmd (ins "(macrolet ({}){(nli)}{}){(nli)}")))
       ("d" (cmd (ins "(destructuring-bind ({}){})")))
       ("b" (cmd (ins "(multiple-value-bind ({}){})")))))
-    ("e" (cmd (ins "(setf {})")))
+    ("e" (cmd (ins "(setq {})")))
     ("E" (cmd (forward-sexp)
               (my-eval-defun)))
     ("i" (cmd (ins "(interactive)")))
@@ -296,6 +296,7 @@
    (but
     ("d"
      (but
+      ("e" (cmd (ins "(setf {})")))
       ("i" (cmd (ins "(declare (ignore {}))")))
       ("n" (cmd (ins "(defcommand {} ({}) ({}){(nli)}{})")))
       ("p" (cmd (ins "(defparameter {})")))
