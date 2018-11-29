@@ -52,12 +52,11 @@
 
  (defun my-next-error (&optional prev)
    (interactive)
-   (cond
-    ((get-buffer "*compilation*")
-     (call-interactively (if prev 'previous-error 'next-error)))
-    (flycheck-mode (call-interactively
-                    (if prev 'flycheck-goto-prev-error 'flycheck-goto-next-error)))
-    (flymake-mode (if prev flymake-goto-prev-error flymake-goto-next-error))))
+   (call-interactively
+    (cond
+     ((get-buffer "*compilation*") (if prev 'previous-error 'next-error))
+     (flymake-mode (if prev 'flymake-goto-prev-error 'flymake-goto-next-error))
+     (flycheck-mode (if prev 'flycheck-goto-prev-error 'flycheck-goto-next-error)))))
 
  (defun my-prev-error ()
    (interactive)
