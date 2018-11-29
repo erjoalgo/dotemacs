@@ -1,7 +1,8 @@
 (require 'buttons)
 
 (buttons-macrolet
- ((inm () `(global-erjoalgo-command-mode 0))
+ ((inm () (when (functionp 'global-erjoalgo-command-mode)
+            `(global-erjoalgo-command-mode 0)))
   (spc? () `(unless (looking-back " ") (insert " ")))
   (rnd () `(number-to-string (random 500)))
   (buf () `(f-base (buffer-name)))
