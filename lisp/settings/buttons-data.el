@@ -164,6 +164,9 @@
       ("B" (cmd (ins "(multiple-value-bind ({}){})")))
       ("t" (cmd (ins "(ert-deftest test-{} (){(nli)}{})")))
       ("c" (cmd (ins "(defclass {} ({}){(nli)}({}))")))
+      ("u" (cmd (ins "(defcustom {} \"{}\""
+                     (nli) ":type '"
+                     (nli) ":group '")))
       ("l" (cmd (ins "(labels ({}){(nli)}{}){(nli)}")))
       ("k"
        (but
@@ -381,8 +384,11 @@
               (ins ";{(inm)}")))
     ("1" (cmd (ins "!")))
     ("n" (but
-            ("v" (cmd (ins "cout << \"{(f-base (buffer-file-name))}: value of {0}: \""
-                           "{(nli?)}<< {0} << endl;")))
+          ("v" (cmd (ins "cout << \""
+                         (f-base (buffer-file-name))
+                         ": value of {0}: \""
+                         (nli?)
+                         "<< {0} << endl;")))
             ("V" (cmd (ins "cout << \"{(f-base (buffer-file-name))}: proto {0}: \""
                            "{(nli?)}<< {0}.DebugString() << endl;")))
             ("t" (cmd (if t ;; TODO check if on google3. or make it a minor mode
@@ -697,14 +703,10 @@
     ("l" (cmd (insert " || exit ${LINENO}")))
     ("L" (cmd (ins "echo \"{}")
               (insert "\" && exit ${LINENO}")))
-    ("f" (cmd (ins "for {}")
-              (upcase-last)
-              (ins " in {}; do{(nli)}{}{(nli)}done")))
-    ("H" (cmd
-          (let-when-compile
-              ((buttons-template-insert-directive-regexp "<\\(.*?\\)>"))
-            (ins "<(upcase-last)>=${1} && shift")
-            (ins "<(nli)>"))))
+    ("f" (cmd (ins "for {}"
+                   (upcase-last)
+                   " in {}; do{(nli)}{}{(nli)}done")))
+    ("H" (cmd (upcase-last) (insert "=${1} && shift")))
     ("g" (cmd (ins "true")))
     ("G" (cmd (ins "false")))
     ("C" (cmd (ins "<<EOF{(nli)}{}{(nli)}EOF")))
