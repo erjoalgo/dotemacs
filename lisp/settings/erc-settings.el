@@ -65,13 +65,8 @@ The function is suitable for `erc-after-connect'."
   (when (string-match (format "\\(.*?\\)%s+$" erc-nick-uniquifier) nick)
     (let ((nick-orig (match-string 1 nick))
           (password erc-session-password))
-      (message "change attempt count: %s %s %s"
-               erc-nick-change-attempt-count
-               erc-bad-nick
-               nick)
       (when (y-or-n-p (format "Current nick is '%s'. Do you want to ghost?"
                               nick))
-        (message "orig pass is %s" password)
         (erc-message "PRIVMSG" (format "NickServ GHOST %s %s"
 				       nick-orig password))
 	(erc-cmd-NICK nick-orig)
