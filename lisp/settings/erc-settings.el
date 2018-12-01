@@ -78,4 +78,8 @@ The function is suitable for `erc-after-connect'."
 	(erc-message "PRIVMSG" (format "NickServ identify %s %s"
 				       nick-orig password))))))
 
+(defadvice erc-nickname-in-use (before erc-set-random-nick-uniquifier activate)
+  "Pick a random nick uniquifier to minimize chance of colliding again with ghosts."
+  (setq erc-nick-uniquifier (char-to-string (seq-random-elt "`123456789áéíóú你好"))))
+
 (add-hook 'erc-after-connect 'erc-ghost-maybe)
