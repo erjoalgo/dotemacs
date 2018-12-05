@@ -863,6 +863,7 @@
       ("s" (cmd (ins "string ")))
       ("S" (cmd (ins "string& ")))
       ("t" (but
+            ("e" (cmd (ins "true")))
             ("s" (cmd (ins "std::")))
             ("f" (cmd (ins "file::")))
             ("g" (but
