@@ -184,8 +184,6 @@
 
 (defmacro -> (&rest forms)
   (if (cadr forms)
-      ;;(destructuring-bind (first (a a-rest) . rest) forms
-      ;;`(-> a first a-rest ,@rest))
       (destructuring-bind (first second . rest) forms
 	(destructuring-bind (a . a-rest) (if (atom second)
 					     (cons second nil)
