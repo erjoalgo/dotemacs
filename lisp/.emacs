@@ -84,28 +84,42 @@
       if (file-directory-p fn)  do
       (add-to-list 'load-path fn))
 
+(defun current-time-ms ()
+  (destructuring-bind (_ secs usecs __) (current-time)
+    (+ (* 1000 secs) (/ usecs 1000))))
+
+(defmacro with-elapsed-time (elapsed-time-ms-var form &rest body)
+  (let ((start-time-sym (gensym "start-time"))
+        (time-now-form `(current-time-ms)))
+    `(let ((,start-time-sym ,time-now-form))
+       ,form
+       (let ((,elapsed-time-ms-var (- ,time-now-form ,start-time-sym)))
+         ,@body))))
+
 (defun load-rec (top-dir)
   "Load *.el files under TOP-DIR recursively."
   (loop for file in (directory-files top-dir)
         as filename-abs = (f-join top-dir file)
-        if (file-directory-p filename-abs) do
+        if (file-directory-p filename-abs) append
         (unless (member file '("." ".."))
           (load-rec filename-abs))
-        else do
-        (when (and (file-regular-p filename-abs)
-                   (equal "el" (f-ext filename-abs)))
-          (safe-funcall 'load filename-abs))))
+        else when (and (file-regular-p filename-abs)
+                       (equal "el" (f-ext filename-abs)))
+        collect
+        (with-elapsed-time ms
+                           (safe-funcall 'load filename-abs)
+                           (cons ms filename-abs) )))
 
 (let ((default-directory emacs-top))
-  (mapc 'load-rec
-        ;; specifiy order explicitly
-        (remove-if-not
-         'file-exists-p
-         (list
-          "core" "private" "settings" "extra"
-          "extra-dirs"
-          "experimental"
-          (expand-file-name "~/private-data/emacs-lisp")
-          (expand-file-name "~/private-data-one-way/emacs-lisp")))))
-
-(defvar stigma "Ϛ")
+  (let ((load-times
+         (loop for dir in (list
+                           "core" "private" "settings" "extra"
+                           "extra-dirs"
+                           "experimental"
+                           (expand-file-name "~/private-data/emacs-lisp")
+                           (expand-file-name "~/private-data-one-way/emacs-lisp"))
+               when (file-exists-p dir)
+               append (load-rec dir))))
+    (sort load-times (lambda (a b) (< (car a) (car b))))
+    (loop for (ms . file) in load-times
+          do (message "%dms to load %s" ms file))))
