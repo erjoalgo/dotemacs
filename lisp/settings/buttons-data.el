@@ -674,7 +674,7 @@
               (rec)
               (upcase-last)
               (ins "}")))
-    ("w" (cmd (ins "while {}; do{(nli)}{}{(nli)}done")))
+    ("w" (cmd (ins "while {}; do{(nli)}{}{(nli)}done" (idt))))
     ("e" (cmd (upcase-last)
               (ins "=")))
     ("E" (cmd (upcase-last)
