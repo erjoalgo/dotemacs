@@ -429,6 +429,7 @@
       ("n" (cmd (ins "int ") (inm)))
       ("3" (cmd (ins "int32 ") (inm)))
       ("6" (cmd (ins "int64 ") (inm)))
+      ("d" (cmd (ins "double ") (inm)))
       ("l" (cmd (ins "long ") (inm)))
       ("c" (cmd (ins "char ") (inm)))
       ("C" (cmd (ins "char* ") (inm)))
