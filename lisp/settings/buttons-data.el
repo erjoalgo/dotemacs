@@ -998,12 +998,9 @@
  (defbuttons diff-buttons nil
    (diff-mode-map)
    (but
-    ("-"
-     (git-hunk-toggle-cmd "-"))
-    ("="
-     (git-hunk-toggle-cmd "+"))
-    ("0"
-     (git-hunk-toggle-cmd " "))))
+    ("-" (git-hunk-toggle-cmd "-"))
+    ("=" (git-hunk-toggle-cmd "+"))
+    ("0" (git-hunk-toggle-cmd " "))))
 
  (defbuttons backtrace-bindings nil
    (debugger-mode-map emacs-lisp-mode-map inferior-emacs-lisp-mode-map)
