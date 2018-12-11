@@ -709,7 +709,9 @@
     ("H" (cmd (upcase-last) (insert "=${1} && shift")))
     ("g" (cmd (ins "true")))
     ("G" (cmd (ins "false")))
-    ("C" (cmd (ins "<<EOF{(nli)}{}{(nli)}EOF")))
+    ("C" (cmd (ins "<<EOF{(nli)}{}"
+                   (unless (looking-back "^[ 	]*") (nli))
+                   "EOF")))
     ;; ( "x" 'shell-command-of-region)
     ("0" (cmd (insert sh-getopt-template)))
     ("t" (but
