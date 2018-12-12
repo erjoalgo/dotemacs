@@ -1,4 +1,4 @@
-;;; project-opener.el ---
+;;; project-opener.el --- Quickly resume work on an existing project
 
 ;; Copyright (C) 2018  Ernesto Alfonso <erjoalgo@gmail.com>
 
@@ -23,7 +23,10 @@
 
 ;;; Code:
 
+(require 'f)
+(require 'cl)
 (defun add-one-time-hook (hook-var fn)
+  "Add to HOOK-VAR a function which calls FN and then removes itself from HOOK-VAR."
   (let ((fun-sym (gensym "anon-hook-fn")))
     ;; (lexical-let ((fn fn) (fun-sym fun-sym))
     (fset fun-sym
@@ -36,10 +39,11 @@
     (add-hook hook-var fun-sym)))
 
 (defun add-one-time-log-hooks (hook-syms)
+  "Use add-one-time-hooks to log a one-time message after each hook in HOOK-SYMS runs."
   (interactive
    (list (symbols-matching-regexp
           (read-string "enter hook symbol regexp: " "-hook"))))
-  (loop for hook in hook-syms do
+  (cl-loop for hook in hook-syms do
         (add-one-time-hook
          hook
          `(lambda (&rest args)
@@ -47,6 +51,7 @@
                      ',hook args default-directory)))))
 
 (defun symbols-matching-regexp (regexp)
+  "List of symbols matching REGEXP."
   (save-match-data
     (let (syms)
       (mapatoms (lambda (atom) (when (and (symbolp atom)
@@ -57,6 +62,7 @@
 ;;                             (lambda () (message "one-time-hook ran")))
 
 (defun find-files-recursively (top &optional pred action)
+  "Recursively find files in directory TOP.  Filter by PRED and invoke ACTION on each."
   (assert (f-absolute? top))
   ;; (lexical-let ((default-directory (f-expand top)))
   (setf pred (or pred 'identity)
@@ -71,36 +77,43 @@
                              (find-files-recursively abs pred)))
        ((f-symlink? abs) (warn "broken symlink: %s" abs))
        (t (require 'edebug) (edebug)
-          (error "not a file or directory? %s" abs))))))
+          (error "Not a file or directory? %s" abs))))))
 
 (defun project-open-default-matcher (top-level-directory &rest ...)
+  "Matcher invoked when no other matcher matched.
+
+   Opens all project files recursively under TOP-LEVEL-DIRECTORY."
   (find-files-recursively top-level-directory))
 
 (defvar project-open-matchers-list nil
   "List of project matchers.
+
    Each matcher is invoked with the project's top-level-directory
    and a list of top-level files/directories.")
 
-(defun file-extension-matches (ext file)
+(defun file-extension-matches-p (ext file)
+  "Return t if FILE's extension is EXT."
   (equal (f-ext file) ext))
 
 (defun project-open-cl-post-slime-connected (original-directory
                                              &optional
                                              top-level-files
                                              asd-filename)
+  "Eval starting expressions in a slime invocation started to open a CL project rooted at ORIGINAL-DIRECTORY."
   (setf top-level-files (or top-level-files
                             (directory-files original-directory))
-        asd-filename (->>
-                      top-level-files
-                      (remove-if-not
-                       (apply-partially 'file-extension-matches "asd"))
-                      car))
+        asd-filename (or asd-filename
+                         (->>
+                          top-level-files
+                          (remove-if-not
+                           (apply-partially 'file-extension-matches-p "asd"))
+                          car)))
 
   (assert asd-filename)
 
   (message "on project-open-cl-post-slime-connected")
 
-  (loop for form in '((current-buffer)
+  (cl-loop for form in '((current-buffer)
                       major-mode
                       default-directory
                       original-directory
@@ -113,7 +126,7 @@
         (filename def-syms)
         (with-temporary-current-file
          filename
-         (loop for sexp in (read-top-level-sexps (buffer-string))
+         (cl-loop for sexp in (read-top-level-sexps (buffer-string))
                when (and (consp sexp) (member (car sexp) def-syms))
                collect (cadr sexp)))))
 
@@ -139,7 +152,7 @@
       (slime-cd original-directory)
       (let ((sexp `(CL:progn
                     (CL:load ,asd-filename)
-                    ,@(loop for system in systems collect
+                    ,@(cl-loop for system in systems collect
                             `(ql:quickload ',system)))))
         (message "sexp: %s" sexp)
         ;; TODO wrap in handler-case
@@ -155,17 +168,17 @@
           (slime-eval `(CL:LOAD ,filename)))))))
 
 (defun project-open-cl (top-level-directory &optional top-level-files)
-  "project-opener matcher for a CL project rooted at
-   TOP-LEVEL-DIRECTORY.
+  "project-opener matcher for a CL project rooted at TOP-LEVEL-DIRECTORY.
+
    Start slime, load the .asd file,
    quickload all the systems defined in it.
    Also load a file 'repl-startup.lisp' if it exists."
 
-  (loop for file in top-level-files thereis
-        (when (file-extension-matches "asd" file)
+  (cl-loop for file in top-level-files thereis
+        (when (file-extension-matches-p "asd" file)
           (find-files-recursively top-level-directory
                                   (lambda (filename)
-                                    (not (file-extension-matches
+                                    (not (file-extension-matches-p
                                           "fasl" filename))))
           (let ((default-directory top-level-directory))
             (save-excursion
@@ -182,9 +195,10 @@
 (add-to-list 'project-open-matchers-list 'project-open-cl)
 
 (defun project-open (top-level-directory)
+  "Open a project rooted at TOP-LEVEL-DIRECTORY."
   (interactive (list (read-directory-name "enter project directory: "
                                           "~/git/")))
-  (loop for matcher in (append project-open-matchers-list
+  (cl-loop for matcher in (append project-open-matchers-list
                                (list 'project-open-default-matcher))
         with top-level-filenames = (directory-files top-level-directory)
         do (message "trying matcher %s" matcher)
