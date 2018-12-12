@@ -162,7 +162,7 @@
 
 (defun set-clipboard (x)
   (x-set-selection 'CLIPBOARD x)
-  (x-set-selection nil x))
+  (x-set-selection 'PRIMARY x))
 
 (defun at-beginning-of-sexp ()
   (condition-case ex
