@@ -52,3 +52,29 @@ parser.add_argument(\"-n\", \"--no_strip_newline\",  action=\"store_true\",
 args=vars(parser.parse_args())
 globals().update(args)
 ")
+
+
+(defun python-check-read-check-command ()
+  (read-string "Check command: "
+               (or python-check-custom-command
+                   (concat python-check-command " "
+                           (shell-quote-argument
+                            (or
+                             (let ((name (buffer-file-name)))
+                               (and name
+                                    (file-name-nondirectory name)))
+                             ""))))))
+
+(defun python-check (command)
+  "Check a Python file (default current buffer's file).
+Runs COMMAND, a shell command, as if by `compile'.
+See `python-check-command' for the default."
+  (interactive
+   (list (or (unless current-prefix-arg python-check-custom-command)
+             (python-check-read-check-command))))
+  (setq python-check-custom-command command)
+  (save-some-buffers (not compilation-ask-about-save) nil)
+  (python-shell-with-environment
+    (compilation-start command nil
+                       (lambda (_modename)
+                         (format python-check-buffer-name command)))))
