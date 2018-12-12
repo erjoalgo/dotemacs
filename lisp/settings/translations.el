@@ -285,9 +285,27 @@ a translation from scratch"
                      (,fun (match-string 0)))))
           phrases))
 
+(setq month-regexp
+      (s-join "\\|"
+              (loop for mon in
+                    (append
+                     '("enero" "febrero" "marzo" "abril"
+                       "mayo" "junio" "julio" "agosto"
+                       "septiembre" "octubre" "noviembre" "diciembre")
+                     '("jan" "apr" "aug" "dec"))
+                    collect mon
+                    collect (cl-subseq mon 0 3))))
+
 (setf translation-regexp-rules-alist
       (append
-       '(
+       `(
+         (,month-regexp downcase)
+         (,(format "\\([0-9]\\{1,2\\}\\) \\(%s\\),? \\([0-9]\\{2,4\\}\\)"
+                  month-regexp)
+          "\\1 de \\? del \\3")
+         (,(format "\\(%s\\) \\([0-9]\\{1,2\\}\\),? \\([0-9]\\{2,4\\}\\)"
+                  month-regexp)
+          "\\2 de \\? del \\3")
          ("\"\\(\\(.\\|\n\\)*?\\)\"" "“\\1”")
          ("\"" (lambda (&rest args)
                  (error "unbalanced quotes in line %s"
@@ -315,12 +333,7 @@ a translation from scratch"
         'capitalize '("estados unidos"))
 
        (translation-phrases-to-rules
-        'upcase '("ee. uu."))
-
-       (translation-phrases-to-rules
-        'downcase '("Enero" "Febrero" "Marzo" "Abril"
-                    "Mayo" "Junio" "Julio" "Agosto"
-                    "Septiembre" "Octubre" "Noviembre" "Diciembre"))))
+        'upcase '("ee. uu."))))
 
 (defun translation-fix-quotes ()
   (interactive)
