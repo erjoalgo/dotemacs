@@ -475,28 +475,5 @@ Buffers other than the current buffer are preferred."
   (cdr (assoc (completing-read prompt (mapcar 'car alist)
                    nil t (caar alist)))))
 
-(defun search-engine-search (term &optional engine)
-  (interactive (list (if (region-active-p)
-			 (buffer-substring-no-properties
-			  (region-beginning) (region-end))
-		       (read-string "enter search terms: " (car kill-ring)))
-                     (if (boundp 'engine) engine
-                       (completing-read-alist
-                        "select search engine: " engine-alist))))
-  (let ((search-engine-query-url-format (cdr (assoc-string engine engine-alist))))
-  (message "searching for %s..." term)
-  (browser-new-tab (format search-engine-query-url-format
-			   (uri-encode
-			    (replace-regexp-in-string "[\n]" "" term))))))
-
-(defmacro search-engine-search-cmd (engine)
-  `(defun ,(intern (format "search-engine-search-%s" engine)) ()
-     ,(format "search using the %s search engine" engine)
-     (interactive)
-     (let ((engine ,engine))
-       (call-interactively 'search-engine-search))))
-
-
-
 (provide 'command-mode-commands)
 ;;; command-mode-commands.el ends here
