@@ -362,7 +362,8 @@ a translation from scratch"
                   (cdr (assoc 'correction translation-suffixes)))))
     (copy-file (expand-file-name filename) correction-filename)
     (find-file correction-filename)
-    (visual-line-mode)))
+    (visual-line-mode)
+    (flyspell-mode)))
 
 (defun translation-new-from-file (filename &optional correction-p)
   (interactive (list (dired-file-name-at-point) prefix-arg))
