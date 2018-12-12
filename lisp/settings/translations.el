@@ -82,7 +82,7 @@
 
 (defvar translation-submissions-address-alist)
 
-(defun translation-publish-commit (subject body address attachment-type)
+(defun translation-publish-commit (subject body address attachment-type original-buffer)
   (interactive
    (save-excursion
      (let* ((subject
@@ -96,7 +96,7 @@
             (attachment-type (or
                               (cdr (assoc address translation-submissions-address-alist))
                               'plaintext)))
-       (list subject body address attachment-type))))
+       (list subject body address attachment-type (buffer-file-name)))))
   (assert address)
   (translation-commit default-directory)
   (compose-mail
@@ -104,7 +104,7 @@
   (goto-char (point-max))
   (case attachment-type
     ('plaintext (insert body))
-    ('attachment (gnus-attach-file-simple body))
+    ('attachment (gnus-attach-file-simple original-buffer))
     (t (error "unknown attachment-type: %s" attachment-type))))
 
 (defun translation-correction-p (directory)
