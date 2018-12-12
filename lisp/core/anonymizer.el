@@ -1,4 +1,4 @@
-;;; anonymizer.el ---
+;;; anonymizer.el --- Anonymize sensitive text before making it public
 
 ;; Copyright (C) 2016  Ernesto Alfonso <erjoalgo@gmail.com>
 
@@ -22,28 +22,42 @@
 
 ;;; Code:
 
+(require 'cl-lib)
+;; (require 'genpass-genpass)
+
+(defcustom anonymizer-custom-words
+  ()
+  "Custom words to anonymize.
+
+   May be a list of strings, a function, or a string"
+  :type '(choice list string function)
+  :group 'anonymizer)
 
 (defun anonymizer-anonymize (a b)
+  "Anonymize region A B."
   (interactive "r")
   (unless (region-active-p)
     (setf a nil b nil))
-  (let ((words `((,system-name "my-hostname")
+  (let ((words `((,(system-name) "my-hostname")
 		       (,user-login-name "USER" )
 		       (,user-real-login-name "MY-NAME")
 		       (,user-mail-address "me@example.com")
 		       (,(first (s-split " " user-full-name)) "MY-FIRST-NAME")
-		       (,(second (s-split " " user-full-name)) "MY-LAST-NAME")
-		       ("erjoalgo" "user")))
+		       (,(second (s-split " " user-full-name)) "MY-LAST-NAME")))
+        (custom-words (cl-typecase anonymizer-custom-words
+                        (list anonymizer-custom-words)
+                        (function (funcall anonymizer-custom-words))
+                        (string (split-string anonymizer-custom-words))))
 	(regexps `(("[[:alnum:]]+@[[:alnum:]]+[.][[:alnum:]]+" "user@example.com")
 		   ("@[[:alnum:]]+[.][[:alnum:]]+" "@example.com")
 		   ("http://[^/[:space:]]+" "http://example.com")
 		   ("https://[^/[:space:]]+" "https://example.com")
 		   ("\\(\\([0-9a-fA-F]\\{2\\}:\\)\\{5\\}[0-9a-fA-F]\\)" "00:00:00:00:00:00")
-		   ("\\(\\([0-9]\\{1,3\\}[.]\\)\\{3\\}[0-9]\\{1,3\\}\\)" "8.8.8.8")
-		   ))
+		   ("\\(\\([0-9]\\{1,3\\}[.]\\)\\{3\\}[0-9]\\{1,3\\}\\)" "8.8.8.8")))
+        (case-fold-search t)
 	(total-count 0))
 
-    (setf words (loop for (word replacement) in words
+    (setf words (cl-loop for (word replacement) in words
 		      collect (cons (downcase word) replacement)))
 
     (cl-labels ((replace-regexp-in-buffer (regexp replacement)
@@ -64,27 +78,30 @@
 		(ors-regexp (regexps)
 			    (s-join "\\|" (mapcar 'regexp-quote (mapcar 'car regexps)))))
 
-      (incf total-count (replace-regexp-in-buffer (ors-regexp words) (lambda (match)
+      (incf total-count (replace-regexp-in-buffer
+                         (ors-regexp (append words custom-words)) (lambda (match)
 						     (cdr (assoc (downcase match) words)))))
 
-      (incf total-count (loop for (regexp replacement) in regexps sum
+      (incf total-count (cl-loop for (regexp replacement) in regexps sum
 			      (replace-regexp-in-buffer regexp `(lambda (match) ,replacement))))
       (message "%d total matches replaced" total-count))))
 
 (defun anonymizer-scramble-region (a b)
-  "replace any alnum chars in region with random ones. useful for anonymizing UIDS, RSA keys, while keeping structure"
+  "Replace any alnum chars in region A B with random ones.
+
+  May be used for anonymizing UIDS, RSA keys, while maintaining the overall structure."
   (interactive "r")
   (let ((scrambled (buffer-substring-no-properties a b)))
-    (loop for i below (length scrambled) do
+    (cl-loop for i below (length scrambled) do
 	  (let ((char-string (substring scrambled i (1+ i)))
 		bag
 		(case-fold-search nil))
 
 	    (setf bag
 		  (cond
-	           ((string-match "[a-z]" char-string) *genpass-letters-lower*)
-	           ((string-match "[A-Z]" char-string) *genpass-letters-upper*)
-	           ((string-match "[0-9]" char-string) *genpass-num*)))
+	           ((string-match "[a-z]" char-string) genpass-letters-lower)
+	           ((string-match "[A-Z]" char-string) genpass-letters-upper)
+	           ((string-match "[0-9]" char-string) genpass-num)))
 
 	    (when bag
 	      (let ((new-char (aref bag (random (length bag)))))
