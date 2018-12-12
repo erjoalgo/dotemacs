@@ -1076,6 +1076,36 @@
       ("d" 'slime-documentation-lookup)
       ("z" 'slime-apropos-all)))))
 
+(defbuttons nginx-buttons
+  ;; programming-buttons
+  nil
+  (nginx-mode-map)
+  (but
+   ("t"
+    (but
+     ("3" (cmd-ins ;; 301
+           "
+server {
+    listen 80;
+    return 301 https://$host$request_uri;
+}"))
+     ("r" (cmd-ins ;; rev proxy
+           "
+server {
+    server_name {0};
+    listen 80;
+    listen 443 ssl;
+    error_log /var/log/nginx/{0}.log;
+    access_log /var/log/nginx/{0}.log;
+
+    location / {
+        proxy_pass  http://127.0.0.1:{}/;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+}"))))))
+
 (defbuttons global-buttons
    nil
    (global-map)
