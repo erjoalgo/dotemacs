@@ -1110,4 +1110,6 @@ server {
    nil
    (global-map)
    (but
-    ([escape] 'exit-recursive-edit)))))
+    ([escape] 'exit-recursive-edit)
+    ((kbd "M-.") 'my-next-error)
+    ((kbd "M-,") 'my-prev-error)))))
