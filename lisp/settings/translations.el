@@ -347,9 +347,7 @@ a translation from scratch"
     t))
 
 (defvar translation-manual-checklist
-  '("ensure nationalities not capitalized"
-    "ensure months not capitalized"
-    "ensure dates are not in 'Month Day, Year' format")
+  '("ensure nationalities are not capitalized")
   "items pending automation")
 
 
