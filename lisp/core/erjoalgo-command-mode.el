@@ -1,4 +1,4 @@
-;;; erjoalgo-command-mode.el ---
+;;; erjoalgo-command-mode.el --- like vi's concept of command mode
 
 ;; Copyright (C) 2016  Ernesto Alfonso <erjoalgo@gmail.com>
 
@@ -20,14 +20,17 @@
 
 ;;; Commentary:
 ;; Provides command mode for single-key access to
-;; Ctrl-prefixed and other common commands in emacs
+;; Ctrl-prefixed and other common commands in Emacs
 ;; f1 to toggle mode on/off,
 ;; clear visual indicator when mode is on
 ;; Most of the keybindings in this mode are obtained
-;; by removing the Ctrl or Ctrl+x prefix of emacs
+;; by removing the Ctrl or Ctrl+x prefix of Emacs
 ;;
 
 ;;; Code:
+
+;; (require 'buttons)
+;; (require 'f)
 
 (defvar erjoalgo-command-mode-map (make-sparse-keymap))
 
@@ -45,7 +48,7 @@
 (defvar *erjoalgo-command-mode-color-off* "dark gray")
 
 (defun erjoalgo-command-mode-hook-add-color ()
-  "add a visual indicator of current mode"
+  "Add a visual indicator of current mode."
   (let ((color (if erjoalgo-command-mode
 		   *erjoalgo-command-mode-color-on*
 		 *erjoalgo-command-mode-color-off*)))
@@ -55,6 +58,7 @@
 (add-hook 'global-erjoalgo-command-mode-hook 'erjoalgo-command-mode-hook-add-color)
 
 (defun global-erjoalgo-command-mode-toggle ()
+  "Toggle global-erjoalgo-command-mode."
   (interactive)
   (setf prefix-arg current-prefix-arg)
   (global-erjoalgo-command-mode (if erjoalgo-command-mode 0 1)))
@@ -66,6 +70,7 @@
 (define-key global-map (kbd "ë") 'global-erjoalgo-command-mode-toggle)
 
 (defun erjoalgo-command-mode-meta-pn ()
+  "Action to take on ‘M-n', ‘M-p' bindings when on erjoalgo-command-mode."
   (interactive)
   (if (member major-mode '(slime-repl-mode inferior-emacs-lisp-mode))
       (call-interactively (lookup-key
@@ -99,11 +104,14 @@
        (call-interactively 'search-engine-search))))
 
 (buttons-macrolet
- ((dir (dir) `(find-file-under-dir-completing-read ,dir))
-  (buff (buff &optional on-nonexistent)
-        `(cmd (or (switch-to-buffer-matching ,buff)
+ ((dir (dir) `(read-file-name "select file: " ,dir))
+  (buff (buff-spec &optional on-nonexistent)
+        (let ((buff-sym (gensym "buff-")))
+          `(cmd
+           (let ((,buff-sym (buffer-matching ,buff-spec)))
+              (or (when ,buff-sym (switch-to-buffer ,buff-sym))
                   ,on-nonexistent
-                  (error (format "no such buffer: %s" ,buff)))))
+                  (error (format "no such buffer: %s" ,buff-spec)))))))
   (file (file) `(cmd (find-file ,file))))
  (defbuttons
    erjoalgo-command-mode-buttons
@@ -267,12 +275,8 @@
       ("b" (buff "*Inferior Octave*" (inferior-octave t)))
       ("3" (buff "*eww*" (call-interactively 'eww))))))))
 
-(defun find-file-under-dir-completing-read (dir)
-  (find-file (f-join dir
-		     (completing-read (concat dir ": ")
-				      (directory-files dir)))))
-
 (defun buffer-matching (string &optional regexp-p)
+  "Find buffers matching STRING, interpreted as a regexp when REGEXP-P."
   (let ((prefix "regexp:"))
 
     (when (s-starts-with-p prefix string)
@@ -284,14 +288,10 @@
 	    (and (string-match string (buffer-name buff))
 		 buff)))))
 
-(defun switch-to-buffer-matching (string &optional regexp-p)
-  (let ((match (buffer-matching string regexp-p)))
-    (when match (switch-to-buffer match))))
-
-;;http://stackoverflow.com/questions/683425/globally-override-key-binding-in-emacs/5340797#5340797
 (defun force-mode-first (mode-symbol)
-  "Try to ensure that my keybindings always have priority."
-  (when (not (eq (car (car minor-mode-map-alist)) mode-symbol))
+  "Try to ensure that my keybindings have priority over the newly-loaded MODE-SYMBOL."
+  ;;http://stackoverflow.com/questions/683425/globally-override-key-binding-in-emacs/5340797#5340797
+  (unless (eq (caar minor-mode-map-alist) mode-symbol)
     (message "forcing mode first")
     (let ((mykeys (assq mode-symbol minor-mode-map-alist)))
       (assq-delete-all mode-symbol minor-mode-map-alist)
@@ -303,7 +303,7 @@
                                          (erjoalgo-command-mode 1)))
 
 (add-hook 'after-load-functions
-	  '(lambda (something)
+	  '(lambda (_something)
 	     (force-mode-first 'erjoalgo-command-mode)))
 
 
@@ -335,8 +335,8 @@
 	     (lambda (&rest args)
 	       (select-window (get-buffer-window "*Apropos*"))))))
 
-(defun one-char-insert-mode (arg)
-  "insert the next char as text"
+(defun one-char-insert-mode (&optional _arg)
+  "Insert the next char as text."
   (interactive "P")
   (set-temporary-overlay-map global-map))
 
@@ -373,6 +373,7 @@
   (face-spec-set 'region '((t :background "#666" :foreground "#ffffff"))))
 
 (defun load-dark-theme-toggle ()
+  "Toggle dark background theme."
   (interactive)
   (let ((dark-theme 'wombat))
     (if (custom-theme-enabled-p dark-theme)
@@ -403,6 +404,7 @@
 (defvar erjoalgo-command-mode-keep-state nil)
 
 (defadvice recursive-edit (around tmp-disable-command-mode activate)
+  "Auto-disable command mode within a recursive edit."
   (if (and erjoalgo-command-mode
            (not erjoalgo-command-mode-keep-state)
            (not (member major-mode '(sldb-mode))))
