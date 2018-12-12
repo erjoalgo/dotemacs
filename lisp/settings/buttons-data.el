@@ -359,6 +359,8 @@
     ("{" (cmd-ins "{:keys [{}]" (nli) "{}}}"))
     ("a" (cmd (ins "(fn [{}]{(nli)}{})")))
     ("e" (cmd (ins "(def {})")))
+    ("t" (but
+          ("r" #'cider-restart)))
     ((kbd "M-.") 'next-error)
     ((kbd "M-,") 'previous-error)))
 
