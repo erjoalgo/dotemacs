@@ -695,7 +695,7 @@
     ("4" (cmd (ins "[ {} ]")))
     ("z" (cmd (ins "if {}; then{(nli)}{}{(nli)}fi{(idt)}{(nli)}")))
     ("x" (cmd (ins "elif {}; then{(nli)}{}{(nli)}{(idt)}")))
-    ("c" (cmd (ins "else {}; then{(nli)}{}{(nli)}{(idt)}")))
+    ("c" (cmd (ins "else {}; " (nli) "{}" (nli) (idt))))
     ("\\" (cmd (ins " \\{(nli)}")))
     ("|" (cmd (ins " | ")))
     ("n" (cmd (ins "echo ")))
@@ -926,7 +926,9 @@
  (defbuttons org-buttons nil
    (org-mode-map)
    (but
-    ("q" (cmd (ins "#+BEGIN_SRC {}{(nli)}{}#+END_SRC{(nli)}")))
+    ("q" (cmd (ins "#+BEGIN_SRC {}" (nli)
+                   (rec)
+                   "#+END_SRC" (nli))))
     ("`" (cmd (ins "~{}~")))
     ("Q" (cmd (ins "#+begin_quote {}{(nli)}{}#+end_quote{(nli)}")))
     ((kbd "<s-tab>") 'org-indent-block)
@@ -940,7 +942,12 @@
               (ins "#+OPTIONS: toc:nil") (nli)
               (ins "#+OPTIONS: html-postamble:nil") (nli)
               (ins "#+OPTIONS: num:nil") (nli)
-              (ins "#+TITLE: {(capitalize (replace-regexp-in-string \"[_-]\" \" \" (f-base (buffer-file-name))))}") (nli)))
+              (ins "#+TITLE: "
+                   (->> (buffer-file-name)
+                        (f-base)
+                        (replace-regexp-in-string \"[_-]\" \" \" )
+                        (capitalize))
+                   (nli))))
     ("R" (cmd (ins "***REMOVED***")))
     ("p" 'org-todo-promote-top)
     ("r" 'org-refile)
