@@ -267,7 +267,6 @@
             ("1" 'slime-sbcl)
             ("2" 'slime-stumpwm)
             ("3" 'cider-buffer-or-jack-in)))
-      ("S" 'goto-slime-buffer)
       ("r" 'replace-regexp)
       ("R" 'query-replace-regexp)
       ("A" (buff "[*]Async Shell Command[*]"))
