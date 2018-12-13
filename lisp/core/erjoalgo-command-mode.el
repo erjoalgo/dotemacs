@@ -103,6 +103,15 @@
      (let ((engine ,engine))
        (call-interactively 'search-engine-search))))
 
+(defun my-tab-command ()
+  (interactive)
+  (call-interactively
+   (case major-mode
+     ((Custom-mode) 'widget-forward)
+     ((help-mode apropos-mode debugger-mode) 'forward-button)
+     ((Info-mode) 'Info-next-reference)
+     (t 'indent-for-tab-command))))
+
 (buttons-macrolet
  ((dir (dir) `(read-file-name "select file: " ,dir))
   (buff (buff-spec &optional on-nonexistent)
@@ -175,14 +184,7 @@
     ("-" 'global-text-scale-lower);; increase text size
     ("=" 'global-text-scale-higher);; decrease text size
     ("g" 'goto-line)
-    ("	" (lambda ()
-            (interactive)
-            (call-interactively
-             (case major-mode
-               ((Custom-mode) 'widget-forward)
-               ((help-mode apropos-mode debugger-mode) 'forward-button)
-               ((Info-mode) 'Info-next-reference)
-               (t 'indent-for-tab-command)))))
+    ("	" 'my-tab-command)
     ("9" "(");; insert "("
     ("0" ")");; insert ")"
     ("" 'universal-argument)
