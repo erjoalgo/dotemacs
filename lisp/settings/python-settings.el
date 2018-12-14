@@ -28,14 +28,6 @@ if breakpoints are present in `python-mode' files"
       py-smart-indentation nil))
 
 (add-hook 'python-mode-hook 'my-python-indentation)
-(add-hook 'python-mode-hook 'set-python-custom-check-command)
-(defun set-python-custom-check-command ()
-  ;; ./socks.go:210: undefined: retur
-  (when (buffer-file-name nil)
-    (setf python-check-custom-command
-	  (let ((basename (-> (buffer-file-name nil) f-filename)))
-	    (format "pylint %s | sed 's/^[A-Z]: *\\([0-9]*\\),/%s:\\1: /g'"
-		    basename basename)))))
 
 (defvar python-argparse-template
   "import argparse
