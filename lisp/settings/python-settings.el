@@ -29,13 +29,6 @@ if breakpoints are present in `python-mode' files"
 
 (add-hook 'python-mode-hook 'my-python-indentation)
 
-(flycheck-define-checker pylint
-  "flycheck for Pylint"
-  :command ("pylint" source)
-  :error-patterns
-  ((error line-start alpha ":" line ", " column ":" (message) line-end))
-  :modes python-mode)
-
 (defvar python-argparse-template
   "import argparse
 parser = argparse.ArgumentParser()
