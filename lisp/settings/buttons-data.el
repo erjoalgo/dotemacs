@@ -135,7 +135,10 @@
                         ("print ( \\(.*\\) ?)" . "print(\\1)")
                         ;; "^[ 	]*[a-zA-Z_.,]+ *"
                         ;;
-                        ("^def \\(.*?\\) ( \\(.*?\\) ):" . "def \\1 (\\2):")))))
+                        ("^def \\(.*?\\) ( \\(.*?\\) ):" . "def \\1 (\\2):")
+                        ("^ +" "\\,(make-string (/ (length \\&) 2) 32)")
+                        ("\\(logger.*?\"\\)\\(.*?\"\\).format(\\(.*\\))"
+                         "\\1\\,(replace-regexp-in-string \"{}\" \"%s\" \\2), \\3")))))
             ("c" 'python-check)))))))
 
  (defbuttons pdb-buttons python-buttons
