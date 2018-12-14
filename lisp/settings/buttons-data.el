@@ -393,10 +393,10 @@
                          "<< {0} << endl;")))
             ("V" (cmd (ins "cout << \"{(f-base (buffer-file-name))}: proto {0}: \""
                            "{(nli?)}<< {0}.DebugString() << endl;")))
-            ("t" (cmd (if t ;; TODO check if on google3. or make it a minor mode
+            ("t" (cmd (if (bound-and-true-p google-emacs-version)
                           (ins "absl::PrintF(\"{}\\n\"{});")
                         (ins "printf(\"{}\\n\"{});"))))
-            ("s" (cmd (if t
+            ("s" (cmd (if (bound-and-true-p google-emacs-version)
                           (ins "absl::StrFormat(\"{}\"{})")
                         ("s" (cmd (ins "scanf( \"{}\"{} );"))))))
             ;; + operator
