@@ -859,7 +859,7 @@
    (but
     ("f"
      (but
-      ("a" (cmd (ins "for(auto& {}: {}){(cbd)}")))))
+      ("a" (cmd (ins "for (const auto& {} : {}){(cbd)}")))))
     ("G" (cmd (ins "nullptr")))
     ("i"
      (but
