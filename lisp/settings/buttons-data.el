@@ -532,6 +532,11 @@
   </body>
 </html>
 ")))
+    ("t"
+     (but
+      ("j"
+       (cmd-ins "<script type=\"text/javascript\" src=\"{}\">"
+                "</script>"))))
     ("\\" (cmd (ins "<br/>")))
     ("a" (cmd (ins "<a href=\"{}\">{}</a>")))
     ("P" (cmd (ins "<p>{}</p>")))))
