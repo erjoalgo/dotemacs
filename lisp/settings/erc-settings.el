@@ -75,6 +75,6 @@ The function is suitable for `erc-after-connect'."
 
 (defadvice erc-nickname-in-use (before erc-set-random-nick-uniquifier activate)
   "Pick a random nick uniquifier to minimize chance of colliding again with ghosts."
-  (setq erc-nick-uniquifier (char-to-string (seq-random-elt "`123456789áéíóú你好"))))
+  (setq erc-nick-uniquifier (char-to-string (seq-random-elt "`123456789aeiou"))))
 
 (add-hook 'erc-after-connect 'erc-ghost-maybe)
