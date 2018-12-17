@@ -598,9 +598,8 @@
 ")))
     ("t"
      (but
-      ("j"
-       (cmd-ins "<script type=\"text/javascript\" src=\"{}\">"
-                "</script>"))))
+      ("j" (cmd-ins "<script type=\"text/javascript\" src=\"{}\">" "</script>"))
+      ("c" (cmd-ins "<link rel=\"stylesheet\" href=\"{}\">"))))
     ("\\" (cmd (ins "<br/>")))
     ("a" (cmd (ins "<a href=\"{}\">{}</a>")))
     ("P" (cmd (ins "<p>{}</p>")))))
