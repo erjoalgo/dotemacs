@@ -358,7 +358,8 @@
     ((kbd "s-SPC") (cmd (ins ", ")))
     ((kbd "<C-f11>") 'eval-buffer)
     ((kbd "M-SPC") (lambda (arg) (interactive "P")
-                     (capitalize-last arg) (insert " "))))))
+                     (capitalize-last arg) (insert " ")))
+    ((kbd "<backtab>") 'my-indent))))
 
 ;;apropos
 (define-key 'help-command "A" 'apropos-variable)
