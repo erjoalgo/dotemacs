@@ -234,6 +234,7 @@
                      (nli) ":type '"
                      (nli) ":group '")))
       ("l" (cmd (ins "(labels ({}){(nli)}{}){(nli)}")))
+      ("a" (cmd (ins "(defadvice {} ({})" (nli) "{}" (nli) ")")))
       ("k"
        (but
         ("p" (cmd (ins "(defpackage {}{(nli)}(:use :cl){})")))
@@ -300,6 +301,7 @@
       ("b" (cmd (ins "(boundp {})")))
       ("n" (cmd (ins "~{~A~^" "{}" "~}")))
       ("a" (cmd (ins "(assert {})")))
+      ("#" (cmd-ins ";;;###autoload"))
       ("w" (cmd (ins "(warn \"{}\"{})")))
       ("p" (cmd (ins "(push {})")))
       ("c"
