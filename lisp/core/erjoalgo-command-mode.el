@@ -66,10 +66,6 @@
 
 
 
-(define-key global-map [f1] 'global-erjoalgo-command-mode-toggle)
-(define-key global-map (kbd "<s-f11>") 'global-erjoalgo-command-mode-toggle)
-(define-key global-map (kbd "ë") 'global-erjoalgo-command-mode-toggle)
-
 (defun erjoalgo-command-mode-meta-pn ()
   "Action to take on ‘M-n', ‘M-p' bindings when on erjoalgo-command-mode."
   (interactive)
@@ -336,34 +332,33 @@
       (assq-delete-all mode-symbol minor-mode-map-alist)
       (add-to-list 'minor-mode-map-alist mykeys))))
 
-(define-key global-map [f2] 'other-window)
-(define-key global-map (kbd "<s-f12>") (lambda () (interactive)
-                                         (save-buffer)
-                                         (erjoalgo-command-mode 1)))
-
 (add-hook 'after-load-functions
 	  '(lambda (_something)
 	     (force-mode-first 'erjoalgo-command-mode)))
 
-
-(global-set-key [M-f1] 'goto-last-change)
-
-(global-set-key [f4] 'keyboard-escape-quit)
 (define-key 'help-command "y" 'find-function);;find source for function-at-point
 
 (buttons-macrolet
  ()
- (global-set-key (kbd "s-`") 'exit-recursive-edit)
- (global-set-key (kbd "s-~") 'buttons-abort-cmd)
- (global-set-key (kbd "s-SPC") (cmd (ins ", "))))
-
-(global-set-key (kbd "<C-f11>") 'eval-buffer)
-(global-set-key (kbd "M-SPC") (lambda (arg) (interactive "P")
-                              (capitalize-last arg) (insert " ")))
-
-(loop for map in (list global-map erjoalgo-command-mode-map)
-      do (define-key map [f5] nil))
-
+ (defbuttons command-mode-global-buttons
+   nil
+   (global-map)
+   (but
+    ([f1] 'global-erjoalgo-command-mode-toggle)
+    ((kbd "<s-f11>") 'global-erjoalgo-command-mode-toggle)
+    ((kbd "ë") 'global-erjoalgo-command-mode-toggle)
+    ([f2] 'other-window)
+    ((kbd "<s-f12>") (lambda () (interactive)
+                                  (save-buffer)
+                                  (erjoalgo-command-mode 1)))
+    ([M-f1] 'goto-last-change)
+    ([f4] 'keyboard-escape-quit)
+    ((kbd "s-`") 'exit-recursive-edit)
+    ((kbd "s-~") 'buttons-abort-cmd)
+    ((kbd "s-SPC") (cmd (ins ", ")))
+    ((kbd "<C-f11>") 'eval-buffer)
+    ((kbd "M-SPC") (lambda (arg) (interactive "P")
+                     (capitalize-last arg) (insert " "))))))
 
 ;;apropos
 (define-key 'help-command "A" 'apropos-variable)
