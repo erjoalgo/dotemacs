@@ -4,13 +4,8 @@
 ;;; Code:
 
 (defvar emacs-top
-  ;;  find .emacs's real location
-  ;;  (concat (expand-file-name ".") "/"))
-  (let ((ealfonso
-         (file-name-directory (file-truename "~ealfonso/.emacs"))))
-    (if (and (file-regular-p ealfonso) (file-exists-p ealfonso))
-	ealfonso
-      (file-name-directory (file-truename "~/.emacs")))))
+  (file-name-directory (file-truename user-init-file))
+  "Find the LISP src directory.")
 
 (defun add-hook-to-modes (hook mode-sym-list)
   (dolist (mode-sym mode-sym-list)
