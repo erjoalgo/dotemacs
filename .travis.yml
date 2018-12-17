@@ -113,7 +113,7 @@ install:
 ###
 
 script:
-  $EMACS --version && ( test "$EMACS" != 'emacs22' && EMACS="$EMACS" ./test/test.sh )
+  $EMACS --version && EMACS="$EMACS" ./test/test.sh
 
 ###
 ### settings
