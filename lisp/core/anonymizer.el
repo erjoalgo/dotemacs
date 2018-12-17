@@ -23,7 +23,8 @@
 ;;; Code:
 
 (require 'cl-lib)
-;; (require 'genpass-genpass)
+(require 's)
+(require 'genpass)
 
 (defcustom anonymizer-custom-words
   ()
@@ -42,8 +43,8 @@
 		       (,user-login-name "USER" )
 		       (,user-real-login-name "MY-NAME")
 		       (,user-mail-address "me@example.com")
-		       (,(first (s-split " " user-full-name)) "MY-FIRST-NAME")
-		       (,(second (s-split " " user-full-name)) "MY-LAST-NAME")))
+		       (,(cl-first (s-split " " user-full-name)) "MY-FIRST-NAME")
+		       (,(cl-second (s-split " " user-full-name)) "MY-LAST-NAME")))
         (custom-words (cl-typecase anonymizer-custom-words
                         (list anonymizer-custom-words)
                         (function (funcall anonymizer-custom-words))
@@ -68,21 +69,21 @@
 					      (while (re-search-forward regexp b t)
 						(let* ((match (match-string 0))
 						      (replacement (funcall replacement match)))
-						  (assert replacement nil "no replacement for '%s'" match)
+						  (cl-assert replacement nil "no replacement for '%s'" match)
 						  (message "replacing '%s' with '%s'"
 							   match replacement)
 						  (replace-match replacement t t)
-						  (incf count))))
+						  (cl-incf count))))
 					    (message "%d matches replaced for '%s'" count regexp)
 					    count))
 		(ors-regexp (regexps)
 			    (s-join "\\|" (mapcar 'regexp-quote (mapcar 'car regexps)))))
 
-      (incf total-count (replace-regexp-in-buffer
+      (cl-incf total-count (replace-regexp-in-buffer
                          (ors-regexp (append words custom-words)) (lambda (match)
 						     (cdr (assoc (downcase match) words)))))
 
-      (incf total-count (cl-loop for (regexp replacement) in regexps sum
+      (cl-incf total-count (cl-loop for (regexp replacement) in regexps sum
 			      (replace-regexp-in-buffer regexp `(lambda (match) ,replacement))))
       (message "%d total matches replaced" total-count))))
 
