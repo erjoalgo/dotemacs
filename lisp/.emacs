@@ -45,28 +45,21 @@
         dedicated
         buttons))
 
-(when (>= emacs-major-version 24)
-  (require 'package)
+(defun ensure-packages-exist (packages)
+  "Ensure each package in PACKAGES is installed."
   (package-initialize)
-  (defun ensure-packages-exist (packages)
-    (let (refreshed-p)
-      (dolist (package packages)
-	(when
-	    (and (not (package-installed-p package)))
-	  (condition-case ex
-	      (progn (or refreshed-p (progn
-				       (package-refresh-contents)
-				       (setf refreshed-p t)))
-		     (package-install package))
-	    ('error
-	     (warn "WARNING: unable to install %s:\n %s" package ex)))))))
+  (loop with already-refreshed = nil
+        for package in packages
+        unless (package-installed-p package)
+        do
+        (progn
+          (unless already-refreshed
+            (add-to-list ' package-archives
+                         '("melpa" . "https://melpa.org/packages/"))
 
-  (ensure-packages-exist
-   '(company legalese magit dash dash-functional go-mode calfw calfw-gcal
-	     ;; gnus-desktop-notify
-	     java-imports bbdb nginx-mode
-	     dedicated
-	     ))
+            (safe-funcall (package-refresh-contents))
+	    (setf already-refreshed t))
+          (safe-funcall (package-install package)))))
 
   (safe-funcall 'require 'company)
   (require 'dash)
