@@ -90,10 +90,12 @@
       (add-to-list 'load-path fn))
 
 (defun current-time-ms ()
+  "Return the current time in MS."
   (destructuring-bind (_ secs usecs __) (current-time)
     (+ (* 1000 secs) (/ usecs 1000))))
 
 (defmacro with-elapsed-time (elapsed-time-ms-var form &rest body)
+  "Record FORM's time in MS as ELAPSED-TIME-MS-VAR and evaluate BODY."
   (let ((start-time-sym (gensym "start-time"))
         (time-now-form `(current-time-ms)))
     `(let ((,start-time-sym ,time-now-form))
