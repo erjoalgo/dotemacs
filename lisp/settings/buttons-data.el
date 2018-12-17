@@ -1147,6 +1147,12 @@
    nil
    (slime-mode-map slime-repl-mode-map)
    (but
+    ((kbd "M-{") 'slime-repl-previous-prompt)
+    ((kbd "M-}") 'slime-repl-next-prompt)
+    ((kbd "M-p") (lambda () (interactive)
+		   (slime-repl-history-replace 'backward nil)))
+    ((kbd "M-n") (lambda () (interactive)
+		   (slime-repl-history-replace 'forward nil)))
     ("h"
      (but
       ("a" 'slime-apropos)
