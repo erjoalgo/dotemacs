@@ -461,13 +461,6 @@ Buffers other than the current buffer are preferred."
      ("[+]" "%2B"))
    :initial-value search-terms))
 
-(setf engine-alist
-  ;; search-engine-query-url-format
-  '(
-    ("ddg" . "https://duckduckgo.com/lite/?q=%s")
-    ("linguee" . "https://www.linguee.com/english-spanish/search?source=auto&query=%s")
-    )
- )
 
 (defun completing-read-alist (prompt alist)
   (cdr (assoc (completing-read prompt (mapcar 'car alist)
