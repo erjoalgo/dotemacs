@@ -29,21 +29,8 @@
   (add-to-list 'load-path
 	       (concat emacs-top dir)))
 
-(mapc (apply-partially 'safe-funcall 'require)
-      '(f
-        goto-last-change
-        quick-yes
-        cl-lib
-        cl
-        zoom-global
-        isearch-fast-reverse
-        my-emacs-settings
-        proxy-mode
-        plusx
-        dash
-        dash-functional
-        dedicated
-        buttons))
+(require 'package)
+(require 'cl)
 
 (defun ensure-packages-exist (packages)
   "Ensure each package in PACKAGES is installed."
@@ -61,13 +48,40 @@
 	    (setf already-refreshed t))
           (safe-funcall (package-install package)))))
 
-  (safe-funcall 'require 'company)
-  (require 'dash)
-  (require 'dash-functional))
+(ensure-packages-exist
+ '(company
+   legalese
+   magit
+   dash
+   dash-functional
+   go-mode
+   calfw
+   calfw-gcal
+   java-imports
+   bbdb
+   nginx-mode
+   dedicated
+   buttons
+   flycheck))
 
-(unless (fboundp 'with-eval-after-load)
-  (defmacro with-eval-after-load (feature &rest forms)
-    `(eval-after-load ,feature '(progn ,@forms))))
+(require 'f)
+(dolist (feature
+         '(f
+           goto-last-change
+           quick-yes
+           cl-lib
+           cl
+           zoom-global
+           isearch-fast-reverse
+           my-emacs-settings
+           plusx
+           dash
+           dash-functional
+           dedicated
+           buttons
+           company))
+  (safe-funcall
+   (require feature)))
 
 (loop with top = (f-join emacs-top "libs")
       for lib-dir in (directory-files top)
