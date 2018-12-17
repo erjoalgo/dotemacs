@@ -3,7 +3,7 @@
   (require 'slime)
   (let* ((slime-sbcl-buffer-name "*slime-repl sbcl")
 	 (slime-sbcl-buffer
-	  (find-buffer-by-starts-with slime-sbcl-buffer-name)))
+	  (find-buffer-by-prefix slime-sbcl-buffer-name)))
 
     (if (and (null arg) slime-sbcl-buffer)
 	(switch-to-buffer slime-sbcl-buffer)
@@ -17,7 +17,7 @@
   (interactive "P")
   (require 'slime)
   (let ((slime-stumpwm-buffer
-	 (find-buffer-by-starts-with "*slime-repl sbcl")))
+	 (find-buffer-by-prefix "*slime-repl sbcl")))
     (if (and (not arg) slime-stumpwm-buffer)
 	(switch-to-buffer slime-stumpwm-buffer)
 
