@@ -1,4 +1,4 @@
-;;; plusx.el ---
+;;; plusx.el --- Make files executable
 
 ;; Copyright (C) 2016  Ernesto Alfonso <erjoalgo@gmail.com>
 
@@ -37,12 +37,13 @@
     (js-mode "#!/usr/bin/env node")))
 
 (defun plusx-maybe-insert-interpreter-line ()
+  "Try to insert the appropriate interpreter line in the current buffer."
   (interactive)
   (let* ((fn (buffer-file-name (current-buffer)))
 	 (shebang
 	  (cadr (assoc major-mode plusx-interpreter-line-alist))))
 
-    (unless shebang (error "no match for %s" major-mode))
+    (unless shebang (error "No match for %s" major-mode))
     (save-excursion
       (goto-char (point-min))
       (unless (looking-at "#!")
@@ -50,26 +51,29 @@
 	(open-line 1)))))
 
 
-(defun plusx (fn &optional link-bin-p)
-  (interactive (list (buffer-file-name (current-buffer))
-		     nil))
-  (plusx-maybe-insert-interpreter-line)
-  (shell-command (format "chmod +x '%s'" fn))
+(defvar plusx-bin-directory
+  (expand-file-name "~/bin")
+  "The bin directory where to symlink executables.")
 
-  (unless (file-name-absolute-p fn) (setq fn (expand-file-name fn)))
-  (let* ((bin-dir "~/bin")
-	 (bin-link (f-join bin-dir (f-filename fn))))
+(defun plusx (filename &optional link-bin-p)
+  "Make executable the file FILENAME.
+
+  If LINK-BIN-P is non-nil, link FILENAME to ‘plusx-bin-directory'"
+  (interactive (list (buffer-file-name (current-buffer))
+		     current-prefix-arg))
+  (plusx-maybe-insert-interpreter-line)
+  (shell-command (format "chmod +x '%s'" filename))
+
+  (unless (file-name-absolute-p filename) (setq filename (expand-file-name filename)))
+  (let* ((bin-dir plusx-bin-directory)
+	 (bin-link (f-join bin-dir (f-filename filename))))
 
     (when (and link-bin-p
 	       (not (file-exists-p bin-link)))
-      (message "creating symlink for %s" fn)
-      (shell-command (format "ln -s %s %s" fn bin-link)))
-    (unless (f-ext fn)
-      (add-file-local-variable-mode major-mode))))
-
-(defun plusx-and-link (fn)
-  (plusx fn))
-
+      (message "creating symlink for %s" filename)
+      (shell-command (format "ln -s %s %s" filename bin-link)))
+    (unless (f-ext filename)
+      (add-file-local-variable 'mode major-mode))))
 
 (provide 'plusx)
 ;;; plusx.el ends here
