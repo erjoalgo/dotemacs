@@ -98,9 +98,8 @@ q: Don't fix\n" func file))
 	    (add-hook 'before-save-hook 'java-sync-function-file-names nil t)))
 
 
-(make-file-local-variable-set-command mvn-extra-args
-				      "enter additional mvn args: "
-				      read-string set)
+(def-file-local-set-command mvn-extra-args
+  "enter additional mvn args: ")
 
 (defmacro def-region-regexp-cmd (name regexp replacement &optional body)
   (let* ((a-sym (gensym "a"))

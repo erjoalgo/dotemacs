@@ -79,8 +79,7 @@
 
 (setq org-html-validation-link nil)
 
-(make-file-local-variable-flag-toggle-command
- org-treat-as-readme-p)
+(def-file-local-toggle-command org-treat-as-readme-p)
 
 (defun maybe-export-to-markdown ()
   (when (and (eq major-mode 'org-mode)
