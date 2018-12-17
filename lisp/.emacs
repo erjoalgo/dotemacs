@@ -115,7 +115,7 @@
         collect
         (with-elapsed-time ms
                            (safe-funcall (load filename-abs))
-                           (cons ms filename-abs) )))
+                           (cons ms filename-abs))))
 
 (let ((default-directory emacs-top))
   (let ((load-times
