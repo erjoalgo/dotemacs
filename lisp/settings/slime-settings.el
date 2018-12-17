@@ -1,34 +1,37 @@
-;works after (ql:quickload "quicklisp-slime-helper")
-(load (expand-file-name "~/quicklisp/slime-helper.el"))
-(setq inferior-lisp-program "sbcl")
+(with-eval-after-load "slime"
 
-(setq slime-contribs '(slime-fancy))
-(require 'slime-autoloads)
-(add-hook 'lisp-mode-hook 'slime-mode)
+  (defvar slime-helper-filename nil "Quicklisp slime helper")
 
-(defun find-buffer-by-starts-with (prefix)
-  (loop for buff in (buffer-list)
-	thereis (and (s-starts-with-p
-		      prefix
-		      (buffer-name buff))
-		     buff)))
+  (setq slime-helper-filename (expand-file-name "~/quicklisp/slime-helper.el"))
 
-(with-eval-after-load "slime-repl"
-  (define-key slime-repl-mode-map (kbd "M-{") 'slime-repl-previous-prompt)
-  (define-key slime-repl-mode-map (kbd "M-}") 'slime-repl-next-prompt)
+  (if (not (file-exists-p slime-helper-filename))
+      ;; must (ql:quickload "quicklisp-slime-helper")
+      (error "slime helper %s does not exist. hint: %s"
+	    slime-helper-filename
+	    '(ql:quickload 'quicklisp-slime-helper))
 
-  (define-key slime-repl-mode-map (kbd "M-p") (lambda () (interactive)
-						(slime-repl-history-replace 'backward nil)))
+    (load (expand-file-name "~/quicklisp/slime-helper.el"))
+    (setq inferior-lisp-program "sbcl")
 
-  (define-key slime-repl-mode-map (kbd "M-n") (lambda () (interactive)
-						(slime-repl-history-replace 'forward nil))))
+    (setq slime-contribs '(slime-fancy))
+    (require 'slime-autoloads)
+    (add-hook 'lisp-mode-hook 'slime-mode)
 
-(add-hook 'sldb-hook 'visual-line-mode)
-(add-hook 'sldb-hook 'beginning-of-buffer)
-(define-key slime-repl-mode-map (kbd "s-h") slime-doc-map)
-(setf slime-load-failed-fasl 'never)
+    (defun find-buffer-by-prefix (prefix)
+      (cl-loop for buff in (buffer-list)
+	    thereis (and (s-starts-with-p
+			  prefix
+			  (buffer-name buff))
+			 buff)))
 
-(defun slime-killall ()
-  (interactive)
-  (kill-buffers-matching-regexp "[*]\\(slime-repl\\|inferior-lisp\\|slime\\)")
-  (slime-disconnect-all))
+
+
+    (add-hook 'sldb-hook 'visual-line-mode)
+    (add-hook 'sldb-hook 'beginning-of-buffer)
+    (define-key slime-repl-mode-map (kbd "s-h") slime-doc-map)
+    (setf slime-load-failed-fasl 'never)
+
+    (defun slime-killall ()
+      (interactive)
+      (kill-buffers-matching-regexp "[*]\\(slime-repl\\|inferior-lisp\\|slime\\)")
+      (slime-disconnect-all))))
