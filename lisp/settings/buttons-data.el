@@ -1,5 +1,20 @@
 (require 'buttons)
 
+(defun my-upcase-region (a b &optional downcase)
+  "Upcase or downcase region A, B based on DOWNCASE, falling back to the current sexp."
+  (interactive "r")
+  (unless (region-active-p)
+    (setq a (save-excursion (backward-sexp) (point))
+          b (save-excursion (forward-sexp) (point))))
+  (let ((fn (if downcase 'downcase-region 'upcase-region)))
+    (funcall fn a b)))
+
+(defun my-downcase-region (a b)
+  "(my-upcase-region A B t) ."
+  (interactive "r")
+  (my-upcase-region a b t))
+
+
 (buttons-macrolet
  ((inm () (when (functionp 'global-erjoalgo-command-mode)
             `(global-erjoalgo-command-mode 0)))
@@ -42,8 +57,8 @@
      (but
       ("c" ;; case
        (but
-        ("u" 'upcase-region)
-        ("d" 'downcase-region)
+        ("u" 'my-upcase-region)
+        ("d" 'my-downcase-region)
         ;; "sentence" case
         ("s" 'capitalize-region)))))
     ((kbd "M-.") 'my-next-error)
