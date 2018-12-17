@@ -1,4 +1,4 @@
-(add-hook-to-modes 'company-mode '(emacs-lisp-mode slime-mode go-mode))
+(add-hook-fn-to-modes 'company-mode '(emacs-lisp-mode slime-mode go-mode))
 (define-key emacs-lisp-mode-map (kbd "TAB") 'company-complete)
 
 (with-eval-after-load "slime"

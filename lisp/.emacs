@@ -7,12 +7,13 @@
   (file-name-directory (file-truename user-init-file))
   "Find the LISP src directory.")
 
-(defun add-hook-to-modes (hook mode-sym-list)
+(defun add-hook-fn-to-modes (hook-fn mode-sym-list)
+  "Attach HOOK-FN to the mode hook of each mode in MODE-SYM-LIST."
   (dolist (mode-sym mode-sym-list)
     (let ((hook-sym (intern (concat (symbol-name mode-sym) "-hook"))))
-      (add-hook hook-sym hook)
+      (add-hook hook-sym hook-fn)
       (when (derived-mode-p mode-sym)
-        (funcall hook)))))
+        (funcall hook-fn)))))
 
 (defun safe-funcall (fn &rest args)
   "Wrap funcall in ‘condition-case'."

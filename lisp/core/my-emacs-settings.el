@@ -115,8 +115,8 @@
 (setf source-modes
       '(emacs-lisp-mode clojure-mode go-mode java-mode js-mode c-mode
 			lisp-mode nxml-mode sh-mode python-mode))
-(add-hook-to-modes 'highlight-long-lines source-modes)
-(add-hook-to-modes (lambda () (setf show-trailing-whitespace t)) source-modes)
+(add-hook-fn-to-modes 'highlight-long-lines source-modes)
+(add-hook-fn-to-modes (lambda () (setf show-trailing-whitespace t)) source-modes)
 
 
 
