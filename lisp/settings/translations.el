@@ -433,6 +433,11 @@ a translation from scratch"
   (when (eq 0 (ispell-spanish))
     (translation-fix-quotes)))
 
+(defun ispell-spanish ()
+  (interactive)
+  (ispell-change-dictionary "castellano8")
+  (ispell))
+
 ;; * TODO ensure month, nationalities aren't capitalized
 ;; * TODO spell-check english words, names accepted by ispell-spanish
 ;; * TODO verify country names translate
