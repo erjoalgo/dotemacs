@@ -70,3 +70,12 @@ See `python-check-command' for the default."
     (compilation-start command nil
                        (lambda (_modename)
                          (format python-check-buffer-name command)))))
+
+(with-eval-after-load
+    (flycheck-define-checker pylint
+                             "Flycheck for pylint."
+                             :command ("pylint" source)
+                             :error-patterns
+                             ((error line-start alpha ": " line ", " column
+                                     ":" (message) line-end))
+                             :modes python-mode))
