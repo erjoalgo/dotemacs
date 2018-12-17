@@ -1,6 +1,58 @@
+;;; misc-utils.el --- misc utils with no home
+;;
+;; Filename: misc-utils.el
+;; Description:
+;; Author: Ernesto Alfonso
+;; Maintainer:
+;; Created: Sun Dec 16 18:01:13 2018 (-0800)
+;; Version:
+;; Package-Requires: ()
+;; Last-Updated:
+;;           By:
+;;     Update #: 0
+;; URL:
+;; Doc URL:
+;; Keywords:
+;; Compatibility:
+;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;;; Commentary:
+;;
+;;
+;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;;; Change Log:
+;;
+;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;; This program is free software: you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation, either version 3 of the License, or (at
+;; your option) any later version.
+;;
+;; This program is distributed in the hope that it will be useful, but
+;; WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+;; General Public License for more details.
+;;
+;; You should have received a copy of the GNU General Public License
+;; along with GNU Emacs.  If not, see <https://www.gnu.org/licenses/>.
+;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;;; Code:
+
+
 (require 'cl-lib)
+(require 'cl)
+(require 's)
+(require 'f)
 
 (defun whereis (program)
+  "Search PATH for PROGRAM."
   (interactive "senter program: ")
   (let ((dirs
 	 (loop for dir in (split-string (getenv "PATH") ":" t)
@@ -13,16 +65,17 @@
     dirs))
 
 (defun recover-this-file-and-diff ()
+  "(progn (recover-this-file) (diff-buffer-with-file)) ."
   (interactive)
   (recover-this-file);;TODO ignore prompt
   (diff-buffer-with-file))
 
-(defun shell-command-of-region ()
-  "compare to shell-command-on-region"
-  (interactive)
+(defun shell-command-of-region (a b)
+  "Run the command specified in region A B, which defaults to the current line."
+  (interactive "r")
   (let ((cmd (apply 'buffer-substring-no-properties
 		    (if (region-active-p)
-			(list (region-beginning) (region-end))
+			(list a b)
 		      (list (line-beginning-position)
 			    (line-end-position)))))
 	(buf "*Async Shell Command*")
@@ -34,44 +87,42 @@
     (async-shell-command cmd)))
 
 (defun shell-command-of-buffer ()
-  "like shell-command-of-region"
+  "Like shell-command-of-region, with region as the entire buffer."
   (interactive)
   (shell-command-of-region (point-min) (point-max)))
 
-(defun lnabs (source &optional prompt)
-  ;;(interactive "fEnter soft link source: ")
+(defun lnabs (dest &optional source)
+  "Make DEST point to the absolute path of SOURCE."
   (interactive (list
-		(let ((initial (and (eq major-mode 'dired-mode)
-				    (dired-file-name-at-point)
-				    (f-filename
-				     (dired-file-name-at-point)))))
-
+		(let ((initial
+                       (if (and (eq major-mode 'dired-mode)
+			        (funcall 'dired-file-name-at-point))
+			   (f-filename
+			    (funcall 'dired-file-name-at-point))
+                         (buffer-file-name))))
 		  (read-file-name
 		   "Enter soft link source: "
-		   nil initial t initial))))
-  (let* ((source (expand-file-name source))
-	 (base (f-filename source))
-	 (dest (expand-file-name
-		(read-file-name "enter destination: " nil base nil nil nil )))
-	 (command (format "ln -sf %s %s" source dest)))
-    (when (or (not prompt) (y-or-n-p command))
-      (apply 'call-process "ln" nil "*lnabs*" nil
-	     `("-sf" ,source ,dest)))))
+		   nil initial t initial))
+                (let ((source (expand-file-name source))
+	              (base (f-filename source)))
+                      (expand-file-name
+		       (read-file-name "enter destination: " nil base nil nil nil )))))
+  (apply 'call-process "ln" nil "*lnabs*" nil (list "-sf" source dest)))
 
 (defvar *shred-rec-default-times* 10)
 
 (defun shred-rec (fn &optional shred-times)
-  ;;(interactive "fEnter soft link source: ")
+  "Recursively shred the file or directory FN, making SHRED-TIMES passes."
   (interactive (list
 		(if (and
 		     (eq major-mode 'dired-mode)
-		     (dired-file-name-at-point))
+		     (funcall 'dired-file-name-at-point))
 		    (f-filename
-		     (dired-file-name-at-point))
+		     (funcall 'dired-file-name-at-point))
 		  (read-file-name "enter fn to shred: "))))
   (unless shred-times
     (setf shred-times *shred-rec-default-times*))
-  (y-or-n-p (format "confirm shred %s: " fn))
+  (y-or-n-p (format "Shred %s? " fn))
   (let* ((shred-times-string (int-to-string shred-times))
 	 (shred-cmd-arg-list
 	  (if (executable-find "shred")
@@ -81,7 +132,7 @@
 	 (BUFNAME "shred"))
 
     (if (file-directory-p fn)
-	(and (y-or-n-p (format "confirm recursive shred of %s: " fn))
+	(and (y-or-n-p (format "Recursively shred %s? " fn))
 	     (progn
 	       (apply 'start-process
 		      `(BUFNAME BUFNAME "find" fn "-type" "f"
@@ -91,7 +142,7 @@
       (unless (zerop (apply 'call-process (car shred-cmd-arg-list) nil BUFNAME t
 			    (append (cdr shred-cmd-arg-list) (list fn))))
 	(switch-to-buffer BUFNAME)
-	(error "error in shred")))
+	(error "Error in shred")))
     (when (eq major-mode 'dired-mode)
       (call-interactively 'revert-buffer))))
 
@@ -106,16 +157,19 @@
       sorted)))
 
 (defun directory-files-sort-by-ctime-descending (dir)
+  "List files and directories in DIR sorted by ctime."
   (let ((files (directory-files dir)))
     (reverse (sort-key files (lambda (fn)
 			       (let ((attrs (file-attributes (f-join dir fn))))
 				 (nth 6 attrs)))))))
 
 (defun read-symbol-completing (prompt &optional default)
+  "Read a LISP symbol with completion, prompting with PROMPT and defaulting to DEFAULT."
   (intern
    (completing-read prompt obarray nil nil (and default (symbol-name default)))))
 
 (defun add-file-local-variable-mode (mode)
+  "Add ‘mode' = MODE as a file-local variable."
   (interactive (list (read-symbol-completing "enter mode: " major-mode)))
   (unless (or (eq mode major-mode)
               (member mode minor-mode-list))
@@ -133,9 +187,10 @@
       (add-file-local-variable 'mode mode-sans-mode))))
 
 (defvar check-unsaved-buffers-current-buffer nil
-  "the buffer being examined by a ‘check-unsaved-buffers' recursive edit")
+  "The buffer being examined by a ‘check-unsaved-buffers' recursive edit.")
 
 (defun check-unsaved-buffers ()
+  "Check buffers with changes not persisted in the filesystem."
   (interactive)
   (loop as next-buff =
 	(loop for buff in (buffer-list)
@@ -164,29 +219,43 @@
   t)
 (add-hook 'kill-emacs-query-functions 'check-unsaved-buffers)
 
-(defun check-unsaved-buffers-maybe-exit-recedit ()
-  (when (equal (current-buffer) check-unsaved-buffers-current-buffer)
+(defadvice isearch-forward-regexp (around force-case-fold activate)
+  "Force isearch case fold always."
+  (let* ((case-fold-search t))
+    (when current-prefix-arg
+      (set-mark-command nil))
+    ad-do-it))
+
+(defadvice kill-buffer (around check-unsaved-buffers-auto-move-to-next-buffer activate)
+  "When in a CHECK-UNSAVED-BUFFERS recurisve-edit, exit it to move on to the next buffer."
+  '(message "on check-unsaved-buffers-auto-move-to-next-buffer: (equal %s %s) => %s. %s"
+	   (current-buffer)
+	   check-unsaved-buffers-current-buffer
+	   (equal (current-buffer) check-unsaved-buffers-current-buffer)
+	   this-command)
+  (let ((is-unsaved-buffer (and check-unsaved-buffers-current-buffer
+				(equal (current-buffer) check-unsaved-buffers-current-buffer))))
+    ad-do-it
+    (when is-unsaved-buffer
       (message "moving onto next check-unsaved-buffers buffer...")
-      ;; (exit-recursive-edit)
-      nil))
-(add-hook 'kill-buffer-hook 'check-unsaved-buffers-maybe-exit-recedit )
+      (exit-recursive-edit))))
 
 (defun diff-sexps (sexp-a sexp-b)
-  ;;TODO loop fill in missing length
+  "Signal an error where SEXP-A, SEXP-B differ."
   (loop for a in sexp-a
 	for b in sexp-b
 	do
 	(if (not (eq (atom a) (atom b)))
-	    (error "mismatch: %s %s" a b)
+	    (error "Mismatch: %s %s" a b)
 	  (if (not (atom a))
 	      (diff-sexps a b)
 	    (unless (equal a b)
-	      (error "mismatch: %s %s" a b)))))
+	      (error "Mismatch: %s %s" a b)))))
   (or (not (and (consp sexp-a) (consp sexp-b)))
       (= (length sexp-a) (length sexp-b))))
 
 (defun lookup-key-in-current-maps (key)
-  "list of active keymaps that bind the given key"
+  "Return a list of currently active keymaps that have a binding for KEY ."
   (interactive (list (read-key-sequence "enter key to lookup in current maps: ")))
   (let* ((kmaps-filtered (remove-if-not (lambda (kmap)
 					  (lookup-key kmap key))
@@ -200,30 +269,17 @@
     kmap-to-key-alist))
 
 (defun keymap-current-active-keymap-symbols ()
+  "Return a list of currently active keymap symbols."
   (interactive)
   (let ((symbols (keymap-symbol (current-active-maps))))
     (when (called-interactively-p 'any)
       (message "%s" symbols))
     symbols))
 
-(defun clean-up-async-shell-command-buffers ()
-  (interactive)
-  (loop with async-buffs = (remove-if-not
-			    (lambda (buff)
-			      (string-match "Async.Shell"
-					    (buffer-name buff)))
-			    (buffer-list))
-	for buff in async-buffs do
-	(progn (switch-to-buffer buff)
-	       (when (get-buffer-process buff)
-		 (message "command was: %s"
-			  (process-command (get-buffer-process buff))))
-	       (recursive-edit))))
-
 (defun walk-dir-tree (top fun)
+  "Map FUN over the files rooted at directory TOP."
   (interactive
-   "Denter top directory:
-Center command to run on each file: ")
+   "Denter top directory:\nCenter command to run on each file: ")
   (when (commandp fun)
     (setf fun `(lambda (fn)
 		 (unless (auto-save-file-name-p (f-filename fn))
@@ -253,18 +309,8 @@ Center command to run on each file: ")
 	  do (setf front new-front
 		   new-front nil))))
 
-(defun completing-read-single-char (prompt candidates)
-  (let* ((alist (mapcar (lambda (cand)  (cons (substring cand 0 1) cand))
-			candidates))
-	 (prompt (format "%s\nenter char: " (s-join "\n" (mapcar 'prin1-to-string alist))))
-	 (chars (mapcar 'car alist))
-	 char)
-    (loop as char = (read-char prompt)
-	  as pair =  (assoc (and char (char-to-string char)) alist)
-	  until pair
-	  finally (return (cdr pair)))))
-
 (defmacro with-temporary-current-file (filename &rest body)
+  "Temporarily open existing file FILENAME and evaluate BODY there."
   (let ((was-open-sym (gensym "was-open"))
         (buffer-sym (gensym "buffer"))
         (ret-val-sym (gensym "ret-val")))
@@ -280,7 +326,9 @@ Center command to run on each file: ")
            ret-val-sym)))))
 
 (defun replace-regexp-dir (dir extension from to &optional pause)
-  "basically a recursive sed"
+  "Replace regexp FROM with replacement TO on all EXTENSION files under DIR.
+
+  When PAUSE is non-nil, prompt every match."
   ;;TODO colored output
   (interactive
    (let* ((ext (read-string
@@ -289,10 +337,9 @@ Center command to run on each file: ")
 	  (dir (if current-prefix-arg
 		   (read-directory-name "enter directory: ")
 		 default-directory))
-	  (from (read-string "enter from regexp: "))
-	  (to (read-string "enter to regexp: "))
-	  (pause (y-or-n-p "pause at every match? "))
-	  )
+	  (from (read-string "Enter from regexp: "))
+	  (to (read-string "Enter to regexp: "))
+	  (pause (y-or-n-p "Eause at every match? ")))
      (list dir ext from to pause)))
   (let ((count-sym (gensym)))
     (set count-sym 0)
@@ -306,27 +353,8 @@ Center command to run on each file: ")
 			   (save-buffer))))))
     (message "%d occurrences replaced" (symbol-value count-sym))))
 
-(defun regexp-replace-current-buffer (from to &optional pause)
-  (let ((count 0))
-    (save-excursion
-      (goto-char (point-min))
-      (while (re-search-forward from nil t)
-	(incf count)
-	(replace-match (if (functionp to)
-			   (save-excursion (funcall to))
-			 to) t)
-	(when pause (y-or-n-p (format
-			       "confirm: (%s --> %s)"
-			       from to)))))
-    count))
-
-(defun regexp-exists-current-buffer (regexp)
-  (save-excursion
-    (goto-char (point-min))
-    (re-search-forward regexp nil t)))
-
 (defun keymap-symbol (keymaps)
-  "Return the symbol to which KEYMAP is ound, or nil if no such symbol exists."
+  "Return the symbol to which any keymap in KEYMAPS is bound, or nil if no such symbol exists."
   (let (syms)
     (mapatoms (lambda (sym)
                 (and (not (eq sym 'keymap))
@@ -336,6 +364,7 @@ Center command to run on each file: ")
     syms))
 
 (defun remove-trailing-whitespace (a b)
+  "Remove trailing whitespace in region A, B, defaulting to the entire buffer."
   (interactive
    (if (region-active-p)
        (let ((a (min (mark) (point)))
@@ -347,12 +376,9 @@ Center command to run on each file: ")
     (while (search-forward-regexp "[ \t]+$" b t)
       (replace-match ""))))
 
-(defun erc-autologin ()
-  (interactive)
-  (erc))
-
 (defun kill-buffers-matching-regexp (regex)
-  (interactive "senter regex to kill buffers: ")
+  "Kill buffers whose names match REGEX."
+  (interactive "sEnter regex to kill buffers: ")
   (let* ((regex (format ".*%s.*" regex))
 	 (buffers (remove-if-not
 		   (lambda (buff) (string-match regex (buffer-name buff)))
@@ -368,11 +394,6 @@ Center command to run on each file: ")
 	    (kill-buffer buff))))
     (mapc kill-func buffers)))
 
-(defun ispell-spanish ()
-  (interactive)
-  (ispell-change-dictionary "castellano8")
-  (ispell))
-
 (defun lpr-buffer-no-confirm ()
   ;; /usr/local/share/emacs/25.2/lisp/lpr.el.gz
   "Print buffer contents without pagination or page headers.
@@ -381,30 +402,33 @@ for customization of the printer command."
   (interactive)
   (print-region-1 (point-min) (point-max) lpr-switches nil))
 
-(defun multi-regexp-replace (text-replacement-alist)
-  (cl-labels
-      ((ors-regexp (regexps)
-		   (s-join "\\|" regexps)))
-    (let ((regexp (ors-regexp (mapcar 'car text-replacement-alist))))
-      (while (re-search-forward regexp nil t)
-	(let* ((text (match-string 0))
+(defun multi-regexp-replace (text-replacement-alist &optional a b)
+  "Replace each (FROM TO) pair in TEXT-REPLACEMENT-ALIST in region A, B."
+  (unless (and a b) (setf a (point-min) b (point-max)))
+  (save-excursion
+    (goto-char a)
+    (let ((regexp (s-join "\\|" (mapcar 'car text-replacement-alist))))
+      (while (re-search-forward regexp b t)
+        (let* ((text (match-string 0))
 	       (_ (message "text is %s" text))
 	       (replacement (save-match-data
 			      (loop for (regexp replacement) in text-replacement-alist
 				    thereis (when (string-match regexp text)
 					      replacement)))))
-	  (replace-match replacement))))))
+          (replace-match replacement))))))
 
 (defun multi-regexp-replace-sequential (text-replacement-alist
 					&optional a b)
-  (unless a (setf a (point-min) b (point-max)))
+  "Replace each (FROM TO) pair in TEXT-REPLACEMENT-ALIST sequentially on region A, B."
+  (unless (and a b) (setf a (point-min) b (point-max)))
   (loop for (regexp replacement) in text-replacement-alist
 	do (progn (goto-char a)
 		  (while (re-search-forward regexp b t)
 		    (replace-match replacement)))))
 
-(defun url-decode ()
-  (interactive)
+(defun url-decode (a b)
+  "URL-decode the region A, B."
+  (interactive "r")
   (multi-regexp-replace
    '(("%20" " " )
      ("%3B" ";")
@@ -431,59 +455,57 @@ for customization of the printer command."
      ("%2F" "/" )
      ("%7D" "}")
      ("%3A" ":" )
-     ("%7E" "~")
-     )))
-
-'(multi-regexp-replace '(("defun" "tayfun")
-			 ("interactive" "petaluma")))
+     ("%7E" "~"))
+   a b))
 
 (defun flush-empty-lines ()
+  "Flush empty lines in the current buffer."
   (interactive)
   (flush-lines "^$" (point-min) (point-max)))
 
-(defmacro make-file-local-variable-set-command
-    (file-local-var-sym &optional prompt prompt-fun set-or-toggle)
-  "defun a command which sets a given file-local-variable
-`prompt-fun' is the function to call to prompt for a new value.
-it is called with 2 arguments, the prompt, and the current value
-of the variable, or nil if unbound.
-`prompt-fun' defaults to `read-string'"
-  (let* ((var-sym-name (symbol-name file-local-var-sym))
-	 (set-or-toggle (or set-or-toggle 'set))
-	 (fun-sym (intern (format "file-local-%s-%s"
-				  (symbol-name set-or-toggle)
-				  var-sym-name)))
-	 (prompt (or prompt (format "enter new value for %s: "
-				    var-sym-name)))
-	 (prompt-fun (or prompt-fun 'read-string)))
+(defmacro def-file-local-set-command (file-local-var-sym &optional prompt)
+  "Define a command to set the file-local value of FILE-LOCAL-VAR-SYM.
+
+  If PROMPT is a string, read the variable's value via ‘read-string'.
+  Otherwise, PROMPT-FUN must be a function that accepts the
+  current value of FILE-LOCAL-VAR-SYM and returns the new value."
+
+  (let* ((fun-sym (intern (format "file-local-set-%s" file-local-var-sym)))
+	 (prompt-fun (if (functionp prompt)
+                         prompt
+                       `(lambda (_old)
+                          (read-string ,(or prompt
+                                            (format "Enter new value for %s: " file-local-var-sym)))))))
     (make-variable-buffer-local file-local-var-sym)
     `(defun ,fun-sym (arg)
        (interactive "P")
        (let* ((curr-value (when (boundp ',file-local-var-sym)
 			    ,file-local-var-sym))
-	      (new-value (funcall ,prompt-fun ,prompt curr-value)))
+	      (new-value (funcall ,prompt ,prompt curr-value)))
 	 (add-file-local-variable ',file-local-var-sym new-value)
 	 (setf ,file-local-var-sym new-value)))))
 
-(defmacro make-file-local-variable-flag-toggle-command
-    (file-local-var-sym)
-  `(make-file-local-variable-set-command
-    ,file-local-var-sym nil (lambda (_ curr) (not curr)) toggle))
+(defmacro def-file-local-toggle-command (file-local-var-sym)
+  "Define a command to toggle the file-local value of FILE-LOCAL-VAR-SYM on/off."
+  `(def-file-local-set-command ,file-local-var-sym (lambda (old) (not old))))
 
-(defun uuid (&optional insert)
+(defun uuid ()
+  "Generate a UUID."
   (interactive (list t))
   (let ((uuid (shell-command-to-string "uuidgen| tr -d '\n'")))
-    (when insert (insert uuid))
     uuid))
 
 (defun new-buffer-focus ()
-  "switch to the next new buffer"
+  "Switch to the next 'new buffer'."
   (interactive)
   (switch-to-buffer (loop for buff in (buffer-list)
 			  thereis
 			  (and (s-starts-with-p "new-buffer" (buffer-name buff)) buff))))
 
 (defun perf-test (source-buff)
+  "Try to use primitive statistical profiling to identify a hotspot.
+
+  Compile SOURCE-BUFF and repeatedly interrupt the subprocess."
   (interactive (list (current-buffer)))
   (while t
     (switch-to-buffer source-buff)
@@ -494,15 +516,17 @@ of the variable, or nil if unbound.
     (read-key "cont: ")))
 
 (defun path-append-directory (dir)
+  "Append DIR to the PATH."
   (interactive "Denter directory: ")
   (setenv "PATH" (concat (getenv "PATH") ":" dir))
   (push dir exec-path))
 
-(defun source-bashrc (bashrc)
+(defun source-bashrc (sh-vars)
+  "Source shell vars defined in the file SH-VARS."
   (interactive (list
-                (read-file-name "enter bash file to source: "
+                (read-file-name "enter shell file to source: "
                                  "~/.bashrc" "~/.bashrc")))
-  (loop with cmd = (format "bash -i 'source %s &> /dev/null; env'" bashrc)
+  (loop with cmd = (format "bash -i 'set -a; source %s &> /dev/null; env'" sh-vars)
         with env = (s-split "\n" (shell-command-to-string cmd) t)
 
         for var-val in env
@@ -515,27 +539,29 @@ of the variable, or nil if unbound.
         do (add-to-list 'exec-path dir)))
 
 (defun diff-buffer-with-another-file (buffer file)
-  "View the differences between BUFFER and another file.
+  "View the differences between BUFFER and another file FILE.
 This requires the external program `diff' to be in your `exec-path'."
   (interactive "bBuffer: \nfFile: ")
   (with-current-buffer (get-buffer (or buffer (current-buffer)))
     (diff file (current-buffer) nil 'noasync)))
 
 (defmacro comp (comps-sym &optional default)
+  "A macro to complete for a set of choices COMPS-SYM, with default DEFAULT."
   `(completing-read ,(format "complete from %s: " comps-sym)
                     ,comps-sym
                     nil t nil nil (list ,default)))
 
 (defun lisp-fmt-fix-hanging-rparen ()
+  "Auto-fix my old LISP code with the wrong rparen style."
   (interactive)
   (save-excursion
     (goto-char (point-min))
-    ;; (while (re-search-forward "\n^[ 	]*\\()+\\)" nil t)
     (query-replace-regexp
      "\n[ 	]*\\()+\\)" "\\1" nil
      (point-min) (point-max) nil)))
 
-(defun print-level-disable-ellipsis (arg)
+(defun print-level-disable-ellipsis ()
+  "Disable elipsis when printing LISP expressions."
   (interactive "P")
   (dolist (sym
            '(eval-expression-print-level
@@ -544,132 +570,10 @@ This requires the external program `diff' to be in your `exec-path'."
              print-length))
     (set sym nil)))
 
-(defun common-prefix (strings)
-  (loop with longest = (or (car strings) "")
-        for s in (cdr strings)
-        minimize
-        (loop for c1 across longest
-              for c2 across s
-              for n below (or len (length longest))
-              while (eq c1 c2)
-              finally (return n))
-        into len
-        finally (return (subseq longest 0 (or len 0)))))
-
-
-(defun s-match-buffer-all-nonverlapping (regexp)
-  (save-excursion
-    (goto-char (point-min))
-    (loop while (re-search-forward regexp nil t)
-          collect (match-string 0))))
-
-(defun buffer-remove-common-prefix (&optional a b delimiter regexp)
-  (interactive (nconc
-                (if (region-active-p)
-                  (list (region-beginning) (region-end))
-                  '(nil nil))
-                '(?/)))
-  ;; TODO account for deletions when using b
-  (let* ((prefix (common-prefix (if (not regexp)
-                                    (remove-if 's-whitespace-p
-                                               (s-split "\n" (buffer-string) t))
-                                  ;; (mapcar 'car (s-match-strings-all regexp (buffer-string)))
-                                  (s-match-buffer-all-nonverlapping regexp))))
-         (len (length prefix)))
-
-    (when delimiter
-      (while (and (not (zerop len))
-                  (not (eq (aref prefix (1- len)) delimiter)))
-        (decf len)))
-
-    (unless (zerop len)
-      (save-excursion
-        (goto-char (or a (point-min)))
-        '(loop with deleted-count = 0
-               as line-len = (- (line-end-position) (line-beginning-position))
-               as new-end = (+ (line-beginning-position) len)
-               while (and (< new-end (line-end-position))
-                          (or (null b)
-                              (<= new-end (+ b deleted-count))))
-               do (progn
-                    (delete-region (line-beginning-position) new-end)
-                    (incf deleted-count line-len))
-               while (zerop (forward-line)))
-        (loop with deleted-count = 0
-              as match = (re-search-forward (or regexp "^.*[^ \n\t].*$")
-                                            (when b (+ b deleted-count))
-                                            t)
-              while match
-              when match do (replace-match (subseq (match-string 0) len)))))))
-
-(defun s-whitespace-p (s)
-  (string-blank-p (s-trim s)))
-
-(defun s-non-whitespace-p (s)
-  (string-blank-p (s-trim s)))
-
-(defun buffer-remove-common-filename-prefix ()
-  (interactive)
-  (buffer-remove-common-prefix nil nil ?/ "/.*"))
-
-(defmacro save-excursion-file (filename &rest body)
-  (let ((was-open-p-sym (gensym "was-open-p"))
-        (buff-sym (gensym "buff"))
-        (ret-val-sym (gensym "ret-val")))
-    `(save-excursion
-       (let ((,was-open-p-sym (find-buffer-visiting ,filename))
-             ,ret-val-sym)
-         (setf ,buff-sym
-               (or ,was-open-p-sym
-                   (find-file-noselect filename t)))
-         (setf ,ret-val-sym ,@body)
-         (unless ,was-open-p-sym
-           (kill-buffer ,buff-sym))
-         ,ret-val-sym))))
-
-(defun buffer-make-prefix-unique (buffer &optional min-prefix-len)
-  "Kill other buffers to make autocompletion easier."
-  (interactive (list (current-buffer) 4))
-  (let* ((buffer (get-buffer (or buffer (current-buffer))))
-         (others (remove buffer (buffer-list)))
-         (buffer-name (buffer-name buffer))
-         points)
-    (loop for len from 1 upto (length buffer-name)
-          ;; as new-others = (remove-if-not (apply-partially 's-starts-with? (subseq buffer 0 len))
-          ;;                               others)
-          as prefix = (subseq buffer-name 0 len)
-          as new-others = (loop for other in others
-                                when (s-starts-with-p prefix (buffer-name other))
-                                collect other)
-          when (not (eq (length others)
-                        (length new-others)))
-          do (progn
-               (unless (zerop (1- len))
-                 (push (cons (1- len) others) points))
-               (setf others new-others))
-          finally (when others
-                    (push (cons len others) points)))
-    (message "value of points: %s" points)
-
-    (let* ((choices (loop for (len . others) in points
-                          when (or (null min-prefix-len)
-                                   (>= len min-prefix-len))
-                          collect (subseq buffer-name 0 len))))
-      (if (null choices)
-          (message "buffer %s is already unique %s"
-                   buffer (if min-prefix-len
-                              (format "up to %s chars" min-prefix-len) ""))
-        (let* ((choice (completing-read "select prefix length: " choices nil t
-                                        (car (reverse choices))))
-               (selected-length (length choice))
-               (others (cdr (assoc selected-length points))))
-          ;; others
-          (message "killing: %s" others)
-          (loop for (len . others) in points
-                when (>= len selected-length)
-                do (mapc 'kill-buffer others)))))))
-
 (defun selcand-hints (cands &optional chars)
+  "Return an alist (HINT . CAND) for each candidate in CANDS.
+
+  each hint consists of characters in the string CHARS."
   (setf chars (or chars "qwertasdfzxcv1234"))
   (let* ((w (ceiling (log (length cands) (length chars))))
          (hints (loop with curr = '("")
@@ -685,6 +589,7 @@ This requires the external program `diff' to be in your `exec-path'."
           collect (cons hint cand))))
 
 (defun selcand-select (cands &optional prompt)
+  "Use PROMPT to prompt for a selection from CANDS candidates."
   (let* ((hints-cands (selcand-hints cands))
          (sep ") ")
          (choices (loop for (hint . cand) in hints-cands
@@ -698,8 +603,15 @@ This requires the external program `diff' to be in your `exec-path'."
     cand))
 
 (defun regexp-replace-select-from-list (regexp-replacement-alist &optional noquery)
+  "Interactively select a regexp-replacement pair from REGEXP-REPLACEMENT-ALIST.
+
+   If NOQUERY is non-nil, use ‘replace-regexp' to replace every match.
+   Otherwise, use ‘query-replace-regexp'"
   (destructuring-bind (regexp . replacement)
       (selcand-select regexp-replacement-alist)
     (funcall
      (if noquery 'replace-regexp 'query-replace-regexp)
      regexp replacement)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; misc-utils.el ends here
