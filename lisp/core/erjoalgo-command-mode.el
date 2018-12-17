@@ -121,6 +121,32 @@
      ((Info-mode) 'Info-next-reference)
      (t 'indent-for-tab-command))))
 
+(defun my-indent ()
+  "Context aware indent."
+  (interactive)
+  (if (region-active-p)
+      (indent-region (region-beginning) (region-end))
+    (if (at-end-of-sexp)
+	(indent-last-sexp)
+      (indent-according-to-mode))))
+
+(defun at-end-of-sexp ()
+  (condition-case ex
+      (save-excursion
+	(= (point)
+	   (progn (backward-sexp 1)
+		  (forward-sexp 1)
+		  (point))))
+    ('error nil)))
+
+(defun indent-last-sexp ()
+  (interactive)
+  (let ((b (point))
+	(a (save-excursion (progn
+			     (backward-sexp 1)
+			     (point)))))
+    (indent-region a b)))
+
 (defvar emacs-top
   (file-name-directory (file-truename user-init-file))
   "Find the lisp src directory.")
