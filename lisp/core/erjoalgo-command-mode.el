@@ -29,8 +29,9 @@
 
 ;;; Code:
 
-;; (require 'buttons)
-;; (require 'f)
+(require 'cl-lib)
+(require 'buttons)
+(require 'f)
 
 (defvar erjoalgo-command-mode-map (make-sparse-keymap))
 
@@ -80,6 +81,13 @@
      (if (equal (key-description (this-command-keys-vector)) "M-n")
          'move-line-down 'move-line-up))))
 
+(defcustom engine-alist
+  "Alist of search engine (IDENTIFIER . URL)."
+  '(("ddg" . "https://duckduckgo.com/lite/?q=%s")
+    ("linguee" . "https://www.linguee.com/english-spanish/search?source=auto&query=%s"))
+  :type 'alist
+  :group 'erjoalgo-command-mode)
+
 (defun search-engine-search (term &optional engine)
   "Search for TERM using search engine ENGINE."
   (interactive (list (if (region-active-p)
@@ -104,13 +112,18 @@
        (call-interactively 'search-engine-search))))
 
 (defun my-tab-command ()
+  "Context-sensitive tab command."
   (interactive)
   (call-interactively
-   (case major-mode
+   (cl-case major-mode
      ((Custom-mode) 'widget-forward)
      ((help-mode apropos-mode debugger-mode) 'forward-button)
      ((Info-mode) 'Info-next-reference)
      (t 'indent-for-tab-command))))
+
+(defvar emacs-top
+  (file-name-directory (file-truename user-init-file))
+  "Find the lisp src directory.")
 
 (buttons-macrolet
  ((dir (dir) `(read-file-name "select file: " ,dir))
@@ -196,7 +209,7 @@
 	  ie for inspecting erjoalgo-command-mode bindings
 	  ie u h k g
 	  g runs the command goto-line, which is an interactive compiled Lisp..."
-           (set-temporary-overlay-map 'help-command)
+           (set-transient-map 'help-command)
            (unless (or arg
                        global-erjoalgo-command-mode)
              (global-erjoalgo-command-mode 0))))
@@ -208,7 +221,7 @@
     ("Y" (search-engine-search-cmd "linguee"))
     ("J" (lambda (arg)
            (interactive "P")
-           (loop for _ below (or arg 1)
+           (cl-loop for _ below (or arg 1)
                     do (join-line '(4)))))
     ("m"
      (buttons-make
