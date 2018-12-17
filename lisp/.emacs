@@ -15,18 +15,15 @@
       (when (derived-mode-p mode-sym)
         (funcall hook-fn)))))
 
-(defun safe-funcall (fn &rest args)
-  "Wrap funcall in ‘condition-case'."
-  '(unless (member "dark green"
-                   (custom-face-attributes-get 'mode-line (selected-frame)))
-     (error "err"))
-  (condition-case ex (apply fn args)
-    ('error
-     (warn "WARNING: unable to funcall (%s %s):  %s:" fn args ex)
-     (when debug-on-error
-       (error ex)
-       (require 'edebug)
-       (edebug)))))
+(defmacro safe-funcall (fn-args)
+  "Demote errors in the FN-ARGS funcall into warnings."
+  (destructuring-bind (fn . args) fn-args
+  (let ((err-sym (gensym "err-")))
+    `(condition-case ,err-sym (,fn ,@args)
+       (error
+        (warn "WARNING: error calling %s: %s" (list ',fn ,@args)  ,err-sym)
+        (when debug-on-error
+          (error ,err-sym)))))))
 
 (dolist (dir '("libs" "core" "extra"))
   (add-to-list 'load-path
@@ -108,7 +105,7 @@
                        (equal "el" (f-ext filename-abs)))
         collect
         (with-elapsed-time ms
-                           (safe-funcall 'load filename-abs)
+                           (safe-funcall (load filename-abs))
                            (cons ms filename-abs) )))
 
 (let ((default-directory emacs-top))
