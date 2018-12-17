@@ -1,3 +1,8 @@
+;;; .emacs --- Initialization file for Emacs
+;;; Commentary:
+;;; Emacs Startup File --- initialization for Emacs
+;;; Code:
+
 (defvar emacs-top
   ;;  find .emacs's real location
   ;;  (concat (expand-file-name ".") "/"))
