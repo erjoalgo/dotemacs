@@ -1,4 +1,4 @@
-;;; proxy-mode.el ---
+;;; proxy-mode.el --- Toggle a proxy on/off
 
 ;; Copyright (C) 2016  Ernesto Alfonso <erjoalgo@gmail.com>
 
@@ -22,33 +22,41 @@
 
 ;;; Code:
 
-(defun proxy-on ()
-  (interactive)
-  (proxy-internal t))
+(require 'url-vars)
 
-(defun proxy-off ()
-  (interactive)
-  (proxy-internal nil))
+(defvar proxy-mode-proxy-url
+  nil
+  "The proxy URL to use when proxy is turned on.")
 
-(defun proxy-internal (on)
-  (let ((value (if on proxy-mode-proxy ""))
+(defun proxy-on (off)
+  "Turn proxy on or OFF."
+  (interactive (list current-prefix-arg))
+  (let ((value (if off "" proxy-mode-proxy-url))
 	(envs '("http_proxy" "http_proxy" "HTTP_PROXY" "HTTPS_PROXY")))
-    (message "value is: '%s'" value)
+    (message "new proxy value is: '%s'" value)
     (dolist (env envs)
       (setenv env value))
-    (let ((value
-	   (gnus-replace-in-string value "https?://" "")))
+    (let ((value-no-scheme
+	   (replace-regexp-in-string value "https?://" "")))
       (setq url-proxy-services
 	    `(("no_proxy" . "^\\(localhost\\|10.*\\)")
-	      ("http" . ,value)
-	      ("https" . ,value))))))
+	      ("http" . ,value-no-scheme)
+	      ("https" . ,value-no-scheme))))))
 
-(defun proxy-toggle ()
+(defun proxy-off ()
+  "Turn off proxy."
   (interactive)
-  (proxy-internal (equal "" (getenv "http_proxy"))))
+  (proxy-on t))
+
+;;;###autoload
+(defun proxy-toggle ()
+  "Toggle proxy on/off."
+  (interactive)
+  (let ((currently-off (zerop (length (assoc "http" url-proxy-services #'equal)))))
+    (proxy-on (not currently-off))))
+
 
 (defalias 'sp 'proxy-toggle)
-(defcustom proxy-mode-proxy "" "proxy for proxy mode")
 
 
 (provide 'proxy-mode)
