@@ -10,7 +10,6 @@ mkdir -p "${TMPDIR}"
 
 ln -sf $(realpath ../lisp/.emacs) "${TMPDIR}/"
 
-
 test "${EMACS:-t}" = "t" && EMACS=emacs
 
 env HOME="${TMPDIR}" ${EMACS} --load exit-emacs.el
