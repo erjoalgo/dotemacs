@@ -138,7 +138,10 @@
     ("f" (cmd (ins "for {} in {}:{(nli)}{}{(nli)}{(idt)}")))
     ("F" (cmd (ins "[{} for {} in {}]")))
     ("w" (cmd (ins "while {}:{(nli)}{}{(nli)}{(idt)}")))
-    ("T" (cmd (ins "try:{(nli)}{}{(nli)}{(idt)}except:{(nli)}")))
+    ("T" (cmd (ins "try:{(nli)}{}{(nli)}"
+                   (python-indent-dedent-line)
+                   "except:"
+                   (nli))))
     ("z" (cmd (ins "if {}:{(nli)}")))
     ("x" (cmd (ins "elif {}:{(nli)}")))
     ("c" (cmd (ins "else:{(nli)}")))
