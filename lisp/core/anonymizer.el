@@ -40,11 +40,11 @@
   (unless (region-active-p)
     (setf a nil b nil))
   (let ((words `((,(system-name) "my-hostname")
-		       (,user-login-name "USER" )
-		       (,user-real-login-name "MY-NAME")
-		       (,user-mail-address "me@example.com")
-		       (,(cl-first (s-split " " user-full-name)) "MY-FIRST-NAME")
-		       (,(cl-second (s-split " " user-full-name)) "MY-LAST-NAME")))
+		 (,user-login-name "USER" )
+		 (,user-real-login-name "MY-NAME")
+		 (,user-mail-address "me@example.com")
+		 (,(cl-first (s-split " " user-full-name)) "MY-FIRST-NAME")
+		 (,(cl-second (s-split " " user-full-name)) "MY-LAST-NAME")))
         (custom-words (cl-typecase anonymizer-custom-words
                         (list anonymizer-custom-words)
                         (function (funcall anonymizer-custom-words))
@@ -59,7 +59,7 @@
 	(total-count 0))
 
     (setf words (cl-loop for (word replacement) in words
-		      collect (cons (downcase word) replacement)))
+		         collect (cons (downcase word) replacement)))
 
     (cl-labels ((replace-regexp-in-buffer (regexp replacement)
 					  (message "replacing occurrences of '%s'" regexp)
@@ -68,7 +68,7 @@
 					      (goto-char (or a (point-min)))
 					      (while (re-search-forward regexp b t)
 						(let* ((match (match-string 0))
-						      (replacement (funcall replacement match)))
+						       (replacement (funcall replacement match)))
 						  (cl-assert replacement nil "no replacement for '%s'" match)
 						  (message "replacing '%s' with '%s'"
 							   match replacement)
@@ -80,11 +80,11 @@
 			    (s-join "\\|" (mapcar 'regexp-quote (mapcar 'car regexps)))))
 
       (cl-incf total-count (replace-regexp-in-buffer
-                         (ors-regexp (append words custom-words)) (lambda (match)
-						     (cdr (assoc (downcase match) words)))))
+                            (ors-regexp (append words custom-words)) (lambda (match)
+						                       (cdr (assoc (downcase match) words)))))
 
       (cl-incf total-count (cl-loop for (regexp replacement) in regexps sum
-			      (replace-regexp-in-buffer regexp `(lambda (match) ,replacement))))
+			            (replace-regexp-in-buffer regexp `(lambda (match) ,replacement))))
       (message "%d total matches replaced" total-count))))
 
 (defun anonymizer-scramble-region (a b)
@@ -94,19 +94,19 @@
   (interactive "r")
   (let ((scrambled (buffer-substring-no-properties a b)))
     (cl-loop for i below (length scrambled) do
-	  (let ((char-string (substring scrambled i (1+ i)))
-		bag
-		(case-fold-search nil))
+	     (let ((char-string (substring scrambled i (1+ i)))
+		   bag
+		   (case-fold-search nil))
 
-	    (setf bag
-		  (cond
-	           ((string-match "[a-z]" char-string) genpass-letters-lower)
-	           ((string-match "[A-Z]" char-string) genpass-letters-upper)
-	           ((string-match "[0-9]" char-string) genpass-num)))
+	       (setf bag
+		     (cond
+	              ((string-match "[a-z]" char-string) genpass-letters-lower)
+	              ((string-match "[A-Z]" char-string) genpass-letters-upper)
+	              ((string-match "[0-9]" char-string) genpass-num)))
 
-	    (when bag
-	      (let ((new-char (aref bag (random (length bag)))))
-		(aset scrambled i new-char)))))
+	       (when bag
+	         (let ((new-char (aref bag (random (length bag)))))
+		   (aset scrambled i new-char)))))
     (save-excursion
       (goto-char a)
       (let ((region-text (buffer-substring a b)))
