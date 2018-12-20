@@ -1,7 +1,9 @@
-;; (require 'flymake-jslint) ;; Not necessary if using ELPA package
-
-(setf jsl-err-line-pattern
-      '("^\\(.*?\\)(\\([0-9]+\\)): \\(.*\\)" 1 2 nil 3))
-(add-hook 'js-mode-hook 'flymake-jslint-load)
-
-;; (push jsl-err-line-pattern flymake-proc-err-line-patterns)
+(with-eval-after-load "flycheck"
+  (flycheck-define-checker jsl
+    "jsl"
+    :command
+    ("jsl" "-process" source)
+    :error-patterns
+    ((error line-start (file-name) "(" line "):" (message) line-end))
+    :modes (js-mode))
+  (add-to-list 'flycheck-checkers 'jsl))
