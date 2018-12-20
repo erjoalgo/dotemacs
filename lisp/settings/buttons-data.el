@@ -365,9 +365,9 @@
  (defbuttons cl-buttons emacs-lisp-buttons
    (lisp-mode-map slime-mode-map)
    (but
+    ("e" (cmd (ins "(setf {})")))
     ("d"
      (but
-      ("e" (cmd (ins "(setf {})")))
       ("i" (cmd (ins "(declare (ignore {}))")))
       ("n" (cmd (ins "(defcommand {} ({}) ({}){(nli)}{})")))
       ("p" (cmd (ins "(defparameter {})")))
