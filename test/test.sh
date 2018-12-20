@@ -5,8 +5,7 @@ set -euo pipefail
 cd "$( dirname "${BASH_SOURCE[0]}" )"
 
 TMPDIR=/tmp/emacs-init-file-test
-# rm -rf "${TMPDIR}"
-# mkdir -p "${TMPDIR}"
+rm -rf "${TMPDIR}"
 mkdir -p "${TMPDIR}/quicklisp"
 touch "${TMPDIR}/quicklisp/slime-helper.el"
 
