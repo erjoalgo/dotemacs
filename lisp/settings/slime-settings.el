@@ -1,13 +1,13 @@
-  (defvar slime-helper-filename nil "Quicklisp slime helper")
+(defvar slime-helper-filename nil "Quicklisp slime helper")
 
 (setq slime-helper-filename
       (expand-file-name "~/quicklisp/slime-helper.el"))
 
-  (if (not (file-exists-p slime-helper-filename))
-      ;; must (ql:quickload "quicklisp-slime-helper")
+(if (not (file-exists-p slime-helper-filename))
+    ;; must (ql:quickload "quicklisp-slime-helper")
     (warn "slime helper %s does not exist. hint: %s"
-	    slime-helper-filename
-	    '(ql:quickload 'quicklisp-slime-helper))
+	  slime-helper-filename
+	  '(ql:quickload 'quicklisp-slime-helper))
   ;; not the full slime
   (load slime-helper-filename))
 
