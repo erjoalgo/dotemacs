@@ -72,7 +72,7 @@
 			    (kill-new str))
 		          (cl-return str))))
 
-(ert-deftest test-genpass ()
+(ert-deftest genpass-test ()
   (cl-loop for n below 20 do
            (cl-loop for (fmt bag)
                     on (list
