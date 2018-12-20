@@ -23,7 +23,7 @@ if breakpoints are present in `python-mode' files"
 (defun my-python-indentation ()
   ;;taken from the internet
   (setq tab-width 4
-      python-indent-offset 4
+      python-indent-offset (if (bound-and-true-p google-emacs-version) 2 4)
       indent-tabs-mode nil
       py-smart-indentation nil))
 
