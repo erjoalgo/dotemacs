@@ -47,8 +47,6 @@
   (destructuring-bind (nick user host) (erc-parse-user nickuserhost)
     (message "%s says: %s" nick (s-trim msg))))
 
-;; TODO /msg nickserv ghost USER PASSWORD
-
 '(with-eval-after-load 'erc
   (push 'notifications erc-modules)
   (push 'match erc-modules)
@@ -57,24 +55,3 @@
   ;; (push 'erc-beep-on-match erc-text-matched-hook)
   (push 'erc-my-message-notify erc-text-matched-hook)
   (erc-update-modules))
-
-(defun erc-ghost-maybe (server nick)
-  ;; taken from https://www.emacswiki.org/emacs/ErcTips
-  "Send GHOST message to NickServ if NICK ends with `erc-nick-uniquifier'.
-The function is suitable for `erc-after-connect'."
-  (when (string-match (format "\\(.*?\\)%s+$" erc-nick-uniquifier) nick)
-    (let ((nick-orig (match-string 1 nick))
-          (password erc-session-password))
-      (when (y-or-n-p (format "Current nick is '%s'. Do you want to ghost?"
-                              nick))
-        (erc-message "PRIVMSG" (format "NickServ GHOST %s %s"
-				       nick-orig password))
-	(erc-cmd-NICK nick-orig)
-	(erc-message "PRIVMSG" (format "NickServ identify %s %s"
-				       nick-orig password))))))
-
-(defadvice erc-nickname-in-use (before erc-set-random-nick-uniquifier activate)
-  "Pick a random nick uniquifier to minimize chance of colliding again with ghosts."
-  (setq erc-nick-uniquifier (char-to-string (seq-random-elt "`123456789aeiou"))))
-
-(add-hook 'erc-after-connect 'erc-ghost-maybe)
