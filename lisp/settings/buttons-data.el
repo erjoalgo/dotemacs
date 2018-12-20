@@ -160,8 +160,9 @@
     ("M" (cmd (ins "from {} import *")
               (cmt)
               (ins "{(nli)}")))
-    ("N" (cmd (ins "print ( {} ){(nli)}")))
-    ("n" (cmd (ins "print ({}){(nli)}")))
+    ("n" (but
+          ("t" (cmd (ins "print ({}){(nli)}")))
+          ("v" (cmd-ins "print (\"{(buf)} {(rnd)}: value of {0}: {}\".format({0}))"))))
     ("r" (cmd (ins "return {}{(nli)}{(idt)}")))
     ("L" (cmd (ins "class {}(object):{(nli)}")))
     ("l" (cmd (ins "len({})")))
