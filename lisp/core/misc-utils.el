@@ -613,5 +613,69 @@ This requires the external program `diff' to be in your `exec-path'."
      (if noquery 'replace-regexp 'query-replace-regexp)
      regexp replacement)))
 
+;;minibuffer-local-map
+
+(add-hook 'lisp-mode-hook 'slime-mode)
+
+(defun upcase-last (&optional capitalize)
+  "Upcase the last sexp.  If CAPITALIZE is non-nil, capitalize instead."
+  (interactive)
+  (let ((fun (if capitalize 'capitalize-region 'upcase-region)))
+    (save-excursion
+      (funcall fun (point)
+               (progn
+                 (backward-sexp)
+                 (point))))))
+
+(defun capitalize-last ()
+  "Capitalize the last sexp."
+  (interactive "P")
+  (upcase-last t))
+
+(defun bash-identifier-current-line  ()
+  "Return the bash variable at the current line."
+  (let ((line
+	 (buffer-substring-no-properties
+	  (point)
+	  (line-beginning-position))))
+    (and
+     (string-match
+      "^[[:space:]]*\\([^=]+\\)="
+      line)
+     (match-string 1 line))))
+
+
+
+(defun process-filter-line-buffer (real-filter &optional separator-char)
+  "Warp REAL-FILTER with a new process filter which emits complete lines.
+
+  Optionally uses SEPARATOR-CHAR instead of newline.
+  Returns a new ‘process-filter' function."
+  (let ((cum-string-sym (gensym "proc-filter-buff"))
+	(newline (or separator-char (string-to-char "\n")))
+	(string-indexof (lambda (string char start)
+			  (loop for i from start below (length string)
+				thereis (when (eq char (aref string i))
+					  i)))))
+    (set cum-string-sym "")
+    `(lambda (proc string)
+       (setf string (concat ,cum-string-sym string))
+       (let ((start 0) new-start)
+	 (while (setf new-start
+		      (funcall ,string-indexof string ,newline start))
+
+	   ;;does not include newline
+	   (funcall ,real-filter proc (substring string start new-start))
+
+	   (setf start (1+ new-start)));;past newline
+
+	 (setf ,cum-string-sym (substring string start))))))
+
+
+
+(defun peek (str start max)
+  "Peek into str at most MAX characters in STR, starting at START."
+  (substring str start (min (length str) (+ start max))))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; misc-utils.el ends here
