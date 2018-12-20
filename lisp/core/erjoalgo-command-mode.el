@@ -340,6 +340,9 @@
 
 (buttons-macrolet
  ()
+ ;; suppress warning about overriding target keymap
+ (define-key global-map [f1] nil)
+ (define-key global-map [f2] nil)
  (defbuttons command-mode-global-buttons
    nil
    (global-map)
