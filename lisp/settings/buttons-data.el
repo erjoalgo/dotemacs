@@ -285,6 +285,7 @@
         ("q" (cmd (ins "(eq {})")))
         ("=" (cmd (ins "(= {})")))
         ("l" (cmd (ins "(eql {})")))
+        ("t" (cmd (ins ":test #'equal")))
         ("r" (cmd (ins "(error \"{}\"{})")))))
       ("f"
        (but
