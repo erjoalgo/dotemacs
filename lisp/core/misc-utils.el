@@ -521,22 +521,25 @@ for customization of the printer command."
   (setenv "PATH" (concat (getenv "PATH") ":" dir))
   (push dir exec-path))
 
-(defun source-bashrc (sh-vars)
-  "Source shell vars defined in the file SH-VARS."
+(defun source-shell-vars (sh-vars &optional quiet)
+  "Source shell vars defined in the file SH-VARS.  No echo on QUIET."
   (interactive (list
                 (read-file-name "enter shell file to source: "
-                                 "~/.bashrc" "~/.bashrc")))
-  (loop with cmd = (format "bash -i 'set -a; source %s &> /dev/null; env'" sh-vars)
+                                "~" ".bashrc")))
+  (loop with cmd = (format "bash -c 'set -a; source %s &> /dev/null; env'"
+                           sh-vars)
         with env = (s-split "\n" (shell-command-to-string cmd) t)
-
         for var-val in env
-        do (string-match "\\([^=]+\\)=\\(.*\\)" var-val)
-        as var = (match-string 1 var-val)
-        as val = (match-string 2 var-val)
-        do (message "setting %s to %s" var val)
-        do (setenv var val))
-  (loop for dir in (s-split ":" (getenv "PATH") t)
-        do (add-to-list 'exec-path dir)))
+        if (string-match "\\([^=]+\\)=\\(.*\\)" var-val)
+        do (let ((var (match-string 1 var-val))
+                 (val (match-string 2 var-val)))
+             (unless quiet
+               (message "setting %s to %s" var val))
+             (setenv var val)
+             (when (equal "PATH" var)
+               (loop for dir in (s-split ":" val t)
+                     do (pushnew dir exec-path :test #'equal))))
+        else do (error "Unexpected line: %s" var-val)))
 
 (defun diff-buffer-with-another-file (buffer file)
   "View the differences between BUFFER and another file FILE.
