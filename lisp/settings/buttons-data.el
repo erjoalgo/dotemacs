@@ -651,8 +651,13 @@
     ("s" (cmd (ins "this.")))
     ("i" (cmd (ins "in")))
     ("p" (cmd (ins ".prototype.")))
+    ("m" (cmd-ins "const {0} = require('{0}')"))
     ("t"
      (but
+      ("a"
+       (but
+        ("s" (cmd-ins "async "))
+        ("w" (cmd-ins "await "))))
       ("u" (cmd (ins "true")))
       ("x" (cmd
             (let-when-compile
