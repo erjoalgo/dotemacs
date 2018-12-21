@@ -73,7 +73,8 @@
       (cond
        ((f-file? abs) (when (funcall pred abs)
                         (funcall action abs)))
-       ((f-directory? abs) (unless (member file '(".." "." ".git"))
+       ((f-directory? abs) (unless (or (member file '(".." "." ".git"))
+                                       (not (funcall pred abs)))
                              (find-files-recursively abs pred)))
        ((f-symlink? abs) (warn "broken symlink: %s" abs))
        (t (require 'edebug) (edebug)
