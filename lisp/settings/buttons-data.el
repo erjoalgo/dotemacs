@@ -129,12 +129,7 @@
  (defbuttons python-buttons programming-buttons
    (python-mode-map)
    (but
-    ("e"
-     (cmd
-       (insert
-        (if
-            (looking-back "^[ 	]*[a-zA-Z_.,]+ *")
-            " = " "="))))
+    ("e" (cmd-ins (if (looking-back "^[ 	]*[a-zA-Z_.,]+ *") " = " "=")))
     ("f" (cmd (ins "for {} in {}:{(nli)}{}{(nli)}{(idt)}")))
     ("F" (cmd (ins "[{} for {} in {}]")))
     ("w" (cmd (ins "while {}:{(nli)}{}{(nli)}{(idt)}")))
