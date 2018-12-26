@@ -262,7 +262,7 @@
       ((kbd "s-c") (file (f-join emacs-top "core" "erjoalgo-compile.el")))
       ("M" (file (concat "/var/mail/" (getenv "USER"))))
       ("x" (file (concat  "~/.stumpwmrc.d/inits/.xmodmap/")))
-      ("l" (file "/sudo::/var/log/syslog"))
+      ("l" (buff "regexp:[*]inferior-lisp[*]"))
       ("L" (buff "regexp:[*]sldb sbcl/.*[*]"))
       ("v" (file "~/.stumpwmrc.d/keynavs/.keynavrc"))
       ("w" (file "~/.stumpwmrc.d/lisp/.stumpwmrc"))
