@@ -239,7 +239,7 @@
         ("p" (cmd (ins "(defpackage {}{(nli)}(:use :cl){})")))
         ("u" (cmd (ins "(:use :{})")))
         ("i" (cmd (ins "(in-package #:{})")))
-        ("m" (cmd (ins "(:import-from #:{})")))
+        ("f" (cmd (ins "(:import-from #:{})")))
         ("e" (cmd (ins "(:export #:{})")))
         ("E" 'slime-export-symbol-at-point)))))
     ("w" (cmd (ins "(while {}){(nli)}")))
@@ -265,7 +265,7 @@
      (but
       ("r" (cmd (ins "&rest ")))
       ("k" (cmd (ins "&key ")))
-      ("b" (cmd (ins "&body ")))
+      ("b" (cmd (ins "&body body")))
       ("o" (cmd (ins "&optional ")))))
     ("g" (cmd (ins "nil")))
     ("t"
@@ -273,7 +273,7 @@
       ("l"
        (but
         ("t" (cmd (ins "(list {})")))
-        ("l" (cmd (ins "(length {})")))))
+        ("g" (cmd (ins "(length {})")))))
       ("1" (cmd (ins "(null {})")))
       ("m"
        (but
@@ -302,7 +302,10 @@
       ("n" (cmd (ins "~{~A~^" "{}" "~}")))
       ("a" (cmd (ins "(assert {})")))
       ("#" (cmd-ins ";;;###autoload"))
-      ("w" (cmd (ins "(warn \"{}\"{})")))
+      ("w"
+       (but
+        ("s" (cmd-ins "(with-slots ({}) {}" (nli) "{})"))
+        ("r" (cmd-ins "(warn \"{}\"{})"))))
       ("p" (cmd (ins "(push {})")))
       ("c"
        (but
@@ -345,12 +348,12 @@
      (but
       ("i" (cmd (ins "{(spc?)}in ")))
       ("l" (cmd (ins "(loop {}){(nli)}")))
-      ("f" (cmd (ins "for ")))
+      ("f" (cmd (ins "for " (idt))))
       ("A" (cmd (ins "{(spc?)}across ")))
       ("t" (cmd (ins "with {} = ")))
       ("T" (cmd (ins "{(spc?)}thereis")))
       ("b" (cmd (ins "{(spc?)}below ")))
-      ("w" (cmd (ins "while ")))
+      ("w" (cmd (ins "while " (idt))))
       ("d" (cmd (ins "{(spc?)}do")))
       ("o" (cmd (ins "collect ")))
       ("a" (cmd (ins "as {} = ")))
@@ -481,8 +484,7 @@
     ("k" (cmd (ins " && ")))
     (">" (cmd (python-indent-shift-right)))
     ("<" (cmd (python-indent-shift-left)))
-    ("[" (cmd (insert "{")
-              (ins "{}}")))
+    ("[" (cmd (insert "{") (ins "{}}")))
     (";" (cmd (move-end-of-line nil)
               (ins ";{(nli)}")))
     ("d"
@@ -615,13 +617,15 @@
     ("n" (but
           ("c" (cmd (ins "console.log( \"{}\"{} );")))
           ("r" (cmd (ins "console.log( \"trace {(buf)} {(rnd)}\");")))
-          ("v" (cmd (ins "console.log( \"value of {0}: \"+{0} );")))
+          ("v" (cmd (ins "console.log( \"value of {0} ({}): \"+{0} );")))
+          ("V" (cmd (ins "console.log( \"value of {0} ({}): \"+JSON.stringify({0}) );")))
           ("a" (cmd (ins "alert(\"{}\");")))))
     ("T" (cmd (ins "try{(cbd)}catch(err){(cbd)}")))
     ("f" (cmd (ins "for (var {0} = 0; {0}<{}; {0}++){(cbd)}")))
     ("F" (cmd (ins "for (var {} in {}){(cbd)}")))
     ("l" (cmd (ins ".length")))
     ("r" (cmd (ins "return {};")))
+    ("R" (cmd (ins "throw ")))
     ("Z" (cmd (ins "if ( {}")
               (insert " ){ ")
               (ins "{} }")))
@@ -648,12 +652,11 @@
     ("i" (cmd (ins "in")))
     ("p" (cmd (ins ".prototype.")))
     ("m" (cmd-ins "const {0} = require('{0}')"))
+    ("[" (cmd (insert "{") (ins "{}}")))
     ("t"
      (but
-      ("a"
-       (but
-        ("s" (cmd-ins "async "))
-        ("w" (cmd-ins "await "))))
+      ("w" (cmd-ins "await "))
+      ("W" (cmd-ins "async "))
       ("u" (cmd (ins "true")))
       ("x" (cmd
             (let-when-compile
@@ -685,7 +688,7 @@
             ("g" (cmd (ins "document.getElementById({})")))
             ("a" (cmd (ins ".appendChild({})")))
             ("t" (cmd (ins ".textContent({})")))))
-      ;; node
+      ("_" (cmd (ins "if (require.main === module)" (cbd))))
       ("y" (cmd (ins "try {(cbd)}catch ({}){(cbd)}")))
       ("p" (cmd (ins "new Promise(function(resolve, reject){(cbd)});")))
       ("P" (cmd (ins ".then({})")))
