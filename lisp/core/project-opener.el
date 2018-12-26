@@ -194,6 +194,8 @@
               (slime))
             t))))
 
+(add-to-list ' project-open-matchers-list 'project-open-cl)
+
 (defun project-open-node (top-level-directory &optional top-level-files)
   "Match a node.js project."
   (let ((nodejs-file-markers '("node_modules" "package-lock.json")))
