@@ -232,7 +232,7 @@
       ("u" (cmd (ins "(defcustom {} \"{}\""
                      (nli) ":type '"
                      (nli) ":group '")))
-      ("l" (cmd (ins "(labels ({}){(nli)}{}){(nli)}")))
+      ("l" (cmd (ins "(cl-labels ({}){(nli)}{}){(nli)}")))
       ("a" (cmd (ins "(defadvice {} ({})" (nli) "{}" (nli) ")")))
       ("k"
        (but
@@ -264,6 +264,7 @@
     ("7"
      (but
       ("r" (cmd (ins "&rest ")))
+      ("a" (cmd (ins "&aux ")))
       ("k" (cmd (ins "&key ")))
       ("b" (cmd (ins "&body body")))
       ("o" (cmd (ins "&optional ")))))
@@ -379,6 +380,7 @@
                      "(:use #:{0})){(nli)}"
                      "(in-package #:{0}/test)"
                      "{(nli)}(run-package-tests :interactive t)")))
+      ("l" (cmd (ins "(labels ({}){(nli)}{}){(nli)}")))
       ("a" (cmd (ins "(defalias {})")))))
     ("n"
      (but
