@@ -681,5 +681,40 @@ This requires the external program `diff' to be in your `exec-path'."
   "Peek into str at most MAX characters in STR, starting at START."
   (substring str start (min (length str) (+ start max))))
 
+(defun diff-lines-set (a b)
+  (interactive
+   (cl-labels ((read-region-lines-interactively (region-name)
+                                                (message "select region %s, then exit recedit: "
+                                                         region-name)
+                                             (recursive-edit)
+                                             (->>
+                                              (buffer-substring
+                                               (region-beginning)
+                                               (region-end))
+                                              (s-split "\n"))))
+     (list (read-region-lines-interactively "A")
+           (read-region-lines-interactively "B"))))
+  (let ((buffname "*A B region diff*"))
+    (with-help-window buffname
+      (with-current-buffer buffname
+        (loop for (msg lines) on
+              (list
+               "common lines" (intersection a b :test #'equal)
+               "unique to A" (set-difference a b :test #'equal)
+               "unique to B" (set-difference b a :test #'equal))
+              by #'cddr
+              do
+              (progn (princ msg)
+                     (add-text-properties (line-beginning-position)
+                                          (line-end-position)
+                                          '(face bold))
+                     (princ "\n")
+                     (princ (s-join "\n" (or lines "")))
+                     (princ "\n")
+                     (princ "\n")))))))
+
+
+;; (diff-lines-set '("a" "c") '("b" "c"))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; misc-utils.el ends here
