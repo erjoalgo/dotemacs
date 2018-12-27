@@ -68,16 +68,29 @@ in the current STUMPWM group/workspace."
                  (STUMPWM::group-windows (STUMPWM:current-group)))))
   nil)
 
-(defun stumpwm-message (text &optional color host port)
+(defun stumpwm-message (text &optional color host ports)
   (let* ((host (or host 'local))
-         (port (or port 1959))
+         (ports (or (if (numberp ports) (list ports) ports)
+                    '(1959 1960 1961 1962)))
          (colored (if color (stumpwm-color text color)
                     text))
-         (proc (make-network-process :host host
-                                     :name "*stumpwm-msg*"
-                                     :service port)))
-    (process-send-string proc colored)
-    (process-send-eof proc)))
+         (proc ))
+    (loop for port in ports
+          with success-count = 0
+          do
+          (incf success-count
+                (condition-case err
+                    (let ((proc
+                           (make-network-process :host host
+                                                 :name "*stumpwm-msg*"
+                                                 :service port)))
+                      (process-send-string proc colored)
+                      (process-send-eof proc)
+                      (delete-process proc)
+                      1)
+                  (error 0)))
+          finally (when (zerop success-count)
+                    (error "unable to send to any of the ports: %s" ports)))))
 
 (defun stumpwm-auto-doc-el (in out)
   (interactive
