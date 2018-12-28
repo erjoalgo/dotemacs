@@ -361,7 +361,7 @@
     ((kbd "s-SPC") (cmd (ins ", ")))
     ((kbd "<C-f11>") 'eval-buffer)
     ((kbd "M-SPC") (lambda (arg) (interactive "P")
-                     (capitalize-last arg) (insert " ")))
+                     (upcase-last (not arg)) (insert " ")))
     ((kbd "<backtab>") 'my-indent))))
 
 ;;apropos
