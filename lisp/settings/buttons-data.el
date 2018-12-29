@@ -395,7 +395,6 @@
             ("i" (cmd (ins "(vom:info \"{}~%\"{})")))
             ("d" (cmd (ins "(vom:debug \"{}~%\"{})")))
             ("w" (cmd (ins "(vom:warn \"{}~%\"){}")))))))
-    ("#" (cmd (ins "#:")))
     ("5" (cmd (ins "~A")))
     ("%" (cmd (ins "~D")))
     ("|" (cmd (ins "#\\Newline")))
@@ -615,6 +614,7 @@
     ("a" (cmd (ins "function({}")
               (insert "){")
               (ins "{}}")))
+    ("A" (cmd (ins " => ")))
     ("." (cmd (ins "debugger;{(nli)}")))
     ("n" (but
           ("c" (cmd (ins "console.log( \"{}\"{} );")))
@@ -660,6 +660,7 @@
       ("w" (cmd-ins "await "))
       ("W" (cmd-ins "async "))
       ("u" (cmd (ins "true")))
+      ("e" (cmd (ins "new Error({})")))
       ("x" (cmd
             (let-when-compile
                 ;; ((buttons-template-insert-directive-regexp "{{\\(.*\\)}}"))
