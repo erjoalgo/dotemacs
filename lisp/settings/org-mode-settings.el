@@ -207,9 +207,16 @@
 (defun my-org-shift-right (arg a b)
   (interactive "p\nr")
   (save-excursion
-    (replace-regexp "^"
-		    (make-string (or arg 1) (string-to-char " "))
-		    nil a b)))
+    (goto-char a)
+    (loop with offset = 0
+          with len = (or arg 1)
+          while (re-search-forward "^\\(.\\)?" (+ b offset) t)
+          as new-char = (if (equal (match-string 1) "*") "*" " ")
+          as rep = (concat (match-string 0)
+                           (make-string len (string-to-char new-char)))
+          do (replace-match rep nil t)
+          do (incf offset len))))
+
 
 (defun my-org-shift-left (arg a b)
   (interactive "p\nr")
