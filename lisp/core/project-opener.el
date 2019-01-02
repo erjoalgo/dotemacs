@@ -204,8 +204,7 @@
        top-level-directory
        (lambda (filename)
          (and (equal "js" (f-ext filename))
-              (not (find filename nodejs-file-markers :test #'equal))))
-       #'message)
+              (not (find filename nodejs-file-markers :test #'equal)))))
       t)))
 
 (add-to-list ' project-open-matchers-list 'project-open-node)
