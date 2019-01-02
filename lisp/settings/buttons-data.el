@@ -287,6 +287,7 @@
         ("=" (cmd (ins "(= {})")))
         ("l" (cmd (ins "(eql {})")))
         ("t" (cmd (ins ":test #'equal")))
+        ("m" (cmd (ins "(member {} {})")))
         ("r" (cmd (ins "(error \"{}\"{})")))))
       ("f"
        (but
@@ -657,6 +658,7 @@
     ("[" (cmd (insert "{") (ins "{}}")))
     ("t"
      (but
+      ("n" (cmd-ins "new {}({}) "))
       ("w" (cmd-ins "await "))
       ("W" (cmd-ins "async "))
       ("u" (cmd (ins "true")))
