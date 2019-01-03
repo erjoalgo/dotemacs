@@ -695,8 +695,11 @@
             ("t" (cmd (ins ".textContent({})")))))
       ("_" (cmd (ins "if (require.main === module)" (cbd))))
       ("y" (cmd (ins "try {(cbd)}catch ({}){(cbd)}")))
-      ("p" (cmd (ins "new Promise(function(resolve, reject){(cbd)});")))
-      ("P" (cmd (ins ".then({})")))
+      ("p"
+       (but
+        ("m" (cmd-ins "new Promise(function(resolve, reject){(cbd)});"))
+        ("n" (cmd-ins ".then({})"))
+        ("c" (cmd-ins ".catch({})"))))
       ("j" (but
             ("s" (cmd (ins "JSON.stringify({})")))
             ("p" (cmd (ins "JSON.parse({})")))))))))
