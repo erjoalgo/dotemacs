@@ -40,7 +40,7 @@ really edit the buffer? (y, n, r or C-h) "
 
 (defvar compilation-kill-previous-without-prompt t)
 
-(defun compilation-start (command &optional mode name-function highlight-regexp)
+'(defun compilation-start (command &optional mode name-function highlight-regexp)
   "Run compilation command COMMAND (low level interface).
 If COMMAND starts with a cd command, that becomes the `default-directory'.
 The rest of the arguments are optional; for them, nil means use the default.
