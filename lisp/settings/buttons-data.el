@@ -798,6 +798,10 @@
                    "EOF")))
     ;; ( "x" 'shell-command-of-region)
     ("0" (cmd (insert sh-getopt-template)))
+    ("b"
+     (but
+      ("c" (cmd (ins "continue;")))
+      ("k" (cmd (ins "break;")))))
     ("t" (but
           ("0" (cmd (insert "cd \"$( dirname \"${BASH_SOURCE[0]}\" )\"")))
           ("s"
