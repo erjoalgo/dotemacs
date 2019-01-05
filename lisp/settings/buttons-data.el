@@ -1112,7 +1112,8 @@
       ("f" (cmd (describe-function-at-point)))
       ("d" (but
             ("t" (cmd (setf debug-on-error t)
-                      (message "debug-on-error: %s" debug-on-error)))
+                      (message "debug-on-error: %s" debug-on-error)
+                      (top-level)))
             ("g" (cmd (setf debug-on-error nil)
                       (message "debug-on-error: %s" debug-on-error)))
             ("b" 'edebug-set-breakpoint)))
