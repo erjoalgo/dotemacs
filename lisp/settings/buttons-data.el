@@ -408,7 +408,7 @@
     ((kbd "M-.") 'slime-next-note)
     ((kbd "M-,") 'slime-previous-note)))
 
- (defbuttons clojure-buttons cl-buttons
+(defbuttons clojure-buttons cl-buttons
    (clojure-mode-map cider-repl-mode-map)
    (but
     ("\\" (cmd (ins "\\n")))
@@ -434,7 +434,8 @@
     ("t" (but
           ("r" #'cider-restart)))
     ((kbd "M-.") 'next-error)
-    ((kbd "M-,") 'previous-error)))
+    ((kbd "M-,") 'previous-error)
+    ((kbd "TAB") 'completion-at-point)))
 
  (defbuttons c-buttons programming-buttons
    (c-mode-map)
@@ -1161,7 +1162,96 @@
         ("c" (cmd (let ((apropos-do-all nil))
                     (call-interactively 'apropos-command))))
         ;; variables
-        ("v" (cmd (call-interactively 'apropos-variable))))))))))
+        ("v" (cmd (call-interactively 'apropos-variable)))))))))
+
+ (defbuttons gnu-message-mode-buttons nil
+   (message-mode-map)
+   (but
+    ((kbd "\C-ci") 'gmail-contacts-insert-contact)
+    ("" nil)
+    ("" nil)
+    ("a" nil )
+    ("M" nil)
+    ((kbd "s-a") 'gnus-attach-file-simple)
+    ((kbd "M-c") 'message-send-and-exit)
+    ((kbd "s-A") 'gnus-insert-html-from-file)))
+
+ (defbuttons cider-repl-buttons nil
+   (cider-repl-mode-map)
+   (but
+    ((kbd "M-p") (lambda () (interactive)
+		   (cider-repl--history-replace 'backward nil)))
+    ((kbd "M-n") (lambda () (interactive)
+		   (cider-repl--history-replace 'forward nil)))
+    ((kbd "M-?") (lambda () (interactive)
+		   (switch-to-buffer "*cider-error*")))
+    ;; ((kbd "s-h") cider-doc-map)
+    ((kbd "TAB") 'company-complete)))
+
+ (defbuttons image-mode-buttons nil
+   (image-mode-map)
+   (but
+    ("n" 'image-next-file)
+    ("b" 'image-previous-file)
+    ("s" 'share-current-image)
+    ("c" 'exif-set-usercomment)))
+
+ (defbuttons dired-buttons nil
+   (dired-mode-map)
+   (but
+    ("q" 'dired-up-directory)
+    ((kbd "s-f") 'open-file)
+    ((kbd "s-d") 'dired-recursive-du)
+    ;; from image mode
+    ((kbd "s-v") 'compress-video)
+    ((kbd "s-c") (cmd (set-clipboard (dired-file-name-at-point))))
+    ((kbd "s-f") (cmd (open-file (dired-file-name-at-point))))
+    ((kbd "b") 'dired-mark-file-as)
+    ((kbd "B") 'dired-tagger-tag-loop)))
+
+ (defbuttons nxml-mode-buttons nil
+   nxml-mode-map
+   (but
+    ((kbd "C-M-f") 'nxml-forward-balanced-item)
+    ((kbd "C-M-b") (lambda () (interactive)
+		     (nxml-forward-balanced-item -1)))))
+
+ (defbuttons org-mode-buttons nil
+   (org-mode-map)
+   (but
+    ("M-P" 'org-metaup);;move up
+    ("M-N" 'org-metadown);;move down
+
+    ("M-]" 'org-metaright);;promote
+    ("M-[" 'org-metaleft);;demote
+
+
+    ("C-M-]" 'org-demote-subtree);;promote
+    ("C-M-[" 'org-promote-subtree);;demote
+
+    ("C-M-n" 'org-metadown);;promote
+    ("C-M-p" 'org-metaup);;demote
+
+    ;;use C-j to add text
+
+    ;;insert new
+    ("RET" 'org-meta-return)))
+
+ (defbuttons sgml-buttons nil
+   (sgml-mode-map)
+   (but
+    ((kbd "C-M-f") 'sgml-skip-tag-forward)
+    ((kbd "C-M-b") 'sgml-skip-tag-backward))))
+
+(defbuttons org-agenda-buttons nil
+  (org-agenda-mode-map)
+  (but
+   ("q" 'org-todo-promote-top)
+   ;;tag TODO
+   ("1" (cmd (org-agenda-todo 1)))
+   ;;tag DONE
+   ("2" (cmd (org-agenda-todo 2)))))
+
 
 (defbuttons slime-buttons
    nil
@@ -1173,6 +1263,7 @@
 		   (slime-repl-history-replace 'backward nil)))
     ((kbd "M-n") (lambda () (interactive)
 		   (slime-repl-history-replace 'forward nil)))
+    ("H" slime-doc-map)
     ("h"
      (but
       ("a" 'slime-apropos)
@@ -1215,6 +1306,7 @@ server {
    nil
    (global-map)
    (but
+    ((kbd "M-/") 'my-comment-out)
     ([escape] 'exit-recursive-edit)
     ((kbd "M-.") 'my-next-error)
     ((kbd "M-,") 'my-prev-error)))))

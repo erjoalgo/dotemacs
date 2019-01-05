@@ -1,4 +1,3 @@
-(global-set-key (kbd "M-/") 'my-comment-out)
 (defun describe-function-at-point ()
   (interactive)
   (describe-function (function-called-at-point)))

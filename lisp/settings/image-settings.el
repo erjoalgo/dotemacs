@@ -1,9 +1,4 @@
-(with-eval-after-load "image-mode"
-  (define-key image-mode-map "n" 'image-next-file)
-  (define-key image-mode-map "b" 'image-previous-file)
-  (define-key image-mode-map "s" 'share-current-image)
-  (define-key image-mode-map "c" 'exif-set-usercomment)
-  )
+
 
 (defmacro ensure-zero-exit (cmd-forms)
   `(if (= 0 ,cmd-forms) 0
@@ -59,9 +54,6 @@
 	 (async-shell-command-buffer 'new-buffer))
     (message "cmd %s" cmd)
     (async-shell-command cmd)))
-
-(with-eval-after-load "dired"
-  (define-key dired-mode-map (kbd "s-v") 'compress-video))
 
 (defun turn-off-erjoalgo-cmd-mode ()
   (message "turning off erjoalgo...")

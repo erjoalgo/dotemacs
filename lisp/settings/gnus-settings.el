@@ -115,21 +115,7 @@
 
 (setf gnus-always-read-dribble-file t)
 
-(defmacro gnus-load-bindings (kmap &rest bindings)
-  `(progn ,@(loop for (key cmd) in bindings collect
-		  `(define-key ,kmap ,key ,cmd))))
-
 (with-eval-after-load "message"
-		      (gnus-load-bindings
-		       message-mode-map
-		       ((kbd "\C-ci") 'gmail-contacts-insert-contact)
-		       ("" nil)
-		       ("" nil)
-		       ("a" nil )
-		       ("M" nil)
-		       ((kbd "s-a") 'gnus-attach-file-simple)
-		       ((kbd "M-c") 'message-send-and-exit)
-		       ((kbd "s-A") 'gnus-insert-html-from-file))
 		      (add-hook 'message-mode-hook
 				(lambda ()
 				  (erjoalgo-indent-mode 1)

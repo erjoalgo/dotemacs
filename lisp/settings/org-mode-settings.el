@@ -1,31 +1,5 @@
 (require  'org)
 
-(defmacro define-keys (kmap &rest bindings)
-  `(progn ,@(loop for (key cmd) in bindings collect
-		  `(define-key ,kmap
-		     ,(if (stringp key)
-			  `(kbd ,key) ,key)
-		     ,cmd))))
-
-(define-keys org-mode-map
-  ("M-P" 'org-metaup);;move up
-  ("M-N" 'org-metadown);;move down
-
-  ("M-]" 'org-metaright);;promote
-  ("M-[" 'org-metaleft);;demote
-
-
-  ("C-M-]" 'org-demote-subtree);;promote
-  ("C-M-[" 'org-promote-subtree);;demote
-
-  ("C-M-n" 'org-metadown);;promote
-  ("C-M-p" 'org-metaup);;demote
-
-  ;;use C-j to add text
-
-  ;;insert new
-  ("RET" 'org-meta-return))
-
 (setq org-blank-before-new-entry
       ;;don't add extra newlines
       '((heading . nil)

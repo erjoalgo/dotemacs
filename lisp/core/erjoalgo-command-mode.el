@@ -336,8 +336,6 @@
 	  '(lambda (_something)
 	     (force-mode-first 'erjoalgo-command-mode)))
 
-(define-key 'help-command "y" 'find-function);;find source for function-at-point
-
 (buttons-macrolet
  ()
  ;; suppress warning about overriding target keymap
@@ -362,10 +360,15 @@
     ((kbd "<C-f11>") 'eval-buffer)
     ((kbd "M-SPC") (lambda (arg) (interactive "P")
                      (upcase-last (not arg)) (insert " ")))
-    ((kbd "<backtab>") 'my-indent))))
+    ((kbd "<backtab>") 'my-indent)))
 
-;;apropos
-(define-key 'help-command "A" 'apropos-variable)
+ (defbuttons help-buttons nil
+   (help-mode-map)
+   (but
+    ;;find source for function-at-point
+    ("y" 'find-function)
+    ;;apropos
+    ("A" 'apropos-variable))))
 
 (add-hook 'apropos-mode-hook
 	  (lambda (&rest args)

@@ -1,7 +1,7 @@
 (ensure-packages-exist
  '(clojure-mode cider))
 
-(setf cider-repl-display-help-banner nil )
+(setf cider-repl-display-help-banner nil)
 (setf cider-show-error-buffer nil)
 ;;https://github.com/bbatsov/projectile
 
@@ -11,20 +11,7 @@
   (s-starts-with? "*cider-repl" (buffer-name buff))
   (call-interactively 'cider-jack-in))
 
-(with-eval-after-load "cider-repl"
-  (define-key cider-repl-mode-map (kbd "M-p") (lambda () (interactive)
-					       (cider-repl--history-replace 'backward nil)))
-  (define-key cider-repl-mode-map (kbd "M-n") (lambda () (interactive)
-						(cider-repl--history-replace 'forward nil)))
-
-  (define-key cider-repl-mode-map (kbd "M-?") (lambda () (interactive)
-						(switch-to-buffer "*cider-error*")))
-  '(define-key clojure-mode-map (kbd "TAB") 'company-complete)
-  )
-
-
 (setf nrepl-prompt-to-kill-server-buffer-on-quit nil)
-
 
 (defun clojure-opts-summary-to-org-table (path-to-jar)
   (interactive "fenter path to jar, should accept -h option: ")
@@ -49,8 +36,6 @@
   :group 'cider-repl
   :package-version '(cider . "0.6.0"))
 
-(with-eval-after-load "clojure-mode"
-  (define-key clojure-mode-map (kbd "TAB") 'completion-at-point))
 
 (defun cider-buffer-load (file)
   (let ((buf (find-file file)))
@@ -60,8 +45,7 @@
 					      (clojure-project-dir (cider-current-dir))))
        (cider-jack-in))
     (push buf cider-load-buffers-list)
-    (cider-jack-in)
-    ))
+    (cider-jack-in)))
 
 
 
