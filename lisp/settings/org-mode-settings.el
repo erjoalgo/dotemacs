@@ -19,12 +19,6 @@
   (save-excursion
     (while (org-move-subtree-up))))
 
-(with-eval-after-load 'org-agenda
-  (define-key org-agenda-mode-map (kbd "s-q") 'org-todo-promote-top)
-  (define-keys org-agenda-mode-map
-    ("s-1" (lambda () (interactive) (org-agenda-todo 1)));;tag TODO
-    ("s-2" (lambda () (interactive) (org-agenda-todo 2)));;tag DONE
-    ))
 
 (setf search-invisible nil)
 (setf org-hide-leading-stars t)
