@@ -13,5 +13,3 @@
                    (concat
                     (ediff-get-region-contents ediff-current-difference 'A ediff-control-buffer)
                     (ediff-get-region-contents ediff-current-difference 'B ediff-control-buffer))))
-
-(add-hook 'ediff-mode-hook (lambda () (define-key ediff-mode-map "s-d" 'ediff-copy-both-to-C)))

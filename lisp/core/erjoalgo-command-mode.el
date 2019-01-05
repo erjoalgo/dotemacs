@@ -368,7 +368,11 @@
     ;;find source for function-at-point
     ("y" 'find-function)
     ;;apropos
-    ("A" 'apropos-variable))))
+    ("A" 'apropos-variable)
+    ;; disable annoying tutorial
+    ((kbd "t") nil)
+    ;; disable accidentally entering h h
+    ((kbd "h") nil))))
 
 (add-hook 'apropos-mode-hook
 	  (lambda (&rest args)

@@ -1304,6 +1304,11 @@ server {
     }
 }"))))))
 
+(defbuttons ediff-mode-buttons nil
+  (ediff-mode-map)
+  (but
+   ("s-d" 'ediff-copy-both-to-C)))
+
 (defbuttons global-buttons
    nil
    (global-map)

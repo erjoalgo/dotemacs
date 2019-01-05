@@ -32,17 +32,25 @@
 
 
 ;;; Code:
-(define-key isearch-mode-map [f3] 'isearch-forward-or-backward)
-(define-key isearch-mode-map [M-f3] 'isearch-reverse-search-and-search)
-(define-key isearch-mode-map [escape] 'isearch-exit)
-(define-key isearch-mode-map [f4] 'isearch-abort)
 
-(global-set-key [f3] 'isearch-forward-regexp)
-;should work because it is a recedit
-(global-set-key [M-f3] (lambda () (interactive)
-			 (let* ((isearch-backwards-p t))
-			   (isearch-backward-regexp))))
+(require 'buttons)
 
+(defbuttons isearch-mode-buttons nil
+  (isearch-mode-map)
+  (but
+   ([f3] 'isearch-forward-or-backward)
+   ([M-f3] 'isearch-reverse-search-and-search)
+   ([escape] 'isearch-exit)
+   ([f4] 'isearch-abort)))
+
+(defbuttons isearch-mode-global-buttons nil
+  (global-map)
+  (but
+   ([f3] 'isearch-forward-regexp)
+   ;;should work because it is a recedit
+   ([M-f3] (lambda () (interactive)
+	     (let* ((isearch-backwards-p t))
+	       (isearch-backward-regexp))))))
 
 (defvar isearch-backwards-p nil)
 
