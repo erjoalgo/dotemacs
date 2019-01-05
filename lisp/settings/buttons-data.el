@@ -234,6 +234,7 @@
                      (nli) ":group '")))
       ("l" (cmd (ins "(cl-labels ({}){(nli)}{}){(nli)}")))
       ("a" (cmd (ins "(defadvice {} ({})" (nli) "{}" (nli) ")")))
+      ("n" (cmd-ins "(defbuttons {}" (nli) "({})" (nli) "(but {})"))
       ("k"
        (but
         ("p" (cmd (ins "(defpackage {}{(nli)}(:use :cl){})")))
