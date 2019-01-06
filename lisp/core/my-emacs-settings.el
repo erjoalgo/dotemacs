@@ -39,8 +39,7 @@
 	kept-new-versions 6
 	kept-old-versions 2
 	version-control t
-	temporary-file-directory tmp-files-dir
-	))
+	temporary-file-directory tmp-files-dir))
 
 
 
