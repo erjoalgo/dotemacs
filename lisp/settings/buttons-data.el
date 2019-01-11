@@ -1243,7 +1243,29 @@
    (sgml-mode-map)
    (but
     ((kbd "C-M-f") 'sgml-skip-tag-forward)
-    ((kbd "C-M-b") 'sgml-skip-tag-backward))))
+    ((kbd "C-M-b") 'sgml-skip-tag-backward)))
+
+ (defbuttons gnus-article-buttons nil
+   (gnus-article-mode-map)
+   (but
+    ("F" 'gnus-summary-mail-forward)
+    ("R" 'gnus-article-wide-reply-with-original)
+    ((kbd "s-s") 'gnus-mime-save-all-attachments)))
+
+ (defbuttons gnus-summary-buttons nil
+   (gnus-summary-mode-map)
+   (but
+    ("R" 'gnus-summary-wide-reply-with-original)
+    ("r" 'gnus-summary-reply-with-original)
+    ((kbd "s-g") 'gmail-search-query)
+    ((kbd "s-t") 'gnus-goto-sent-emails)
+    ((kbd "s-r")
+     'gnus-summary-insert-new-articles)
+    ("g" (but
+          ("g" 'gmail-search-query)
+	  ("t" 'gnus-goto-sent-emails)
+	  ("r" 'gnus-summary-insert-new-articles)
+	  ("f" 'gnus-summary-mail-forward))))))
 
 (defbuttons org-agenda-buttons nil
   (org-agenda-mode-map)

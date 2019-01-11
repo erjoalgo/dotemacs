@@ -133,33 +133,9 @@
   (gnus-demon-add-scanmail))
 
 (defun setup-gnus-notifications ())
+
 (with-eval-after-load "gnus-sum"
-		      (gnus-load-bindings
-		       gnus-my-goto-map
-		       ("g" 'gmail-search-query)
-		       ("t" 'gnus-goto-sent-emails)
-		       ("r" 'gnus-summary-insert-new-articles)
-		       ("f" 'gnus-summary-mail-forward))
-
-		      (gnus-load-bindings
-		       gnus-summary-mode-map
-		       ("R" 'gnus-summary-wide-reply-with-original)
-		       ("r" 'gnus-summary-reply-with-original)
-		       ((kbd "s-g") 'gmail-search-query)
-		       ((kbd "s-t") 'gnus-goto-sent-emails)
-		       ((kbd "s-r")
-			'gnus-summary-insert-new-articles)
-		       ("g" gnus-my-goto-map))
-		      (setup-gnus-notifications))
-
-(with-eval-after-load "gnus-art"
-		      (gnus-load-bindings
-		       gnus-article-mode-map
-		       ("F" 'gnus-summary-mail-forward)
-		       ("R" 'gnus-article-wide-reply-with-original)
-		       ((kbd "s-s") 'gnus-mime-save-all-attachments)))
-
-
+  (setup-gnus-notifications))
 
 (defun gnus-attach-file-simple (file)
   (interactive "fenter file to attach: ")
