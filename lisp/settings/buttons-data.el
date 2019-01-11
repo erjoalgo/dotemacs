@@ -1265,7 +1265,7 @@
 		   (slime-repl-history-replace 'backward nil)))
     ((kbd "M-n") (lambda () (interactive)
 		   (slime-repl-history-replace 'forward nil)))
-    ("H" slime-doc-map)
+    ("H" 'slime-doc-map)
     ("h"
      (but
       ("a" 'slime-apropos)
@@ -1304,7 +1304,7 @@ server {
     }
 }"))))))
 
-(defbuttons ediff-mode-buttons nil
+'(defbuttons ediff-mode-buttons nil
   (ediff-mode-map)
   (but
    ("s-d" 'ediff-copy-both-to-C)))
