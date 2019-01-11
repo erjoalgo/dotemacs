@@ -350,20 +350,31 @@ Buffers other than the current buffer are preferred."
         (message "match found")
 	(replace-match " \\1" nil nil nil 1)))))
 
+(defun region ()
+  (when (region-active-p)
+    (buffer-substring-no-properties (region-beginning)
+                                    (region-end))))
+
+(defun clipboard ()
+  (car kill-ring))
+
+(defun read-token-at-point (prompt)
+  (let ((default (or (region) (clipboard)))
+	(symbol-at-point
+	 (let ((search (or (region) (sexp-at-point))))
+           (if (symbolp search) (symbol-name search)
+             search))))
+
+    (read-string
+     (format prompt default)
+     symbol-at-point
+     nil default)))
+
 (defun grep-recursive (extension pattern dir &optional clear-buffer)
   ;;TODO colored output
   (interactive
    (let* ((pattern
-	   (let ((default (car kill-ring))
-		 (symbol-at-point
-		  (let ((search (sexp-at-point)))
-		    (and search (symbolp search)
-			 (symbol-name search)))))
-
-	     (read-string
-	      (format "enter grep pattern: (default %s): " default)
-	      symbol-at-point
-	      nil default)))
+           (read-token-at-point "enter grep pattern: (default %s): "))
 
 	  (ext (and nil (read-string
 			 "enter extension (eg 'js'): "
