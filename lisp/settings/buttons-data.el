@@ -481,8 +481,10 @@
     ("l" (cmd (ins "strlen( {} )")))
     ("'" (cmd (ins "/*{}*/{(nli)}")))
     ("/" nil)
-    ("t" (cmd (ins "true")))
-    ("g" (cmd (ins "false")))
+    ("t"
+     (but
+      ("u" (cmd-ins "true"))
+      ("U" (cmd-ins "false"))))
     ("G" (cmd (ins "NULL")))
     ("j" (cmd (ins " || ")))
     ("k" (cmd (ins " && ")))
