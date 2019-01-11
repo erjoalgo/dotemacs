@@ -37,7 +37,7 @@
 
 (defbuttons isearch-mode-buttons nil
   (isearch-mode-map)
-  (but
+  (buttons-make
    ([f3] 'isearch-forward-or-backward)
    ([M-f3] 'isearch-reverse-search-and-search)
    ([escape] 'isearch-exit)
@@ -45,7 +45,7 @@
 
 (defbuttons isearch-mode-global-buttons nil
   (global-map)
-  (but
+  (buttons-make
    ([f3] 'isearch-forward-regexp)
    ;;should work because it is a recedit
    ([M-f3] (lambda () (interactive)
