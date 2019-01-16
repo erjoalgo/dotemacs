@@ -237,6 +237,7 @@
              (global-erjoalgo-command-mode 0))))
     ;; ([f1] nil);; f1 toggle command mode
     ([f1] 'global-erjoalgo-command-mode-toggle);; f1 toggle command mode
+    ([f13] 'global-erjoalgo-command-mode-toggle);; f13 toggle command mode
     ([s-f11] 'global-erjoalgo-command-mode-toggle);; f1 toggle command mode
     ([ë] 'global-erjoalgo-command-mode-toggle);; f1 toggle command mode
     ("y" (search-engine-search-cmd "ddg"))
@@ -341,11 +342,13 @@
  ;; suppress warning about overriding target keymap
  (define-key global-map [f1] nil)
  (define-key global-map [f2] nil)
+ (define-key global-map [f13] nil)
  (defbuttons command-mode-global-buttons
    nil
    (global-map)
    (but
     ([f1] 'global-erjoalgo-command-mode-toggle)
+    ([f13] 'global-erjoalgo-command-mode-toggle)
     ((kbd "<s-f11>") 'global-erjoalgo-command-mode-toggle)
     ((kbd "ë") 'global-erjoalgo-command-mode-toggle)
     ([f2] 'other-window)
