@@ -350,7 +350,8 @@
     ("p"
      (but
       ("i" (cmd (ins "{(spc?)}in ")))
-      ("l" (cmd (ins "(loop {}){(nli)}")))
+      ("l" (cmd (ins "(" (if (eq major-mode 'emacs-lisp-mode) "cl-" "")
+                     "loop {}){(nli)}")))
       ("f" (cmd (ins "for " (idt))))
       ("A" (cmd (ins "{(spc?)}across ")))
       ("t" (cmd (ins "with {} = ")))
