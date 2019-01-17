@@ -1120,6 +1120,7 @@
  (defbuttons backtrace-bindings nil
    (debugger-mode-map emacs-lisp-mode-map inferior-emacs-lisp-mode-map)
    (but
+    ("c" 'debugger-continue)
     ("h"
      (but
       ("f" (cmd (describe-function-at-point)))
