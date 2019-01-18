@@ -574,38 +574,6 @@ This requires the external program `diff' to be in your `exec-path'."
              print-length))
     (set sym nil)))
 
-'(defun selcand-hints (cands &optional chars)
-  "Return an alist (HINT . CAND) for each candidate in CANDS.
-
-  each hint consists of characters in the string CHARS."
-  (setf chars (or chars "qwertasdfzxcv1234"))
-  (let* ((w (ceiling (log (length cands) (length chars))))
-         (hints (loop with curr = '("")
-                      for wi below w do
-                      (setf curr
-                            (loop for c across chars
-                                  append (mapcar (apply-partially
-                                                  'concat (char-to-string c))
-                                                 curr)))
-                      finally (return curr))))
-    (loop for hint in hints
-          for cand in cands
-          collect (cons hint cand))))
-
-'(defun selcand-select (cands &optional prompt)
-  "Use PROMPT to prompt for a selection from CANDS candidates."
-  (let* ((hints-cands (selcand-hints cands))
-         (sep ") ")
-         (choices (loop for (hint . cand) in hints-cands
-                        collect (concat hint sep (prin1-to-string cand))))
-         (prompt (or prompt "select candidate: "))
-         (choice (completing-read prompt choices
-                                  nil
-                                  t))
-         (cand (let* ((hint (car (s-split sep choice))))
-                 (cdr (assoc hint hints-cands #'equal)))))
-    cand))
-
 (defun regexp-replace-select-from-list (regexp-replacement-alist &optional noquery)
   "Interactively select a regexp-replacement pair from REGEXP-REPLACEMENT-ALIST.
 
