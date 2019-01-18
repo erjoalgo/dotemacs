@@ -574,7 +574,7 @@ This requires the external program `diff' to be in your `exec-path'."
              print-length))
     (set sym nil)))
 
-(defun selcand-hints (cands &optional chars)
+'(defun selcand-hints (cands &optional chars)
   "Return an alist (HINT . CAND) for each candidate in CANDS.
 
   each hint consists of characters in the string CHARS."
@@ -592,7 +592,7 @@ This requires the external program `diff' to be in your `exec-path'."
           for cand in cands
           collect (cons hint cand))))
 
-(defun selcand-select (cands &optional prompt)
+'(defun selcand-select (cands &optional prompt)
   "Use PROMPT to prompt for a selection from CANDS candidates."
   (let* ((hints-cands (selcand-hints cands))
          (sep ") ")
