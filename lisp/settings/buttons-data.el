@@ -103,6 +103,7 @@
           ("g"
            (but
             ("b" 'google3-browse-in-cs)
+            ("B" 'google3-find-in-src-head)
             ("d" #'google-lsp-describe-thing-at-point)
             ("c" #'google-cs)
             ;; ("C" #'cs)
@@ -118,8 +119,8 @@
         ("s" 'capitalize-region)))))
     ((kbd "M-.") 'my-next-error)
     ((kbd "M-,") 'my-prev-error)
-    ("R" (cmd (ins "***REMOVED***")))
-    ("T" (but ("D" (cmd (ins "{comment-start} TODO ")))))))
+    ;; ("T" (but ("D" (cmd (ins "{comment-start} TODO ")))))
+    ("R" (cmd (ins "***REMOVED***")))))
 
  (defun my-next-error (&optional prev)
    (interactive)
@@ -375,7 +376,12 @@
       ("Z" (cmd (ins "else ")))
       ("x" (cmd (ins "when ")))
       ("c" (cmd (ins "unless ")))
-      ("r" (cmd (ins "(return {})")))))))
+      ("r" (cmd (ins "(return {})")))))
+    ("T" (cmd-ins "(condition-case ()"
+                  (nli)
+                  (rec)
+                  (nli)
+                  "(error {}))"))))
 
  (defbuttons cl-buttons emacs-lisp-buttons
    (lisp-mode-map slime-mode-map)
