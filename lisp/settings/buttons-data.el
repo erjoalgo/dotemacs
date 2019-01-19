@@ -287,7 +287,7 @@
       ("1" (cmd (ins "(null {})")))
       ("m"
        (but
-        ("x" (cmd (ins "(macroexpand '{}){(nli)}")))))
+        ("x" (cmd (ins "(" "macroexpand-1 " "'{}){(nli)}")))))
       ("g" (cmd (ins "({0}-sym (gensym \"{0}-\")){(nli)}")))
       ("e"
        (but
@@ -806,6 +806,7 @@
     ("z" (cmd (ins "if {}; then{(nli)}{}{(nli)}fi{(idt)}{(nli)}")))
     ("x" (cmd (ins "elif {}; then{(nli)}{}{(nli)}{(idt)}")))
     ("c" (cmd (ins "else {}; " (nli) "{}" (nli) (idt))))
+    ("r" (cmd-ins "return"))
     ("\\" (cmd (ins " \\{(nli)}")))
     ("|" (cmd (ins " | ")))
     ("n" (cmd (ins "echo ")))
@@ -1032,10 +1033,9 @@
     ("l" (cmd (ins " [label=\"{}\"];")))
     ("-" (cmd (ins " -> ")))))
 
- (defbuttons forum-post-buttons programming-buttons
-   (forum-mode-map)
-   (but
-    ("," (cmd (ins "[code]{}[/code]")))))
+ (defbuttons protobuf-buttons programming-buttons
+   (protobuf-mode-map)
+   (but))
 
  (defbuttons org-buttons nil
    (org-mode-map)
