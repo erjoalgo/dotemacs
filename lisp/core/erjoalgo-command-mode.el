@@ -333,6 +333,13 @@
       (assq-delete-all mode-symbol minor-mode-map-alist)
       (add-to-list 'minor-mode-map-alist mykeys))))
 
+(defun find-package (package)
+  "Find the source of PACKAGE. Similar to ‘find-function'"
+  (interactive (list (symbol-at-point)))
+  (find-file (replace-regexp-in-string
+              "[.]elc$" ".el"
+              (symbol-file package))))
+
 (add-hook 'after-load-functions
 	  '(lambda (_something)
 	     (force-mode-first 'erjoalgo-command-mode)))
@@ -366,10 +373,11 @@
     ((kbd "<backtab>") 'my-indent)))
 
  (defbuttons help-buttons nil
-   (help-mode-map)
+   (help-map)
    (but
     ;;find source for function-at-point
     ("y" 'find-function)
+    ("Y" 'find-package)
     ;;apropos
     ("A" 'apropos-variable)
     ;; disable annoying tutorial
