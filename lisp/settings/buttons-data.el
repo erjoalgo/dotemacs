@@ -99,7 +99,15 @@
           ("r" 'eglot-rename)
           ("x" 'xref-find-references)
           ("a" 'xref-find-apropos)
-          ("c" 'eglot-code-actions)))
+          ("c" 'eglot-code-actions)
+          ("g"
+           (but
+            ("b" 'google3-browse-in-cs)
+            ("d" #'google-lsp-describe-thing-at-point)
+            ("c" #'google-cs)
+            ;; ("C" #'cs)
+            ;; ("s" #'google-search)
+            ("C" #'csearch)))))
     ("u";; util
      (but
       ("c" ;; case
