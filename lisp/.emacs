@@ -79,7 +79,8 @@
            dash-functional
            dedicated
            buttons
-           company))
+           company
+           sticky-windows))
   (safe-funcall
    (require feature)))
 
