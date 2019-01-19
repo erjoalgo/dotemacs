@@ -1,22 +1,3 @@
-(defalias 'my-apply #'apply)
-
-(defun recover-message (fmt args)
-  (condition-case ex
-      (when fmt
-        (my-apply #'format fmt
-               (mapcar (lambda (arg) (if (stringp arg)
-                                         (prin1-to-string arg) arg))
-                       args)))
-    (error (push (list fmt args) msg-args)
-           (edebug))))
-
-(defun recover-message (fmt args)
-  fmt)
-
-(defadvice message (after debug-deferred (fmt &rest args) activate)
-  (when (and fmt (s-contains-p "deferred error" (recover-message fmt args))
-             (edebug))))
-
 (defun advice-unadvice (sym)
   ;; from somewhere on the internet
   "Remove all advices from symbol SYM."
