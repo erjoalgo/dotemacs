@@ -193,10 +193,10 @@
     ;; incrementally kill backward-sexp. incrementally displays what is being killed
     ("W" 'kill-surrounding-sexp)
     ((kbd "M-w") 'kill-region);;originally C-w
-    ((kbd "M-1") 'delete-other-windows);;originally C-x 1
+    ((kbd "M-1") #'sticky-window-delete-other-windows);;originally C-x 1
     ((kbd "M-2") 'my-split-window-below);;originally C-x 2
     ((kbd "M-3") 'my-split-window-right);;originally C-x 3
-    ((kbd "M-q") 'delete-window);;originally C-x 0
+    ((kbd "M-q") #'sticky-window-delete-window);;originally C-x 0
     ([f2] 'other-window);;originally C-x o
     ((kbd "<S-f2>") (cmd (other-window -1)));;originally C-x o
     ("c" 'cycle-buffer);; cycle buffers
