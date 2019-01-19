@@ -352,22 +352,31 @@ Buffers other than the current buffer are preferred."
 
 (defun region ()
   (when (region-active-p)
-    (buffer-substring-no-properties (region-beginning)
-                                    (region-end))))
+    (buffer-substring (region-beginning) (region-end))))
 
 (defun clipboard ()
   (car kill-ring))
 
-(defun read-token-at-point (prompt)
-  (let ((default (or (region) (clipboard)))
-	(symbol-at-point
-	 (let ((search (or (region) (sexp-at-point))))
-           (if (symbolp search) (symbol-name search)
-             search))))
+(defun string-remove-properties (string)
+  "Based on gnus-string-remove-all-properties"
+  (if (stringp string)
+      (let ((s string))
+	(set-text-properties 0 (length string) nil string)
+	s)
+    string))
 
+(defun read-token-at-point (prompt)
+  (let* ((symbol-at-point
+	  (let ((search (or (region) (sexp-at-point))))
+            (if (symbolp search) (symbol-name search)
+              (prin1-to-string search))))
+	 (default (string-remove-properties
+                    (or (region)
+                        symbol-at-point
+                        (clipboard)))))
     (read-string
      (format prompt default)
-     symbol-at-point
+     default
      nil default)))
 
 (defun grep-recursive (extension pattern dir &optional clear-buffer)
