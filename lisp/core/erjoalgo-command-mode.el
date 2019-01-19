@@ -333,12 +333,13 @@
       (assq-delete-all mode-symbol minor-mode-map-alist)
       (add-to-list 'minor-mode-map-alist mykeys))))
 
-(defun find-package (package)
-  "Find the source of PACKAGE. Similar to ‘find-function'"
-  (interactive (list (symbol-at-point)))
+(defun find-symbol (symbol)
+  "Find the source of SYMBOL. Similar to ‘find-function'"
+  (interactive (list (or (symbol-at-point)
+                         (read-symbol-completing "enter symbol: "))))
   (find-file (replace-regexp-in-string
               "[.]elc$" ".el"
-              (symbol-file package))))
+              (symbol-file symbol))))
 
 (add-hook 'after-load-functions
 	  '(lambda (_something)
