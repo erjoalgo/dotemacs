@@ -367,17 +367,19 @@ Buffers other than the current buffer are preferred."
 
 (defun read-token-at-point (prompt)
   (let* ((symbol-at-point
-	  (let ((search (or (region) (sexp-at-point))))
-            (if (symbolp search) (symbol-name search)
-              (prin1-to-string search))))
+	  (let ((search (sexp-at-point)))
+            (when search
+              (if (symbolp search)
+                  (symbol-name search)
+                (prin1-to-string search)))))
 	 (default (string-remove-properties
                     (or (region)
                         symbol-at-point
-                        (clipboard)))))
+                        ""))))
     (read-string
-     (format prompt default)
+     (format prompt (clipboard))
      default
-     nil default)))
+     nil (clipboard))))
 
 (defun grep-recursive (extension pattern dir &optional clear-buffer)
   ;;TODO colored output
