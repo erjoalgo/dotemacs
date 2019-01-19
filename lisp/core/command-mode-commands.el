@@ -384,7 +384,6 @@ Buffers other than the current buffer are preferred."
   (interactive
    (let* ((pattern
            (read-token-at-point "enter grep pattern: (default %s): "))
-
 	  (ext (and nil (read-string
 			 "enter extension (eg 'js'): "
 			 (f-ext (or (buffer-file-name (current-buffer)) "")))))
