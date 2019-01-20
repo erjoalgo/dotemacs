@@ -839,12 +839,12 @@
           ("0" (cmd (insert "cd \"$( dirname \"${BASH_SOURCE[0]}\" )\"")))
           ("s"
            (but
-            ("t" (cmd (ins "test ")))
-            ("j" (cmd (ins " -o ")))
-            ("k" (cmd (ins " -a ")))
-            ("n" (cmd (ins " -n ")))
-            ("z" (cmd (ins " -z ")))
-            ("e" (cmd (ins " -e ")))))
+            ("e" (cmd (ins "test -e ")))
+            ("d" (cmd (ins "test -d ")))
+            ("n" (cmd (ins "test -n ")))
+            ("z" (cmd (ins "test -z ")))
+            ("k" (cmd (ins "test -a ")))
+            ("j" (cmd (ins "test -o ")))))
           ("u" 'insert-unique-line)))))
 
  (defbuttons tex-buttons programming-buttons
