@@ -635,6 +635,7 @@
       ("c" (cmd-ins "<link rel=\"stylesheet\" href=\"{}\">"))))
     ("\\" (cmd (ins "<br/>")))
     ("a" (cmd (ins "<a href=\"{}\">{}</a>")))
+    ("i" (cmd (ins "<iframe src=\"{}\"></iframe>")))
     ("P" (cmd (ins "<p>{}</p>")))))
 
  (defbuttons js-buttons c-buttons
