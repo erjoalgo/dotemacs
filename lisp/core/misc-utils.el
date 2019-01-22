@@ -681,6 +681,10 @@ This requires the external program `diff' to be in your `exec-path'."
                      (princ "\n")
                      (princ "\n")))))))
 
+(defun package-install-after-refresh ()
+  (interactive)
+  (package-refresh-contents)
+  (call-interactively #'package-install))
 
 ;; (diff-lines-set '("a" "c") '("b" "c"))
 
