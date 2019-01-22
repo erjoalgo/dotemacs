@@ -1270,20 +1270,20 @@
     ("M-P" 'org-metaup);;move up
     ("M-N" 'org-metadown);;move down
 
-    ("M-]" 'org-metaright);;promote
-    ("M-[" 'org-metaleft);;demote
+    ((kbd "M-]") 'org-metaright);;promote
+    ((kbd "M-[") 'org-metaleft);;demote
 
 
-    ("C-M-]" 'org-demote-subtree);;promote
-    ("C-M-[" 'org-promote-subtree);;demote
+    ((kbd "C-M-]") 'org-demote-subtree);;promote
+    ((kbd "C-M-[") 'org-promote-subtree);;demote
 
-    ("C-M-n" 'org-metadown);;promote
-    ("C-M-p" 'org-metaup);;demote
+    ((kbd "C-M-n") 'org-metadown);;promote
+    ((kbd "C-M-p") 'org-metaup);;demote
 
     ;;use C-j to add text
 
     ;;insert new
-    ("RET" 'org-meta-return)))
+    ((kbd "RET") 'org-meta-return)))
 
  (defbuttons sgml-buttons nil
    (sgml-mode-map)
