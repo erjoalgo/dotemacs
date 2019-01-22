@@ -33,7 +33,7 @@ that avoids deleting windows that have been marked as dedicated
 with `sticky-window-keep-window-visible'."
   (interactive "P")
   (if force
-      (delete-window window)
+      (delete-window)
     (let ((window (selected-window)))
       (if (and (not current-prefix-arg) (window-dedicated-p window))
 	  (error "This is a dedicated window. Use C-u prefix on this keybinding to really delete it.")
