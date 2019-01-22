@@ -120,7 +120,9 @@
     ((kbd "M-.") 'my-next-error)
     ((kbd "M-,") 'my-prev-error)
     ;; ("T" (but ("D" (cmd (ins "{comment-start} TODO ")))))
-    ("R" (cmd (ins "***REMOVED***")))))
+     ("R" (cmd (ins "***REMOVED***")))
+     ;; ([?\s-\t] #'company-complete)
+     ((kbd "<s-tab>") #'company-complete)))
 
  (defun my-next-error (&optional prev)
    (interactive)
@@ -167,6 +169,8 @@
     ("M" (cmd (ins "from {} import *")
               (cmt)
               (ins "{(nli)}")))
+    ("m" (cmd-ins
+          "from __future__ import print_function" (nli)))
     ("n" (but
           ("t" (cmd (ins "print ({}){(nli)}")))
           ("v" (cmd-ins "print (\"{(buf)} {(rnd)}: value of {0}: {}\".format({0}))"))))
@@ -387,7 +391,7 @@
                   "(error {}))"))))
 
  (defbuttons cl-buttons emacs-lisp-buttons
-   (lisp-mode-map slime-mode-map)
+   (lisp-mode-map slime-mode-map slime-mode-indirect-map)
    (but
     ("e" (cmd (ins "(setf {})")))
     ("d"
@@ -425,7 +429,10 @@
      (but
       ("D" (cmd (ins "(declaim (optimize (debug 3) (speed 0)))")))))
     ((kbd "M-.") 'slime-next-note)
-    ((kbd "M-,") 'slime-previous-note)))
+    ((kbd "M-,") 'slime-previous-note)
+    ("." (but
+          ("f" #'slime-edit-definition)
+          ("F" #'slime-pop-find-definition-stack)))))
 
 (defbuttons clojure-buttons cl-buttons
    (clojure-mode-map cider-repl-mode-map)
@@ -849,8 +856,11 @@
             ("n" (cmd (ins "test -n ")))
             ("z" (cmd (ins "test -z ")))
             ("k" (cmd (ins "test -a ")))
-            ("j" (cmd (ins "test -o ")))))
-          ("u" 'insert-unique-line)))))
+            ("j" (cmd (ins "test -o ")))
+            ("=" (cmd (ins "test {} = ")))
+            ("c" (cmd-ins "command -v "))))
+          ("u" 'insert-unique-line)))
+    ("<" (cmd-ins " <<< "))))
 
  (defbuttons tex-buttons programming-buttons
    (tex-mode-map)
@@ -1057,7 +1067,7 @@
     ("`" (cmd (ins "~{}~")))
     ("Q" (cmd (ins "#+begin_quote {}{(nli)}{}#+end_quote{(nli)}")))
     ((kbd "<s-tab>") 'org-indent-block)
-    ("return" 'org-toggle-list-heading)
+    ((kbd "RET") 'org-insert-heading)
     ("i"
      (cmd
        (if org-inline-image-overlays
@@ -1242,6 +1252,8 @@
     ((kbd "s-v") 'compress-video)
     ((kbd "s-c") (cmd (set-clipboard (dired-file-name-at-point))))
     ((kbd "s-f") (cmd (open-file (dired-file-name-at-point))))
+    ((kbd "s-g") #'revert-buffer)
+    ((kbd "s-s") #'dired-sort-toggle-or-edit)
     ((kbd "b") 'dired-mark-file-as)
     ((kbd "B") 'dired-tagger-tag-loop)))
 
