@@ -43,14 +43,17 @@
    ([escape] 'isearch-exit)
    ([f4] 'isearch-abort)))
 
+(defun isearch-backward-regexp-fast ()
+  (interactive)
+  (let* ((isearch-backwards-p t))
+    (isearch-backward-regexp)))
+
 (defbuttons isearch-mode-global-buttons nil
   (global-map)
   (buttons-make
    ([f3] 'isearch-forward-regexp)
    ;;should work because it is a recedit
-   ([M-f3] (lambda () (interactive)
-	     (let* ((isearch-backwards-p t))
-	       (isearch-backward-regexp))))))
+   ([M-f3] 'isearch-backward-regexp-fast)))
 
 (defvar isearch-backwards-p nil)
 
