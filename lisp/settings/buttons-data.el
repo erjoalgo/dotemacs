@@ -127,7 +127,10 @@
    (call-interactively
     (cond
      ((get-buffer "*compilation*") (if prev 'previous-error 'next-error))
-     ((bound-and-true-p flycheck-mode) (if prev 'flycheck-previous-error 'flycheck-next-error))
+     ((and (bound-and-true-p flycheck-mode)
+           (or (flycheck-next-error-pos 1)
+               (flycheck-next-error-pos -1)))
+      (if prev 'flycheck-previous-error 'flycheck-next-error))
      ((bound-and-true-p flymake-mode) (if prev 'flymake-goto-prev-error 'flymake-goto-next-error))
      (t (if prev 'previous-error 'next-error)))))
 
