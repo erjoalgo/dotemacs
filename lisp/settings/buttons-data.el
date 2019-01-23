@@ -255,6 +255,7 @@
       ("b" (cmd (ins "&body body")))
       ("o" (cmd (ins "&optional ")))))
     ("g" (cmd (ins "nil")))
+    ("G" (cmd (ins "(bound-and-true-p {})")))
     ("t"
      (but
       ("l"
