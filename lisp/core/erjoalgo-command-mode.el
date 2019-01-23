@@ -379,7 +379,7 @@
    (but
     ;;find source for function-at-point
     ("y" 'find-function)
-    ("Y" 'find-package)
+    ("Y" 'find-symbol)
     ;;apropos
     ("A" 'apropos-variable)
     ;; disable annoying tutorial
