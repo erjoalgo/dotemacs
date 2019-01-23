@@ -441,3 +441,12 @@ a translation from scratch"
 ;; * TODO ensure month, nationalities aren't capitalized
 ;; * TODO spell-check english words, names accepted by ispell-spanish
 ;; * TODO verify country names translate
+(autobuild-define-rule
+ autobuild-translations
+ t
+ (when (s-starts-with?
+        (expand-file-name "~/git/translations")
+        (buffer-file-name))
+   (lambda ()
+     (when (translation-prepare)
+       (call-interactively #'translation-publish-commit)))))
