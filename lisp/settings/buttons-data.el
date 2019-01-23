@@ -255,7 +255,6 @@
       ("b" (cmd (ins "&body body")))
       ("o" (cmd (ins "&optional ")))))
     ("g" (cmd (ins "nil")))
-    ("G" (cmd (ins "(bound-and-true-p {})")))
     ("t"
      (but
       ("l"
@@ -288,6 +287,7 @@
       ("V" (cmd (ins "(reverse {})")))
       ("i" (cmd (ins "(insert {})")))
       ("b" (cmd (ins "(boundp {})")))
+      ("B" (cmd (ins "(bound-and-true-p {})")))
       ("n" (cmd (ins "~{~A~^" "{}" "~}")))
       ("a" (cmd (ins "(assert {})")))
       ("#" (cmd-ins ";;;###autoload"))
