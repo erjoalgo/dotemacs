@@ -533,6 +533,7 @@
       ("3" (cmd (ins "int32 ") (inm)))
       ("6" (cmd (ins "int64 ") (inm)))
       ("d" (cmd (ins "double ") (inm)))
+      ("f" (cmd (ins "float ") (inm)))
       ("l" (cmd (ins "long ") (inm)))
       ("c" (cmd (ins "char ") (inm)))
       ("C" (cmd (ins "char* ") (inm)))
@@ -1149,7 +1150,8 @@
             ("g" (cmd (setf debug-on-error nil)
                       (message "debug-on-error: %s" debug-on-error)))
             ("b" 'edebug-set-breakpoint)))
-      ("q" (cmd (with-current-buffer "*Backtrace*" (top-level))))))))
+      ("q" (cmd (with-current-buffer "*Backtrace*" (top-level))))
+      ("a" (cmd (with-current-buffer "*Backtrace*" (top-level))))))))
 
  (defbuttons sldb-bindings nil
    (sldb-mode-map)
@@ -1373,7 +1375,9 @@ server {
     ((kbd "M-/") 'my-comment-out)
     ([escape] 'exit-recursive-edit)
     ((kbd "M-.") 'my-next-error)
-    ((kbd "M-,") 'my-prev-error)))))
+    ((kbd "M-,") 'my-prev-error)
+    ((kbd "C-s") #'isearch-forward-regexp)
+    ((kbd "C-r") 'isearch-backward-regexp-fast)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; buttons-data.el ends here
