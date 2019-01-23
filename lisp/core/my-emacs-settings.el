@@ -165,5 +165,7 @@
 ;; irc suggestion eglot
 (setq max-specpdl-size 32000)
 
+(setq debug-on-quit nil)
+
 (provide 'my-emacs-settings)
 ;;; emacs-settings.el ends here
