@@ -1,3 +1,5 @@
+(require 'babel)
+
 (setf
  translation-suffixes
  '((original . "-original.txt")
@@ -48,6 +50,8 @@
     (message "translated: %s" english)
     english))
 
+
+;;;###autoload
 (defun translation-new (name &optional text-english dir)
   (interactive `(nil))
   (setf name (or name (read-string "senter name of translation: ")))
@@ -62,6 +66,7 @@
          (babel-english-to-spanish text-english))))
 
 
+;;;###autoload
 (defun translation-new-correction
     (name &optional text-original text-english dir)
   (interactive "senter name of translation: ")
@@ -82,6 +87,7 @@
 
 (defvar translation-submissions-address-alist)
 
+;;;###autoload
 (defun translation-publish-commit (subject body address attachment-type original-buffer)
   (interactive
    (save-excursion
@@ -171,6 +177,7 @@
     (assert (file-exists-p dest-fn))
     dest-fn))
 
+;;;###autoload
 (defun translation-new-correction-from-docx-attachment ()
   (interactive)
   (let ((attachments-dir (gnus-dir-name-for-message)))
@@ -211,6 +218,7 @@
             (message "url %s" url)
             (browse-url url))))))
 
+;;;###autoload
 (defun translation-wdiff (directory)
   (interactive (list default-directory))
   (let ((name (f-base directory)))
@@ -218,6 +226,7 @@
            (mapcar (lambda (suffix) (translation-suffix name suffix directory))
                    '(original correction wdiff wdiff-html)))))
 
+;;;###autoload
 (defun translation-wdiff-final (directory)
   (interactive (list default-directory))
   (let* ((name (f-base directory))
@@ -299,7 +308,7 @@ a translation from scratch"
 (setf translation-regexp-rules-alist
       (append
        `(
-         (,month-regexp downcase)
+         ;; (,month-regexp #'downcase)
          (,(format "\\([0-9]\\{1,2\\}\\) \\(%s\\),? \\([0-9]\\{2,4\\}\\)"
                   month-regexp)
           "\\1 de \\? del \\3")
@@ -428,6 +437,7 @@ a translation from scratch"
   (let ((default-directory directory))
     (shell-command (format "git add .; git commit -m '%s'" directory))))
 
+;;;###autoload
 (defun translation-prepare ()
   (interactive)
   (when (eq 0 (ispell-spanish))
@@ -450,3 +460,5 @@ a translation from scratch"
    (lambda ()
      (when (translation-prepare)
        (call-interactively #'translation-publish-commit)))))
+
+(provide 'translation)
