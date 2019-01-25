@@ -36,3 +36,15 @@
             (progn
               autobuild-last-compilation-buffer)
           ad-do-it)))
+
+(put 'compile-command 'safe-local-variable 'stringp)
+
+(defun compilation-finished-notify (compilation-buffer compilation-state)
+  ;; TODO try notify-send, xmessage, audible/visible beep...
+  (let ((msg (format "compilation %s: %s"
+                     (s-trim compilation-state) compile-command))
+        (color (if (autobuild-compilation-exited-abnormally-p compilation-state)
+                   'green 'red)))
+    (stumpwm-message msg color)))
+
+(setq autobuild-notification-function #'compilation-finished-notify)
