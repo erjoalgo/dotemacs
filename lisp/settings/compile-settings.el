@@ -44,7 +44,7 @@
   (let ((msg (format "compilation %s: %s"
                      (s-trim compilation-state) compile-command))
         (color (if (autobuild-compilation-exited-abnormally-p compilation-state)
-                   'green 'red)))
+                   'red 'green)))
     (stumpwm-message msg color)))
 
 (setq autobuild-notification-function #'compilation-finished-notify)
