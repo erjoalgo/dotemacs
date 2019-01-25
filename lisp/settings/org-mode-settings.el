@@ -23,16 +23,6 @@
 (setf search-invisible nil)
 (setf org-hide-leading-stars t)
 
-(defun org-export-mine ()
-  (interactive)
-  (unless (and (boundp 'org-exporting-mine)
-	       org-exporting-mine)
-    (let* ((fn (org-html-export-to-html))
-	   (url (format "file://%s" (f-full fn)))
-	   (org-exporting-mine t))
-      '(org-latex-export-to-pdf)
-      (browse-url url))))
-
 (defun org-listify-region (a b)
   (interactive "r")
   (save-excursion
