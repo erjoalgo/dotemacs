@@ -79,9 +79,11 @@
          (choices (cl-loop for (hint . cand) in hints-cands
                            collect (concat hint sep (funcall stringify cand))))
          (prompt (or prompt "select candidate: "))
-         (choice (completing-read prompt choices
-                                  nil
-                                  t))
+         (choice (minibuffer-with-setup-hook
+                     #'minibuffer-completion-help
+                   (completing-read prompt choices
+                                    nil
+                                    t)))
          (cand (let* ((hint (car (split-string choice sep))))
                  (cdr (assoc hint hints-cands #'equal)))))
     cand))
