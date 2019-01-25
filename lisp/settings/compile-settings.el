@@ -47,4 +47,5 @@
                    'red 'green)))
     (stumpwm-message msg color)))
 
-(setq autobuild-notification-function #'compilation-finished-notify)
+(setq autobuild-notification-function #'compilation-finished-notify
+      autobuild-notify-threshold-secs t)
