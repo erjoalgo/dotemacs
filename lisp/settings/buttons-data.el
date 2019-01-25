@@ -87,8 +87,11 @@
           ("c" 'eglot-code-actions)
           ("g"
            (but
-            ("b" 'google3-browse-in-cs)
-            ("B" 'google3-find-in-src-head)
+            ("b"
+             (but
+              ("c" 'google3-browse-in-cs)
+              ("s" 'google3-find-in-src-head)
+              ("r" (cmd (find-file (google3-readonly-pathname))))))
             ("d" #'google-lsp-describe-thing-at-point)
             ("c" #'google-cs)
             ;; ("C" #'cs)
