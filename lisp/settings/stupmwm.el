@@ -69,7 +69,7 @@ in the current STUMPWM group/workspace."
   nil)
 
 (defun stumpwm-message (text &optional color host ports)
-  (let* ((host (or host 'local))
+  (let* ((host (or host "localhost"))
          (ports (or (if (numberp ports) (list ports) ports)
                     '(1959 1960 1961 1962)))
          (colored (if color (stumpwm-color text color)
