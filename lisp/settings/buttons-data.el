@@ -78,30 +78,6 @@
     ("6" (cmd (ins "[^{}]")))
     ((kbd "M-/") 'my-comment-out)
     ((kbd "M-?") 'my-comment-out-and-duplicate)
-    ("." (but
-          ("f" 'xref-find-definitions)
-          ("s" 'xref-show-location-at-point)
-          ("r" 'eglot-rename)
-          ("x" 'xref-find-references)
-          ("a" 'xref-find-apropos)
-          ("c" 'eglot-code-actions)
-          ("g"
-           (but
-            ("b"
-             (but
-              ("c" 'google3-browse-in-cs)
-              ("s" 'google3-find-in-src-head)
-              ("r" (cmd (find-file (google3-readonly-pathname))))
-              ("R" (cmd (find-file (google3-non-readonly-pathname))))
-              ("l" 'google-browse-cl)
-              ("b" 'google-goto-blaze-log-file)
-              ("g" 'google-browse-sponge)))
-            ("t" 'git5-track-directory)
-            ("d" #'google-lsp-describe-thing-at-point)
-            ("c" #'google-cs)
-            ;; ("C" #'cs)
-            ;; ("s" #'google-search)
-            ("C" #'csearch)))))
     ("u";; util
      (but
       ("c" ;; case
@@ -1358,7 +1334,31 @@ server {
     ((kbd "M-.") 'my-next-error)
     ((kbd "M-,") 'my-prev-error)
     ((kbd "C-s") #'isearch-forward-regexp)
-    ((kbd "C-r") 'isearch-backward-regexp-fast)))))
+    ((kbd "C-r") 'isearch-backward-regexp-fast)
+    ("." (but
+          ("f" 'xref-find-definitions)
+          ("s" 'xref-show-location-at-point)
+          ("r" 'eglot-rename)
+          ("x" 'xref-find-references)
+          ("a" 'xref-find-apropos)
+          ("c" 'eglot-code-actions)
+          ("g"
+           (but
+            ("b"
+             (but
+              ("c" 'google3-browse-in-cs)
+              ("s" 'google3-find-in-src-head)
+              ("r" (cmd (find-file (google3-readonly-pathname))))
+              ("R" (cmd (find-file (google3-non-readonly-pathname))))
+              ("l" 'google-browse-cl)
+              ("b" 'google-goto-blaze-log-file)
+              ("g" 'google-browse-sponge-url)))
+            ("t" 'git5-track-directory)
+            ("d" #'google-lsp-describe-thing-at-point)
+            ("c" #'google-cs)
+            ;; ("C" #'cs)
+            ;; ("s" #'google-search)
+            ("C" #'csearch)))))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; buttons-data.el ends here
