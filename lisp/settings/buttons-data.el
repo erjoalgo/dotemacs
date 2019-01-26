@@ -91,7 +91,12 @@
              (but
               ("c" 'google3-browse-in-cs)
               ("s" 'google3-find-in-src-head)
-              ("r" (cmd (find-file (google3-readonly-pathname))))))
+              ("r" (cmd (find-file (google3-readonly-pathname))))
+              ("R" (cmd (find-file (google3-non-readonly-pathname))))
+              ("l" 'google-browse-cl)
+              ("b" 'google-goto-blaze-log-file)
+              ("g" 'google-browse-sponge)))
+            ("t" 'git5-track-directory)
             ("d" #'google-lsp-describe-thing-at-point)
             ("c" #'google-cs)
             ;; ("C" #'cs)
@@ -462,6 +467,11 @@
                          "<< {0} << endl;")))
             ("V" (cmd (ins "cout << \"{(f-base (buffer-file-name))}: proto {0}: \""
                            "{(nli?)}<< {0}.DebugString() << endl;")))
+            ("k" (cmd-ins
+                  (if (save-excursion (move-beginning-of-line 0)
+                                      (looking-at "#include"))
+                      "#include \"base/examine_stack.h\""
+                    "LOG(INFO) << CurrentStackTrace();")))
             ("t" (cmd (if (bound-and-true-p google-emacs-version)
                           (ins "absl::PrintF(\"{}\\n\"{});")
                         (ins "printf(\"{}\\n\"{});"))))
