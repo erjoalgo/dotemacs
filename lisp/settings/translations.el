@@ -203,6 +203,7 @@
     (buffer-string)))
 
 (defun wdiff (a b dest-txt dest-html)
+  (check-cmd "which" '("wdiff") "missing wdiff")
   (loop
    with cmd-fmt =  (format "%%s %s %s > %%s" a b)
    for (program out-filename) in
@@ -432,8 +433,13 @@ a translation from scratch"
          (buffer-string)
        (kill-buffer)))))
 
+(defun check-cmd (cmd args err)
+  (unless (zerop (apply #'call-process cmd nil nil nil args))
+    (error "error: %s" err)))
+
 (defun translation-commit (directory)
   (interactive (list default-directory))
+  (check-cmd "git" '("status") "git not initialized")
   (let ((default-directory directory))
     (shell-command (format "git add .; git commit -m '%s'" directory))))
 
