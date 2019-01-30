@@ -126,7 +126,7 @@
           "from __future__ import print_function" (nli)))
     ("n" (but
           ("t" (cmd (ins "print ({}){(nli)}")))
-          ("v" (cmd-ins "print (\"{(buf)} {(rnd)}: value of {0}: {}\".format({0}))"))))
+          ("v" (cmd-ins "print (\"{(buf)} {(rnd)}: value of {0}: {" "}\".format({0}))"))))
     ("r" (cmd (ins "return {}{(nli)}{(idt)}")))
     ("L" (cmd (ins "class {}(object):{(nli)}")))
     ("l" (cmd (ins "len({})")))
@@ -134,10 +134,13 @@
     ("W" (cmd (ins "with open({}, \"{}\") as fh:{(nli)}{}{(nli)}")))
     ("SPC" (cmd (ins ", ")))
     ("0" (cmd (insert python-argparse-template)))
-    ("t" (cmd (ins "True")))
-    ("g" (cmd (ins "False")))
-    ("G" (cmd (ins "None")))
-    ("." (cmd (ins "import pdb;pdb.set_trace(){(nli)}")))
+    ("t"
+     (but
+      ("u" (cmd (ins "True")))
+      ("g" (cmd (ins "False")))
+      ("G" (cmd (ins "None")))
+      ("." (cmd (ins "import pdb;pdb.set_trace(){(nli)}")))))
+    ("." nil)
     ("_" (cmd (ins "if __name__ == \"__main__\":{(nli)}")))
     ("=" (cmd (ins " == ")))
     ("j" (cmd (ins " or {(inm)}")))
@@ -1022,7 +1025,6 @@
     ("q" (cmd (ins "#+BEGIN_SRC {}" (nli)
                    (rec)
                    "#+END_SRC" (nli))))
-    ("`" (cmd (ins "~{}~")))
     ("Q" (cmd (ins "#+begin_quote {}{(nli)}{}#+end_quote{(nli)}")))
     ((kbd "<s-tab>") 'org-indent-block)
     ((kbd "RET") 'org-insert-heading)
@@ -1326,6 +1328,7 @@ server {
    nil
    (global-map)
    (but
+    ((kbd "M-c") #'autobuild-build)
     ((kbd "M-q") #'sticky-window-delete-window)
     ((kbd "M-Q") #'sticky-window-keep-window-visible)
     ((kbd "M-1") #'sticky-window-delete-other-windows)
@@ -1344,21 +1347,21 @@ server {
           ("c" 'eglot-code-actions)
           ("g"
            (but
-            ("b"
-             (but
-              ("c" 'google3-browse-in-cs)
-              ("s" 'google3-find-in-src-head)
-              ("r" (cmd (find-file (google3-readonly-pathname))))
-              ("R" (cmd (find-file (google3-non-readonly-pathname))))
-              ("l" 'google-browse-cl)
-              ("b" 'google-goto-blaze-log-file)
-              ("g" 'google-browse-sponge-url)))
             ("t" 'git5-track-directory)
             ("d" #'google-lsp-describe-thing-at-point)
             ("c" #'google-cs)
             ;; ("C" #'cs)
             ;; ("s" #'google-search)
-            ("C" #'csearch)))))))))
+            ("C" #'csearch)))
+          ("b" (but
+                ("c" 'google3-browse-in-cs)
+                ("s" 'google3-find-in-src-head)
+                ("r" (cmd (find-file (google3-readonly-pathname))))
+                ("R" (cmd (find-file (google3-non-readonly-pathname))))
+                ("l" 'google-browse-cl)
+                ("z" 'google-goto-blaze-log-file)
+                ("g" 'google-browse-sponge-url)
+                ("f" 'google3-path-find-file)))))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; buttons-data.el ends here
