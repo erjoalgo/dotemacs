@@ -107,8 +107,8 @@
   (interactive (list
                 (read-string "enter approx passoword: ")
                 (read-file-name "enter filename: " "/tmp/" nil nil "cands")
-                (split-string " "
-                              (read-string "enter space-separted fuzz strings: "))))
+                (split-string (read-string "enter space-separted fuzz strings: ")
+                              " ")))
   (with-current-buffer (find-file-noselect filename)
     (erase-buffer)
     (dolist (cand (genpass-explode approx-password fuzz))
