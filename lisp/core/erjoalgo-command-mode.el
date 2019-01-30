@@ -115,6 +115,7 @@
      ((Custom-mode) 'widget-forward)
      ((help-mode apropos-mode debugger-mode) 'forward-button)
      ((Info-mode) 'Info-next-reference)
+     ((gnus-article-mode) 'widget-forward)
      (t 'indent-for-tab-command))))
 
 (defun my-indent ()
