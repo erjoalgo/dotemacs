@@ -1215,8 +1215,8 @@
  (defbuttons org-mode-buttons nil
    (org-mode-map)
    (but
-    ("M-P" 'org-metaup);;move up
-    ("M-N" 'org-metadown);;move down
+    ((kbd "M-P") 'org-metaup);;move up
+    ((kbd "M-M") 'org-metadown);;move down
 
     ((kbd "M-]") 'org-metaright);;promote
     ((kbd "M-[") 'org-metaleft);;demote
