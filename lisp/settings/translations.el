@@ -453,7 +453,7 @@ a translation from scratch"
 ;; * TODO verify country names translate
 (autobuild-define-rule
  autobuild-translations
- t
+ nil
  (when (s-starts-with?
         (expand-file-name "~/git/translations")
         (buffer-file-name))
