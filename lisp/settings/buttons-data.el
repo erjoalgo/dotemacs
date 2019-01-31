@@ -151,7 +151,7 @@
     ("h" (cmd (python-dir-on-expression)))
     ("H" (cmd (pdb-help-on-expression)))
     ("i" (cmd (ins " in ")))
-    ("[" (cmd (insert "{")
+    ("{" (cmd (insert "{")
               (ins "{}}")))
     ("[" (cmd (insert "{}")))
     ("]" (cmd (ins ".format({})")))
