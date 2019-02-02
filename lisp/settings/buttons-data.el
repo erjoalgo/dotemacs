@@ -522,6 +522,7 @@
     ("5" (but
           ("s" (cmd (ins "%s")))
           ("d" (cmd (ins "%d")))
+          ("f" (cmd (ins "%f")))
           ("c" (cmd (ins "%c")))
           ("l" (cmd (ins "%ld")))
           ("L" (cmd (ins "%lld")))))
