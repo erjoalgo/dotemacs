@@ -115,12 +115,6 @@
 
 (setf gnus-always-read-dribble-file t)
 
-(with-eval-after-load "message"
-		      (add-hook 'message-mode-hook
-				(lambda ()
-				  (erjoalgo-indent-mode 1)
-				  (indent-mode-set-string ">"))))
-
 (defun setup-gnus-notifications ()
   (require 'gnus-desktop-notify)
   (setq gnus-desktop-notify-function 'gnus-desktop-notify-exec
