@@ -646,7 +646,6 @@
     ("_" (cmd (ins ",{(nli)}{(inm)}")))
     ("L" (cmd (insert "let { ")
               (ins "{} } = ")))
-    ("G" (cmd (ins "null")))
     ("N" (cmd (ins "logger.silly( \"")
               (insert
                (format "%s-%d"
@@ -661,10 +660,12 @@
     ("[" (cmd (insert "{") (ins "{}}")))
     ("t"
      (but
-      ("n" (cmd-ins "new {}({}) "))
+      ("n" (cmd (ins "null")))
+      ("N" (cmd-ins "new {}({}) "))
       ("w" (cmd-ins "await "))
       ("W" (cmd-ins "async "))
       ("u" (cmd (ins "true")))
+      ("f" (cmd (ins "false")))
       ("e" (cmd (ins "new Error({})")))
       ("x" (cmd
             (let-when-compile
