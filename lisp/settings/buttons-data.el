@@ -806,6 +806,9 @@
       ("t"
        (but
         ("0" (cmd-ins "cd \"$( dirname \"${BASH_SOURCE[0]}\" )\""))
+        ("u" (cmd-ins "true"))
+        ("g" (cmd-ins "false"))
+        ("l" 'insert-unique-line)
         ("s"
          (but
           ("e" (cmd-ins "test -e "))
@@ -815,8 +818,7 @@
           ("k" (cmd-ins "test -a "))
           ("j" (cmd-ins "test -o "))
           ("=" (cmd-ins "test {} = "))
-          ("c" (cmd-ins "command -v "))))
-        ("u" 'insert-unique-line)))
+          ("c" (cmd-ins "command -v "))))))
       ("<" (cmd-ins " <<< "))))
 
    (defbuttons tex-buttons programming-buttons (tex-mode-map)
