@@ -136,9 +136,10 @@
     ("0" (cmd (insert python-argparse-template)))
     ("t"
      (but
+      ("a" (cmd (ins "assert ")))
       ("u" (cmd (ins "True")))
       ("g" (cmd (ins "False")))
-      ("G" (cmd (ins "None")))
+      ("n" (cmd (ins "None")))
       ("." (cmd (ins "import pdb;pdb.set_trace(){(nli)}")))))
     ("." nil)
     ("_" (cmd (ins "if __name__ == \"__main__\":{(nli)}")))
@@ -619,7 +620,6 @@
               (insert "){")
               (ins "{}}")))
     ("A" (cmd (ins " => ")))
-    ("." (cmd (ins "debugger;{(nli)}")))
     ("n" (but
           ("c" (cmd (ins "console.log( \"{}\"{} );")))
           ("r" (cmd (ins "console.log( \"trace {(buf)} {(rnd)}\");")))
@@ -660,6 +660,7 @@
     ("[" (cmd (insert "{") (ins "{}}")))
     ("t"
      (but
+      ("." (cmd (ins "debugger;{(nli)}")))
       ("n" (cmd (ins "null")))
       ("N" (cmd-ins "new {}({}) "))
       ("w" (cmd-ins "await "))
@@ -1019,7 +1020,15 @@
 
  (defbuttons protobuf-buttons programming-buttons
    (protobuf-mode-map)
-   (but))
+   (but
+    ("t"
+     (but
+      ("o" (cmd-ins "optional "))
+      ("r" (cmd-ins "repeated "))
+      ("m" (cmd-ins "message {} {"  (nli) (rec) (nli) "}"))
+      ("e" (cmd-ins "enum {} {" (nli) (rec) (nli) "}"))
+      ("f" (cmd-ins "oneof {} {" (nli) (rec) (nli) "}"))))
+    ("m" (cmd-ins "import \"{}\";"))))
 
  (defbuttons org-buttons nil
    (org-mode-map)
@@ -1349,6 +1358,10 @@ server {
           ("c" 'eglot-code-actions)
           ("g"
            (but
+            ("T" (cmd-ins comment-start
+                          (if (s-ends-with-p " " comment-start)
+                              "" " ")
+                          "TODO(" user-login-name ") " ))
             ("t" 'git5-track-directory)
             ("d" #'google-lsp-describe-thing-at-point)
             ("c" #'google-cs)
