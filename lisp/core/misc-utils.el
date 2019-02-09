@@ -279,6 +279,19 @@
     (message "%s" kmap-to-key-alist)
     kmap-to-key-alist))
 
+(defun undefine-key (key kmap)
+  (interactive
+   (let* ((key (read-key-sequence "enter key to lookup in current maps: "))
+          (kmaps (lookup-key-in-current-maps key))
+          ;; (kmap (selcand-select kmaps))
+          (kmap-name (completing-read "select map: " (mapcar 'car kmaps) nil t))
+          (kmap (symbol-value (intern kmap-name))))
+     (list key kmap)))
+  (assert key)
+  (assert kmap)
+  (assert (lookup-key kmap key))
+  (define-key kmap key nil))
+
 (defun keymap-current-active-keymap-symbols ()
   "Return a list of currently active keymap symbols."
   (interactive)
