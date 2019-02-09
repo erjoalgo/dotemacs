@@ -93,8 +93,7 @@
      ;; ([?\s-\t] #'company-complete)
      ((kbd "<s-tab>") #'company-complete)))
 
- (defbuttons python-buttons programming-buttons
-   (python-mode-map)
+ (defbuttons python-buttons programming-buttons (python-mode-map)
    (but
     ("e" (cmd-ins (if (looking-back "^[ 	]*[a-zA-Z_.,]+ *") " = " "=")))
     ("f" (cmd (ins "for {} in {}:{(nli)}{}{(nli)}{(idt)}")))
@@ -175,8 +174,7 @@
                          "\\1\\,(replace-regexp-in-string \"{}\" \"%s\" \\2), \\3")))))
             ("c" 'python-check)))))))
 
- (defbuttons pdb-buttons python-buttons
-   (inferior-python-mode-map)
+ (defbuttons pdb-buttons python-buttons (inferior-python-mode-map)
    (but
     ("r" (cmd (cmt "restart")
               (pdb-restart)))
@@ -188,8 +186,7 @@
     ("escape" (cmd (cmt "")))
     ("X" (cmd (cmt "exit")))))
 
- (defbuttons emacs-lisp-buttons programming-buttons
-   (emacs-lisp-mode-map read-expression-map inferior-emacs-lisp-mode-map)
+ (defbuttons emacs-lisp-buttons programming-buttons (emacs-lisp-mode-map read-expression-map inferior-emacs-lisp-mode-map)
    (but
     ("d"
      (but
@@ -349,8 +346,7 @@
                   (nli)
                   "(error {}))"))))
 
- (defbuttons cl-buttons emacs-lisp-buttons
-   (lisp-mode-map slime-mode-map slime-mode-indirect-map)
+ (defbuttons cl-buttons emacs-lisp-buttons (lisp-mode-map slime-mode-map slime-mode-indirect-map)
    (but
     ("e" (cmd (ins "(setf {})")))
     ("d"
@@ -393,8 +389,7 @@
           ("f" #'slime-edit-definition)
           ("F" #'slime-pop-find-definition-stack)))))
 
-(defbuttons clojure-buttons cl-buttons
-   (clojure-mode-map cider-repl-mode-map)
+ (defbuttons clojure-buttons cl-buttons (clojure-mode-map cider-repl-mode-map)
    (but
     ("\\" (cmd (ins "\\n")))
     ("l" (cmd (ins "(let [{}]{(nli)}{}){(nli)}")))
@@ -422,8 +417,7 @@
     ((kbd "M-,") 'previous-error)
     ((kbd "TAB") 'completion-at-point)))
 
- (defbuttons c-buttons programming-buttons
-   (c-mode-map)
+ (defbuttons c-buttons programming-buttons (c-mode-map)
    (but
     ("f"
      (but
@@ -531,8 +525,7 @@
       ("c" (cmd (ins "continue;")))
       ("k" (cmd (ins "break;")))))))
 
- (defbuttons java-buttons c-buttons
-   (java-mode-map)
+ (defbuttons java-buttons c-buttons (java-mode-map)
    (but
     ("n" (cmd (ins "System.out.printf( \"{}\\n\"{} );{(nli)}")))
     ("l" (cmd (ins ".length")))
@@ -564,9 +557,7 @@
     ("m" 'java-imports-add-import-dwim)
     ("t" (cmd (ins "try {(cbd)}catch ({}){(cbd)}")))))
 
- (defbuttons xml-buttons
-   programming-buttons
-   (nxml-mode-map)
+ (defbuttons xml-buttons programming-buttons (nxml-mode-map)
    (but
     ("/" (cmd (ins "<!--{}-->{(nli)}")))
     ((kbd "M-/") 'xml-toggle-line-comment)
@@ -586,8 +577,7 @@
                  mix-expr mix-expr)
                 "</mix:message>"))))))
 
- (defbuttons html-buttons xml-buttons
-   (html-mode-map)
+ (defbuttons html-buttons xml-buttons (html-mode-map)
    (but
     ("0" (cmd (ins
                "<!DOCTYPE html>
@@ -610,8 +600,7 @@
     ("i" (cmd (ins "<iframe src=\"{}\"></iframe>")))
     ("P" (cmd (ins "<p>{}</p>")))))
 
- (defbuttons js-buttons c-buttons
-   (js-mode-map)
+ (defbuttons js-buttons c-buttons (js-mode-map)
    (but
     ("d" (cmd (ins "function {} ( {} ){(cbd)}")))
     ("a" (cmd (ins "function({}")
@@ -707,8 +696,7 @@
             ("s" (cmd (ins "JSON.stringify({})")))
             ("p" (cmd (ins "JSON.parse({})")))))))))
 
- (defbuttons go-buttons c-buttons
-   (go-mode-map)
+ (defbuttons go-buttons c-buttons (go-mode-map)
    (but
     ("a" (cmd (ins "func({}")
               (insert "){")
@@ -752,8 +740,7 @@
     ("O" (cmd (insert "verbose(func(){fmt.Printf(\"VERBOSE: ")
               (ins "{}\"{})})")))))
 
- (defbuttons bash-buttons programming-buttons
-   (sh-mode-map)
+ (defbuttons bash-buttons programming-buttons (sh-mode-map)
    (but
     ("1" (cmd (ins "! ")))
     ("V" (cmd (insert "\"${")
@@ -824,8 +811,7 @@
           ("u" 'insert-unique-line)))
     ("<" (cmd-ins " <<< "))))
 
- (defbuttons tex-buttons programming-buttons
-   (tex-mode-map)
+ (defbuttons tex-buttons programming-buttons (tex-mode-map)
    (but
     ("m" (cmd (ins "${}$")))
     ("b" (cmd (insert "\\begin{")
@@ -898,8 +884,7 @@
     (";" (cmd (ins "\\;")))
     ("/" 'my-comment-out)))
 
- (defbuttons matlab-buttons python-buttons
-   (matlab-mode-map)
+ (defbuttons matlab-buttons python-buttons (matlab-mode-map)
    (but
     ("z" (cmd (ins "if {};{(nli)}{}{(nli)}end{(idt)}")))
     ("'" (cmd (ins "'")))
@@ -929,8 +914,7 @@
     (";" (cmd (ins ": ")))
     ("x" (cmd (ins "elseif ")))))
 
- (defbuttons r-buttons programming-buttons
-   (ess-mode-map)
+ (defbuttons r-buttons programming-buttons (ess-mode-map)
    (but
     ("h" (cmd (ins "help.search({(inm)}{})")))
     ("e" (cmd (ins " <- ")))
@@ -941,16 +925,14 @@
     ("-" (cmd (ins "attr({}, \"{}\" )")))
     ("N" (cmd (ins "print({})")))))
 
- (defbuttons octave-buttons matlab-buttons
-   (octave-mode-map inferior-octave-mode-map)
+ (defbuttons octave-buttons matlab-buttons (octave-mode-map inferior-octave-mode-map)
    (but
     ("d" (cmd (ins "function [{}] = {}({}){(nli)}{}{(nli)}endfunction")))
     ("'" (cmd (insert "#{")
               (ins "{}#}")))
     ("2" (cmd (ins "\"{}\"")))))
 
- (defbuttons cpp-buttons c-buttons
-   (c++-mode-map)
+ (defbuttons cpp-buttons c-buttons (c++-mode-map)
    (but
     ("f"
      (but
@@ -1010,22 +992,19 @@
               ("c" (cmd (ins "CHECK({})")))
               ("o" (cmd (ins "CHECK_OK({})")))))))))))
 
- (defbuttons yacc-buttons programming-buttons
-   (yacc-mode-map)
+ (defbuttons yacc-buttons programming-buttons (yacc-mode-map)
    (but
     ("v" (cmd (ins "$")
               (insertchar)))
     ("D" (cmd (ins "{(nli)}:	")))
     ("d" (cmd (ins "{(nli)}|	")))))
 
- (defbuttons dot-buttons programming-buttons
-   (dot-mode-map)
+ (defbuttons dot-buttons programming-buttons (dot-mode-map)
    (but
     ("l" (cmd (ins " [label=\"{}\"];")))
     ("-" (cmd (ins " -> ")))))
 
- (defbuttons protobuf-buttons programming-buttons
-   (protobuf-mode-map)
+ (defbuttons protobuf-buttons programming-buttons (protobuf-mode-map)
    (but
     ("t"
      (but
@@ -1036,8 +1015,7 @@
       ("f" (cmd-ins "oneof {} {" (nli) (rec) (nli) "}"))))
     ("m" (cmd-ins "import \"{}\";"))))
 
- (defbuttons org-buttons nil
-   (org-mode-map)
+ (defbuttons org-buttons nil (org-mode-map)
    (but
     ("q" (cmd (ins "#+BEGIN_SRC {}" (nli)
                    (rec)
@@ -1077,14 +1055,12 @@
     ("[" 'my-org-shift-left)
     ("]" 'my-org-shift-right)))
 
- (defbuttons message-buttons nil
-   (message-mode-map)
+ (defbuttons message-buttons nil (message-mode-map)
    (but
     ("=" (cmd (ins " => ")))
     ("<" (cmd (re-sub "^[ 	]*>?[ 	]*" "")))))
 
- (defbuttons ansi-term-buttons nil
-   (term-raw-map)
+ (defbuttons ansi-term-buttons nil (term-raw-map)
    (but
     ("c"
      (cmd
@@ -1092,26 +1068,22 @@
        (term-send-raw-string "")
        (term-send-raw-string "")))))
 
- (defbuttons conf-buttons programming-buttons
-   (conf-mode-map)
+ (defbuttons conf-buttons programming-buttons (conf-mode-map)
    (but
     ("e" (cmd (ins "=")))))
 
- (defbuttons magit-buttons nil
-   (magit-mode-map)
+ (defbuttons magit-buttons nil (magit-mode-map)
    (but
     ("p" 'magit-go-backward)
     ("n" 'magit-go-forward)))
 
- (defbuttons diff-buttons nil
-   (diff-mode-map)
+ (defbuttons diff-buttons nil (diff-mode-map)
    (but
     ("-" (git-hunk-toggle-cmd "-"))
     ("=" (git-hunk-toggle-cmd "+"))
     ("0" (git-hunk-toggle-cmd " "))))
 
- (defbuttons backtrace-bindings nil
-   (debugger-mode-map emacs-lisp-mode-map inferior-emacs-lisp-mode-map)
+ (defbuttons backtrace-bindings nil (debugger-mode-map emacs-lisp-mode-map inferior-emacs-lisp-mode-map)
    (but
     ("h"
      (but
@@ -1127,8 +1099,7 @@
       ("q" (cmd (with-current-buffer "*Backtrace*" (top-level))))
       ("a" (cmd (with-current-buffer "*Backtrace*" (top-level))))))))
 
- (defbuttons sldb-bindings nil
-   (sldb-mode-map)
+ (defbuttons sldb-bindings nil (sldb-mode-map)
    (but
     ("a" 'sldb-abort)
     ("c" 'sldb-continue)
@@ -1146,18 +1117,14 @@
 (let-when-compile
     ((buttons-make-key-mapper #'identity))
 
- (defbuttons minibuffer-quick-yes-button
-   nil
-   (minibuffer-local-map)
+ (defbuttons minibuffer-quick-yes-button nil (minibuffer-local-map)
    (but
     ((kbd "s-SPC") 'quick-yes-answer-yes)
     ;; this is different from the emacs-lisp binding: no need to escape the \ itself
     ((kbd "s-\\") (cmd (ins "\\({}\\)")))
     ((kbd "s-9") (cmd (ins "[0-9]+")))))
 
- (defbuttons apropos-buttons
-   nil
-   (global-map)
+ (defbuttons apropos-buttons nil (global-map)
    (but
     ((kbd "C-h")
      (but
@@ -1174,8 +1141,7 @@
         ;; variables
         ("v" (cmd (call-interactively 'apropos-variable)))))))))
 
- (defbuttons gnu-message-mode-buttons nil
-   (message-mode-map)
+ (defbuttons gnu-message-mode-buttons nil (message-mode-map)
    (but
     ((kbd "\C-ci") 'gmail-contacts-insert-contact)
     ("" nil)
@@ -1186,8 +1152,7 @@
     ((kbd "M-c") 'message-send-and-exit)
     ((kbd "s-A") 'gnus-insert-html-from-file)))
 
- (defbuttons cider-repl-buttons nil
-   (cider-repl-mode-map)
+ (defbuttons cider-repl-buttons nil (cider-repl-mode-map)
    (but
     ((kbd "M-p") (lambda () (interactive)
 		   (cider-repl--history-replace 'backward nil)))
@@ -1198,16 +1163,14 @@
     ;; ((kbd "s-h") cider-doc-map)
     ((kbd "TAB") 'company-complete)))
 
- (defbuttons image-mode-buttons nil
-   (image-mode-map)
+ (defbuttons image-mode-buttons nil (image-mode-map)
    (but
     ("n" 'image-next-file)
     ("b" 'image-previous-file)
     ("s" 'share-current-image)
     ("c" 'exif-set-usercomment)))
 
- (defbuttons dired-buttons nil
-   (dired-mode-map)
+ (defbuttons dired-buttons nil (dired-mode-map)
    (but
     ("q" 'dired-up-directory)
     ((kbd "s-f") 'open-file)
@@ -1221,15 +1184,13 @@
     ((kbd "b") 'dired-mark-file-as)
     ((kbd "B") 'dired-tagger-tag-loop)))
 
- (defbuttons nxml-mode-buttons nil
-   nxml-mode-map
+ (defbuttons nxml-mode-buttons nil nxml-mode-map
    (but
     ((kbd "C-M-f") 'nxml-forward-balanced-item)
     ((kbd "C-M-b") (lambda () (interactive)
 		     (nxml-forward-balanced-item -1)))))
 
- (defbuttons org-mode-buttons nil
-   (org-mode-map)
+ (defbuttons org-mode-buttons nil (org-mode-map)
    (but
     ((kbd "M-P") 'org-metaup);;move up
     ((kbd "M-M") 'org-metadown);;move down
@@ -1249,21 +1210,18 @@
     ;;insert new
     ((kbd "RET") 'org-meta-return)))
 
- (defbuttons sgml-buttons nil
-   (sgml-mode-map)
+ (defbuttons sgml-buttons nil (sgml-mode-map)
    (but
     ((kbd "C-M-f") 'sgml-skip-tag-forward)
     ((kbd "C-M-b") 'sgml-skip-tag-backward)))
 
- (defbuttons gnus-article-buttons nil
-   (gnus-article-mode-map)
+ (defbuttons gnus-article-buttons nil (gnus-article-mode-map)
    (but
     ("F" 'gnus-summary-mail-forward)
     ("R" 'gnus-article-wide-reply-with-original)
     ((kbd "s-s") 'gnus-mime-save-all-attachments)))
 
- (defbuttons gnus-summary-buttons nil
-   (gnus-summary-mode-map)
+ (defbuttons gnus-summary-buttons nil (gnus-summary-mode-map)
    (but
     ("R" 'gnus-summary-wide-reply-with-original)
     ("r" 'gnus-summary-reply-with-original)
@@ -1277,8 +1235,7 @@
 	  ("r" 'gnus-summary-insert-new-articles)
 	  ("f" 'gnus-summary-mail-forward))))))
 
-(defbuttons org-agenda-buttons nil
-  (org-agenda-mode-map)
+(defbuttons org-agenda-buttons nil (org-agenda-mode-map)
   (but
    ("q" 'org-todo-promote-top)
    ;;tag TODO
@@ -1287,9 +1244,7 @@
    ("2" (cmd (org-agenda-todo 2)))))
 
 
-(defbuttons slime-buttons
-   nil
-   (slime-mode-map slime-repl-mode-map)
+(defbuttons slime-buttons nil (slime-mode-map slime-repl-mode-map)
    (but
     ((kbd "M-{") 'slime-repl-previous-prompt)
     ((kbd "M-}") 'slime-repl-next-prompt)
@@ -1306,10 +1261,8 @@
       ("d" 'slime-documentation-lookup)
       ("z" 'slime-apropos-all)))))
 
-(defbuttons nginx-buttons
-  ;; programming-buttons
-  nil
-  (nginx-mode-map)
+;; programming-buttons
+(defbuttons nginx-buttons nil (nginx-mode-map)
   (but
    ("t"
     (but
@@ -1341,9 +1294,7 @@ server {
   (but
    ("s-d" 'ediff-copy-both-to-C)))
 
-(defbuttons global-buttons
-   nil
-   (global-map)
+(defbuttons global-buttons nil (global-map)
    (but
     ((kbd "M-c") #'autobuild-build)
     ((kbd "M-q") #'sticky-window-delete-window)
