@@ -1304,8 +1304,7 @@ server {
     }
 }"))))))
 
-   '(defbuttons ediff-mode-buttons nil
-                (ediff-mode-map)
+   '(defbuttons ediff-mode-buttons nil (ediff-mode-map)
       (but
        ("s-d" 'ediff-copy-both-to-C)))
 
