@@ -242,7 +242,6 @@
       ("k" (cmd (ins "&key ")))
       ("b" (cmd (ins "&body body")))
       ("o" (cmd (ins "&optional ")))))
-    ("g" (cmd (ins "nil")))
     ("t"
      (but
       ("l"
@@ -253,7 +252,9 @@
       ("m"
        (but
         ("x" (cmd (ins "(" "macroexpand-1 " "'{}){(nli)}")))))
-      ("g" (cmd (ins "({0}-sym (gensym \"{0}-\")){(nli)}")))
+      ("g" (cmd (ins "nil")))
+      ("s" (cmd (ins "({0}-sym (gensym \"{0}-\")){(nli)}")))
+      ("u" (cmd (ins "t")))
       ("e"
        (but
         ("u" (cmd (ins "(equal {})")))
@@ -298,7 +299,7 @@
       ("h" (cmd (ins "(handler-case{}{(nli)}(error (err) {}))")))))
     ("n"
      (but
-      ("t" (cmd (ins "(format \"{}\"{})")))
+      ("t" (cmd (ins "(format {})")))
       ("m" (cmd (ins "(message \"{}\"{})")))
       ("v" (cmd (ins "(message \"value of {0}: %s\" {0})")))))
     ("\\" (cmd (ins "\\\\({}\\\\)")))
@@ -440,6 +441,8 @@
               (ins ";{(inm)}")))
     ("1" (cmd (ins "!")))
     ("n" (but
+          ("t" (cmd-ins (ins "printf(\"{}\\n\"{});")))
+          ("s" (cmd (ins "scanf( \"{}\"{} );")))
           ("v" (cmd (ins "cout << \""
                          (f-base (buffer-file-name))
                          ": value of {0}: \""
@@ -452,12 +455,6 @@
                                       (looking-at "#include"))
                       "#include \"base/examine_stack.h\""
                     "LOG(INFO) << CurrentStackTrace();")))
-            ("t" (cmd (if (bound-and-true-p google-emacs-version)
-                          (ins "absl::PrintF(\"{}\\n\"{});")
-                        (ins "printf(\"{}\\n\"{});"))))
-            ("s" (cmd (if (bound-and-true-p google-emacs-version)
-                          (ins "absl::StrFormat(\"{}\"{})")
-                        ("s" (cmd (ins "scanf( \"{}\"{} );"))))))
             ;; + operator
             ("=" (cmd (ins "absl::StrCat(\"{}\"{})")))
             ("m" (cmd (ins "absl::StreamFormat(\"{}\"{});")))
@@ -506,6 +503,7 @@
       ("l" (cmd (ins "long ") (inm)))
       ("c" (cmd (ins "char ") (inm)))
       ("C" (cmd (ins "char* ") (inm)))
+      ("s" (cmd (ins "char* ") (inm)))
       ("v" (cmd (ins "void ") (inm)))
       ("N" (cmd (ins "const ") (inm)))
       ("b" (cmd (ins "bool ") (inm)))))
@@ -976,6 +974,14 @@
                     ("i" (cmd (ins "flume::")))
                     ("p" (cmd (ins "flume::PCollection<{}>")))))
                   ("l" (cmd (ins "logs::")))))))))
+    ("n"
+     (but
+      ("t" (cmd (if (bound-and-true-p google-emacs-version)
+                    (ins "absl::PrintF(\"{}\\n\"{});")
+                  (ins "printf(\"{}\\n\"{});"))))
+      ("s" (cmd (if (bound-and-true-p google-emacs-version)
+                    (ins "absl::StrFormat(\"{}\"{})")
+                  ("s" (cmd (ins "scanf( \"{}\"{} );"))))))))
     ("m" (cmd (ins "#include {}")))
     ("M" (cmd (ins "using namespace std;") (nli)
               (ins "#include <vector>") (nli)
@@ -1367,7 +1373,10 @@ server {
             ("c" #'google-cs)
             ;; ("C" #'cs)
             ;; ("s" #'google-search)
-            ("C" #'csearch)))
+            ("C" #'csearch)
+            ("p"
+             (but
+              ("b" #'g4-blame)))))
           ("b" (but
                 ("c" 'google3-browse-in-cs)
                 ("s" 'google3-find-in-src-head)
