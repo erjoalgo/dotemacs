@@ -257,14 +257,25 @@
 (defun lookup-key-in-current-maps (key)
   "Return a list of currently active keymaps that have a binding for KEY ."
   (interactive (list (read-key-sequence "enter key to lookup in current maps: ")))
-  (let* ((kmaps-filtered (remove-if-not (lambda (kmap)
-					  (lookup-key kmap key))
-					(current-active-maps)))
-	 (kmap-syms (keymap-symbol kmaps-filtered))
-	 (kmap-to-key-alist (mapcar (lambda (kmap-sym)
-				      (cons kmap-sym (lookup-key
-						      (symbol-value kmap-sym) key)))
-				    kmap-syms)))
+  (assert (vectorp key))
+  (let* ((kmaps-filtered
+          (cl-loop for kmap in (current-active-maps)
+                   with kvec = key
+                   as binding =
+                   (cl-loop with cum = nil
+                            with curr = kmap
+                            for k across kvec
+                            do (push curr cum)
+                            do (setq curr (lookup-key curr (vector k)))
+                            while curr
+                            when (not (keymapp curr))
+                            do (let ((sym (keymap-symbol (list kmap))))
+                                 (return (cons
+                                          (mapcar #'keymap-symbol (mapcar #'list cum))
+                                          curr))))
+                   when binding
+                   collect binding))
+	 (kmap-to-key-alist kmaps-filtered))
     (message "%s" kmap-to-key-alist)
     kmap-to-key-alist))
 
