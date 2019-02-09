@@ -588,15 +588,16 @@ This requires the external program `diff' to be in your `exec-path'."
      "\n[ 	]*\\()+\\)" "\\1" nil
      (point-min) (point-max) nil)))
 
-(defun print-level-disable-ellipsis ()
-  "Disable elipsis when printing LISP expressions."
+(defun print-level-disable-ellipsis (enable)
+  "Disable elipsis when printing LISP expressions, unless ENABLE is non-nil."
   (interactive "P")
-  (dolist (sym
-           '(eval-expression-print-level
-             eval-expression-print-length
-             print-level
-             print-length))
-    (set sym nil)))
+  (let ((val (if enable 12 nil)))
+    (dolist (sym
+             '(eval-expression-print-level
+               eval-expression-print-length
+               print-level
+               print-length))
+      (set sym val))))
 
 (defun regexp-replace-select-from-list (regexp-replacement-alist &optional noquery)
   "Interactively select a regexp-replacement pair from REGEXP-REPLACEMENT-ALIST.
