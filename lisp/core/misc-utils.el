@@ -548,8 +548,7 @@ for customization of the printer command."
 (defun source-shell-vars (sh-vars-filename &optional quiet)
   "Source shell vars defined in the file SH-VARS-FILENAME.  No echo on QUIET."
   (interactive (list
-                (read-file-name "enter shell file to source: "
-                                "~/.profile" "~/.profile")))
+                (read-file-name "enter shell file to source: ")))
   (assert (file-exists-p sh-vars-filename))
   (loop with cmd = (format "bash -c 'set -a; source %s &> /dev/null; env'"
                            sh-vars-filename)
