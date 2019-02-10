@@ -655,7 +655,7 @@
       ("[" (cmd-ins "{" (ins "{}}")))
       ("t"
        (but
-        ("." (cmd-ins "debugger;{(nli)}"))
+        ("." (cmd-ins "debugger;"))
         ("n" (cmd-ins "null"))
         ("N" (cmd-ins "new {}({}) "))
         ("w" (cmd-ins "await "))
