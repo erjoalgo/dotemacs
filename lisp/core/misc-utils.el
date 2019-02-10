@@ -710,6 +710,13 @@ This requires the external program `diff' to be in your `exec-path'."
   (package-refresh-contents)
   (call-interactively #'package-install))
 
+(defun detect-indent-level ()
+  (save-excursion
+    (goto-char (point-min))
+    (cl-loop while (re-search-forward "^[ ]+" nil t)
+             minimize (length (match-string 0)))))
+
+
 ;; (diff-lines-set '("a" "c") '("b" "c"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

@@ -7,3 +7,8 @@
     ((error line-start (file-name) "(" line "):" (message) line-end))
     :modes (js-mode))
   (add-to-list 'flycheck-checkers 'jsl))
+
+(defun js-autodetect-indent-level ()
+  (setq js-indent-level (detect-indent-level)))
+
+(add-hook 'js-mode-hook 'js-autodetect-indent-level)
