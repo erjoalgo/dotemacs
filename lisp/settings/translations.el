@@ -186,9 +186,11 @@
 	   (remove-if-not (lambda (fn) (string-match ".*[.]docx?" fn))
 			  (directory-files attachments-dir)))
 	  (default-directory attachments-dir))
-      (when (or (null cands) (cdr cands))
-	(error "not exactly one docx? file found"))
-      (let* ((docx (car cands))
+
+      (let* ((docx (cond
+                    ((null cands) (error "no docx attachments found"))
+                    ((null (cdr cands)) (car cands))
+                    (t (selcand-select cands "select an attachment to translate: "))))
              (translation-name (translation-santize-subject (f-base docx) t))
              (txt (docx2txt docx (lambda (fname) translation-name)))
              (text (with-temp-buffer
