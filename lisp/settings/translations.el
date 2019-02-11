@@ -469,4 +469,22 @@ a translation from scratch"
      (when (translation-prepare)
        (call-interactively #'translation-publish-commit)))))
 
+(define-minor-mode translation-mode
+  "Translation minor mode"
+  nil
+  "translation-mode"
+  (buttons-make
+   ((kbd "s-t")
+    (buttons-make
+     ((kbd "s-l") #'lingee-translate)))))
+
+(defun translation-mode-maybe-enable ()
+  (when (and (buffer-file-name)
+             (s-starts-with?
+              (expand-file-name "~/git/translations")
+              (buffer-file-name)))
+    (translation-mode t)))
+
+(add-hook 'find-file-hook #'translation-mode-maybe-enable)
+
 (provide 'translation)
