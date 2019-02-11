@@ -1,6 +1,10 @@
 (defvar linguee-program
   "/home/ealfonso/git/dotemacs/linguee.js")
 
+(defvar linguee-from "eng")
+
+(defvar linguee-to "spa")
+
 (defun linguee-query (text from to)
   (with-current-buffer
       (get-buffer-create "*linguee-process-buffer*")
@@ -21,7 +25,6 @@
       (mapcar (apply-partially #'linguee-json-get '(term))
               (linguee-json-get '(0 translations) words)))))
 
-
 (defun linguee-json-get (path json)
   "Traverse a json object JSON along PATH."
   (reduce (lambda (obj prop)
@@ -30,9 +33,6 @@
                   (t (error "Type not suppored: %s" prop))))
           path
           :initial-value json))
-
-(defvar linguee-from "eng")
-(defvar linguee-to "spa")
 
 (defun linguee-translate (query)
   (interactive (list (read-string "enter query: " )))
