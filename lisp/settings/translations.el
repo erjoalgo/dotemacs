@@ -459,15 +459,6 @@ a translation from scratch"
 ;; * TODO ensure month, nationalities aren't capitalized
 ;; * TODO spell-check english words, names accepted by ispell-spanish
 ;; * TODO verify country names translate
-(autobuild-define-rule
- autobuild-translations
- nil
- (when (s-starts-with?
-        (expand-file-name "~/git/translations")
-        (buffer-file-name))
-   (lambda ()
-     (when (translation-prepare)
-       (call-interactively #'translation-publish-commit)))))
 
 (define-minor-mode translation-mode
   "Translation minor mode"
@@ -486,5 +477,14 @@ a translation from scratch"
     (translation-mode t)))
 
 (add-hook 'find-file-hook #'translation-mode-maybe-enable)
+
+(autobuild-define-rule autobuild-translation-prepare (translation-mode)
+ #'translation-prepare)
+
+(autobuild-define-rule autobuild-translation-publish-commit (translation-mode)
+  #'translation-publish-commit)
+
+(autobuild-define-rule autobuild-translation-reply (translation-mode)
+  #'translation-reply)
 
 (provide 'translation)
