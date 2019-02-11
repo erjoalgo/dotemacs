@@ -809,6 +809,7 @@
         ("u" (cmd-ins "true"))
         ("g" (cmd-ins "false"))
         ("l" 'insert-unique-line)
+        ("x" (cmd-ins "export "))
         ("s"
          (but
           ("e" (cmd-ins "test -e "))
