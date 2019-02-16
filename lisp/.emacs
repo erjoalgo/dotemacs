@@ -82,7 +82,9 @@
            company
            sticky-windows
            header2
-           flycheck))
+           flycheck
+           autobuild
+           autobuild-examples))
   (safe-funcall
    (require feature)))
 
