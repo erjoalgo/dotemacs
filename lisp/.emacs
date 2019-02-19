@@ -80,7 +80,8 @@
            dedicated
            buttons
            company
-           sticky-windows))
+           sticky-windows
+           header2))
   (safe-funcall
    (require feature)))
 
