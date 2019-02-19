@@ -98,8 +98,9 @@
       ("f" (cmd-ins "for {} in {}:{(nli)}{}{(nli)}{(idt)}"))
       ("F" (cmd-ins "[{} for {} in {}]"))
       ("w" (cmd-ins "while {}:{(nli)}{}{(nli)}{(idt)}"))
-      ("T" (cmd-ins "try:{(nli)}{}{(nli)}"
-                    (python-indent-dedent-line)
+      ("T" (cmd-ins "try:"
+                    (nli)
+                    (rec)
                     "except:"
                     (nli)))
       ("z" (cmd-ins "if {}:{(nli)}"))
@@ -138,7 +139,8 @@
         ("a" (cmd-ins "assert "))
         ("u" (cmd-ins "True"))
         ("g" (cmd-ins "False"))
-        ("n" (cmd-ins "None"))
+        ("G" (cmd-ins "None"))
+        ("P" (cmd-ins (end-of-line) "  # pylint: disable="))
         ("." (cmd-ins "import pdb;pdb.set_trace(){(nli)}"))))
       ("." nil)
       ("_" (cmd-ins "if __name__ == \"__main__\":{(nli)}"))
@@ -153,7 +155,7 @@
       ("i" (cmd-ins " in "))
       ("{" (cmd-ins "{"
                     (ins "{}}")))
-      ("[" (cmd-ins "{}"))
+      ("[" (cmd-ins "{" "}"))
       ("]" (cmd-ins ".format({})"))
       ("N" (cmd-ins "a=[{}]{(nli)}print(getattr(Solution(), dir(Solution)[-1])(*a))"))
       ("E" (cmd-ins "raise Exception({})"))
@@ -205,6 +207,7 @@
                       (nli) ":group '"))
         ("l" (cmd-ins "(cl-labels ({}){(nli)}{}){(nli)}"))
         ("a" (cmd-ins "(defadvice {} ({})" (nli) "{}" (nli) ")"))
+        ("A" (cmd-ins "(defalias {})"))
         ("n" (cmd-ins "(defbuttons {}" (nli) "({})" (nli) "(but" (nli) "{}))"))
         ("k"
          (but
@@ -805,7 +808,7 @@
         ("k" (cmd-ins "break;"))))
       ("t"
        (but
-        ("0" (cmd-ins "cd \"$( dirname \"${BASH_SOURCE[0]}\" )\""))
+        ("0" (cmd (insert "cd \"$( dirname \"${BASH_SOURCE[0]}\" )\"")))
         ("u" (cmd-ins "true"))
         ("g" (cmd-ins "false"))
         ("l" 'insert-unique-line)
