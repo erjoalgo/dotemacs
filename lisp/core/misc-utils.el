@@ -713,8 +713,16 @@ This requires the external program `diff' to be in your `exec-path'."
 (defun detect-indent-level ()
   (save-excursion
     (goto-char (point-min))
-    (cl-loop while (re-search-forward "^[ ]+" nil t)
-             minimize (length (match-string 0)))))
+    (cl-loop with gcd
+             for i from 1
+             while (re-search-forward "^\\([ ]+\\).*" nil t)
+             as len = (length (match-string 1))
+             do (message "%s %s %s" len gcd (match-string 0))
+             as newgcd = (gcd (or gcd len) len)
+             unless (or (eq 1 newgcd)
+                        (>= len 12))
+             do (setq gcd newgcd)
+             finally (return gcd))))
 
 
 ;; (diff-lines-set '("a" "c") '("b" "c"))
