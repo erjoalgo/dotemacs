@@ -9,6 +9,6 @@
   (add-to-list 'flycheck-checkers 'jsl))
 
 (defun js-autodetect-indent-level ()
-  (setq js-indent-level (detect-indent-level)))
+  (setq js-indent-level (or (detect-indent-level) 2)))
 
 (add-hook 'js-mode-hook 'js-autodetect-indent-level)
