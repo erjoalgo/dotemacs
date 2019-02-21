@@ -155,6 +155,7 @@
       ("i" (cmd-ins " in "))
       ("{" (cmd-ins "{"
                     (ins "{}}")))
+      (":" (cmd-ins ": "))
       ("[" (cmd-ins "{" "}"))
       ("]" (cmd-ins ".format({})"))
       ("N" (cmd-ins "a=[{}]{(nli)}print(getattr(Solution(), dir(Solution)[-1])(*a))"))
