@@ -79,3 +79,10 @@ See `python-check-command' for the default."
     ((error line-start alpha ": " line ", " column
             ":" (message) line-end))
     :modes python-mode))
+
+(defun python-autodetect-indent-level ()
+  (let ((level (or (detect-indent-level) 4)))
+    (setq tab-width level)
+    (setq python-indent-offset level)))
+
+(add-hook 'python-mode-hook 'python-autodetect-indent-level)
