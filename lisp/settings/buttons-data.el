@@ -779,7 +779,7 @@
                     (upcase-last)
                     (ins "} in{(nli)}{}{(nli)}esac{(nli)}")))
       ("s" (cmd-ins "{(idt)}){(nli)}{}{(nli)};;{(nli)}"))
-      ("o" (cmd-ins "${OPTARG}"))
+      ("o" (cmd-ins "${" "OPTARG}"))
       ("4" (cmd-ins "[ {} ]"))
       ("z" (cmd-ins "if {}; then{(nli)}{}{(nli)}fi{(idt)}{(nli)}"))
       ("x" (cmd-ins "elif {}; then{(nli)}{}{(nli)}{(idt)}"))
