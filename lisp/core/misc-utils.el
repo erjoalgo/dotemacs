@@ -189,6 +189,14 @@
 (defvar check-unsaved-buffers-current-buffer nil
   "The buffer being examined by a ‘check-unsaved-buffers' recursive edit.")
 
+(defvar check-unsaved-buffers-skip-buffers-regexp-list
+  '("^[[:space:]]*[*].*[*]$"
+    "^[ ]*[*]mm[*]-[0-9]+"
+    "^[ ][*]nnimap"
+    "^[ ][*]nnimap"
+    "^[*].*[*]"
+    "^irc.freenode.net:.*"))
+
 (defun check-unsaved-buffers ()
   "Check buffers with changes not persisted in the filesystem."
   (interactive)
@@ -201,11 +209,7 @@
                        (not (member (buffer-local-value 'major-mode buff) '(dired-mode)))
                        (not
                         (loop for re in
-                              '("^[[:space:]]*[*].*[*]$"
-                                "^[ ]*[*]mm[*]-[0-9]+"
-                                "^[ ][*]nnimap"
-                                "^[ ][*]nnimap"
-                                "^irc.freenode.net:.*")
+                              check-unsaved-buffers-skip-buffers-regexp-list
                               thereis (string-match  re (buffer-name buff))))
 		       buff))
 	while next-buff do
