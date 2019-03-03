@@ -97,3 +97,6 @@ See `python-check-command' for the default."
                     (match-end 0))))))
 
 (add-hook 'before-save-hook 'python-sort-imports)
+
+(add-hook 'python-mode-hook
+          (lambda () (setq forward-sexp-function nil)))
