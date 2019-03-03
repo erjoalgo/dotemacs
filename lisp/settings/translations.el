@@ -460,8 +460,8 @@ a translation from scratch"
 
 (defun translation-commit (directory)
   (interactive (list default-directory))
-  (check-cmd "git" '("status") "git not initialized")
-  (let ((default-directory directory))
+  (let ((default-directory (expand-file-name directory)))
+    (check-cmd "git" '("status") "git not initialized")
     (shell-command (format "git add .; git commit -m '%s'" directory))))
 
 ;;;###autoload
