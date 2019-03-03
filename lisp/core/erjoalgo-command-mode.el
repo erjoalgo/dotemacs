@@ -266,7 +266,7 @@
       ("M" (file (concat "/var/mail/" (getenv "USER"))))
       ("x" (file (concat  "~/.stumpwmrc.d/inits/.xmodmap/")))
       ("l" (buff "regexp:[*]inferior-lisp[*]"))
-      ("L" (buff "regexp:[*]sldb sbcl/.*[*]"))
+      ("L" (buff "regexp:[*]sldb sbcl.*[*]"))
       ("v" (file "~/.stumpwmrc.d/keynavs/.keynavrc"))
       ("w" (file "~/.stumpwmrc.d/lisp/.stumpwmrc"))
       ("W" (buff "*Warnings*"))
