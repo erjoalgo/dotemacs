@@ -177,6 +177,16 @@
     (assert (file-exists-p dest-fn))
     dest-fn))
 
+(defun pdf2txt (pdf &optional output)
+  (interactive "fpdf file: ")
+  (let* ((input (expand-file-name pdf))
+         (output (or output (concat (f-base input) ".txt"))))
+    (assert (zerop
+             (call-process "pdftotext" nil
+                           "*pdftotext*" nil input output)))
+    (assert (file-exists-p output))
+    output))
+
 ;;;###autoload
 (defun translation-new-correction-from-docx-attachment ()
   (interactive)
@@ -378,15 +388,24 @@ a translation from scratch"
     (flyspell-mode)))
 
 (defun translation-new-from-file (filename &optional correction-p)
-  (interactive (list (dired-file-name-at-point) prefix-arg))
-  (when (equal "docx" (f-ext filename))
-    (setf filename
-          (docx2txt filename (lambda (fname)
-                               (translation-santize-subject fname t)))))
-  (let* ((name (f-base filename))
-         (text-original (debian-file->string filename t))
-         (fun (if correction-p 'translation-new-correction 'translation-new)))
-    (apply fun name text-original nil)))
+  (interactive (list (if (eq major-mode 'dired-mode)
+                         (dired-file-name-at-point)
+                       (read-file-name "enter filename: "))
+                     prefix-arg))
+  (let ((output
+         (concat
+          (translation-santize-subject (f-base filename) t)
+          ".txt")))
+    (cond
+     ((equal "docx" (f-ext filename))
+      (setf filename (docx2txt filename output)))
+     ((equal "pdf" (f-ext filename))
+      (setq filename (pdf2txt filename output))))
+    (let* ((name (f-base filename))
+           (text-original (debian-file->string filename t))
+           (fun (if correction-p 'translation-new-correction 'translation-new)))
+      (apply fun name text-original nil))))
+
 
 (cl-defun translation-google-translate
     (api-key source-text
