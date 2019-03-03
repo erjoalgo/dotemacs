@@ -13,7 +13,7 @@
 	 (->> (buffer-file-name)
 	      sanitize-filename
 	      (concat run-template-prefix))))
-   (browser-new-tab url)))
+   (apply-partially #'browser-new-tab url)))
 
 (add-to-list 'auto-mode-alist '("[.]mx[hd]$" . nxml-mode))
 
