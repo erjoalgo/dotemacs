@@ -303,7 +303,10 @@
        (but
         ("t" (cmd-ins "(format {})"))
         ("m" (cmd-ins "(message \"{}\"{})"))
-        ("v" (cmd-ins "(message \"value of {0}: %s\" {0})"))))
+        ("v" (cmd-ins "(message \"DEBUG {0}: %s\" {0})"))
+        ("V" (cmd-ins "(message \"DEBUG {0} (in {}): %s\""
+                      (nli?)
+                      "{0})"))))
       ("\\" (cmd-ins "\\\\({}\\\\)"))
       ("s" (cmd (call-interactively 'insert-emacs-sym)))
       ("j" (cmd-ins "(or {})"))
@@ -982,7 +985,9 @@
         ("s" (cmd (if (bound-and-true-p google-emacs-version)
                       (ins "absl::StrFormat(\"{}\"{})")
                     ("s" (cmd-ins "scanf( \"{}\"{} );")))))))
-      ("m" (cmd-ins "#include {}"))
+      ("m" (but
+            ("i" (cmd-ins "#include"))
+            ("u" (cmd-ins "using"))))
       ("M" (cmd-ins "using namespace std;" (nli)
                     (ins "#include <vector>") (nli)
                     (ins "#include <unordered_map>") (nli)
