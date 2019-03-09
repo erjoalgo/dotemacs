@@ -141,7 +141,9 @@
         ("g" (cmd-ins "False"))
         ("G" (cmd-ins "None"))
         ("P" (cmd-ins (end-of-line) "  # pylint: disable="))
-        ("." (cmd-ins "import pdb;pdb.set_trace(){(nli)}"))))
+        ("." (cmd-ins "import pdb;pdb.set_trace(){(nli)}"))
+        ("2" (but
+              ("s" (cmd-ins "@staticmethod"))))))
       ("." nil)
       ("_" (cmd-ins "if __name__ == \"__main__\":{(nli)}"))
       ("=" (cmd-ins " == "))
@@ -449,9 +451,9 @@
        (but
         ("t" (cmd-ins (ins "printf(\"{}\\n\"{});")))
         ("s" (cmd-ins "scanf( \"{}\"{} );"))
-        ("v" (cmd-ins "cout << \""
+        ("v" (cmd-ins "cout << \"DEBUG "
                       (f-base (buffer-file-name))
-                      ": value of {0}: \""
+                      ", {0} ({}): \""
                       (nli?)
                       "<< {0} << endl;"))
         ("V" (cmd-ins "cout << \"{(f-base (buffer-file-name))}: proto {0}: \""
@@ -460,12 +462,12 @@
               (if (save-excursion (move-beginning-of-line 0)
                                   (looking-at "#include"))
                   "#include \"base/examine_stack.h\""
-                "LOG(INFO) << CurrentStackTrace();")))
+                "cout << CurrentStackTrace();")))
         ;; + operator
         ("=" (cmd-ins "absl::StrCat(\"{}\"{})"))
         ("m" (cmd-ins "absl::StreamFormat(\"{}\"{});"))
         ("c" (cmd-ins ".c_str()"))
-        ("r" (cmd-ins "absl::PrintF(\"ON {(buf)}: {(rnd)}\\n\");"))
+        ("r" (cmd-ins "absl::PrintF(\"TRACE {(buf)}, {}: {(rnd)}\\n\");"))
         ("." (cmd-ins ".c_str()"))
         ("," (cmd-ins "<< {} << endl;{(nli)}"))
         ("<" (cmd-ins "cout << "))
@@ -724,8 +726,19 @@
       ("#" (cmd-ins "()"))
       ("r" (cmd-ins "return {(inm)}"))
       ("M" (cmd-ins "package main{(nli)}"))
-      ("m" (cmd-ins "fmt.Sprintf( \"{}\\n\"{} )"))
-      ("n" (cmd-ins "fmt.Printf( \"{}\\n\"{} )"))
+      ("n"
+       (but
+        ("v" (cmd-ins "fmt.Printf(\"VALUEOF "
+                      (f-filename buffer-file-name)
+                      ", "
+                      (ins "{0}: %+v\\n\","
+                           (nli?)
+                           "{0})")))
+        ("r" (cmd-ins "fmt.Println(\"TRACE "
+                      (f-filename buffer-file-name)
+                      ", {} {(rnd)}\")"))
+        ("s" (cmd-ins "fmt.Sprintf( \"{}\\n\"{} )"))
+        ("t" (cmd-ins "fmt.Printf( \"{}\\n\"{} )"))))
       ("x" (cmd-ins "else if {}; {}{(cbd)}"))
       ("z" (cmd-ins "if {}; {}{(cbd)}"))
       (":" (cmd-ins ": "))
@@ -750,9 +763,7 @@
       ("_" (cmd-ins "_, "))
       ("{" (cmd-ins "&{}"
                     (insert "{")
-                    (ins "{}}")))
-      ("O" (cmd-ins "verbose(func(){fmt.Printf(\"VERBOSE: "
-                    (ins "{}\"{})})")))))
+                    (ins "{}}")))))
 
    (defbuttons bash-buttons programming-buttons (sh-mode-map)
      (but
