@@ -314,7 +314,8 @@ Buffers other than the current buffer are preferred."
   (let* ((default-directory "/tmp/")
 	 (buff-name (gen-new-buffer)))
     (switch-to-buffer-other-window buff-name)
-    (auto-save-mode 1)))
+    (auto-save-mode 1)
+    buff-name))
 
 (defun sudo-buffer () (interactive)
        (let ((curr-fn (expand-file-name
