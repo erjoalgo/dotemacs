@@ -509,13 +509,13 @@ for customization of the printer command."
        (interactive "P")
        (let* ((curr-value (when (boundp ',file-local-var-sym)
 			    ,file-local-var-sym))
-	      (new-value (funcall ,prompt ,prompt curr-value)))
+	      (new-value (funcall ,prompt-fun ,prompt curr-value)))
 	 (add-file-local-variable ',file-local-var-sym new-value)
 	 (setf ,file-local-var-sym new-value)))))
 
 (defmacro def-file-local-toggle-command (file-local-var-sym)
   "Define a command to toggle the file-local value of FILE-LOCAL-VAR-SYM on/off."
-  `(def-file-local-set-command ,file-local-var-sym (lambda (old) (not old))))
+  `(def-file-local-set-command ,file-local-var-sym (lambda (_prompt old) (not old))))
 
 (defun uuid ()
   "Generate a UUID."
