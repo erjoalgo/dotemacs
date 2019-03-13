@@ -110,6 +110,12 @@
   "Load *.el files under TOP-DIR recursively."
   (loop for file in (directory-files top-dir)
         as filename-abs = (f-join top-dir file)
+        when (and (not (member file '("." "..")))
+                  (file-directory-p filename-abs))
+        do (pushnew filename-abs load-path))
+
+  (loop for file in (directory-files top-dir)
+        as filename-abs = (f-join top-dir file)
         if (file-directory-p filename-abs) append
         (unless (member file '("." ".."))
           (load-rec filename-abs))
