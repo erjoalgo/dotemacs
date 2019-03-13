@@ -81,7 +81,8 @@
            buttons
            company
            sticky-windows
-           header2))
+           header2
+           flycheck))
   (safe-funcall
    (require feature)))
 
