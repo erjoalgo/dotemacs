@@ -1258,8 +1258,8 @@
 
      (defbuttons gnus-summary-buttons nil (gnus-summary-mode-map)
        (but
-        ("R" 'gnus-summary-wide-reply-with-original)
         ("r" 'gnus-summary-reply-with-original)
+        ("R" 'gnus-summary-wide-reply-with-original)
         ((kbd "s-g") 'gmail-search-query)
         ((kbd "s-t") 'gnus-goto-sent-emails)
         ((kbd "s-r")
