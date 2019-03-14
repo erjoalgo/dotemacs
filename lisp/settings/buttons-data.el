@@ -51,7 +51,7 @@
  ((inm () (when (functionp 'global-erjoalgo-command-mode)
             `(global-erjoalgo-command-mode 0)))
   (spc? () `(unless (looking-back " ") (insert " ")))
-  (rnd () `(number-to-string (random 500)))
+  (rnd () `(downcase (genpass-genpass 4 genpass-alnum)))
   (buf () `(f-base (buffer-name)))
   (nli? (&optional col) `(if (>= (current-column) (or ,col 60))
                              (newline-and-indent))))
@@ -461,7 +461,7 @@
         ("k" (cmd-ins
               (if (save-excursion (move-beginning-of-line 0)
                                   (looking-at "#include"))
-                  "#include \"base/examine_stack.h\""
+                  "#include \"base/examine_stack.h\"\n"
                 "cout << CurrentStackTrace();")))
         ;; + operator
         ("=" (cmd-ins "absl::StrCat(\"{}\"{})"))
@@ -1347,32 +1347,7 @@ server {
         ("r" 'eglot-rename)
         ("x" 'xref-find-references)
         ("a" 'xref-find-apropos)
-        ("c" 'eglot-code-actions)
-        ("g"
-         (but
-          ("T" (cmd-ins comment-start
-                        (if (s-ends-with-p " " comment-start)
-                            "" " ")
-                        "TODO(" user-login-name ") " ))
-          ("t" 'git5-track-directory)
-          ("d" #'google-lsp-describe-thing-at-point)
-          ("c" #'google-cs)
-          ;; ("C" #'cs)
-          ;; ("s" #'google-search)
-          ("C" #'csearch)
-          ("p"
-           (but
-            ("b" #'g4-blame)))))
-        ("b"
-         (but
-          ("c" 'google3-browse-in-cs)
-          ("s" 'google3-find-in-src-head)
-          ("r" (cmd (find-file (google3-readonly-pathname))))
-          ("R" (cmd (find-file (google3-non-readonly-pathname))))
-          ("l" 'google-browse-cl)
-          ("z" 'google-goto-blaze-log-file)
-          ("g" 'google-browse-sponge-url)
-          ("f" 'google3-path-find-file)))))))))
+        ("c" 'eglot-code-actions)))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; buttons-data.el ends here
