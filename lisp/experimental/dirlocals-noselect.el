@@ -45,45 +45,45 @@ from the MODE alist ignoring the input argument VALUE."
 
       (let ((auto-insert nil))
         (with-current-buffer (find-file-noselect variables-file)
-      (widen)
-      (goto-char (point-min))
+          (widen)
+          (goto-char (point-min))
 
-      ;; Read alist of directory-local variables.
-      (ignore-errors
-        (delete-region
-         (prog1 (point)
-           (setq variables (let ((read-circle nil))
-                             (read (current-buffer)))))
-         (point)))
+          ;; Read alist of directory-local variables.
+          (ignore-errors
+            (delete-region
+             (prog1 (point)
+               (setq variables (let ((read-circle nil))
+                                 (read (current-buffer)))))
+             (point)))
 
-      ;; Add or replace variable in alist of directory-local variables.
-      (let ((mode-assoc (assoc mode variables)))
-        (if mode-assoc
-            (setq variables
-                  (cons (cons mode
-                              (if (eq op 'delete)
-                                  (assq-delete-all variable (cdr mode-assoc))
-                                (cons
-                                 (cons variable value)
-                                 (if (memq variable '(mode eval))
-                                     (cdr mode-assoc)
-                                   (assq-delete-all variable (cdr mode-assoc))))))
-                        (assq-delete-all mode variables)))
-          (setq variables
-                (cons `(,mode . ((,variable . ,value)))
-                      variables))))
+          ;; Add or replace variable in alist of directory-local variables.
+          (let ((mode-assoc (assoc mode variables)))
+            (if mode-assoc
+                (setq variables
+                      (cons (cons mode
+                                  (if (eq op 'delete)
+                                      (assq-delete-all variable (cdr mode-assoc))
+                                    (cons
+                                     (cons variable value)
+                                     (if (memq variable '(mode eval))
+                                         (cdr mode-assoc)
+                                       (assq-delete-all variable (cdr mode-assoc))))))
+                            (assq-delete-all mode variables)))
+              (setq variables
+                    (cons `(,mode . ((,variable . ,value)))
+                          variables))))
 
-      ;; Insert modified alist of directory-local variables.
-      (insert ";;; Directory Local Variables\n")
-      (insert ";;; For more information see (info \"(emacs) Directory Variables\")\n\n")
+          ;; Insert modified alist of directory-local variables.
+          (insert ";;; Directory Local Variables\n")
+          (insert ";;; For more information see (info \"(emacs) Directory Variables\")\n\n")
           (prog1
-      (pp (sort variables
-                (lambda (a b)
-                  (cond
-                   ((null (car a)) t)
-                   ((null (car b)) nil)
-                   ((and (symbolp (car a)) (stringp (car b))) t)
-                   ((and (symbolp (car b)) (stringp (car a))) nil)
-                   (t (string< (car a) (car b))))))
+              (pp (sort variables
+                        (lambda (a b)
+                          (cond
+                           ((null (car a)) t)
+                           ((null (car b)) nil)
+                           ((and (symbolp (car a)) (stringp (car b))) t)
+                           ((and (symbolp (car b)) (stringp (car a))) nil)
+                           (t (string< (car a) (car b))))))
                   (current-buffer))
             (unless nosave (save-buffer))))))))
