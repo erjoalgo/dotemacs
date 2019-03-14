@@ -1059,11 +1059,12 @@
       ("Q" (cmd-ins "#+begin_quote {}{(nli)}{}#+end_quote{(nli)}"))
       ((kbd "<s-tab>") 'org-indent-block)
       ((kbd "RET") 'org-insert-heading)
-      ("i"
+      ("I"
        (cmd
         (if org-inline-image-overlays
             (org-remove-inline-images)
           (org-display-inline-images))))
+      ("i" #'org-insert-inline-image)
       ("m" (cmd-ins "#+OPTIONS: ^:nil" (nli)
                     (ins "#+OPTIONS: toc:nil") (nli)
                     (ins "#+OPTIONS: html-postamble:nil") (nli)
