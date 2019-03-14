@@ -87,7 +87,9 @@
 
 (defun org-insert-inline-image (caption filename width)
   (interactive
-   (let* ((filename (let ((cand (car kill-ring))
+   (let* ((filename (let ((cand (last-scrot-filename)
+                                ;; (gui-get-selection 'CLIPBOARD)
+                                )
                           default-dir initial)
                       (when (and cand (file-exists-p cand))
                         ;;TODO
@@ -95,8 +97,10 @@
                               initial (f-filename cand)))
                       (read-file-name  "enter image filename: " default-dir cand t  initial)))
           (caption (read-string "enter caption for image: " (f-base filename)))
-          (width (read-number "width (in px): " 0)))
-     (list caption filename (when (not (zerop width)) width))))
+          (width (if current-prefix-arg
+                     (read-number "width (in px): " 0)
+                   0)))
+     (list caption (expand-file-name filename) (when (not (zerop width)) width))))
 
   "     #+CAPTION: This is the caption for the next figure link (or table)
      #+NAME:
