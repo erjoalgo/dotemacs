@@ -125,11 +125,10 @@
 		  files)))
     (caar (sort files-modified-alist (lambda (a b) (> (cdr a) (cdr b)))))))
 
-(defvar auto-scrots-dir
+(defvar auto-scrots-dirs
   (list
    (f-expand "~/pictures/auto-scrots")
-   (f-expand "~/Downloads")
-   ))
+   (f-expand "~/Downloads")))
 
 
 (defun directory-files-exclude-dots (top)
@@ -142,7 +141,7 @@
 			      collect (f-join top basename)))))
 
 (defun last-scrot-filename ()
-  (last-file-name-in-directory auto-scrots-dir))
+  (last-file-name-in-directories auto-scrots-dirs))
 
 (defun org-insert-last-scrot (&optional caption)
   "also move last scrot to current directory"
