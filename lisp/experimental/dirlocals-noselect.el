@@ -86,4 +86,4 @@ from the MODE alist ignoring the input argument VALUE."
                            ((and (symbolp (car b)) (stringp (car a))) nil)
                            (t (string< (car a) (car b))))))
                   (current-buffer))
-            (unless nosave (save-buffer))))))))
+            (unless (or nosave buffer-read-only) (save-buffer))))))))
