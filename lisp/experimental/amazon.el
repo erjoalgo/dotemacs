@@ -1,0 +1,13 @@
+(defun amazon-cart-sort ()
+  (interactive)
+  (save-excursion
+    (goto-char (point-min))
+    (while (re-search-forward "\n\\([^\n]\\)" nil t)
+      (replace-match (match-string 1)))
+    (goto-char (point-min))
+    (keep-lines "^[0-9]+")
+    (goto-char (point-min))
+    (while (re-search-forward "^\\([0-9]+ *\\)\\(.*\\)" nil t)
+      (replace-match (match-string 2) (match-string 1)))
+    (sort-lines nil (point-min) (point-max))
+    (toggle-truncate-lines 1)))
