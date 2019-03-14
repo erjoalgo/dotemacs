@@ -1,4 +1,4 @@
-(defun modify-dir-local-variable (mode variable value op)
+(defun modify-dir-local-variable (mode variable value op &optional nosave)
   "Modify directory-local VARIABLE in .dir-locals.el depending on operation OP.
 
 If OP is `add-or-replace' then delete all existing settings of
@@ -42,8 +42,9 @@ from the MODE alist ignoring the input argument VALUE."
            (or (not variables-file)
                (not (file-exists-p variables-file)))
            (throw 'exit (message "No .dir-locals.el file was found")))
+
       (let ((auto-insert nil))
-        (find-file variables-file))
+        (with-current-buffer (find-file-noselect variables-file)
       (widen)
       (goto-char (point-min))
 
@@ -75,6 +76,7 @@ from the MODE alist ignoring the input argument VALUE."
       ;; Insert modified alist of directory-local variables.
       (insert ";;; Directory Local Variables\n")
       (insert ";;; For more information see (info \"(emacs) Directory Variables\")\n\n")
+          (prog1
       (pp (sort variables
                 (lambda (a b)
                   (cond
@@ -83,4 +85,5 @@ from the MODE alist ignoring the input argument VALUE."
                    ((and (symbolp (car a)) (stringp (car b))) t)
                    ((and (symbolp (car b)) (stringp (car a))) nil)
                    (t (string< (car a) (car b))))))
-          (current-buffer)))))
+                  (current-buffer))
+            (unless nosave (save-buffer))))))))
