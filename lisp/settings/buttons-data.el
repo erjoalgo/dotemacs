@@ -1059,12 +1059,17 @@
       ("Q" (cmd-ins "#+begin_quote {}{(nli)}{}#+end_quote{(nli)}"))
       ((kbd "<s-tab>") 'org-indent-block)
       ((kbd "RET") 'org-insert-heading)
-      ("I"
-       (cmd
-        (if org-inline-image-overlays
-            (org-remove-inline-images)
-          (org-display-inline-images))))
-      ("i" #'org-insert-inline-image)
+      ("i" (but
+            ("m" #'org-insert-inline-image)
+            ("v" (cmd
+                  (if org-inline-image-overlays
+                      (org-remove-inline-images)
+                    (org-display-inline-images))))
+            ("c" (cmd-ins "#+CAPTION: "))
+            ("y" (cmd-ins "[[yt:{}]]"))
+            ("Y" (cmd-ins "[["
+                          (gui-get-selection)
+                          "][video]]"))))
       ("m" (cmd-ins "#+OPTIONS: ^:nil" (nli)
                     (ins "#+OPTIONS: toc:nil") (nli)
                     (ins "#+OPTIONS: html-postamble:nil") (nli)
@@ -1075,6 +1080,12 @@
                               (replace-regexp-in-string \"[_-]\" \" \" )
                               (capitalize))
                          (nli))))
+      ("t"
+       (but
+        ("m" (cmd-ins
+              "#+BEGIN_COMMENT" (nli)
+              (rec) (nli)
+              "#+END_COMMENT" (nli)))))
       ("R" (cmd-ins "***REMOVED***"))
       ("p" 'org-todo-promote-top)
       ("r" 'org-refile)
@@ -1090,7 +1101,11 @@
       ;; ("<s-return>" 'browse-url-at-point)
       ("s" 'org-insert-last-scrot)
       ("[" 'my-org-shift-left)
-      ("]" 'my-org-shift-right)))
+      ("]" 'my-org-shift-right)
+      ("\\" (cmd-ins
+             "#+BEGIN_EXPORT latex" (nli)
+             "\\pagebreak" (nli)
+             "#+END_EXPORT" (nli)))))
 
    (defbuttons message-buttons nil (message-mode-map)
      (but
