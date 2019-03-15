@@ -501,9 +501,10 @@ for customization of the printer command."
   (let* ((fun-sym (intern (format "file-local-set-%s" file-local-var-sym)))
 	 (prompt-fun (if (functionp prompt)
                          prompt
-                       `(lambda (_old)
-                          (read-string ,(or prompt
-                                            (format "Enter new value for %s: " file-local-var-sym)))))))
+                       `(lambda (_old &optional prompt)
+                          (read-string
+                           (or prompt
+                               ,(format "Enter new value for %s: " file-local-var-sym)))))))
     (make-variable-buffer-local file-local-var-sym)
     `(defun ,fun-sym (arg)
        (interactive "P")
