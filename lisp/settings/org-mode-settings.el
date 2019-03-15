@@ -114,7 +114,6 @@
                     original filename)))
   (assert (file-exists-p filename))
   (insert "#+CAPTION: " (or caption "")) (newline-and-indent)
-  (insert "#+NAME: fig:SED-HR4049") (newline-and-indent)
   (when width
     (insert (format "#+ATTR_HTML: :width %d" width)) (newline-and-indent))
   (insert (format "[[file:%s]]" filename))
