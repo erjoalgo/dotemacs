@@ -105,13 +105,22 @@
   "     #+CAPTION: This is the caption for the next figure link (or table)
      #+NAME:
      [[./img/a.jpg]]"
-
+  (when (bound-and-true-p org-inline-image-directory)
+    (assert (file-directory-p org-inline-image-directory))
+    (let ((original filename))
+      (setq filename (f-join org-inline-image-directory
+                             (org-sanitize-filename (f-filename filename))))
+      (call-process "mv" nil nil nil
+                    original filename)))
+  (assert (file-exists-p filename))
   (insert "#+CAPTION: " (or caption "")) (newline-and-indent)
   (insert "#+NAME: fig:SED-HR4049") (newline-and-indent)
   (when width
     (insert (format "#+ATTR_HTML: :width %d" width)) (newline-and-indent))
   (insert (format "[[file:%s]]" filename))
   (newline-and-indent))
+
+(def-file-local-set-command org-inline-image-directory)
 
 (defun file-modification-timestamp (filename)
   (string-to-number
