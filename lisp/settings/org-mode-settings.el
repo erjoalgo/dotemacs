@@ -269,3 +269,17 @@
                            "\n" "#+END_SRC")
                    (replace-regexp-in-string "^" leading-ws)))))
     (insert text)))
+
+(defun org-sanitize-filename (filename)
+  (replace-regexp-in-string "[^a-zA-Z0-9._/-]" "-" filename))
+
+(defun org-sanitize-filenames ()
+  (interactive)
+  (save-excursion
+    (goto-char (point-min))
+    (while  (re-search-forward "file:\\(.*\\)]]" nil t)
+      (replace-match (concat "file:"
+                             (org-sanitize-filename (match-string 1))
+                             "]]")))))
+
+
