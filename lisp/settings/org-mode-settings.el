@@ -10,7 +10,7 @@
 (setq org-startup-folded nil)
 
 (setf org-top-dir
-  (f-expand "~/private-data/org"))
+      (f-expand "~/private-data/org"))
 
 (setf *org-todo-first-todo-line-number* 3)
 
@@ -133,7 +133,7 @@
 
 (defun directory-files-exclude-dots (top)
   (remove-if (lambda (filename) (member filename '("." "..")))
-	       (directory-files top)))
+	     (directory-files top)))
 
 (defun last-file-name-in-directories (top-dirs)
   (last-file-name (loop for top in top-dirs nconc
