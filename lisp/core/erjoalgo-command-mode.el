@@ -263,6 +263,7 @@
       ("t" (file (f-join emacs-top "settings" "buttons-data.el")))
       ((kbd "s-t") (file (f-join emacs-top "core" "erjoalgo-command-mode.el")))
       ((kbd "s-c") (file (f-join emacs-top "core" "autobuild.el")))
+      ((kbd "s-C") (file (f-join emacs-top "core" "autobuild-examples.el")))
       ("M" (file (concat "/var/mail/" (getenv "USER"))))
       ("x" (file (concat  "~/.stumpwmrc.d/inits/.xmodmap/")))
       ("l" (buff "regexp:[*]inferior-lisp[*]"))
