@@ -132,10 +132,10 @@
                            "core" "private" "settings" "extra"
                            "extra-dirs"
                            "experimental"
-                           (expand-file-name "~/private-data/emacs-lisp")
-                           (expand-file-name "~/private-data-one-way/emacs-lisp"))
+                           "~/private-data/emacs-lisp"
+                           "~/private-data-one-way/emacs-lisp")
                when (file-exists-p dir)
-               append (load-rec dir))))
+               append (load-rec (expand-file-name dir)))))
     (sort load-times (lambda (a b) (< (car a) (car b))))
     (loop for (ms . file) in load-times
           do (message "%dms to load %s" ms file))))
