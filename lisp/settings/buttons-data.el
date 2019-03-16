@@ -45,6 +45,10 @@
 ;;; Code:
 
 
+(eval-when-compile
+  (defalias '-> 'thread-first)
+  (defalias '->> 'thread-last))
+
 (require 'buttons)
 
 (buttons-macrolet
@@ -447,6 +451,7 @@
                 (yank-or-pop)
                 (ins ";{(inm)}")))
       ("1" (cmd-ins "!"))
+      ("," (cmd-ins " << "))
       ("n"
        (but
         ("t" (cmd-ins (ins "printf(\"{}\\n\"{});")))
@@ -1077,7 +1082,7 @@
                     (ins "#+TITLE: "
                          (->> (buffer-file-name)
                               (f-base)
-                              (replace-regexp-in-string \"[_-]\" \" \" )
+                              (replace-regexp-in-string "[_-]" " ")
                               (capitalize))
                          (nli))))
       ("t"
