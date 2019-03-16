@@ -441,25 +441,38 @@ Buffers other than the current buffer are preferred."
 		  (-> regexp length zerop not))
       (flush-lines regexp))))
 
-(defun cycle-buffer (arg) (interactive "P")
-       (let ((buf-list (remove-if (lambda (buf)
-                                   (-> (buffer-name buf)
-                                       (member cycle-buffer-exclude)))
-                                 (buffer-list)))
-            (nth-mod (lambda (n list) (nth (mod n (length list)) list)))
-            (direction (if arg -1 1)))
-	 (unless (> (length buf-list) 1)
-		  (error "no more buffers"))
-        (if (member last-command '(cycle-buffer 'cycle-prev-buffer))
-            (progn
-              (incf cycle-buffer-index direction)
-              (switch-to-buffer (funcall nth-mod cycle-buffer-index buf-list)))
-          (progn
-            (setq cycle-buffer-index
-                  (loop for i from 0
-                         for buff in (buffer-list)
-                        thereis (and (eq (current-buffer) buff) i)))
-            (switch-to-buffer nil)))))
+(defun buffer-name-no-qualifier (&optional buffer-or-name)
+  (setq buffer-or-name (or buffer-or-name (current-buffer)))
+  (replace-regexp-in-string "^\\(.*?\\)\\(<.*>\\)?$" "\\1"
+                            (if (stringp buffer-or-name)
+                                buffer-or-name
+                              (buffer-name buffer-or-name))))
+
+(defun cycle-buffer (same-name-filter)
+  (interactive "P")
+  (let ((buf-list (remove-if (lambda (buf)
+                               ;; (or (equal buf (current-buffer))
+                                   (if same-name-filter
+                                       (not (equal (buffer-name-no-qualifier)
+                                                   (buffer-name-no-qualifier buf)))
+                                     (-> (buffer-name buf)
+                                         (member cycle-buffer-exclude))))
+                             (buffer-list)))
+        (nth-mod (lambda (n list) (nth (mod n (length list)) list)))
+        ;; (direction (if arg -1 1))
+        (direction 1))
+    (unless (> (length buf-list) 1)
+      (error "no more buffers"))
+    (if (member last-command '(cycle-buffer 'cycle-prev-buffer))
+        (progn
+          (incf cycle-buffer-index direction)
+          (switch-to-buffer (funcall nth-mod cycle-buffer-index buf-list)))
+      (progn
+        (setq cycle-buffer-index
+              (loop for i from 0
+                    for buff in (buffer-list)
+                    thereis (and (eq (current-buffer) buff) i)))
+        (switch-to-buffer nil)))))
 
 (defun uri-encode (search-terms)
   (reduce
