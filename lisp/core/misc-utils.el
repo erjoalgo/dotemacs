@@ -284,6 +284,7 @@
     kmap-to-key-alist))
 
 (defun undefine-key (key kmap)
+  "Interactively un-define KEY in KMAP."
   (interactive
    (let* ((key (read-key-sequence "enter key to lookup in current maps: "))
           (kmaps (lookup-key-in-current-maps key))
@@ -538,7 +539,7 @@ for customization of the printer command."
   (interactive (list (current-buffer)))
   (while t
     (switch-to-buffer source-buff)
-    (erjoalgo-compile-compile nil)
+    (recompile)
     (switch-to-buffer "*compilation*")
     (sit-for 3)
     (comint-interrupt-subjob)
