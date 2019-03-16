@@ -354,6 +354,26 @@
            (unless ,was-open-sym (kill-buffer ,buffer-sym))
            ret-val-sym)))))
 
+(defun regexp-replace-current-buffer (from to &optional pause)
+  "Replace regexp FROM with replacement TO in the current buffer.
+
+  If PAUSE is non-nil, stop after every replacement.
+  Return the number of matches replaced."
+  (let ((count 0))
+    (save-excursion
+      (goto-char (point-min))
+      (while (re-search-forward from nil t)
+        (when pause (y-or-n-p (format
+                               "Continue (%s --> %s)? "
+                               from to)))
+        (replace-match
+         (if (functionp to)
+             (save-excursion (funcall to))
+           to)
+         t)
+        (incf count)))
+    count))
+
 (defun replace-regexp-dir (dir extension from to &optional pause)
   "Replace regexp FROM with replacement TO on all EXTENSION files under DIR.
 
@@ -366,16 +386,16 @@
 	  (dir (if current-prefix-arg
 		   (read-directory-name "enter directory: ")
 		 default-directory))
-	  (from (read-string "Enter from regexp: "))
+	  (from (read-string "Enter from regexp: " (thing-at-point 'symbol)))
 	  (to (read-string "Enter to regexp: "))
-	  (pause (y-or-n-p "Eause at every match? ")))
+	  (pause (y-or-n-p "Pause at every match? ")))
      (list dir ext from to pause)))
   (let ((count-sym (gensym)))
     (set count-sym 0)
     (walk-dir-tree dir
 		   `(lambda (fn)
 		      (when (or (null extension) (string= (f-ext fn) extension))
-			(with-temporary-open-file
+			(with-temporary-current-file
 			 fn
 			 (incf ,count-sym (regexp-replace-current-buffer from to pause))
 			 (when (buffer-modified-p)

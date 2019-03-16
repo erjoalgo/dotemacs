@@ -299,6 +299,7 @@
             (eval-defun t);;instrument first
             (edebug-set-breakpoint nil)))
       ("g" 'grep-recursive)
+      ("G" 'replace-regexp-dir)
       ("f" 'find-iregex)
       ("u" 'universal-argument)
       ([f2] 'call-last-kbd-macro)
