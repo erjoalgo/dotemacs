@@ -23,6 +23,10 @@
 
 ;;; Code:
 
+(eval-when-compile
+  (defalias '-> 'thread-first)
+  (defalias '->> 'thread-last))
+
 (defvar *scroll-amount* nil )
 (setq *scroll-amount* 8)
 (defun scroll-down-keep-cursor (arg)
@@ -181,23 +185,6 @@
 
 (fset 'my-split-window-below (then-cycle-window 'split-window-below))
 (fset 'my-split-window-right (then-cycle-window 'split-window-right))
-
-(defmacro -> (&rest forms)
-  (if (cadr forms)
-      (destructuring-bind (first second . rest) forms
-	(destructuring-bind (a . a-rest) (if (atom second)
-					     (cons second nil)
-					   second)
-	  `(-> ,(apply 'list a first a-rest) ,@rest)))
-    (car forms)))
-
-(defmacro ->> (&rest forms)
-  (if (second forms)
-      (destructuring-bind (a b . cde) forms
-	(let ((b (if (atom b) (list b) b)))
-	  `(->> ,(nconc b (list a)) ,@cde)))
-    (first forms)))
-
 
 (defun nth-mod (n list)
   (nth (mod n (length list)) list))
