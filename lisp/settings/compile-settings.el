@@ -40,8 +40,8 @@
   ;; TODO try notify-send, xmessage, audible/visible beep...
   (let ((msg (format "compilation %s: %s"
                      (s-trim compilation-state) compile-command))
-        (color (if (autobuild-compilation-exited-abnormally-p compilation-state)
-                   'red 'green)))
+        (color (if (autobuild-compilation-succeeded-p compilation-state)
+                   'green 'red)))
     (stumpwm-message msg color)))
 
 (setq autobuild-notification-function #'compilation-finished-notify
