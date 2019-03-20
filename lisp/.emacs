@@ -17,13 +17,13 @@
 
 (defmacro safe-funcall (fn-args)
   "Demote errors in the FN-ARGS funcall into warnings."
-  (destructuring-bind (fn . args) fn-args
-  (let ((err-sym (gensym "err-")))
-    `(condition-case ,err-sym (,fn ,@args)
-       (error
-        (warn "WARNING: error calling %s: %s" (list ',fn ,@args)  ,err-sym)
-        (when debug-on-error
-          (error ,err-sym)))))))
+  (cl-destructuring-bind (fn . args) fn-args
+    (let ((err-sym (gensym "err-")))
+      `(condition-case ,err-sym (,fn ,@args)
+         (error
+          (warn "WARNING: error calling %s: %s" (list ',fn ,@args)  ,err-sym)
+          (when debug-on-error
+            (error ,err-sym)))))))
 
 (dolist (dir '("libs" "core" "extra"))
   (add-to-list 'load-path
