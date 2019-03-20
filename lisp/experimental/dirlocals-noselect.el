@@ -32,7 +32,9 @@ from the MODE alist ignoring the input argument VALUE."
                        (car (last (dir-locals--all-files (car dir-or-cache))))
                      (cadr dir-or-cache)))
                   ;; Try to make a proper file-name.
-                  (t (expand-file-name dir-locals-file))))
+                  (t (or (and (bound-and-true-p dirlocals-custom-path-function)
+                              (funcall dirlocals-custom-path-function))
+                              (expand-file-name dir-locals-file)))))
            variables)
       ;; I can't be bothered to handle this case right now.
       ;; Dir locals were set directly from a class.  You need to
