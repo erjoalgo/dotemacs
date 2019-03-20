@@ -130,8 +130,8 @@
   (let ((load-times
          (loop for dir in (list
                            "core" "private" "settings" "extra"
-                           "extra-dirs"
                            "experimental"
+                           "extra-dirs"
                            "~/private-data/emacs-lisp"
                            "~/private-data-one-way/emacs-lisp")
                when (file-exists-p dir)
