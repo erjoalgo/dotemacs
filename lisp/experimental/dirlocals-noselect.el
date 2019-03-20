@@ -1,3 +1,5 @@
+(require 'files-x)
+
 (defun modify-dir-local-variable (mode variable value op &optional nosave)
   "Modify directory-local VARIABLE in .dir-locals.el depending on operation OP.
 
