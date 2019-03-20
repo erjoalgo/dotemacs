@@ -261,6 +261,7 @@
          (but
           ("x" (cmd-ins "(" "macroexpand-1 " "'{}){(nli)}"))))
         ("g" (cmd-ins "nil"))
+        ("s" (cmd-ins "(subseq {})"))
         ("s" (cmd-ins "({0}-sym (gensym \"{0}-\")){(nli)}"))
         ("u" (cmd-ins "t"))
         ("e"
@@ -277,7 +278,6 @@
           ("r" (cmd-ins "(remove-if {})"))
           ("R" (cmd-ins "(remove-if-not {})"))))
         ("+" (cmd-ins "(1+ {})"))
-        ("s" (cmd-ins "(subseq {})"))
         ("r" (cmd-ins "(return {})"))
         ("R" (cmd-ins "(return-from {})"))
         ("v" (cmd-ins "(values {})"))
@@ -972,7 +972,6 @@
       ("f"
        (but
         ("a" (cmd-ins "for (const auto& {} : {}){(cbd)}"))))
-      ("G" (cmd-ins "nullptr"))
       ("i"
        (but
         ("m" (cmd-ins "map<{}> " (inm)))
@@ -1026,12 +1025,13 @@
                     (ins "using namespace std;") (nli)))
       ("t"
        (but
-        ("g"
+        ("u" (cmd-ins "true"))
+        ("g" (cmd-ins "false"))
+        ("G" (cmd-ins "nullptr"))
+        ("k"
          (but
-          ("t"
-           (but
-            ("c" (cmd-ins "CHECK({})"))
-            ("o" (cmd-ins "CHECK_OK({})"))))))))))
+          ("c" (cmd-ins "CHECK({})"))
+          ("o" (cmd-ins "CHECK_OK({})"))))))))
 
    (defbuttons yacc-buttons programming-buttons (yacc-mode-map)
      (but
