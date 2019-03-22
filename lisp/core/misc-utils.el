@@ -93,21 +93,24 @@
 
 (defun lnabs (dest &optional source)
   "Make DEST point to the absolute path of SOURCE."
-  (interactive (list
-		(let ((initial
-                       (if (and (eq major-mode 'dired-mode)
-			        (funcall 'dired-file-name-at-point))
-			   (f-filename
-			    (funcall 'dired-file-name-at-point))
-                         (buffer-file-name))))
-		  (read-file-name
-		   "Enter soft link source: "
-		   nil initial t initial))
-                (let ((source (expand-file-name source))
-	              (base (f-filename source)))
-                      (expand-file-name
-		       (read-file-name "enter destination: " nil base nil nil nil )))))
-  (apply 'call-process "ln" nil "*lnabs*" nil (list "-sf" source dest)))
+  (interactive
+   (let* ((initial
+          (if (and (eq major-mode 'dired-mode)
+		   (funcall 'dired-file-name-at-point))
+	      (f-filename
+	       (funcall 'dired-file-name-at-point))
+            (buffer-file-name)))
+         (source (read-file-name "Enter soft link source: " nil initial t initial))
+         (dest (read-file-name "Enter soft link dest: ")))
+     (list dest source)))
+
+  (->
+      (call-process "ln" nil "*lnabs*" nil
+                    "-sf"
+                    (expand-file-name source)
+                    (expand-file-name dest))
+    zerop
+    assert))
 
 (defvar *shred-rec-default-times* 10)
 
