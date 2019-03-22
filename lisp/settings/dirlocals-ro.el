@@ -19,7 +19,7 @@
            (->> directory
              (concat dirlocals-fakeroot)
              (replace-regexp-in-string "//" "/"))))
-      (message "DEBUG fake-dir: %s" directory)
+      (message "DEBUG fake-dir: %s" fake-dir)
       (make-directory fake-dir t)
       (f-join fake-dir dir-locals-file))))
 
