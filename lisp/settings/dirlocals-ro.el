@@ -25,16 +25,6 @@
 
 (setq dirlocals-custom-path-function 'dirlocals-custom-path-fakeroot)
 
-(defun dir-locals-find-file--custom-path-function (orig-fn directory)
-  (if-let (((bound-and-true-p dirlocals-custom-path-function))
-           (custom-path (funcall dirlocals-custom-path-function))
-           ((file-exists-p custom-path)))
-      custom-path
-    (funcall orig-fn directory)))
-
-;; (advice-add ' dir-locals-find-file :around #'dir-locals-find-file--custom-path-function)
-(advice-remove ' dir-locals-find-file #'dir-locals-find-file--custom-path-function)
-
 (defun dir-locals--all-files--custom-path-function (orig-fn directory)
   (if-let (((bound-and-true-p dirlocals-custom-path-function))
            (custom-path (funcall dirlocals-custom-path-function))
@@ -44,8 +34,6 @@
 
 (advice-add ' dir-locals--all-files :around
               #'dir-locals--all-files--custom-path-function)
-
-;; (advice-remove ' dir-locals--all-files #'dir-locals--all-files--custom-path-function)
 
 (defun dir-locals-collect-variables (class-variables root variables)
   "Collect entries from CLASS-VARIABLES into VARIABLES.
