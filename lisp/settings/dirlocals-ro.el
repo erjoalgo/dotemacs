@@ -57,7 +57,11 @@ Return the new variables list."
                          (>= (length sub-file-name) (length key))
                          (string-prefix-p key sub-file-name))
                 (setq variables (dir-locals-collect-variables
-                                 (cdr entry) root variables))))
+                                 (if (and (file-exists-p sub-file-name)
+                                          (file-regular-p sub-file-name))
+                                     `((nil ,(cadr entry)))
+                                     (cdr entry))
+                                  root variables))))
              ((or (not key)
                   (derived-mode-p key))
               (let* ((alist (cdr entry))
