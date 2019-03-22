@@ -120,7 +120,8 @@
         (unless (member file '("." ".."))
           (load-rec filename-abs))
         else when (and (file-regular-p filename-abs)
-                       (equal "el" (f-ext filename-abs)))
+                       (equal "el" (f-ext filename-abs))
+                       (not (equal file dir-locals-file)))
         collect
         (with-elapsed-time ms
                            (safe-funcall (load filename-abs))
