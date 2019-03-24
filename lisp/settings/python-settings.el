@@ -100,3 +100,14 @@ See `python-check-command' for the default."
 
 (add-hook 'python-mode-hook
           (lambda () (setq forward-sexp-function nil)))
+
+
+(defun python-shell-completion-native-get-completions--sort (orig-fn &rest args)
+  (let ((ret (apply orig-fn args)))
+    (when ret
+      ;; (edebug)
+      (sort-key ret (apply-partially #'count (string-to-char "_"))))))
+
+(advice-add #'python-shell-completion-native-get-completions
+            :around
+            #'python-shell-completion-native-get-completions--sort)
