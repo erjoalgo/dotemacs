@@ -130,7 +130,6 @@
       ("n"
        (but
         ("t" (cmd-ins "print ({}){(nli)}"))
-        ("r" (cmd-ins "print (\"TRACE: {(buf)} {} {(rnd)}\")"))
         ("v" (cmd-ins "print (\"{(buf)} {(rnd)}: value of {0}: {" "}\".format({0}))"))))
       ("r" (cmd-ins "return {}{(nli)}{(idt)}"))
       ("L" (cmd-ins "class {}(object):{(nli)}"))
