@@ -126,12 +126,12 @@
    (shell-command-to-string
     (format "stat '%s' -c '%%Y'" filename))))
 
-(defun last-file-name (files)
-  (let* ((files-modified-alist
-	  (mapcar (lambda (file)
-		    (cons file (file-modification-timestamp file)))
-		  files)))
-    (caar (sort files-modified-alist (lambda (a b) (> (cdr a) (cdr b)))))))
+(defalias 'sort-by #'sort-key)
+
+(defun last-file-name (files &optional nth)
+  ;; TODO optimize
+  (nth (or nth 0)
+       (sort-by files #'file-modification-timestamp :descending t)))
 
 (defvar auto-scrots-dirs
   (list
@@ -143,10 +143,15 @@
   (remove-if (lambda (filename) (member filename '("." "..")))
 	     (directory-files top)))
 
-(defun last-file-name-in-directories (top-dirs)
-  (last-file-name (loop for top in top-dirs nconc
-			(loop for basename in (directory-files-exclude-dots top)
-			      collect (f-join top basename)))))
+
+(defun list-directories-flatten (top-dirs)
+  (loop for top in top-dirs nconc
+	(loop for basename in (directory-files-exclude-dots top)
+	      collect (f-join top basename))))
+
+(defun last-file-name-in-directories (top-dirs &optional nth)
+  (-> (list-directories-flatten top-dirs)
+    (last-file-name nth)))
 
 (defun last-scrot-filename ()
   (last-file-name-in-directories auto-scrots-dirs))
