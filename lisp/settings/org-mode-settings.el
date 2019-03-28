@@ -128,7 +128,7 @@
 
 (defalias 'sort-by #'sort-key)
 
-(defun last-file-name (files &optional nth)
+(defun most-recent-file-name (files &optional nth)
   ;; TODO optimize
   (nth (or nth 0)
        (sort-by files #'file-modification-timestamp :descending t)))
@@ -149,12 +149,12 @@
 	(loop for basename in (directory-files-exclude-dots top)
 	      collect (f-join top basename))))
 
-(defun last-file-name-in-directories (top-dirs &optional nth)
+(defun most-recent-file-name-in-directories (top-dirs &optional nth)
   (-> (list-directories-flatten top-dirs)
-    (last-file-name nth)))
+    (most-recent-file-name nth)))
 
 (defun last-scrot-filename ()
-  (last-file-name-in-directories auto-scrots-dirs))
+  (most-recent-file-name-in-directories auto-scrots-dirs))
 
 (defun org-insert-last-scrot (&optional caption)
   "also move last scrot to current directory"
