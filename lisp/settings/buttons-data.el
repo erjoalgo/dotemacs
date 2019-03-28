@@ -463,11 +463,17 @@
                       "<< {0} << endl;"))
         ("V" (cmd-ins "cout << \"{(f-base (buffer-file-name))}: proto {0}: \""
                       "{(nli?)}<< {0}.DebugString() << endl;"))
-        ("k" (cmd-ins
-              (if (save-excursion (move-beginning-of-line 0)
-                                  (looking-at "#include"))
-                  "#include \"base/examine_stack.h\"\n"
-                "cout << CurrentStackTrace();")))
+        ("k" (cmd
+              (insert "cout << CurrentStackTrace();")
+              (newline-and-indent)
+              (save-excursion
+                (goto-char (point-max))
+                (re-search-backward "#include")
+                (unless (re-search-backward "base/examine_stack.h" nil t)
+                  (let ((line "#include \"base/examine_stack.h\""))
+                  (message "adding %s" line)
+                  (insert line)
+                  (newline-and-indent))))))
         ;; + operator
         ("=" (cmd-ins "absl::StrCat(\"{}\"{})"))
         ("m" (cmd-ins "absl::StreamFormat(\"{}\"{});"))
