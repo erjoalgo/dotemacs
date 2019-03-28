@@ -148,6 +148,16 @@
   (file-name-directory (file-truename user-init-file))
   "Find the lisp src directory.")
 
+(defmacro cmd-find-most-recent-file-in-directory (name directories)
+  "Define a command NAME that finds the nth file in DIRECTORIES."
+  `(defun ,name (&optional nth)
+     ,(format "find the last file in %s" directories)
+     (interactive "P")
+     (when nth (assert (> nth 0)))
+     (-> (mapcar #'expand-file-name ,directories)
+       (most-recent-file-name-in-directories (when nth (1- nth)))
+       find-file)))
+
 (buttons-macrolet
  ((dir (dir) `(read-file-name "select file: " ,dir))
   (buff (buff-spec &optional on-nonexistent)
@@ -275,11 +285,7 @@
       ("T" (cmd (org-todo-list org-match)))
       ("O" nil)
       ("j" (buff "*-jabber-roster-*"))
-      ("d" (cmd (-> "~/Downloads"
-                    expand-file-name
-                    list
-                    last-file-name-in-directories
-                    find-file)))
+      ("d" (cmd-find-most-recent-file-in-directory find-last-download '("~/Downloads")))
       ("p" 'project-open)))
     ("x"
      (buttons-make
