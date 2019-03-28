@@ -197,7 +197,7 @@
     "^[ ]*[*]mm[*]-[0-9]+"
     "^[ ][*]nnimap"
     "^[ ][*]nnimap"
-    "^[*].*[*]"
+    "^[*].*"
     "^irc.freenode.net:.*"))
 
 (defun check-unsaved-buffers ()
