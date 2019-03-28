@@ -525,7 +525,7 @@
         ("C" (cmd-ins "char* " (inm)))
         ("s" (cmd-ins "char* " (inm)))
         ("v" (cmd-ins "void " (inm)))
-        ("N" (cmd-ins "const " (inm)))
+        ("T" (cmd-ins "const " (inm)))
         ("b" (cmd-ins "bool " (inm)))))
       ("s" (cmd-ins "sizeof({})"))
       ("S" (cmd-ins "sizeof({0})/sizeof(*{0})"))
@@ -1008,7 +1008,7 @@
                     ("s" (cmd-ins "scanf( \"{}\"{} );")))))))
       ("m" (but
             ("i" (cmd-ins "#include"))
-            ("u" (cmd-ins "using"))))
+            ("u" (cmd-ins "using "))))
       ("M" (cmd-ins "using namespace std;" (nli)
                     (ins "#include <vector>") (nli)
                     (ins "#include <unordered_map>") (nli)
@@ -1034,6 +1034,7 @@
         ("u" (cmd-ins "true"))
         ("g" (cmd-ins "false"))
         ("G" (cmd-ins "nullptr"))
+        ("f" (cmd-ins "absl::GetFlag(FLAGS_{})"))
         ("k"
          (but
           ("c" (cmd-ins "CHECK({})"))
@@ -1367,11 +1368,13 @@ server {
       ((kbd "M-,") 'my-prev-error)
       ((kbd "C-s") #'isearch-forward-regexp)
       ((kbd "C-r") 'isearch-backward-regexp-fast)
+      ((kbd "s-TAB") #'completion-at-point)
       ("."
        (but
         ("f" 'xref-find-definitions)
         ("s" 'xref-show-location-at-point)
         ("r" 'eglot-rename)
+        ("R" 'server-start)
         ("x" 'xref-find-references)
         ("a" 'xref-find-apropos)
         ("c" 'eglot-code-actions)))))))
