@@ -46,3 +46,18 @@
 
 (setq autobuild-notification-function #'compilation-finished-notify
       autobuild-notify-threshold-secs 10)
+
+(defun compilation-autorename-existing-buffer (&rest _args)
+  "Start new compilations without deleting the current *compilation* buffer."
+  (let* ((name "*compilation*")
+         (compilation (get-buffer name)))
+    (when compilation
+      (with-current-buffer compilation
+        (rename-buffer name t)
+        (message "auto-renaming %s buffer to %s"
+                 name (current-buffer))))))
+
+
+(advice-add 'compilation-start :before #'compilation-autorename-existing-buffer)
+
+1
