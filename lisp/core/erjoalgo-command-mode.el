@@ -252,7 +252,7 @@
      (buttons-make
       ("e" (file "~/.emacs"))
       ("C" (buff "regexp:[*]ansi-term[*].*" (ansi-term "/bin/bash")))
-      ("c" (buff "*compilation*"))
+      ("c" (buff "regexp:[*]compilation[*]"))
       ("r" (buff "*Backtrace*"))
       ("b" (file "~/.bashrc"))
       ("a" (file "~/.bash_aliases"))
@@ -318,15 +318,19 @@
 (defun buffer-matching (string &optional regexp-p)
   "Find buffers matching STRING, interpreted as a regexp when REGEXP-P."
   (let ((prefix "regexp:"))
-
     (when (s-starts-with-p prefix string)
-	(setf regexp-p t
-	      string (substring string (length prefix))))
+      (setf regexp-p t
+	    string (substring string (length prefix))))
 
     (if (not regexp-p) (get-buffer string)
-      (loop for buff in (buffer-list) thereis
-	    (and (string-match string (buffer-name buff))
-		 buff)))))
+      (loop with matching
+            for buff in (buffer-list)
+            as name = (buffer-name buff)
+            if (string-match string name)
+            collect name into matching
+            finally
+            (return (let ((sorted (sort matching #'string-lessp)))
+                      (car sorted)))))))
 
 (defun force-mode-first (mode-symbol)
   "Try to ensure that my keybindings have priority over the newly-loaded MODE-SYMBOL."
