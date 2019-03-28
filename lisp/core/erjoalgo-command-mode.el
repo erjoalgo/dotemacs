@@ -275,6 +275,11 @@
       ("T" (cmd (org-todo-list org-match)))
       ("O" nil)
       ("j" (buff "*-jabber-roster-*"))
+      ("d" (cmd (-> "~/Downloads"
+                    expand-file-name
+                    list
+                    last-file-name-in-directories
+                    find-file)))
       ("p" 'project-open)))
     ("x"
      (buttons-make
