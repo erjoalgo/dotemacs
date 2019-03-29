@@ -462,8 +462,12 @@
                       ", {0} ({}): \""
                       (nli?)
                       "<< {0} << endl;"))
-        ("V" (cmd-ins "cout << \"{(f-base (buffer-file-name))}: proto {0}: \""
-                      "{(nli?)}<< {0}.DebugString() << endl;"))
+        ("V" (cmd-ins
+              "cout << \"DEBUG "
+              (f-base (buffer-file-name))
+              ": proto {0}: \""
+              (nli?)
+              "<< {0}.DebugString() << endl;"))
         ("k" (cmd
               (insert "cout << CurrentStackTrace();")
               (newline-and-indent)
@@ -479,7 +483,7 @@
         ("=" (cmd-ins "absl::StrCat(\"{}\"{})"))
         ("m" (cmd-ins "absl::StreamFormat(\"{}\"{});"))
         ("c" (cmd-ins ".c_str()"))
-        ("r" (cmd-ins "absl::PrintF(\"TRACE {(buf)}, {}: {(rnd)}\\n\");"))
+        ("r" (cmd-ins "absl::PrintF(\"DEBUG TRACE {(buf)}, ({}): {(rnd)}\\n\");"))
         ("." (cmd-ins ".c_str()"))
         ("," (cmd-ins "<< {} << endl;{(nli)}"))
         ("<" (cmd-ins "cout << "))
@@ -740,13 +744,13 @@
       ("M" (cmd-ins "package main{(nli)}"))
       ("n"
        (but
-        ("v" (cmd-ins "fmt.Printf(\"VALUEOF "
+        ("v" (cmd-ins "fmt.Printf(\"DEBUG VALUEOF "
                       (f-filename buffer-file-name)
                       ", "
                       (ins "{0}: %+v\\n\","
                            (nli?)
                            "{0})")))
-        ("r" (cmd-ins "fmt.Println(\"TRACE "
+        ("r" (cmd-ins "fmt.Println(\"DEBUG TRACE "
                       (f-filename buffer-file-name)
                       ", {} {(rnd)}\")"))
         ("s" (cmd-ins "fmt.Sprintf( \"{}\\n\"{} )"))
