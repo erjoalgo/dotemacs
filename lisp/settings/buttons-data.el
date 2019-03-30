@@ -1024,6 +1024,7 @@
       ("l"
        (but
         ("s" (cmd-ins ".size()"))
+        ("S" (cmd-ins ".empty()"))
         ("t" (cmd-ins ".length()"))))
       ("s" (cmd-ins "scanf( \"{(inm)}{}\", {} )"))
       ("s" (cmd-ins "scanf( \"%d\", &{(inm)}{} );"))
