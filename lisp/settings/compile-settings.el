@@ -53,7 +53,7 @@
          (compilation (get-buffer name)))
     (when compilation
       (with-current-buffer compilation
-        (rename-buffer name t)
+        (rename-buffer (generate-new-buffer-name name))
         (message "auto-renaming %s buffer to %s"
                  name (current-buffer))))))
 
