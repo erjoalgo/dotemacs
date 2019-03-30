@@ -128,6 +128,7 @@
       (indent-according-to-mode))))
 
 (defun at-end-of-sexp ()
+  "Determine if we are at the end of a sexp."
   (condition-case ex
       (save-excursion
 	(= (point)
@@ -137,6 +138,7 @@
     ('error nil)))
 
 (defun indent-last-sexp ()
+  "Indent the last sexp."
   (interactive)
   (let ((b (point))
 	(a (save-excursion (progn
@@ -146,10 +148,10 @@
 
 (defvar emacs-top
   (file-name-directory (file-truename user-init-file))
-  "Find the lisp src directory.")
+  "Find the LISP src directory.")
 
 (defmacro cmd-find-most-recent-file-in-directory (name directories)
-  "Define a command NAME that finds the nth file in DIRECTORIES."
+  "Define a command NAME to find the nth file in DIRECTORIES."
   `(defun ,name (&optional nth)
      ,(format "find the last file in %s" directories)
      (interactive "P")
@@ -334,7 +336,7 @@
 	    string (substring string (length prefix))))
 
     (if (not regexp-p) (get-buffer string)
-      (loop with matching
+      (cl-loop with matching
             for buff in (buffer-list)
             as name = (buffer-name buff)
             if (string-match string name)
@@ -353,7 +355,7 @@
       (add-to-list 'minor-mode-map-alist mykeys))))
 
 (defun find-symbol (symbol)
-  "Find the source of SYMBOL. Similar to ‘find-function'"
+  "Find the source of SYMBOL.  Similar to ‘find-function'."
   (interactive (list (or (symbol-at-point)
                          (read-symbol-completing "enter symbol: "))))
   (find-file (replace-regexp-in-string
@@ -415,19 +417,19 @@
 (defun one-char-insert-mode (&optional _arg)
   "Insert the next char as text."
   (interactive "P")
-  (set-temporary-overlay-map global-map))
+  (set-transient-map global-map))
 
 
-(setf super-fn-prefix-arg-map
-      (loop with kmap = (make-sparse-keymap)
-            for i from 1 to 9 do
-            (define-key kmap (kbd (format "<s-f%d>" i))
-              `(lambda () (interactive)
-                 (setf prefix-arg ,i)))
-            finally (return kmap)))
+(let ((kmap (make-sparse-keymap)))
+  (cl-loop
+   for i from 1 to 9 do
+   (define-key kmap (kbd (format "<s-f%d>" i))
+     `(lambda () (interactive)
+        (setf prefix-arg ,i)))
+   finally (return kmap))
+  (buttons-define-keymap-onto-keymap kmap erjoalgo-command-mode-map)
+  (buttons-define-keymap-onto-keymap kmap global-map))
 
-(buttons-define-keymap-onto-keymap super-fn-prefix-arg-map erjoalgo-command-mode-map)
-(buttons-define-keymap-onto-keymap super-fn-prefix-arg-map global-map)
 
 ;;this is actually part of erjoalgo-command-mode
 ;;make mode-line text very big and easy to read
