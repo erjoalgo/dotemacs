@@ -32,6 +32,7 @@
 (require 'cl-lib)
 (require 'buttons)
 (require 'f)
+(eval-when-compile (require 'subr-x))
 
 (defvar erjoalgo-command-mode-map (make-sparse-keymap))
 
@@ -160,6 +161,34 @@
        (most-recent-file-name-in-directories (when nth (1- nth)))
        find-file)))
 
+(defalias #'sort-by #'sort-key)
+
+(defun switch-to-nth-most-recent-buffer (buffer-regexp offset)
+  "Switch to the OFFSET most recent buffer matching BUFFER-REGEXP.
+
+  OFFSET is relative to the current buffer If it matches BUFFER-REGEXP."
+  (interactive "P")
+  (assert (or (null offset) (> offset 0)))
+  (let* ((buffers
+          (sort-by
+           (cl-remove-if-not (lambda (buffer)
+                               (->> buffer
+                                 buffer-name
+                                 (string-match buffer-regexp)))
+                             (buffer-list))
+           (lambda (buffer)
+             (if-let ((name (buffer-name buffer))
+                      ((string-match "<\\([0-9]+\\)>$" name)))
+                 (-> (match-string 1 name) string-to-number)
+               (max-char)))
+           :descending t))
+         (offset (or offset 1))
+         (start (or (position (current-buffer) buffers) -1))
+         (idx (mod (+ start offset) (length buffers))))
+    (message "DEBUG buffers (in cmd-switch...): %s"buffers)
+    (switch-to-buffer (nth idx buffers))))
+
+
 (buttons-macrolet
  ((dir (dir) `(read-file-name "select file: " ,dir))
   (buff (buff-spec &optional on-nonexistent)
@@ -264,7 +293,8 @@
      (buttons-make
       ("e" (file "~/.emacs"))
       ("C" (buff "regexp:[*]ansi-term[*].*" (ansi-term "/bin/bash")))
-      ("c" (buff "regexp:[*]compilation[*]"))
+      ("c" (lambda (arg) (interactive "P")
+             (switch-to-nth-most-recent-buffer "^[*]compilation[*]" arg)))
       ("r" (buff "*Backtrace*"))
       ("b" (file "~/.bashrc"))
       ("a" (file "~/.bash_aliases"))
