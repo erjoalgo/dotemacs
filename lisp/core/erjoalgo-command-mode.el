@@ -375,14 +375,26 @@
             (return (let ((sorted (sort matching #'string-lessp)))
                       (car sorted)))))))
 
-(defun force-mode-first (mode-symbol)
-  "Try to ensure that my keybindings have priority over the newly-loaded MODE-SYMBOL."
+(defun force-mode-first (mode-symbol &optional kmap)
+  "Try to ensure that my keybindings have priority over the newly-loaded MODE-SYMBOL.
+
+  KMAP defaults to the mode's keymap"
   ;;http://stackoverflow.com/questions/683425/globally-override-key-binding-in-emacs/5340797#5340797
-  (unless (eq (caar minor-mode-map-alist) mode-symbol)
-    (message "forcing mode first")
-    (let ((mykeys (assq mode-symbol minor-mode-map-alist)))
-      (assq-delete-all mode-symbol minor-mode-map-alist)
-      (add-to-list 'minor-mode-map-alist mykeys))))
+  (cl-loop
+   with kmap = (or kmap
+                   (let ((kmap-sym (->> mode-symbol
+                                     (format "%s-map")
+                                     intern)))
+                     (assert (boundp kmap-sym))
+                     (symbol-value kmap-sym)))
+   with entry = (cons mode-symbol kmap)
+   for alist-var in '(minor-mode-map-alist minor-mode-overriding-map-alist)
+   as val = (symbol-value alist-var)
+   unless (eq (caar val) mode-symbol)
+   do
+   (progn
+     (assq-delete-all mode-symbol val)
+     (add-to-list alist-var entry))))
 
 (defun find-symbol (symbol)
   "Find the source of SYMBOL.  Similar to ‘find-function'."
