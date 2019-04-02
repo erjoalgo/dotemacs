@@ -1060,13 +1060,17 @@
 
    (defbuttons protobuf-buttons programming-buttons (protobuf-mode-map)
      (but
-      ("t"
+      ("i"
        (but
         ("o" (cmd-ins "optional "))
         ("r" (cmd-ins "repeated "))
         ("m" (cmd-ins "message {} {"  (nli) (rec) (nli) "}"))
         ("e" (cmd-ins "enum {} {" (nli) (rec) (nli) "}"))
-        ("f" (cmd-ins "oneof {} {" (nli) (rec) (nli) "}"))))
+        ("f" (cmd-ins "oneof {} {" (nli) (rec) (nli) "}"))
+        ("n" (cmd-ins "int64 " (inm)))
+        ("s" (cmd-ins "string " (inm)))
+        ("6" (cmd-ins "int64 " (inm)))
+        ("3" (cmd-ins "int32 " (inm)))))
       ("m" (cmd-ins "import \"{}\";"))))
 
    (defbuttons org-buttons nil (org-mode-map)
