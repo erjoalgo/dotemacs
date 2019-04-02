@@ -264,7 +264,6 @@
 (defun lookup-key-in-current-maps (key)
   "Return a list of currently active keymaps that have a binding for KEY ."
   (interactive (list (read-key-sequence "enter key to lookup in current maps: ")))
-  (assert (vectorp key))
   (let* ((kmaps-filtered
           (cl-loop for kmap in (current-active-maps)
                    with kvec = key
