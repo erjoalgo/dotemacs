@@ -66,6 +66,9 @@
    babel))
 
 (require 'f)
+
+(push (f-join emacs-top "../../autobuild/") load-path)
+
 (dolist (feature
          '(f
            goto-last-change
