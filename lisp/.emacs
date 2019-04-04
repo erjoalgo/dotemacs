@@ -62,7 +62,8 @@
    nginx-mode
    dedicated
    buttons
-   flycheck))
+   flycheck
+   babel))
 
 (require 'f)
 (dolist (feature
