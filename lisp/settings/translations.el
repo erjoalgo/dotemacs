@@ -479,6 +479,28 @@ a translation from scratch"
 ;; * TODO spell-check english words, names accepted by ispell-spanish
 ;; * TODO verify country names translate
 
+;;;###autoload
+(defun translation-setup ()
+  (interactive)
+  (compile "sudo apt-get install -y wdiff docx2txt")
+  (if-let* ((api-key-path (-> user-init-file
+                            (file-truename)
+                            f-dirname
+                            (f-join "vars" "google-translate.el")))
+            ((not (file-exists-p api-key-path)))
+            (api-key (read-string "enter google translate api key: ")))
+      (with-current-buffer (find-file-noselect api-key-path)
+        (-> `(setq babel-google-translate-api-key
+                   ,api-key)
+          prin1-to-string
+          insert)
+        (save-buffer)))
+  (if-let* ((git-repo-path (expand-file-name "~/git/translations"))
+            ((not (file-exists-p git-repo-path)))
+            (repo-url (read-string "enter translations repository url: "))
+            (default-directory (f-dirname git-repo-path)))
+      (async-shell-command (format "git clone %s" repo-url))))
+
 (define-minor-mode translation-mode
   "Translation minor mode"
   nil
