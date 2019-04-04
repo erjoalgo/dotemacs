@@ -49,7 +49,7 @@
 	(add-file-local-variable 'mode 'emacs-lisp))
       (message "wrote to %s" dot-gnus))))
 
-(gnus-gen-dot-gnus "erjoalgo@gmail.com"
+(gnus-gen-dot-gnus "gmail.com"
 		    :smtp '("smtp.gmail.com" . 587)
 		   :imap '("imap.gmail.com" . 993)
 		   :dot-gnus "~/.gnus-gmail"
