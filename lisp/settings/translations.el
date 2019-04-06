@@ -482,7 +482,7 @@ a translation from scratch"
 ;;;###autoload
 (defun translation-setup ()
   (interactive)
-  (compile "sudo apt-get install -y wdiff docx2txt")
+  (compile "sudo apt-get install -y wdiff docx2txt poppler-utils")
   (if-let* ((api-key-path (-> user-init-file
                             (file-truename)
                             f-dirname
