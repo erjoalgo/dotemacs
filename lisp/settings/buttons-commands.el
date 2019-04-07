@@ -3,7 +3,7 @@
   (interactive "r")
   (unless (region-active-p)
     (setq a (save-excursion (backward-sexp) (point))
-          b (save-excursion (forward-sexp) (point))))
+          b (point)))
   (let ((fn (if downcase 'downcase-region 'upcase-region)))
     (funcall fn a b)))
 
