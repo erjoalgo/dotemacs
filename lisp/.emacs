@@ -137,7 +137,7 @@
   (let ((load-times
          (loop for dir in (list
                            "core" "private" "settings" "extra"
-                           "experimental"
+                           "experimental" "vars"
                            "extra-dirs"
                            "~/private-data/emacs-lisp"
                            "~/private-data-one-way/emacs-lisp")
