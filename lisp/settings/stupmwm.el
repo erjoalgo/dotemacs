@@ -43,7 +43,8 @@ in the current STUMPWM group/workspace."
   (let ((url-request-data text)
         (url-request-method "post")
         (url-request-extra-headers
-         `(("STUMPWM-MESSAGE-COLOR" . ,(prin1-to-string color)))))
+         (when color
+           `(("STUMPWM-MESSAGE-COLOR" . ,(prin1-to-string color))))))
     (stumpwm-request "/notify")))
 
 (defun stumpwm-request (path &optional host ports)
