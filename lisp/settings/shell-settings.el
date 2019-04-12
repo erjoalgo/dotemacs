@@ -10,4 +10,5 @@
         ;;
     esac
 done
+shift $((OPTIND -1))
 ")
