@@ -55,6 +55,11 @@ in the current STUMPWM group/workspace."
           as url = (format "http://%s:%s%s" host port path)
           do (url-retrieve
               url
-              (lambda (status)
-                (when status
-                  (message "DEBUG status: %s" status)))))))
+              (lambda (status url)
+                (when (and status
+                           (not (s-contains-p "connection-failed"
+                                              (prin1-to-string status))))
+                  (message "ERROR in stumpwm x-service request: %s %s %s"
+                           url status (buffer-string))))
+              (list url)
+              t))))
