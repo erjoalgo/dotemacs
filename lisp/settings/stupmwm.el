@@ -52,7 +52,7 @@ in the current STUMPWM group/workspace."
          (ports (or (if (numberp ports) (list ports) ports)
                     '(1959 1960 1961))))
     (loop for port in ports
-          as url = (format "http://%s:%s/%s" host port path)
+          as url = (format "http://%s:%s%s" host port path)
           do (url-retrieve
               url
               (lambda (status)
