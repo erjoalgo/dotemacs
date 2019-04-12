@@ -1,4 +1,4 @@
-(setf sh-getopt-template
+(setq sh-getopt-template
 "while getopts \"ha:\" OPT; do
     case ${OPT} in
     a)
