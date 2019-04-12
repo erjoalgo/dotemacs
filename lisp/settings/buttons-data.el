@@ -287,7 +287,7 @@
         ("b" (cmd-ins "(boundp {})"))
         ("B" (cmd-ins "(bound-and-true-p {})"))
         ("n" (cmd-ins "~{~A~^" "{}" "~}"))
-        ("a" (cmd-ins "(assert {})"))
+        ("a" (cmd-ins "(cl-assert {})"))
         ("#" (cmd-ins ";;;###autoload"))
         ("w"
          (but
@@ -1384,7 +1384,7 @@ server {
         ("f" 'xref-find-definitions)
         ("s" 'xref-show-location-at-point)
         ("r" 'eglot-rename)
-        ("R" 'server-start)
+        ("R" (cmd (server-start t t)))
         ("x" 'xref-find-references)
         ("a" 'xref-find-apropos)
         ("c" 'eglot-code-actions)))))))
