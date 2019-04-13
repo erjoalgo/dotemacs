@@ -88,4 +88,6 @@ in the current STUMPWM group/workspace."
 
 (advice-add #'gui-select-text :after #'gui-select-text--stumpwm)
 
+(stumpwm-message (format "connected to emacs on %s" system-name) 'green)
+
 1
