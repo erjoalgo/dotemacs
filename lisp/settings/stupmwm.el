@@ -63,3 +63,14 @@ in the current STUMPWM group/workspace."
                            url status (buffer-string))))
               (list url)
               t))))
+
+(defun stumpwm-browse-url (url)
+  (let ((url-request-data url))
+    (stumpwm-request "/browse")))
+
+(defun browse-url--stumpwm (orig url &rest args)
+  (when args
+    (warn "extra browse-url args ignored"))
+  (stumpwm-browse-url url))
+
+(advice-add #'browse-url :around #'browse-url--stumpwm)
