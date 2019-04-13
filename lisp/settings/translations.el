@@ -520,6 +520,7 @@ a translation from scratch"
 (add-hook 'find-file-hook #'translation-mode-maybe-enable)
 
 (autobuild-define-rule autobuild-translation-prepare (translation-mode)
+  (autobuild-nice 7)
  #'translation-prepare)
 
 (autobuild-define-rule autobuild-translation-publish-commit (translation-mode)
