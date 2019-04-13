@@ -469,7 +469,7 @@
               (nli?)
               "<< {0}.DebugString() << endl;"))
         ("k" (cmd
-              (insert "cout << CurrentStackTrace();")
+              (insert "cout << \"DEBUG STACKTRACE: \" << CurrentStackTrace();")
               (newline-and-indent)
               (save-excursion
                 (goto-char (point-max))
@@ -1376,7 +1376,8 @@ server {
       ("j" (cmd-ins " or "))
       ("=" (cmd-ins " = "))
       ("2" (cmd-ins "'{}'"))
-      ("L" (cmd-ins " like '{}'"))))
+      ("L" (cmd-ins " like '{}'"))
+      ("RET" (cmd-ins ";" (progn (comint-send-input) nil)))))
 
    '(defbuttons ediff-mode-buttons nil (ediff-mode-map)
       (but
