@@ -1362,6 +1362,22 @@ server {
     }
 }"))))))
 
+   (defbuttons sql-buttons programming-buttons (sql-interactive-mode-map)
+     (but
+      ("s" (cmd-ins " select "))
+      ("f" (cmd-ins " from "))
+      ("w" (cmd-ins " where "))
+      ("g" (cmd-ins " group by "))
+      ("d" (cmd-ins " distinct "))
+      ("l" (cmd-ins " limit "))
+      ("8" (cmd-ins "*"))
+      ("c" (cmd-ins " count({}) "))
+      ("k" (cmd-ins " and "))
+      ("j" (cmd-ins " or "))
+      ("=" (cmd-ins " = "))
+      ("2" (cmd-ins "'{}'"))
+      ("L" (cmd-ins " like '{}'"))))
+
    '(defbuttons ediff-mode-buttons nil (ediff-mode-map)
       (but
        ("s-d" 'ediff-copy-both-to-C)))
