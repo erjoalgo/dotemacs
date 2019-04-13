@@ -40,12 +40,7 @@ in the current STUMPWM group/workspace."
     (s-split "\n")))
 
 (defun stumpwm-message (text &optional color host ports)
-  (let ((url-request-data text)
-        (url-request-method "post")
-        (url-request-extra-headers
-         (when color
-           `(("STUMPWM-MESSAGE-COLOR" . ,(prin1-to-string color))))))
-    (stumpwm-request "/notify")))
+  (stumpwm-request-post "/notify" text))
 
 (defun stumpwm-request (path &optional host ports)
   (let* ((host (or host "localhost"))
@@ -64,9 +59,13 @@ in the current STUMPWM group/workspace."
               (list url)
               t))))
 
+(defun stumpwm-request-post (path data &optional host ports)
+  (let ((url-request-data data)
+        (url-request-method "post"))
+    (stumpwm-request path)))
+
 (defun stumpwm-browse-url (url)
-  (let ((url-request-data url))
-    (stumpwm-request "/browse")))
+  (stumpwm-request-post "/browse" url))
 
 (defun browse-url--stumpwm (orig url &rest args)
   (when args
