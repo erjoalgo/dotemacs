@@ -73,3 +73,15 @@ in the current STUMPWM group/workspace."
   (stumpwm-browse-url url))
 
 (advice-add #'browse-url :around #'browse-url--stumpwm)
+
+(defun stumpwm-clipboard-set (text)
+  (stumpwm-request-post "/clipboard" text))
+
+(defun gui-select-text--stumpwm (text &rest args)
+  (when args
+    (warn "extra interprogram-cut-function args ignored"))
+  (stumpwm-clipboard-set text))
+
+(advice-add #'gui-select-text :after #'gui-select-text--stumpwm)
+
+1
