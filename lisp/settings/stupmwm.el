@@ -40,7 +40,11 @@ in the current STUMPWM group/workspace."
     (s-split "\n")))
 
 (defun stumpwm-message (text &optional color host ports)
-  (stumpwm-request-post "/notify" text))
+  (let ((url-request-extra-headers
+         (when color
+           `(("STUMPWM-MESSAGE-COLOR" . ,(prin1-to-string color))))))
+    (stumpwm-request-post "/notify" text)))
+
 
 (defun stumpwm-request (path &optional host ports)
   (let* ((host (or host "localhost"))
