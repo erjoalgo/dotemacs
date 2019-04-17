@@ -188,6 +188,16 @@
     (message "DEBUG buffers (in cmd-switch...): %s"buffers)
     (switch-to-buffer (nth idx buffers))))
 
+(defun kill-buffer--maybe-switch-to-next-compilation (orig buffer)
+  (let ((regexp "^[*]compilation[*]")
+        (name (buffer-name buffer)))
+    (funcall orig buffer)
+    (when (and (string-match-p regexp name))
+      (message "DEBUG leua TRACE")
+      (switch-to-nth-most-recent-buffer regexp nil))))
+
+(advice-add #'kill-buffer :around
+            #'kill-buffer--maybe-switch-to-next-compilation)
 
 (buttons-macrolet
  ((dir (dir) `(read-file-name "select file: " ,dir))
