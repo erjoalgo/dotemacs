@@ -310,8 +310,9 @@
        (but
         ("t" (cmd-ins "(format {})"))
         ("m" (cmd-ins "(message \"{}\"{})"))
-        ("v" (cmd-ins "(message \"DEBUG {0}: %s\" {0})"))
-        ("V" (cmd-ins "(message \"DEBUG {0} (in {}): %s\""
+        ("r" (cmd-ins "(message \"DEBUG " (rnd) " TRACE" "\")"))
+        ("v" (cmd-ins "(message \"DEBUG " (rnd) " {0}: %s\"" (nli?) " {0})"))
+        ("V" (cmd-ins "(message \"DEBUG " (rnd) " {0} (in {}): %s\""
                       (nli?)
                       "{0})"))))
       ("\\" (cmd-ins "\\\\({}\\\\)"))
@@ -1401,7 +1402,7 @@ server {
         ("f" 'xref-find-definitions)
         ("s" 'xref-show-location-at-point)
         ("r" 'eglot-rename)
-        ("R" (cmd (server-start t t)))
+        ("R" (cmd (message "starting server...") (server-start nil t)))
         ("x" 'xref-find-references)
         ("a" 'xref-find-apropos)
         ("c" 'eglot-code-actions)))))))
