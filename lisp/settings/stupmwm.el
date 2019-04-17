@@ -69,6 +69,7 @@ in the current STUMPWM group/workspace."
     (stumpwm-request path)))
 
 (defun stumpwm-browse-url (url)
+  (message "browsing %s" url)
   (stumpwm-request-post "/browse" url))
 
 (defun browse-url--stumpwm (orig url &rest args)
