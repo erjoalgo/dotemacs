@@ -190,9 +190,9 @@
 
 (defun kill-buffer--maybe-switch-to-next-compilation (orig buffer)
   (let ((regexp "^[*]compilation[*]")
-        (name (buffer-name buffer)))
+        (name (and (bufferp buffer) (buffer-name buffer))))
     (funcall orig buffer)
-    (when (and (string-match-p regexp name))
+    (when (and name (string-match-p regexp name))
       (message "DEBUG leua TRACE")
       (switch-to-nth-most-recent-buffer regexp nil))))
 
