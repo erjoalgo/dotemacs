@@ -92,7 +92,7 @@ See `python-check-command' for the default."
   (when (eq major-mode 'python-mode)
     (save-excursion
       (goto-char (point-min))
-      (while (re-search-forward "\\(^import.*\n\\)+" nil t)
+      (while (re-search-forward "\\(^\\(import \\|from \\).*\n\\)+" nil t)
         (sort-lines nil (match-beginning 0)
                     (match-end 0))))))
 
