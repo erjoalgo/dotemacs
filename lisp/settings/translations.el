@@ -217,19 +217,24 @@
 (defun wdiff (a b dest-txt dest-html)
   (check-cmd "which" '("wdiff") "missing wdiff")
   (loop
-   with cmd-fmt =  (format "%%s %s %s > %%s" a b)
-   for (program out-filename) in
-   `(("html-wdiff" ,dest-html)
-     ("wdiff" ,dest-txt))
-   as cmd = (format cmd-fmt program out-filename)
+   for (program out-filename) in `(("html-wdiff" ,dest-html)
+                                   ("wdiff" ,dest-txt))
    if out-filename
-   do (progn
-        (let ((default-directory directory))
-          (shell-command cmd))
-        (when (s-ends-with-p ".html" out-filename)
-          (let ((url (concat "file://" out-filename)))
-            (message "url %s" url)
-            (browse-url url))))))
+   do
+   (with-current-buffer (find-file-noselect out-filename)
+     (let* ((default-directory directory)
+            (err-buff "*wdiff-err*")
+            (ret (save-window-excursion
+                   (shell-command (s-join " " (list program a b))
+                                (current-buffer)
+                                err-buff))))
+       (save-buffer)
+       ;; (if (not (zerop ret))
+       ;;     (error "%s failed. see %s for details" program err-buff)
+       (when (s-ends-with-p ".html" out-filename)
+         (let ((url (concat "file://" out-filename)))
+           (message "url %s" url)
+           (browse-url url)))))))
 
 ;;;###autoload
 (defun translation-wdiff (directory)
