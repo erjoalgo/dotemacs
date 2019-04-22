@@ -5,3 +5,7 @@
             (-> buffer-file-name
               f-filename
               shell-quote-argument))))
+
+(autobuild-define-rule autobuild-eog (image-mode)
+  (autobuild-nice 9)
+  (format "eog %s" buffer-file-name))
