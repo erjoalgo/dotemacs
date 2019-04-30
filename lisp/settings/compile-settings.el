@@ -45,7 +45,7 @@
     (stumpwm-message msg color)))
 
 (setq autobuild-notification-function #'compilation-finished-notify
-      autobuild-notify-threshold-secs 4)
+      autobuild-notify-threshold-secs 2)
 
 (defun compilation-autorename-existing-buffer (&rest _args)
   "Start new compilations without deleting the current *compilation* buffer."
