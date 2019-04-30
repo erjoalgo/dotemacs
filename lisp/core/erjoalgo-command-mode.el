@@ -184,7 +184,9 @@
            :descending t))
          (offset (or offset 1))
          (start (or (position (current-buffer) buffers) -1))
-         (idx (mod (+ start offset) (length buffers))))
+         (idx (if (zerop (length buffers))
+                  (user-error "no more compilation buffers")
+                (mod (+ start offset) (length buffers)))))
     (message "DEBUG buffers (in cmd-switch...): %s"buffers)
     (switch-to-buffer (nth idx buffers))))
 
