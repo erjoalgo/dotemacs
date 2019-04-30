@@ -47,7 +47,8 @@
 
 
 (defcustom selcand-default-hints
-  "qwertasdfzxcv1234"
+  ;; "qwertasdfzxcv1234"
+  "1234acdefqrstvwxz"
   "Default hint chars."
   :type 'string
   :group 'selcand)
