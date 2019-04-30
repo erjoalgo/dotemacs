@@ -85,7 +85,9 @@ in the current STUMPWM group/workspace."
 (defun gui-select-text--stumpwm (text &rest args)
   (when args
     (warn "extra interprogram-cut-function args ignored"))
-  (stumpwm-clipboard-set text))
+  (if (zerop (length text))
+      (error "kill of empty string")
+    (stumpwm-clipboard-set text)))
 
 (advice-add #'gui-select-text :after #'gui-select-text--stumpwm)
 
