@@ -70,8 +70,10 @@
 
 (defun my-kill-whole-line (arg)
   (interactive "P")
-  (kill-whole-line arg)
-  (back-to-indentation))
+  (let ((last-command 'kill-region))
+    (kill-whole-line arg)
+    (back-to-indentation)))
+
 
 (defmacro toggle-bool (sym)
   `(setf ,sym (not ,sym)))
