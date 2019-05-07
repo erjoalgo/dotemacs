@@ -192,7 +192,7 @@
 (defvar check-unsaved-buffers-current-buffer nil
   "The buffer being examined by a ‘check-unsaved-buffers' recursive edit.")
 
-(defvar check-unsaved-buffers-skip-buffers-regexp-list
+(setq check-unsaved-buffers-skip-buffers-regexp-list
   '("^[[:space:]]*[*].*[*]$"
     "^[ ]*[*]mm[*]-[0-9]+"
     "^[ ][*]nnimap"
