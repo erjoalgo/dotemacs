@@ -115,7 +115,7 @@
       ("d"
        (but
         ("f" (cmd-ins "def {}({(inm)}{}):{(nli)}"))
-        ("_" (cmd-ins "def __init__(self):{(nli)}"))))
+        ("i" (cmd-ins "def __init__(self):{(nli)}"))))
       ("a" (cmd-ins "lambda {}: {(inm)}"))
       ("2" (cmd-ins "\"{}\""))
       ("@" (cmd-ins "'{}'"))
@@ -157,6 +157,7 @@
       (">" 'python-indent-shift-right)
       ("<" 'python-indent-shift-left)
       ("s" (cmd-ins "self{(inm)}"))
+      ("S" (cmd-ins "self.{(inm)}"))
       ("h" (cmd (python-dir-on-expression)))
       ("H" (cmd (pdb-help-on-expression)))
       ("i" (cmd-ins " in "))
@@ -206,7 +207,7 @@
         ("m" (cmd-ins "(defmacro {} ({}){(nli)}{})"))
         ("h" (cmd-ins "(defmethod {} ({}){(nli)}{})"))
         ("s" (cmd-ins "(defstruct {}{(nli)}{})"))
-        ("b" (cmd-ins "(destructuring-bind ({}){})"))
+        ("b" (cmd-ins "(cl-destructuring-bind ({}){})"))
         ("B" (cmd-ins "(multiple-value-bind ({}){})"))
         ("t" (cmd-ins "(ert-deftest test-{} (){(nli)}{})"))
         ("c" (cmd-ins "(defclass {} ({}){(nli)}({}))"))
