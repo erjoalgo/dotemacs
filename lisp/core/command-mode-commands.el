@@ -70,7 +70,7 @@
 
 (defun my-kill-whole-line (arg)
   (interactive "P")
-  (let ((last-command 'kill-region))
+  (let ()
     (kill-whole-line arg)
     (back-to-indentation)))
 
