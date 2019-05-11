@@ -44,6 +44,29 @@
       (make-directory dir t))
     dir))
 
+(defvar babel-default-to-language nil
+  "Default language code into which to translate.")
+
+(defun babel-read-default-to-language ()
+  (interactive)
+  (setq babel-default-to-language
+        (cdr
+         (selcand-select babel-languages
+                  "select language code: "
+                  #'car))))
+
+(defun babel-translate-region (a b &optional to engine from)
+  (interactive "r")
+  (let* ((text (buffer-substring a b))
+         (to (or babel-default-to-language
+                 (babel-read-default-to-language)))
+         (engine (or engine 'google)))
+    (with-current-buffer (get-buffer-create "*babel-translation-result*")
+      (erase-buffer)
+      (insert
+       (babel-string text from to engine))
+      (switch-to-buffer (current-buffer)))))
+
 (defun babel-english-to-spanish (text)
   (interactive "senter english text: ")
   (let ((english (babel-string text "en" "es" 'google)))
