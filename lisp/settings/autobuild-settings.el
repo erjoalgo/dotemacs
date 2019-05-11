@@ -8,4 +8,4 @@
 
 (autobuild-define-rule autobuild-eog (image-mode)
   (autobuild-nice 9)
-  (format "eog %s" buffer-file-name))
+  (format "eog %s" (shell-quote-argument buffer-file-name)))
