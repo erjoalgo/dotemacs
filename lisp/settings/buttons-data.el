@@ -461,17 +461,17 @@
         ("s" (cmd-ins "scanf( \"{}\"{} );"))
         ("v" (cmd-ins "cout << \"DEBUG "
                       (f-base (buffer-file-name))
-                      ", {0} ({}): \""
-                      (nli?)
+                      " {(rnd)}, {0} ({}): \""
+                      (nli)
                       "<< {0} << endl;"))
         ("V" (cmd-ins
               "cout << \"DEBUG "
               (f-base (buffer-file-name))
-              ": proto {0}: \""
-              (nli?)
+              " {(rnd)}: proto {0}: \""
+              (nli)
               "<< {0}.DebugString() << endl;"))
         ("k" (cmd
-              (insert "cout << \"DEBUG STACKTRACE: \" << CurrentStackTrace();")
+              (ins "cout << \"DEBUG STACKTRACE {(rnd)}: \" << CurrentStackTrace();")
               (newline-and-indent)
               (save-excursion
                 (goto-char (point-max))
