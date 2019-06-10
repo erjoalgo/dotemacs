@@ -194,7 +194,9 @@
   (interactive (list (dired-file-name-at-point)))
   (let* ((docx (expand-file-name docx))
          (dest-dir (f-dirname docx))
-         (translation-name (funcall (or filename-mapper 'identity) (f-base docx)))
+         (translation-name (if (stringp filename-mapper)
+                               filename-mapper
+                             (funcall (or filename-mapper 'identity) (f-base docx))))
          (dest-fn (f-join dest-dir (concat translation-name ".txt"))))
     (call-process "docx2txt" nil "buffer" nil docx dest-fn)
     (assert (file-exists-p dest-fn))
