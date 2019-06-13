@@ -55,7 +55,7 @@
  ((inm () (when (functionp 'global-erjoalgo-command-mode)
             `(global-erjoalgo-command-mode 0)))
   (spc? () `(unless (looking-back " ") (insert " ")))
-  (rnd () `(downcase (genpass-genpass 4 genpass-alnum)))
+  (rnd () `(downcase (genpass-genpass 4 genpass-alnum nil)))
   (buf () `(f-base (buffer-name)))
   (nli? (&optional col) `(if (>= (current-column) (or ,col 60))
                              (newline-and-indent))))
