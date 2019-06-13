@@ -106,7 +106,15 @@
   (insert text-original)
 
   (translation-correction-fix-paragraphs)
-  (visual-line-mode t))
+  (visual-line-mode t)
+  (translations-flobicación))
+
+(defun translations-flobicación ()
+  (interactive)
+  (save-excursion
+    (goto-char (point-min))
+    (while (re-search-forward "FLOB[^ ]+ ?" nil t)
+      (replace-match "\n\n"))))
 
 (defvar translation-submissions-address-alist)
 
