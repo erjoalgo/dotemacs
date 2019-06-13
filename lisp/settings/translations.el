@@ -546,7 +546,8 @@ a translation from scratch"
   (buttons-make
    ((kbd "s-t")
     (buttons-make
-     ((kbd "s-l") #'lingee-translate)))))
+     ((kbd "s-l") #'lingee-translate))))
+  (visual-line-mode t))
 
 (defun translation-mode-maybe-enable ()
   (when (and (buffer-file-name)
