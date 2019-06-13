@@ -86,7 +86,8 @@
         (assert text-english)
         (translation-interactive-create-file
          (translation-suffix name 'spanish dir)
-         (babel-english-to-spanish text-english))))
+         (babel-english-to-spanish text-english))
+        (translations-flobicación)))
 
 
 ;;;###autoload
@@ -105,9 +106,7 @@
   (find-file (translation-suffix name 'correction dir))
   (insert text-original)
 
-  (translation-correction-fix-paragraphs)
-  (visual-line-mode t)
-  (translations-flobicación))
+  (translation-correction-fix-paragraphs))
 
 (defun translations-flobicación ()
   (interactive)
