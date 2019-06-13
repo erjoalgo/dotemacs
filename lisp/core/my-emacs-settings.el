@@ -104,7 +104,7 @@
 (setf find-function-C-source-directory
       (expand-file-name "~/programs/source/emacs/emacs24-24.4+1/src/"))
 
-(setf max-source-line-width 100)
+(defvar max-source-line-width 100 "Max acceptable width of source lines.")
 
 (defun highlight-long-lines ()
   (interactive)
