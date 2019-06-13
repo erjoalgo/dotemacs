@@ -49,7 +49,7 @@ in the current STUMPWM group/workspace."
 (defun stumpwm-request (path &optional host ports)
   (let* ((host (or host "localhost"))
          (ports (or (if (numberp ports) (list ports) ports)
-                    '(1959 1960 1961))))
+                    '(1959 1960 1961 1962))))
     (loop for port in ports
           as url = (format "http://%s:%s%s" host port path)
           do (url-retrieve
