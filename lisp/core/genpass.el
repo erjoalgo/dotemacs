@@ -55,7 +55,7 @@
   (gui-set-selection 'CLIPBOARD text)
   (gui-set-selection 'PRIMARY text))
 
-(defun genpass-genpass (n bag)
+(defun genpass-genpass (n bag &optional kill)
   "Generate a passsword of length N using char-bag BAG."
   (interactive (list (if current-prefix-arg
 			 (read-number "password length: ")
@@ -64,11 +64,15 @@
   (cl-loop with str = (make-string n 0)
 	   for i below n do
 	   (aset str i (seq-random-elt bag))
-	   finally (progn (message str)
-		          (if window-system
-			      (genpass-set-clipboard str)
-			    (kill-new str))
-		          (cl-return str))))
+	   finally
+           (cl-return
+            (prog1
+                str
+              (message str)
+              (when kill
+                (if window-system
+                    (genpass-set-clipboard str)
+                  (kill-new str)))))))
 
 (ert-deftest genpass-test ()
   (cl-loop for n below 20 do
