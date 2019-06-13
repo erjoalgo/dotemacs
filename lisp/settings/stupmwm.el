@@ -64,7 +64,7 @@ in the current STUMPWM group/workspace."
               t))))
 
 (defun stumpwm-request-post (path data &optional host ports)
-  (let ((url-request-data data)
+  (let ((url-request-data (encode-coding-string data 'utf-8))
         (url-request-method "post"))
     (stumpwm-request path)))
 
