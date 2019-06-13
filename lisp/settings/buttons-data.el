@@ -461,7 +461,7 @@
         ("s" (cmd-ins "scanf( \"{}\"{} );"))
         ("v" (cmd-ins "cout << \"DEBUG "
                       (f-base (buffer-file-name))
-                      " {(rnd)}, {0} ({}): \""
+                      " {(rnd)}, {0}: \""
                       (nli)
                       "<< {0} << endl;"))
         ("V" (cmd-ins
@@ -532,7 +532,7 @@
         ("C" (cmd-ins "char* " (inm)))
         ("s" (cmd-ins "char* " (inm)))
         ("v" (cmd-ins "void " (inm)))
-        ("T" (cmd-ins "const " (inm)))
+        ("o" (cmd-ins "const " (inm)))
         ("b" (cmd-ins "bool " (inm)))))
       ("s" (cmd-ins "sizeof({})"))
       ("S" (cmd-ins "sizeof({0})/sizeof(*{0})"))
@@ -756,6 +756,7 @@
                       (f-filename buffer-file-name)
                       ", {} {(rnd)}\")"))
         ("s" (cmd-ins "fmt.Sprintf( \"{}\\n\"{} )"))
+        ("r" (cmd-ins "fmt.Errorf( \"{}\\n\"{} )" ))
         ("t" (cmd-ins "fmt.Printf( \"{}\\n\"{} )"))))
       ("x" (cmd-ins "else if {}; {}{(cbd)}"))
       ("z" (cmd-ins "if {}; {}{(cbd)}"))
@@ -767,7 +768,11 @@
       ("w" (cmd-ins "case {}:{(nli)}"))
       (";" (cmd-ins ":{(nli)}"))
       ("T" (cmd-ins "type {} struct {(cbd)}"))
-      ("G" (cmd-ins "nil"))
+      ("t"
+       (but
+        ("u" (cmd-ins "true"))
+        ("g" (cmd-ins "false"))
+        ("G" (cmd-ins "nil"))))
       ("6" (cmd-ins "%v"))
       ("^" (cmd-ins "%#v"))
       ("v" (cmd-ins "var "))
