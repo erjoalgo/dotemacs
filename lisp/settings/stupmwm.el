@@ -50,6 +50,7 @@ in the current STUMPWM group/workspace."
   (let* ((host (or host "localhost"))
          (ports (or (if (numberp ports) (list ports) ports)
                     '(1959 1960 1961 1962))))
+    (cl-assert (or url-request-data (not (equal url-request-method "post"))))
     (loop for port in ports
           as url = (format "http://%s:%s%s" host port path)
           do (with-elapsed-time
@@ -83,6 +84,7 @@ in the current STUMPWM group/workspace."
   (stumpwm-request-subprocess path))
 
 (defun stumpwm-request-post (path data &optional host ports)
+  (cl-assert data)
   (let ((url-request-data (encode-coding-string data 'utf-8))
         (url-request-method "post"))
     (stumpwm-request path)))
