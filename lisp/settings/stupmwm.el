@@ -46,22 +46,38 @@ in the current STUMPWM group/workspace."
     (stumpwm-request-post "/notify" text)))
 
 
-(defun stumpwm-request (path &optional host ports)
+(defun stumpwm-request-sync (path &optional host ports)
   (let* ((host (or host "localhost"))
          (ports (or (if (numberp ports) (list ports) ports)
                     '(1959 1960 1961 1962))))
     (loop for port in ports
           as url = (format "http://%s:%s%s" host port path)
-          do (url-retrieve
-              url
-              (lambda (status url)
-                (when (and status
-                           (not (s-contains-p "connection-failed"
-                                              (prin1-to-string status))))
-                  (message "ERROR in stumpwm x-service request: %s %s %s"
-                           url status (buffer-string))))
-              (list url)
-              t))))
+          do (with-elapsed-time
+              elapsed-ms
+              (url-retrieve
+               url
+               (lambda (status url)
+                 (when (and status
+                            (not (s-contains-p "connection-failed"
+                                               (prin1-to-string status))))
+                   (message "ERROR in stumpwm x-service request: %s %s %s"
+                            url status (buffer-string))))
+               (list url)
+               t)
+              (message "%sms for %s %s"
+                       elapsed-ms
+                       (or (bound-and-true-p url-request-method)
+                           "GET")
+                       url)))))
+
+(defun stumpwm-request (path &rest args)
+  (make-thread
+    (lexical-let ((url-request-data url-request-data)
+                  (url-request-extra-headers url-request-extra-headers)
+                  (url-request-method url-request-method)
+                  (args args))
+      (lambda ()
+        (stumpwm-request-sync args)))))
 
 (defun stumpwm-request-post (path data &optional host ports)
   (let ((url-request-data (encode-coding-string data 'utf-8))
