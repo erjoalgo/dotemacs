@@ -70,14 +70,17 @@ in the current STUMPWM group/workspace."
                            "GET")
                        url)))))
 
+(defun stumpwm-request-subprocess (path &optional host ports)
+  (let ((proc-name "x-service-request")
+        (args `(,path
+                ,@(when url-request-data
+                    (list "-d" url-request-data))
+                ,@(cl-loop for (k . v) in url-request-extra-headers
+                           append (list "-H" (format "%s: %s" k v))))))
+    (apply #'start-process proc-name proc-name "x-service-curl" args)))
+
 (defun stumpwm-request (path &rest args)
-  (make-thread
-    (lexical-let ((url-request-data url-request-data)
-                  (url-request-extra-headers url-request-extra-headers)
-                  (url-request-method url-request-method)
-                  (args args))
-      (lambda ()
-        (stumpwm-request-sync args)))))
+  (stumpwm-request-subprocess path))
 
 (defun stumpwm-request-post (path data &optional host ports)
   (let ((url-request-data (encode-coding-string data 'utf-8))
