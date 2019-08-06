@@ -1060,7 +1060,8 @@
       ("D" (cmd-ins "{(nli)}:	"))
       ("d" (cmd-ins "{(nli)}|	"))))
 
-   (defbuttons dot-buttons programming-buttons (dot-mode-map)
+   (defbuttons dot-buttons programming-buttons
+     (dot-mode-map graphviz-dot-mode-map)
      (but
       ("l" (cmd-ins " [label=\"{}\"];"))
       ("-" (cmd-ins " -> "))))
