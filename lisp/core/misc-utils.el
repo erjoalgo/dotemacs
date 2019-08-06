@@ -745,7 +745,40 @@ This requires the external program `diff' to be in your `exec-path'."
              minimize (length (match-string 0)))))
 
 
-;; (diff-lines-set '("a" "c") '("b" "c"))
+(defmacro register-groups-bind (vars &rest body)
+  "Bind capture groups from the last string match as VARS."
+  (declare (indent 1))
+  `(let ,(cl-loop for var in vars
+                  for num from 0
+                  unless (eq '_ var)
+                 collect `(,var (match-string ,num)))
+     ,@body))
+
+
+(defun git-merge ()
+  "Simple git merge."
+  (interactive)
+  (while (and (re-search-forward "^<<<<<<<" nil t) (null end))
+    (goto-char (match-beginning 0))
+    (re-search-forward
+     (concat
+      "^<<<<<<< ?\\(.*\\)\n\\(\\(.*\n\\)*?\\)"
+      "=======.*\n\\(\\(.*\n\\)*?\\)>>>>>>> \\(.*\\)\n"))
+    (register-groups-bind (_ opt1-name opt1-data _ opt2-data _ opt2-name)
+      (let* ((start (match-beginning 0))
+             (end (match-end 0))
+             (choices-alist
+              `((,(substring-no-properties opt1-name) . ,opt1-data)
+                (,(substring-no-properties opt2-name) . ,opt2-data)))
+             (choice-key
+              (save-match-data
+                (selcand-select (mapcar #'car choices-alist)
+                                "select merge option: ")))
+             (choice (alist-get choice-key choices-alist nil nil #'equal)))
+        (cl-assert choice)
+        (goto-char start)
+        (replace-match choice t t nil)
+        (cl-assert (y-or-n-p "Continue? "))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; misc-utils.el ends here
