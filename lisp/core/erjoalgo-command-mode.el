@@ -201,6 +201,9 @@
 (advice-add #'kill-buffer :around
             #'kill-buffer--maybe-switch-to-next-compilation)
 
+(defvar inferior-sql-mode-providers nil
+  "Functions that may be called to provide a *SQL* eval buffer.")
+
 (buttons-macrolet
  ((dir (dir) `(read-file-name "select file: " ,dir))
   (buff (buff-spec &optional on-nonexistent)
@@ -368,7 +371,9 @@
       ("o" 'gnus-goto-inbox)
       ("0" 'open-google-calendar)
       ("b" (buff "*Inferior Octave*" (inferior-octave t)))
-      ("3" (buff "*eww*" (call-interactively 'eww))))))))
+      ("3" (buff "*eww*" (call-interactively 'eww)))
+      ("q" (buff "*SQL*" (call-interactively
+                          (selcand-select inferior-sql-mode-providers)))))))))
 
 (defun buffer-matching (string &optional regexp-p)
   "Find buffers matching STRING, interpreted as a regexp when REGEXP-P."
