@@ -758,7 +758,7 @@ This requires the external program `diff' to be in your `exec-path'."
 (defun git-merge ()
   "Simple git merge."
   (interactive)
-  (while (and (re-search-forward "^<<<<<<<" nil t) (null end))
+  (while (re-search-forward "^<<<<<<<" nil t)
     (goto-char (match-beginning 0))
     (re-search-forward
      (concat
