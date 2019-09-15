@@ -111,3 +111,24 @@ See `python-check-command' for the default."
 (advice-add #'python-shell-completion-native-get-completions
             :around
             #'python-shell-completion-native-get-completions--sort)
+
+(require 'subr-x)
+
+(defun pylint-current-warning-code ()
+  "Return the last-echoed pylint warning code."
+  (save-excursion
+    (with-current-buffer "*Messages*"
+      (goto-char (point-max))
+      (cl-loop for i below 10
+               as line = (progn
+                           (forward-line -1)
+                           (buffer-substring (line-beginning-position)
+                                             (line-end-position)))
+               as code = (when
+                             (string-match
+                              ".*[[]\\([a-z-]+\\)]\\(  [[0-9]+ times]\\)?"
+                              line)
+                           (match-string 1 line))
+               when code do (return code)))))
+
+1

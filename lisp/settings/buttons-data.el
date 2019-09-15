@@ -145,7 +145,11 @@
         ("u" (cmd-ins "True"))
         ("g" (cmd-ins "False"))
         ("G" (cmd-ins "None"))
-        ("P" (cmd-ins (end-of-line) "  # pylint: disable="))
+        ("P" (cmd-ins
+              (end-of-line)
+              (nli)
+              "# pylint: disable="
+              (pylint-current-warning-code)))
         ("." (cmd-ins "import pdb;pdb.set_trace(){(nli)}"))
         ("2" (but
               ("s" (cmd-ins "@staticmethod"))))))
