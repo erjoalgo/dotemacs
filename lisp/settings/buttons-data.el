@@ -152,7 +152,8 @@
               (pylint-current-warning-code)))
         ("." (cmd-ins "import pdb;pdb.set_trace(){(nli)}"))
         ("2" (but
-              ("s" (cmd-ins "@staticmethod"))))))
+              ("s" (cmd-ins "@staticmethod"))
+              ("c" (cmd-ins "@classmethod"))))))
       ("." nil)
       ("_" (cmd-ins "if __name__ == \"__main__\":{(nli)}"))
       ("=" (cmd-ins " == "))
