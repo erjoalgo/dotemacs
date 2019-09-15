@@ -131,4 +131,22 @@ See `python-check-command' for the default."
                            (match-string 1 line))
                when code do (return code)))))
 
+(defun python-dir-on-expression (&optional a b help-p)
+  "Surround python expression (A, B) with dir(...)."
+  (interactive "r\np")
+  (setq a (or a (line-beginning-position))
+        b (or b (line-end-position)))
+  (save-excursion
+    (let ((text (buffer-substring a b)))
+      (delete-region a b)
+      (goto-char a)
+      (insert (if help-p "help(" "dir("))
+      (insert text)
+      (insert ")")))
+  (comint-send-input)
+  (comint-send-input))
+
+(defun python-help-on-expression (&optional a b)
+  (python-dir-on-expression a b t))
+
 1

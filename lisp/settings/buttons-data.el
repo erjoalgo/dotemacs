@@ -164,7 +164,7 @@
       ("s" (cmd-ins "self{(inm)}"))
       ("S" (cmd-ins "self.{(inm)}"))
       ("h" (cmd (python-dir-on-expression)))
-      ("H" (cmd (pdb-help-on-expression)))
+      ("H" (cmd (python-help-on-expression)))
       ("i" (cmd-ins " in "))
       ("{" (cmd-ins "{"
                     (ins "{}}")))
