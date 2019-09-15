@@ -146,3 +146,4 @@
     (sort load-times (lambda (a b) (< (car a) (car b))))
     (loop for (ms . file) in load-times
           do (message "%dms to load %s" ms file))))
+;; (define-key key-translation-map [?\C-h] [?\C-?])
