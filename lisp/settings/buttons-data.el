@@ -203,7 +203,9 @@
       ("escape" (cmd (cmt "")))
       ("X" (cmd (cmt "exit")))))
 
-   (defbuttons emacs-lisp-buttons programming-buttons (emacs-lisp-mode-map read-expression-map inferior-emacs-lisp-mode-map)
+   (defbuttons emacs-lisp-buttons programming-buttons
+     (emacs-lisp-mode-map
+      read-expression-map inferior-emacs-lisp-mode-map)
      (but
       ("d"
        (but
@@ -368,7 +370,8 @@
                     (nli)
                     "(error {}))"))))
 
-   (defbuttons cl-buttons emacs-lisp-buttons (lisp-mode-map slime-mode-map slime-mode-indirect-map)
+   (defbuttons cl-buttons emacs-lisp-buttons
+     (lisp-mode-map slime-mode-map slime-mode-indirect-map)
      (but
       ("e" (cmd-ins "(setf {})"))
       ("d"
@@ -464,19 +467,19 @@
        (but
         ("t" (cmd-ins (ins "printf(\"{}\\n\"{});")))
         ("s" (cmd-ins "scanf( \"{}\"{} );"))
-        ("v" (cmd-ins "cout << \"DEBUG "
+        ("v" (cmd-ins "std::cout << \"DEBUG "
                       (f-base (buffer-file-name))
                       " {(rnd)}, {0}: \""
                       (nli)
-                      "<< {0} << endl;"))
+                      "<< {0} << std::endl;"))
         ("V" (cmd-ins
-              "cout << \"DEBUG "
+              "std::cout << \"DEBUG "
               (f-base (buffer-file-name))
               " {(rnd)}: proto {0}: \""
               (nli)
-              "<< {0}.DebugString() << endl;"))
+              "<< {0}.DebugString() << std::endl;"))
         ("k" (cmd
-              (ins "cout << \"DEBUG STACKTRACE {(rnd)}: \" << CurrentStackTrace();")
+              (ins "std::cout << \"DEBUG STACKTRACE {(rnd)}: \" << CurrentStackTrace();")
               (newline-and-indent)
               (save-excursion
                 (goto-char (point-max))
@@ -1078,6 +1081,7 @@
         ("o" (cmd-ins "optional "))
         ("r" (cmd-ins "repeated "))
         ("m" (cmd-ins "message {} {"  (nli) (rec) (nli) "}"))
+        ("b" (cmd-ins "bool"))
         ("e" (cmd-ins "enum {} {" (nli) (rec) (nli) "}"))
         ("f" (cmd-ins "oneof {} {" (nli) (rec) (nli) "}"))
         ("n" (cmd-ins "int64 " (inm)))
@@ -1375,22 +1379,29 @@ server {
     }
 }"))))))
 
-   (defbuttons sql-buttons programming-buttons (sql-interactive-mode-map)
+   (defbuttons sql-buttons programming-buttons
+     (sql-interactive-mode-map sql-mode-map)
      (but
-      ("s" (cmd-ins " select "))
-      ("f" (cmd-ins " from "))
-      ("w" (cmd-ins " where "))
-      ("g" (cmd-ins " group by "))
-      ("d" (cmd-ins " distinct "))
-      ("l" (cmd-ins " limit "))
+      ("s" (cmd-ins " SELECT "))
+      ("f" (cmd-ins " FROM "))
+      ("w" (cmd-ins " WHERE "))
+      ("g" (cmd-ins " GROUP BY "))
+      ("d" (cmd-ins " DISTINCT "))
+      ("o" (cmd-ins " ORDER BY "))
+      ("a" (cmd-ins " AS "))
+      ("T" (cmd-ins " CAST({} AS {})"))
+      ("t" (but
+            ("s" (cmd-ins "STRING"))
+            ("6" (cmd-ins "INT64"))))
+      ("l" (cmd-ins " LIMIT "))
       ("8" (cmd-ins "*"))
-      ("c" (cmd-ins " count({}) "))
-      ("k" (cmd-ins " and "))
-      ("j" (cmd-ins " or "))
+      ("c" (cmd-ins " COUNT({}) "))
+      ("k" (cmd-ins " AND "))
+      ("j" (cmd-ins " OR "))
       ("=" (cmd-ins " = "))
       ("2" (cmd-ins "'{}'"))
-      ("L" (cmd-ins " like '{}'"))
-      ("RET" (cmd-ins ";" (progn (comint-send-input) nil)))))
+      ("L" (cmd-ins " LIKE '{}'"))
+      (";" (cmd (end-of-line) (ins ";") (comint-send-input)))))
 
    '(defbuttons ediff-mode-buttons nil (ediff-mode-map)
       (but
