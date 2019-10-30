@@ -452,6 +452,7 @@
         ("f" (cmd-ins "for ( int {0} = 0; {0} < {}; {0}++ ){(cbd)}"))
         ("F" (cmd-ins "for ( int {0} = {}; {0} >= 0; {0}-- ){(cbd)}"))))
       ("w" (cmd-ins "while ({}){(cbd)}"))
+      ("W" (cmd-ins "switch ({(rec)}) {(cbd)}"))
       ("z" (cmd-ins "if ({}){(cbd)}"))
       ("x" (cmd-ins " else if ({}){(cbd)}"))
       ("c" (cmd-ins " else {(cbd)}"))
