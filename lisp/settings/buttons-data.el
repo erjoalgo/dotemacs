@@ -55,7 +55,7 @@
  ((inm () (when (functionp 'global-erjoalgo-command-mode)
             `(global-erjoalgo-command-mode 0)))
   (spc? () `(unless (looking-back " ") (insert " ")))
-  (rnd () `(downcase (genpass-genpass 4 genpass-alnum nil)))
+  (rnd () `(downcase (genpass-genpass 4 genpass-alnum t)))
   (buf () `(f-base (buffer-name)))
   (nli? (&optional col) `(if (>= (current-column) (or ,col 60))
                              (newline-and-indent))))
@@ -91,7 +91,7 @@
           ("s" 'capitalize-region)))))
       ((kbd "M-.") 'my-next-error)
       ((kbd "M-,") 'my-prev-error)
-      ;; ("T" (but ("D" (cmd-ins "{comment-start} TODO "))))
+      ("T" (but ("D" (cmd-ins "{comment-start} TODO "))))
       ("R" (cmd-ins "***REMOVED***"))
       ;; ([?\s-\t] #'company-complete)
       ((kbd "<s-tab>") #'company-complete)))
@@ -102,7 +102,7 @@
       ("f" (cmd-ins "for {} in {}:{(nli)}{}{(nli)}{(idt)}"))
       ("F" (cmd-ins "[{} for {} in {}]"))
       ("w" (cmd-ins "while {}:{(nli)}{}{(nli)}{(idt)}"))
-      ("T" (cmd-ins "try:"
+      ("y" (cmd-ins "try:"
                     (nli)
                     (rec)
                     "except:"
@@ -171,7 +171,8 @@
       (":" (cmd-ins ": "))
       ("[" (cmd-ins "{" "}"))
       ("]" (cmd-ins ".format({})"))
-      ("N" (cmd-ins "a=[{}]{(nli)}print(getattr(Solution(), dir(Solution)[-1])(*a))"))
+      ("N" (cmd (remove-trailing-whitespace (point-min) (point-max))
+                (ins "a=[{}]{(nli)}print(getattr(Solution(), dir(Solution)[-1])(*a))")))
       ("E" (cmd-ins "raise Exception({})"))
       ("u"
        (but
@@ -638,7 +639,8 @@
       ("t"
        (but
         ("j" (cmd-ins "<script type=\"text/javascript\" src=\"{}\">" "</script>"))
-        ("c" (cmd-ins "<link rel=\"stylesheet\" href=\"{}\">"))))
+        ("c" (cmd-ins "<link rel=\"stylesheet\" href=\"{}\">"))
+        ("m" (cmd-ins "<image src=\"{}\"></image>"))))
       ("\\" (cmd-ins "<br/>"))
       ("a" (cmd-ins "<a href=\"{}\">{}</a>"))
       ("i" (cmd-ins "<iframe src=\"{}\"></iframe>"))
