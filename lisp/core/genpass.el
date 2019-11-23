@@ -68,7 +68,7 @@
            (cl-return
             (prog1
                 str
-              (message str)
+              (message "%s" str)
               (unless no-kill
                 (if window-system
                     (genpass-set-clipboard str)
