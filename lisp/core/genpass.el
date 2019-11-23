@@ -55,7 +55,7 @@
   (gui-set-selection 'CLIPBOARD text)
   (gui-set-selection 'PRIMARY text))
 
-(defun genpass-genpass (n bag &optional kill)
+(defun genpass-genpass (n bag &optional no-kill)
   "Generate a passsword of length N using char-bag BAG."
   (interactive (list (if current-prefix-arg
 			 (read-number "password length: ")
@@ -69,7 +69,7 @@
             (prog1
                 str
               (message str)
-              (when kill
+              (unless no-kill
                 (if window-system
                     (genpass-set-clipboard str)
                   (kill-new str)))))))
