@@ -249,7 +249,7 @@
 (defun wdiff (a b dest-txt dest-html)
   (check-cmd "which" '("wdiff") "missing wdiff")
   (loop
-   for (program out-filename) in `(("html-wdiff" ,dest-html)
+   for (program out-filename) in `(("wdiff-html" ,dest-html)
                                    ("wdiff" ,dest-txt))
    if out-filename
    do
