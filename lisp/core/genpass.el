@@ -41,9 +41,9 @@
 		             (aset str i c))
 		    str)))
 
-(defvar genpass-letters-lower (genpass-ranges-to-bag "az"))
-(defvar genpass-letters-upper (genpass-ranges-to-bag "AZ"))
-(defvar genpass-letters (genpass-ranges-to-bag "azAZ"))
+(defvar genpass-alpha-lower (genpass-ranges-to-bag "az"))
+(defvar genpass-alpha-upper (genpass-ranges-to-bag "AZ"))
+(defvar genpass-alpha (genpass-ranges-to-bag "azAZ"))
 (defvar genpass-num (genpass-ranges-to-bag "09"))
 (defvar genpass-alnum (genpass-ranges-to-bag "azAZ09"))
 (defvar genpass-special-chars (genpass-ranges-to-bag "!/:@"))
