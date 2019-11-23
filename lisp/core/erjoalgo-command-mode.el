@@ -157,9 +157,12 @@
      ,(format "find the last file in %s" directories)
      (interactive "P")
      (when nth (assert (> nth 0)))
+     (let ((file
      (-> (mapcar #'expand-file-name ,directories)
-       (most-recent-file-name-in-directories (when nth (1- nth)))
-       find-file)))
+       (most-recent-file-name-in-directories (when nth (1- nth))))))
+       (kill-new file)
+       (message "killed %s" file)
+       (find-file file))))
 
 (defalias #'sort-by #'sort-key)
 
