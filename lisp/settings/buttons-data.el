@@ -1078,7 +1078,11 @@
         ("k"
          (but
           ("c" (cmd-ins "CHECK({})"))
-          ("o" (cmd-ins "CHECK_OK({})"))))))))
+          ("o" (cmd-ins "CHECK_OK({})"))))
+        ("m"
+         (but
+          ("a" (cmd-ins "ASSIGN_OR_RETURN(auto {}, {});"))
+          ("r" (cmd-ins "RETURN_IF_ERROR({});"))))))))
 
    (defbuttons yacc-buttons programming-buttons (yacc-mode-map)
      (but
