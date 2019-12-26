@@ -839,7 +839,7 @@
       ("|" (cmd-ins " | "))
       ("n" (cmd-ins "echo "))
       ("d" (cmd-ins "function {}{(cbd)}"))
-      ("l" (cmd-ins " || exit ${" "LINENO}"))
+      ("l" (cmd-ins "exit ${" "LINENO}"))
       ("L" (cmd-ins "echo \"{}"
                     (insert "\" && exit ${" "LINENO}")))
       ("f" (cmd-ins "for {}"
