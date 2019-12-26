@@ -639,6 +639,7 @@
       ("t"
        (but
         ("j" (cmd-ins "<script type=\"text/javascript\" src=\"{}\">" "</script>"))
+        ("J" (cmd-ins "<script type=\"text/javascript\">{(nli)}{(rec)}{(nli)}</script>"))
         ("c" (cmd-ins "<link rel=\"stylesheet\" href=\"{}\">"))
         ("m" (cmd-ins "<image src=\"{}\"></image>"))))
       ("\\" (cmd-ins "<br/>"))
@@ -656,9 +657,9 @@
       ("n"
        (but
         ("c" (cmd-ins "console.log( \"{}\"{} );"))
-        ("r" (cmd-ins "console.log( \"trace {(buf)} {(rnd)}\");"))
-        ("v" (cmd-ins "console.log( \"value of {0} ({}): \"+{0} );"))
-        ("V" (cmd-ins "console.log( \"value of {0} ({}): \"+JSON.stringify({0}) );"))
+        ("r" (cmd-ins "console.log( \"DEBUG trace {(buf)} {(rnd)}\");"))
+        ("v" (cmd-ins "console.log( \"DEBUG value of {0} ({}): \"+{0} );"))
+        ("V" (cmd-ins "console.log( \"DEBUG value of {0} ({}): \"+JSON.stringify({0}) );"))
         ("a" (cmd-ins "alert(\"{}\");"))))
       ("T" (cmd-ins "try{(cbd)}catch(err){(cbd)}"))
       ("f" (cmd-ins "for (var {0} = 0; {0}<{}; {0}++){(cbd)}"))
