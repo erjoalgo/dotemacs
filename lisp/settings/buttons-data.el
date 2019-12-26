@@ -695,12 +695,12 @@
       ("t"
        (but
         ("." (cmd-ins "debugger;"))
-        ("n" (cmd-ins "null"))
+        ("u" (cmd-ins "true"))
+        ("g" (cmd-ins "false"))
+        ("G" (cmd-ins "null"))
         ("N" (cmd-ins "new {}({}) "))
         ("w" (cmd-ins "await "))
         ("W" (cmd-ins "async "))
-        ("u" (cmd-ins "true"))
-        ("f" (cmd-ins "false"))
         ("e" (cmd-ins "new Error({})"))
         ("x" (cmd
               (ins
@@ -838,9 +838,9 @@
       ("|" (cmd-ins " | "))
       ("n" (cmd-ins "echo "))
       ("d" (cmd-ins "function {}{(cbd)}"))
-      ("l" (cmd-ins " || exit ${LINENO}"))
+      ("l" (cmd-ins " || exit ${" "LINENO}"))
       ("L" (cmd-ins "echo \"{}"
-                    (insert "\" && exit ${LINENO}")))
+                    (insert "\" && exit ${" "LINENO}")))
       ("f" (cmd-ins "for {}"
                     (upcase-last)
                     " in {}; do{(nli)}{}{(nli)}done"))
@@ -969,8 +969,6 @@
                     (cmt "")))
       ("q" (cmd-ins "dbcont"
                     (cmt "")))
-      ("N" (cmd-ins "sprintf('{}')"))
-      ("N" (cmd-ins "disp(sprintf('{}'{}))"))
       ("[" (cmd-ins "{"
                     (ins "{}}")))
       ("5"
@@ -995,7 +993,23 @@
       ("d" (cmd-ins "function [{}] = {}({}){(nli)}{}{(nli)}endfunction"))
       ("'" (cmd-ins "#{"
                     (ins "{}#}")))
-      ("2" (cmd-ins "\"{}\""))))
+      ("2" (cmd-ins "\"{}\""))
+      ("x" (cmd-ins "elseif" (nli)))
+      ("c" (cmd-ins "else" (nli)))
+      ;; TODO multiple inheritance to avoid this duplication
+      ("5"
+       (but
+        ("s" (cmd-ins "%s"))
+        ("d" (cmd-ins "%d"))
+        ("f" (cmd-ins "%f"))
+        ("c" (cmd-ins "%c"))
+        ("l" (cmd-ins "%ld"))
+        ("L" (cmd-ins "%lld"))))
+      ("n"
+       (but
+        ("t" (cmd-ins "printf('{}', {});"))
+        ("s" (cmd-ins "sprintf('{}'{});"))
+        ("v" (cmd-ins "disp(sprintf('DEBUG {(rnd)} value of {0}: %s', {0}));"))))))
 
    (defbuttons cpp-buttons c-buttons (c++-mode-map)
      (but
