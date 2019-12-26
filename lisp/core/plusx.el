@@ -61,8 +61,8 @@
   If LINK-BIN-P is non-nil, link FILENAME to ‘plusx-bin-directory'"
   (interactive (list (buffer-file-name (current-buffer))
 		     current-prefix-arg))
-  (plusx-maybe-insert-interpreter-line)
   (shell-command (format "chmod +x '%s'" filename))
+  (plusx-maybe-insert-interpreter-line)
 
   (unless (file-name-absolute-p filename) (setq filename (expand-file-name filename)))
   (let* ((bin-dir plusx-bin-directory)
