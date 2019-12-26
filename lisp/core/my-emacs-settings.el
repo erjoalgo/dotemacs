@@ -172,7 +172,7 @@
   (message "WARN: %s modified to %s via %s at %s"
            sym newval op where))
 
-(add-variable-watcher 'debug-on-quit #'watch-var)
+;; (add-variable-watcher 'debug-on-quit #'watch-var)
 
 (provide 'my-emacs-settings)
 ;;; emacs-settings.el ends here
