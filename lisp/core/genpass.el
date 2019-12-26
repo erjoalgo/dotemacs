@@ -41,13 +41,24 @@
 		             (aset str i c))
 		    str)))
 
-(defvar genpass-alpha-lower (genpass-ranges-to-bag "az"))
-(defvar genpass-alpha-upper (genpass-ranges-to-bag "AZ"))
-(defvar genpass-alpha (genpass-ranges-to-bag "azAZ"))
-(defvar genpass-num (genpass-ranges-to-bag "09"))
-(defvar genpass-alnum (genpass-ranges-to-bag "azAZ09"))
-(defvar genpass-special-chars (genpass-ranges-to-bag "!/:@"))
-(defvar genpass-all (concat genpass-special-chars genpass-alnum))
+(defmacro genpass-def-char-bags (&rest name-spec-pairs)
+  (let (syms)
+  `(progn
+     ,@(cl-loop for (name spec) in name-spec-pairs
+                as sym = (intern (concat "genpass-" (symbol-name name)))
+                collect `(setq ,sym (genpass-ranges-to-bag ,spec))
+                do (push sym syms))
+     (setf genpass-bag-syms ',syms))))
+
+(genpass-def-char-bags
+  (alpha-lower "az")
+  (alpha-upper "AZ")
+  (alpha "azAZ")
+  (num "09")
+  (alnum "azAZ09")
+  (special-chars "!/:@")
+  (all "azAZ09!/:@"))
+
 (defvar genpass-default-len 13)
 
 (defun genpass-set-clipboard (text)
@@ -57,10 +68,14 @@
 
 (defun genpass-genpass (n bag &optional no-kill)
   "Generate a passsword of length N using char-bag BAG."
-  (interactive (list (if current-prefix-arg
-			 (read-number "password length: ")
-		       genpass-default-len)
-		     genpass-special-chars))
+  (interactive (list (read-number "password length: " genpass-default-len)
+                     (->
+                         (completing-read "select character bag: "
+                                          (mapcar #'symbol-name genpass-bag-syms)
+                                          nil t
+                                          ;; "alnum"
+                                          )
+                       intern symbol-value)))
   (cl-loop with str = (make-string n 0)
 	   for i below n do
 	   (aset str i (seq-random-elt bag))
