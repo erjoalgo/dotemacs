@@ -9,3 +9,10 @@
 (autobuild-define-rule autobuild-eog (image-mode)
   (autobuild-nice 9)
   (format "eog %s" (shell-quote-argument buffer-file-name)))
+
+(autobuild-define-rule autobuild-emacs-lisp-eval-buffer-clear-backtrace (emacs-lisp-mode)
+  "Evaluate the current emacs-lisp buffer"
+  (lambda ()
+    (let ((backtrace (get-buffer "*Backtrace*")))
+      (when backtrace (kill-buffer backtrace)))
+  (eval-buffer)))
