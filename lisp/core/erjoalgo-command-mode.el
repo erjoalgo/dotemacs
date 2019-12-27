@@ -330,6 +330,7 @@
       ("L" (buff "regexp:[*]sldb sbcl.*[*]"))
       ("v" (file "~/.stumpwmrc.d/keynavs/.keynavrc"))
       ("w" (file "~/.stumpwmrc.d/lisp/.stumpwmrc"))
+      ("n" (file "~/.stumpwmrc.d/scripts/bin"))
       ("W" (buff "*Warnings*"))
       ("o" (file "~/private-data/org/master.org"))
       ("T" (cmd (org-todo-list org-match)))
