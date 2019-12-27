@@ -49,9 +49,6 @@
 (setf gnus-init-file
       (gnus-init-filename))
 
-(unless (f-exists? gnus-attachments-top)
-  (mkdir gnus-attachments-top t))
-
 (setf mm-default-directory (expand-file-name "~/Downloads"))
 
 (defvar inbox-group-name)
