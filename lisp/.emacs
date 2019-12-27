@@ -42,8 +42,7 @@
         (progn
           (unless already-refreshed
             (add-to-list ' package-archives
-                         '("melpa" . "https://melpa.org/packages/"))
-
+                           '("melpa" . "https://melpa.org/packages/"))
             (safe-funcall (package-refresh-contents))
 	    (setf already-refreshed t))
           (safe-funcall (package-install package)))))

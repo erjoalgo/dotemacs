@@ -164,7 +164,7 @@
 
 (defun gnus-mime-save-all-attachments (dir)
   ;;(interactive "GEnter destination directory to save attachments: " )
-  (interactive (list (gnus-dir-name-for-message) ))
+  (interactive (list (gnus-dir-name-for-message)))
   (unless (file-exists-p dir)
     (unless (or (not gnus-mime-save-all-attachments-prompt-mkdir-p)
 		 (y-or-n-p (format "making directory %s" dir)))
