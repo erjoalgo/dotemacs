@@ -62,7 +62,8 @@
    dedicated
    buttons
    flycheck
-   babel))
+   babel
+   slime))
 
 (require 'f)
 
