@@ -837,7 +837,16 @@
       ("r" (cmd-ins "return"))
       ("\\" (cmd-ins " \\{(nli)}"))
       ("|" (cmd-ins " | "))
-      ("n" (cmd-ins "echo "))
+      ("n"
+       (but
+        ("t" (cmd-ins "echo "))
+        ("v" (cmd-ins "echo \"DEBUG VALUEOF "
+                      (f-filename buffer-file-name)
+                      ", "
+                      (ins "{0}: ${" "0}" (nli?))))
+        ("r" (cmd-ins "echo \"DEBUG TRACE "
+                      (f-filename buffer-file-name)
+                      " {(rnd)}\""))))
       ("d" (cmd-ins "function {}{(cbd)}"))
       ("l" (cmd-ins "exit ${" "LINENO}"))
       ("L" (cmd-ins "echo \"{}"
