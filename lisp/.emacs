@@ -63,7 +63,9 @@
    buttons
    flycheck
    babel
-   slime))
+   slime
+   cider
+   websocket))
 
 (require 'f)
 
