@@ -92,7 +92,7 @@
         ;; throttle reconnection
         (progn
           (sip-ws-log "ws: attempting to reconnect...")
-          (sms-fanout-connect))
+          (setq sms-fanout-client (sms-fanout-connect)))
       (warn "sip-sms-ws: giving up on reconnect. elapsed: %s" elapsed))))
 
 
@@ -129,7 +129,8 @@
    :on-error (lambda (_websocket callback-id err)
                (sip-ws-log (format "ws closed with error: %s %s" callback-id err)))))
 
-(setf sms-fanout-client (sms-fanout-connect))
+(unless (sms-fanout-connected-p)
+  (setf sms-fanout-client (sms-fanout-connect)))
 
 (define-minor-mode sip-chat-mode
   "Sip chat minor mode"
