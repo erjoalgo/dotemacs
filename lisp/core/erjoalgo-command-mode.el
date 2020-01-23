@@ -204,6 +204,20 @@
 (advice-add #'kill-buffer :around
             #'kill-buffer--maybe-switch-to-next-compilation)
 
+(defun kill-buffer--maybe-kill-compilation-process (buffer)
+  "Advice to maybe kill the underyling process of a compilation BUFFER."
+  (when-let* ((buffer (or buffer (current-buffer)))
+              (regexp "^[*]compilation[*]")
+              (name (and (bufferp buffer)
+                         (buffer-name buffer)))
+              (_is-compilation (string-match-p regexp name))
+              (proc (get-buffer-process buffer))
+              (_proc-live (process-live-p proc)))
+    (kill-process proc)))
+
+(advice-add #'kill-buffer :before
+            #'kill-buffer--maybe-kill-compilation-process)
+
 (defvar inferior-sql-mode-providers nil
   "Functions that may be called to provide a *SQL* eval buffer.")
 
