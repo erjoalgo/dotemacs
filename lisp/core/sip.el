@@ -132,9 +132,6 @@
    :on-error (lambda (_websocket callback-id err)
                (sip-ws-log (format "ws closed with error: %s %s" callback-id err)))))
 
-(unless (sms-fanout-connected-p)
-  (setf sms-fanout-client (sms-fanout-connect)))
-
 (define-minor-mode sip-chat-mode
   "Sip chat minor mode"
   nil
@@ -145,6 +142,9 @@
 (autobuild-define-rule sip-chat-send (sip-chat-mode)
   (autobuild-nice 6)
   #'sip-send-chat-line)
+
+(unless (sms-fanout-connected-p)
+  (setf sms-fanout-client (sms-fanout-connect)))
 
 ;; (sms-fanout-connect)
 ;; (sms-fanout-connected-p)
