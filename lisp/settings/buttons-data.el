@@ -151,6 +151,7 @@
               "# pylint: disable="
               (pylint-current-warning-code)))
         ("." (cmd-ins "import pdb;pdb.set_trace(){(nli)}"))
+        (">" (cmd-ins "import traceback;traceback.print_exc(){(nli)}"))
         ("2" (but
               ("s" (cmd-ins "@staticmethod"))
               ("c" (cmd-ins "@classmethod"))))))
