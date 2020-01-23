@@ -138,8 +138,9 @@
 (let ((default-directory emacs-top))
   (let ((load-times
          (loop for dir in (list
+                           "vars"
                            "core" "private" "settings" "extra"
-                           "experimental" "vars"
+                           "experimental"
                            "extra-dirs"
                            "~/private-data/emacs-lisp"
                            "~/private-data-one-way/emacs-lisp")
