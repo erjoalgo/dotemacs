@@ -124,7 +124,10 @@
              (cl-assert (and to from message))
              (sip-message-received to from message))))))
    :on-close (lambda (_websocket)
-               (sip-ws-log "ws closed")
+               (sip-ws-log
+                (format "ws closed after %s seconds"
+                        (floor
+                         (- (float-time) sms-last-connection-timestamp))))
                (sip-ws-maybe-reconnect))
    :on-error (lambda (_websocket callback-id err)
                (sip-ws-log (format "ws closed with error: %s %s" callback-id err)))))
