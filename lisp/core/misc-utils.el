@@ -544,8 +544,10 @@ for customization of the printer command."
 (defun uuid ()
   "Generate a UUID."
   (interactive (list t))
-  (let ((uuid (shell-command-to-string "uuidgen| tr -d '\n'")))
-    uuid))
+  (if (zerop (call-process "which" nil nil nil "uuidgen"))
+      (let ((uuid (shell-command-to-string "uuidgen| tr -d '\n'")))
+        uuid)
+    (genpass-genpass 32 genpass-alnum t)))
 
 (defun new-buffer-focus ()
   "Switch to the next 'new buffer'."
