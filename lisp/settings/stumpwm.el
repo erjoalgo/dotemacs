@@ -72,7 +72,7 @@ in the current STUMPWM group/workspace."
                        url)))))
 
 (defun stumpwm-request-subprocess (path &optional host ports)
-  (let ((proc-name "x-service-request")
+  (let ((proc-name "*x-service-request*")
         (args `(,path
                 ,@(when url-request-data
                     (list "-d" url-request-data))
