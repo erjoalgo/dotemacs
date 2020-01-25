@@ -53,10 +53,12 @@
                   (line-end-position)))
         (sip-address (sip-phone-number-to-address sip-from-phone-number)))
     (linphonecsh "generic" (format "chat %s %s" sip-address message))
+    (goto-char (line-beginning-position))
+    (insert "        YOU say: ")
     ;; maybe add a newline
     (goto-char (point-max))
     (unless (eq (point) (line-beginning-position))
-      (newline-and-indent))))
+      (newline))))
 
 (defvar sip-last-message-buffer nil)
 
