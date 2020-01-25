@@ -37,6 +37,14 @@
          (sip-address (format "sip:%s@%s" number-clean sip-host)))
     sip-address))
 
+(defvar sip-message-ids-received (make-hash-table))
+
+(defun sip-add-message-id (id)
+  (let ((id (if (stringp id) (string-to-number id) id)))
+    (unless (gethash id sip-message-ids-received)
+      (puthash id t sip-message-ids-received)
+      t)))
+
 (defun sip-send-chat-line ()
   (interactive)
   (cl-assert (bound-and-true-p sip-from-phone-number))
@@ -52,21 +60,23 @@
 
 (defvar sip-last-message-buffer nil)
 
-(defun sip-message-received (to from message)
-  (let* ((buffer-name (format sip-buffer-fmt (concat to "-from-" from)))
-         (buffer (get-buffer-create buffer-name))
-         (line (format "%s says: %s" from message)))
-    (with-current-buffer buffer
-      (sip-chat-mode t)
-      (goto-char (point-max))
-      (unless (eq (point) (line-beginning-position))
-        (goto-char (line-beginning-position))
-        (open-line 1))
-      (insert line)
-      (newline-and-indent)
-      (setq-local sip-from-phone-number from))
-    (message "%s" line)
-    (setq sip-last-message-buffer buffer)))
+(defun sip-message-received (to from message id)
+  (if (not (sip-add-message-id id))
+      (sip-ws-log (format "skipping previously-received message with id %s" id))
+    (let* ((buffer-name (format sip-buffer-fmt (concat to "-from-" from)))
+           (buffer (get-buffer-create buffer-name))
+           (line (format "%s says: %s" from message)))
+      (with-current-buffer buffer
+          (sip-chat-mode t)
+        (save-excursion
+          (goto-char (point-max))
+          (unless (eq (point) (line-beginning-position))
+            (goto-char (line-beginning-position))
+            (open-line 1))
+          (insert line)
+          (setq-local sip-from-phone-number from)))
+      (message "%s" line)
+      (setq sip-last-message-buffer buffer))))
 
 (defun sip-goto-last-message-buffer ()
   (interactive)
@@ -115,14 +125,14 @@
      (let* ((text (websocket-frame-text frame))
             (json (json-parse text)))
        (sip-ws-log (format "received: %s" text))
-       (alist-let json (to from message status code)
+       (alist-let json (to from message id status code)
          (if status
              (progn (cl-assert (and status code))
                     (unless (zerop code)
                       (websocket-close _websocket)))
            (progn
-             (cl-assert (and to from message))
-             (sip-message-received to from message))))))
+             (cl-assert (and to from message id))
+             (sip-message-received to from message id))))))
    :on-close (lambda (_websocket)
                (sip-ws-log
                 (format "ws closed after %s seconds"
