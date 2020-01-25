@@ -402,8 +402,14 @@
           ("i" (cmd-ins "(vom:info \"{}~%\"{})"))
           ("d" (cmd-ins "(vom:debug \"{}~%\"{})"))
           ("w" (cmd-ins "(vom:warn \"{}~%\"){}"))))))
-      ("5" (cmd-ins "~A"))
-      ("%" (cmd-ins "~D"))
+      ("t"
+       (but
+        ("a" (cmd-ins "(assert {})"))))
+      ("5"
+       (but
+        ("s" (cmd-ins "~A"))
+        ("d" (cmd-ins "~D"))
+        ("c" (cmd-ins "~C"))))
       ("|" (cmd-ins "#\\Newline"))
       ("\\" (cmd-ins "~%"))
       (";" (cmd-ins ":"))
@@ -442,7 +448,11 @@
       ("e" (cmd-ins "(def {})"))
       ("t"
        (but
-        ("r" #'cider-restart)))
+        ("r" #'cider-restart)
+        ("5"
+       (but
+        ("s" (cmd-ins "%s"))
+        ("d" (cmd-ins "%d"))))))
       ((kbd "M-.") 'next-error)
       ((kbd "M-,") 'previous-error)
       ((kbd "TAB") 'completion-at-point)))
