@@ -4,7 +4,7 @@
 
 (defvar sms-fanout-client nil)
 
-(defvar sms-fanount-reconnect-interval-mins 1)
+(defvar sms-fanout-reconnect-interval-mins 1)
 
 (defvar sms-fanout-address)
 
