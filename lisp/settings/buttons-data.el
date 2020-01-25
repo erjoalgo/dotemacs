@@ -449,10 +449,13 @@
       ("t"
        (but
         ("r" #'cider-restart)
-        ("5"
+        ("u" (cmd-ins "true"))
+        ("g" (cmd-ins "false"))
+        ("G" (cmd-ins "nil"))))
+      ("5"
        (but
         ("s" (cmd-ins "%s"))
-        ("d" (cmd-ins "%d"))))))
+        ("d" (cmd-ins "%d"))))
       ((kbd "M-.") 'next-error)
       ((kbd "M-,") 'previous-error)
       ((kbd "TAB") 'completion-at-point)))
