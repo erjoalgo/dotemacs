@@ -65,7 +65,7 @@
 (defun sip-message-received (to from message id)
   (if (not (sip-add-message-id id))
       (sip-ws-log (format "skipping previously-received message with id %s" id))
-    (let* ((buffer-name (format sip-buffer-fmt (concat to "-from-" from)))
+    (let* ((buffer-name (format sip-buffer-fmt (concat from "-to-" to)))
            (buffer (get-buffer-create buffer-name))
            (line (format "%s says: %s" from message)))
       (with-current-buffer buffer
