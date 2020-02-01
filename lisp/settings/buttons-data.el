@@ -424,6 +424,16 @@
         ("f" #'slime-edit-definition)
         ("F" #'slime-pop-find-definition-stack)))))
 
+   (defbuttons css-mode-buttons programming-buttons (css-mode-map)
+     (buttons-make
+      ((kbd "M-/")
+       (buttons-defcmd (save-excursion
+                         (back-to-indentation)
+                         ;; (beginning-of-line)
+                         (insert "/* ")
+                         (end-of-line)
+                         (insert "*/ "))))))
+
    (defbuttons clojure-buttons cl-buttons (clojure-mode-map cider-repl-mode-map)
      (but
       ("\\" (cmd-ins "\\n"))
