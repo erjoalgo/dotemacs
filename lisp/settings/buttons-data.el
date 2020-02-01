@@ -431,7 +431,11 @@
       ("d"
        (but
         ("f" (cmd-ins "(defn {} [{}]{(nli)}{}){(nli)}"))))
-      ("n" (cmd-ins "(printf \"{}\\n\"{})"))
+      ("n"
+       (but
+        ("t" (cmd-ins "(printf \"{}\\n\"{})"))
+        ("r" (cmd-ins "(log/info \"DEBUG " (rnd) " TRACE" "\")"))
+        ("v" (cmd-ins "(log/infof \"DEBUG " (rnd) " {0}: %s\"" (nli?) " {0})"))))
       (";" (cmd-ins ": "))
       ("[" (cmd-ins "{"
                     (ins "{}}")))
@@ -461,6 +465,7 @@
        (but
         ("s" (cmd-ins "%s"))
         ("d" (cmd-ins "%d"))))
+      ("v" (cmd-ins "(do {})"))
       ((kbd "M-.") 'next-error)
       ((kbd "M-,") 'previous-error)
       ((kbd "TAB") 'completion-at-point)))
