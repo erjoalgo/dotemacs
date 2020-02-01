@@ -451,7 +451,12 @@
         ("r" #'cider-restart)
         ("u" (cmd-ins "true"))
         ("g" (cmd-ins "false"))
-        ("G" (cmd-ins "nil"))))
+        ("G" (cmd-ins "nil"))
+        ("1" (cmd-ins "(nil? {})"))
+        ("l"
+         (but
+          ("t" (cmd-ins "(list {})"))
+          ("g" (cmd-ins "(.size {})"))))))
       ("5"
        (but
         ("s" (cmd-ins "%s"))
