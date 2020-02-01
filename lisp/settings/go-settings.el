@@ -1,8 +1,7 @@
-
 (require 'f)
 
-(let ((GOPATH (getenv "GOPATH")))
-  (when GOPATH
+(defun goimports-init ()
+  (if-let ((GOPATH (getenv "GOPATH")))
     (let ((go-lint-path
 	   (f-join GOPATH "src/github.com/golang/lint/misc/emacs"))
 	  (goimports-path (f-join GOPATH "bin/goimports")))
@@ -17,6 +16,8 @@
 		"(go get golang.org/x/tools/cmd/goimports)"))
 	(setf gofmt-command goimports-path)
 	(add-hook 'before-save-hook #'gofmt-before-save)))))
+
+(add-hook 'go-mode-hook #'goimports-init)
 
 ;(add-to-list 'auto-mode-alist '("[.]go$" . go-mode))
 ;(autoload 'go-mode "go-mode" "go mode" t)
