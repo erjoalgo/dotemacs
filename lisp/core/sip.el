@@ -155,7 +155,7 @@
   (autobuild-nice 6)
   #'sip-send-chat-line)
 
-(unless (sms-fanout-connected-p)
+(unless (or (null sms-fanout-address) (sms-fanout-connected-p))
   (setf sms-fanout-client (sms-fanout-connect)))
 
 ;; (sms-fanout-connect)
