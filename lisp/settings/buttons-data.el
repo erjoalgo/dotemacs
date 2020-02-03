@@ -691,6 +691,7 @@
       ("n"
        (but
         ("c" (cmd-ins "console.log( \"{}\"{} );"))
+        ("e" (cmd-ins "console.error( \"{}\"{} );"))
         ("r" (cmd-ins "console.log( \"DEBUG trace {(buf)} {(rnd)}\");"))
         ("v" (cmd-ins "console.log( \"DEBUG value of {0} ({}): \"+{0} );"))
         ("V" (cmd-ins "console.log( \"DEBUG value of {0} ({}): \"+JSON.stringify({0}) );"))
