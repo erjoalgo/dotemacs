@@ -167,7 +167,9 @@
   "Sip chat minor mode"
   nil
   "sip-chat-mode"
-  (make-sparse-keymap)
+  (let ((kmap (make-sparse-keymap)))
+    (define-key kmap (kbd "RET") #'sip-send-chat-line)
+    kmap)
   (toggle-truncate-lines t))
 
 (autobuild-define-rule sip-chat-send (sip-chat-mode)
