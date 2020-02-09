@@ -198,7 +198,6 @@
         (name (and (bufferp buffer) (buffer-name buffer))))
     (funcall orig buffer)
     (when (and name (string-match-p regexp name))
-      (message "DEBUG leua TRACE")
       (switch-to-nth-most-recent-buffer regexp nil))))
 
 (advice-add #'kill-buffer :around
