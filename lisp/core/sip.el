@@ -1,18 +1,20 @@
 (require 'websocket)
 
 (defvar sms-fanout-address nil)
-
 (defvar sms-fanout-client nil)
-
+(defvar sms-fanout-client-last-pong nil)
 (defvar sms-fanout-reconnect-interval-mins 1)
 
 (defvar sms-fanout-address)
+(defvar sms-fanout-ping-interval-seconds 30)
 
 (defun sms-fanout-connected-p (&optional client)
   (let ((client (or client sms-fanout-client)))
-    (and client
-         (websocket-openp client)
-         client)))
+    (when (and client (websocket-openp client)
+               (<= sms-fanout-client-last-pong
+                   (- (time-now-seconds)
+                      (/ sms-fanout-ping-interval-seconds 2))))
+      client)))
 
 (defun json-parse (json)
   (with-temp-buffer
@@ -23,6 +25,9 @@
 (setq sip-buffer-fmt "#sip-sms-%s")
 
 (defvar-local sip-from-phone-number nil)
+
+(defun time-now-seconds ()
+  (/ (current-time-ms) 1000))
 
 (defun linphonecsh (&rest args)
   "Execute a linphonec command via linphonecsh."
@@ -127,14 +132,28 @@
      (let* ((text (websocket-frame-text frame))
             (json (json-parse text)))
        (sip-ws-log (format "received: %s" text))
-       (alist-let json (to from message id status code)
-         (if status
-             (progn (cl-assert (and status code))
-                    (unless (zerop code)
-                      (websocket-close _websocket)))
-           (progn
-             (cl-assert (and to from message id))
-             (sip-message-received to from message id))))))
+       (setq sms-fanout-client-last-pong (time-now-seconds))
+       (alist-let json (status message-type)
+         (cond
+          ((not (zerop status))
+           (websocket-close _websocket)
+           (error "non-zero status from zerver: %s" text))
+          ((s-starts-with-p "status" message-type)
+           ;;
+           )
+          ((not (s-starts-with-p "push-messages/" message-type))
+           (websocket-close _websocket)
+           (error "unexpected message type: %s" message-type))
+          (t
+           (setq sip-messages json)
+           (let ((messages (alist-get 'body json)))
+               (if (null messages)
+                   (error "0 messages in body")
+                 (cl-loop
+                  for message across messages
+                  do
+                  (alist-let message (to from message id)
+                    (sip-message-received to from message id))))))))))
    :on-close (lambda (_websocket)
                (sip-ws-log
                 (format "ws closed after %s seconds"
@@ -155,8 +174,23 @@
   (autobuild-nice 6)
   #'sip-send-chat-line)
 
-(unless (or (null sms-fanout-address) (sms-fanout-connected-p))
-  (setf sms-fanout-client (sms-fanout-connect)))
+(defun sms-fanout-client-loop ()
+  (sip-ws-log (format "on sms-fanout-client-loop"))
+  (unless (sms-fanout-connected-p)
+    (setf sms-fanout-client (sms-fanout-connect)))
+  (websocket-send-text sms-fanout-client "ping"))
 
-;; (sms-fanout-connect)
+(defvar sms-fanout-client-timer nil)
+
+(defun sms-fanout-client-start-timer ()
+  (when sms-fanout-client-timer
+    (sip-ws-log (format "stopping previous timer"))
+    (cancel-timer sms-fanout-client-timer))
+  (setq sms-fanout-client-timer
+        (run-at-time nil sms-fanout-ping-interval-seconds
+                     #'sms-fanout-client-loop)))
+
+(when sms-fanout-client
+  (websocket-close sms-fanout-client))
+(sms-fanout-client-start-timer)
 ;; (sms-fanout-connected-p)
