@@ -198,7 +198,8 @@
     "^[ ][*]nnimap"
     "^[ ][*]nnimap"
     "^ ?[*].*"
-    "^irc.freenode.net:.*"))
+    "^irc.freenode.net:.*"
+    "^#sip.*"))
 
 (defun check-unsaved-buffers ()
   "Check buffers with changes not persisted in the filesystem."
