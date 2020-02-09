@@ -216,8 +216,10 @@
         ("m" (cmd-ins "(defmacro {} ({}){(nli)}{})"))
         ("h" (cmd-ins "(defmethod {} ({}){(nli)}{})"))
         ("s" (cmd-ins "(defstruct {}{(nli)}{})"))
-        ("b" (cmd-ins "(cl-destructuring-bind ({}){})"))
-        ("B" (cmd-ins "(multiple-value-bind ({}){})"))
+        ("b"
+         (but
+          ("d" (cmd-ins "(cl-destructuring-bind ({}){})"))
+          ("m" (cmd-ins "(multiple-value-bind ({}){})"))))
         ("t" (cmd-ins "(ert-deftest test-{} (){(nli)}{})"))
         ("c" (cmd-ins "(defclass {} ({}){(nli)}({}))"))
         ("u" (cmd-ins "(defcustom {} \"{}\""
@@ -234,7 +236,7 @@
           ("i" (cmd-ins "(in-package #:{})"))
           ("f" (cmd-ins "(:import-from #:{})"))
           ("e" (cmd-ins "(:export #:{})"))
-          ("E" 'slime-export-symbol-at-point)))))
+          ("x" 'slime-export-symbol-at-point)))))
       ("w" (cmd-ins "(while {}){(nli)}"))
       ("a" (cmd-ins "(lambda ({}) {})"))
       ("z" (cmd-ins "(if {})"))
@@ -314,8 +316,7 @@
           ("l" (cmd-ins "(dolist {}){(nli)}"))))
         ("z" (cmd-ins "(zerop {})"))
         ("3" (cmd-ins "#P\"{}\""))
-        ("." (cmd-ins "(slot-value {} '{})"))
-        ("h" (cmd-ins "(handler-case{}{(nli)}(error (err) {}))"))))
+        ("." (cmd-ins "(slot-value {} '{})"))))
       ("n"
        (but
         ("t" (cmd-ins "(format {})"))
@@ -388,6 +389,7 @@
                       "{(nli)}(run-package-tests :interactive t)"))
         ("l" (cmd-ins "(labels ({}){(nli)}{}){(nli)}"))
         ("a" (cmd-ins "(defalias {})"))))
+      ("T" (cmd-ins "(handler-case{}{(nli)}(error (err) {}))"))
       ("n"
        (but
         ("g" (cmd-ins "(format nil {})"))
