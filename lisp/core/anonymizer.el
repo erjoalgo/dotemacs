@@ -100,8 +100,8 @@
 
 	       (setf bag
 		     (cond
-	              ((string-match "[a-z]" char-string) genpass-letters-lower)
-	              ((string-match "[A-Z]" char-string) genpass-letters-upper)
+	              ((string-match "[a-z]" char-string) genpass-alpha-lower)
+	              ((string-match "[A-Z]" char-string) genpass-alpha-upper)
 	              ((string-match "[0-9]" char-string) genpass-num)))
 
 	       (when bag

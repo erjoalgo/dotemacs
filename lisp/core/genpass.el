@@ -93,9 +93,9 @@
   (cl-loop for n below 20 do
            (cl-loop for (fmt bag)
                     on (list
-                        "[a-z]" genpass-letters-lower
-                        "[A-Z]" genpass-letters-upper
-                        "[a-zA-Z]" genpass-letters
+                        "[a-z]" genpass-alpha-lower
+                        "[A-Z]" genpass-alpha-upper
+                        "[a-zA-Z]" genpass-alpha
                         "[0-9]" genpass-num
                         "[a-zA-Z0-9]" genpass-num)
                     by #'cddr
