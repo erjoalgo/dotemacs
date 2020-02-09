@@ -16,3 +16,5 @@
     (let ((backtrace (get-buffer "*Backtrace*")))
       (when backtrace (kill-buffer backtrace)))
   (eval-buffer)))
+
+(autobuild-mode)
