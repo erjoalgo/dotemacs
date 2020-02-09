@@ -4,7 +4,6 @@
 (defvar sms-fanout-client nil)
 (defvar sms-fanout-client-last-pong nil)
 (defvar sms-fanout-reconnect-interval-mins 1)
-
 (defvar sms-fanout-address)
 (defvar sms-fanout-ping-interval-seconds 30)
 
@@ -161,7 +160,8 @@
                          (- (float-time) sms-last-connection-timestamp))))
                (sip-ws-maybe-reconnect))
    :on-error (lambda (_websocket callback-id err)
-               (sip-ws-log (format "ws closed with error: %s %s" callback-id err)))))
+               (sip-ws-log
+                (format "ws closed with error: %s %s" callback-id err)))))
 
 (define-minor-mode sip-chat-mode
   "Sip chat minor mode"
