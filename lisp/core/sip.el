@@ -178,9 +178,11 @@
 
 (defun sms-fanout-client-loop ()
   (sip-ws-log (format "on sms-fanout-client-loop"))
-  (unless (sms-fanout-connected-p)
-    (setf sms-fanout-client (sms-fanout-connect)))
-  (websocket-send-text sms-fanout-client "ping"))
+  (unless (or (sms-fanout-connected-p) (null sms-fanout-address))
+    (condition-case ex
+        (setf sms-fanout-client (sms-fanout-connect))
+      (websocket-send-text sms-fanout-client "ping")
+      (error (warn "unable to connect: %s" ex)))))
 
 (defvar sms-fanout-client-timer nil)
 
