@@ -65,7 +65,8 @@
    babel
    slime
    cider
-   websocket))
+   websocket
+   autobuild))
 
 (require 'f)
 
@@ -89,7 +90,6 @@
            sticky-windows
            header2
            flycheck
-           autobuild
            autobuild-examples))
   (safe-funcall
    (require feature)))
