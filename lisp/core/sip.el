@@ -71,16 +71,18 @@
       (sip-ws-log (format "skipping previously-received message with id %s" id))
     (let* ((buffer-name (format sip-buffer-fmt (concat from "-to-" to)))
            (buffer (get-buffer-create buffer-name))
-           (line (format "%s says: %s" from message)))
+           (line (format "%s says: %s" from message))
+           (was-at-bottom (eq (point-max) (point))))
       (with-current-buffer buffer
           (sip-chat-mode t)
         (save-excursion
           (goto-char (point-max))
-          (unless (eq (point) (line-beginning-position))
-            (goto-char (line-beginning-position))
-            (open-line 1))
+          (goto-char (line-beginning-position))
+          (open-line 1)
           (insert line)
-          (setq-local sip-from-phone-number from)))
+          (setq-local sip-from-phone-number from))
+        (when was-at-bottom
+          (goto-char (point-max))))
       (message "%s" line)
       (setq sip-last-message-buffer buffer))))
 
