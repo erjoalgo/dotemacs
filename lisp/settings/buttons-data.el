@@ -219,7 +219,7 @@
         ("b"
          (but
           ("d" (cmd-ins "(cl-destructuring-bind ({}){})"))
-          ("m" (cmd-ins "(multiple-value-bind ({}){})"))))
+          ("m" (cmd-ins "(cl-multiple-value-bind ({}){})"))))
         ("t" (cmd-ins "(ert-deftest test-{} (){(nli)}{})"))
         ("c" (cmd-ins "(defclass {} ({}){(nli)}({}))"))
         ("u" (cmd-ins "(defcustom {} \"{}\""
@@ -388,7 +388,11 @@
                       "(in-package #:{0}/test)"
                       "{(nli)}(run-package-tests :interactive t)"))
         ("l" (cmd-ins "(labels ({}){(nli)}{}){(nli)}"))
-        ("a" (cmd-ins "(defalias {})"))))
+        ("a" (cmd-ins "(defalias {})"))
+        ("b"
+         (but
+          ("d" (cmd-ins "(destructuring-bind ({}){})"))
+          ("m" (cmd-ins "(multiple-value-bind ({}){})"))))))
       ("T" (cmd-ins "(handler-case{}{(nli)}(error (err) {}))"))
       ("n"
        (but
@@ -908,6 +912,7 @@
       ("t"
        (but
         ("0" (cmd (insert "cd \"$( dirname \"${BASH_SOURCE[0]}\" )\"")))
+        (")" (cmd (insert "SELFD=\"$(realpath $(dirname \"${BASH_SOURCE[0]}\"))\"")))
         ("u" (cmd-ins "true"))
         ("g" (cmd-ins "false"))
         ("l" 'insert-unique-line)
