@@ -4,7 +4,6 @@
 (defvar sms-fanout-client nil)
 (defvar sms-fanout-client-last-pong nil)
 (defvar sms-fanout-reconnect-interval-mins 1)
-(defvar sms-fanout-address)
 (defvar sms-fanout-ping-interval-seconds 30)
 
 (defun sms-fanout-connected-p (&optional client)
