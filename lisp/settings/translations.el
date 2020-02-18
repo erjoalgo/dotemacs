@@ -336,8 +336,23 @@ a translation from scratch"
       (replace-regexp " +" " ")
 
       (goto-char (point-min))
-      (replace-regexp "^ +" "")))
-  (visual-line-mode 1))
+      (replace-regexp "^ +" ""))))
+
+(defun translation-correction-fix-paragraphs-2 ()
+  (interactive)
+  (save-excursion
+    (goto-char (point-min))
+    (replace-regexp (char-to-string 8204) "")
+    (goto-char (point-min))
+    (replace-regexp "\n[ \t ]*\n" "XXX")
+    (goto-char (point-min))
+    (replace-regexp "\n" "")
+    (goto-char (point-min))
+    (replace-regexp "XXX" "\n\n")
+    (goto-char (point-min))
+    (replace-regexp "  " " ")
+    (goto-char (point-min))
+    (replace-regexp " +$" "")))
 
 (defvar translation-regexp-rules-alist)
 
