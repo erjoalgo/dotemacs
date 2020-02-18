@@ -373,6 +373,10 @@
             (require 'edebug)
             (eval-defun t);;instrument first
             (edebug-set-breakpoint nil)))
+      ("d"
+       (but
+        ("e" #'toggle-debug-on-error)
+        ("q" #'toggle-debug-on-quit)))
       ("g" 'grep-recursive)
       ("G" 'replace-regexp-dir)
       ("f" 'find-iregex)
