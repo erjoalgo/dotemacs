@@ -57,20 +57,6 @@ globals().update(args)
                                     (file-name-nondirectory name)))
                              ""))))))
 
-(defun python-check (command)
-  "Check a Python file (default current buffer's file).
-Runs COMMAND, a shell command, as if by `compile'.
-See `python-check-command' for the default."
-  (interactive
-   (list (or (unless current-prefix-arg python-check-custom-command)
-             (python-check-read-check-command))))
-  (setq python-check-custom-command command)
-  (save-some-buffers (not compilation-ask-about-save) nil)
-  (python-shell-with-environment
-    (compilation-start command nil
-                       (lambda (_modename)
-                         (format python-check-buffer-name command)))))
-
 (with-eval-after-load "flycheck"
   (flycheck-define-checker pylint
     "Flycheck for pylint."
