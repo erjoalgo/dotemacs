@@ -377,27 +377,31 @@
         (incf count)))
     count))
 
-(defun replace-regexp-dir (dir extension from to &optional pause)
+(defun replace-regexp-dir (dir exts from to &optional pause)
   "Replace regexp FROM with replacement TO on all EXTENSION files under DIR.
 
   When PAUSE is non-nil, prompt every match."
   ;;TODO colored output
   (interactive
-   (let* ((ext (read-string
-		"enter extension (eg 'js'): "
-		(f-ext (or (buffer-file-name (current-buffer)) "")) nil  '(nil)))
+   (let* ((exts
+           (split-string
+            (read-string
+             "enter space-separated extensions (eg 'cc h'): "
+             (f-ext (or (buffer-file-name (current-buffer)) "")) nil  '(nil))
+            " "))
 	  (dir (if current-prefix-arg
 		   (read-directory-name "enter directory: ")
 		 default-directory))
 	  (from (read-string "Enter from regexp: " (thing-at-point 'symbol)))
 	  (to (read-string "Enter to regexp: "))
 	  (pause (y-or-n-p "Pause at every match? ")))
-     (list dir ext from to pause)))
+     (list dir exts from to pause)))
   (let ((count-sym (gensym)))
     (set count-sym 0)
-    (walk-dir-tree dir
+    (walk-dir-tree
+     dir
 		   `(lambda (fn)
-		      (when (or (null extension) (string= (f-ext fn) extension))
+        (when (or (null exts) (member (f-ext fn) exts))
 			(with-temporary-current-file
 			 fn
 			 (incf ,count-sym (regexp-replace-current-buffer from to pause))
