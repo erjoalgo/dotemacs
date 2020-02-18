@@ -8,12 +8,15 @@
 (defvar sms-fanout-ping-interval-seconds 30)
 
 (defun sms-fanout-connected-p (&optional client)
-  (let ((client (or client sms-fanout-client)))
-    (when (and client (websocket-openp client)
-               (<= sms-fanout-client-last-pong
-                   (- (time-now-seconds)
-                      (/ sms-fanout-ping-interval-seconds 2))))
-      client)))
+  (let ((client (or client sms-fanout-client))
+        (last-pong-min-time
+         (- (time-now-seconds)
+            (/ sms-fanout-ping-interval-seconds 2))))
+    (and client
+         (websocket-openp client)
+         (>= sms-fanout-client-last-pong
+             last-pong-min-time)
+         client)))
 
 (defun json-parse (json)
   (with-temp-buffer
