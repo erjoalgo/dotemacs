@@ -29,8 +29,8 @@
 	(slime-connect "localhost" *stumpwm-swank-port*)))))
 
 (defun slime-stumpwm-connection-hook ()
-  (slime-repl-set-package "STUMPWM")
-  (remove-hook 'slime-editing-mode-hook
+  '(slime-repl-set-package "STUMPWM")
+  '(remove-hook 'slime-editing-mode-hook
 	       'slime-stumpwm-connection-hook))
 
 (defun stumpwm-visible-window-ids (&optional pid)
