@@ -1507,8 +1507,7 @@ server {
      (but
       ((kbd "M-c") #'autobuild-build)
       ((kbd "M-q") #'sticky-window-delete-window)
-      ((kbd "M-Q") #'sticky-window-keep-window-visible)
-      ((kbd "M-1") #'sticky-window-delete-other-windows)
+      ((kbd "M-Q") #'sticky-window-toggle)
       ((kbd "M-/") 'my-comment-out)
       ([escape] 'exit-recursive-edit)
       ((kbd "M-.") 'my-next-error)
