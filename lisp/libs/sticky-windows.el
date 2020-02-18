@@ -18,7 +18,7 @@
 
 ;;;###autoload
 (defun sticky-window-keep-window-visible ()
-  "Insure the buffer associated with the current window stays visible.
+  "Ensure the buffer associated with the current window stays visible.
 This is handy for ERC buffers where you would like to see the
 conversation while you work in other windows within the frame.
 This is intended to be used with `sticky-window-delete-window'.
