@@ -26,6 +26,14 @@ A prefix arg reverses this operation."
   (interactive)
   (set-window-dedicated-p (selected-window) (not current-prefix-arg)))
 
+(defun sticky-window-toggle ()
+  "Toggle window stickyness on/off."
+  (interactive)
+  (let* ((win (selected-window))
+         (enabled (not (window-dedicated-p win))))
+    (set-window-dedicated-p win enabled)
+    (message "sticky window %s" (if enabled "enabled" "disabled"))))
+
 ;;;###autoload
 (defun sticky-window-delete-window (force)
   "This is intended to be a replacement for `delete-window', but
