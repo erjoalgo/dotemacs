@@ -400,13 +400,13 @@
     (set count-sym 0)
     (walk-dir-tree
      dir
-		   `(lambda (fn)
+     `(lambda (fn)
         (when (or (null exts) (member (f-ext fn) exts))
-			(with-temporary-current-file
-			 fn
-			 (incf ,count-sym (regexp-replace-current-buffer from to pause))
-			 (when (buffer-modified-p)
-			   (save-buffer))))))
+          (with-temporary-current-file
+           fn
+           (incf ,count-sym (regexp-replace-current-buffer from to pause))
+           (when (buffer-modified-p)
+             (save-buffer))))))
     (message "%d occurrences replaced" (symbol-value count-sym))))
 
 (defun keymap-symbol (keymaps)
