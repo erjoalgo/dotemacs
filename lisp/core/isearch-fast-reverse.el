@@ -40,6 +40,7 @@
   (buttons-make
    ([f3] 'isearch-forward-or-backward)
    ([M-f3] 'isearch-reverse-search-and-search)
+   ([f51] 'isearch-reverse-search-and-search)
    ([escape] 'isearch-exit)
    ([f4] 'isearch-abort)))
 
@@ -53,7 +54,8 @@
   (buttons-make
    ([f3] 'isearch-forward-regexp)
    ;;should work because it is a recedit
-   ([M-f3] 'isearch-backward-regexp-fast)))
+   ([M-f3] 'isearch-backward-regexp-fast)
+   ([f51] 'isearch-backward-regexp-fast)))
 
 (defvar isearch-backwards-p nil)
 
