@@ -533,9 +533,9 @@
                   (insert line)
                   (newline-and-indent))))))
         ;; + operator
-        ("=" (cmd-ins "absl::StrCat(\"{}\"{})"))
         ("m" (cmd-ins "absl::StreamFormat(\"{}\"{});"))
-        ("c" (cmd-ins ".c_str()"))
+        ("c" (cmd-ins "absl::StrCat(\"{}\"{})"))
+        ("C" (cmd-ins ".c_str()"))
         ("r" (cmd-ins "absl::PrintF(\"DEBUG TRACE {(buf)}, ({}): {(rnd)}\\n\");"))
         ("." (cmd-ins ".c_str()"))
         ("," (cmd-ins "<< {} << endl;{(nli)}"))
@@ -584,7 +584,11 @@
         ("s" (cmd-ins "char* " (inm)))
         ("v" (cmd-ins "void " (inm)))
         ("o" (cmd-ins "const " (inm)))
-        ("b" (cmd-ins "bool " (inm)))))
+        ("b" (cmd-ins "bool " (inm)))
+        ("t"
+         (but
+          ("u" (cmd-ins "util::Status "))
+          ("U" (cmd-ins "util::StatusOr<{}> "))))))
       ("s" (cmd-ins "sizeof({})"))
       ("S" (cmd-ins "sizeof({0})/sizeof(*{0})"))
       ("-" (cmd-ins "->"))
@@ -1072,11 +1076,17 @@
         ("a" (cmd-ins "for (const auto& {} : {}){(cbd)}"))))
       ("i"
        (but
+        ("q"
+         (but
+          ("u" (cmd-ins "std::unique_ptr<{}> " (inm)))
+          ("m" (cmd-ins "absl::make_unique<{}>" (inm)))
+          ("w" (cmd-ins "absl::WrapUnique({})" (inm)))))
         ("m" (cmd-ins "map<{}> " (inm)))
         ("p" (cmd-ins "pair<{}> " (inm)))
         ("V" (cmd-ins "vector<{}> "))
-        ("s" (cmd-ins "string "))
-        ("S" (cmd-ins "string& "))
+        ("s" (cmd-ins "std::string "))
+        ("S" (cmd-ins "std::string& "))
+        ("v" (cmd-ins "absl::string_view "))
         ("t"
          (but
           ("e" (cmd-ins "true"))
@@ -1122,6 +1132,7 @@
                     (ins "#include <string>") (nli)
                     (ins "#include <assert.h>") (nli)
                     (ins "using namespace std;") (nli)))
+      ("a" (cmd-ins "[{}]({}){" "{}" "}"))
       ("t"
        (but
         ("u" (cmd-ins "true"))
@@ -1135,7 +1146,15 @@
         ("m"
          (but
           ("a" (cmd-ins "ASSIGN_OR_RETURN(auto {}, {});"))
-          ("r" (cmd-ins "RETURN_IF_ERROR({});"))))))))
+          ("A"
+           (cmd (save-excursion
+                  (beginning-of-line)
+                  (when
+                      (re-search-forward "auto +\\(.*?\\) +=\\(.*\\);"
+                                         (line-end-position) t)
+                    (replace-match "ASSIGN_OR_RETURN(auto \\1,\\2);")))))
+          ("r" (cmd-ins "RETURN_IF_ERROR({});"))
+          ("R" (cmd-ins "RET_CHECK({});"))))))))
 
    (defbuttons yacc-buttons programming-buttons (yacc-mode-map)
      (but
