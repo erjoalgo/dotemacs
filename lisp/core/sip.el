@@ -199,8 +199,5 @@
         (run-at-time nil sms-fanout-ping-interval-seconds
                      #'sms-fanout-client-loop)))
 
-(when sms-fanout-client
-  (websocket-close sms-fanout-client))
-
 (sms-fanout-client-start-timer)
 ;; (sms-fanout-connected-p)
