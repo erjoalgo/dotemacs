@@ -91,7 +91,6 @@
           ("s" 'capitalize-region)))))
       ((kbd "M-.") 'my-next-error)
       ((kbd "M-,") 'my-prev-error)
-      ("T" (but ("D" (cmd-ins "{comment-start} TODO "))))
       ("R" (cmd-ins "***REMOVED***"))
       ;; ([?\s-\t] #'company-complete)
       ((kbd "<s-tab>") #'company-complete)))
@@ -102,9 +101,10 @@
       ("f" (cmd-ins "for {} in {}:{(nli)}{}{(nli)}{(idt)}"))
       ("F" (cmd-ins "[{} for {} in {}]"))
       ("w" (cmd-ins "while {}:{(nli)}{}{(nli)}{(idt)}"))
-      ("y" (cmd-ins "try:"
+      ("T" (cmd-ins "try:"
                     (nli)
                     (rec)
+                    (nli)
                     "except:"
                     (nli)))
       ("z" (cmd-ins "if {}:{(nli)}"))
