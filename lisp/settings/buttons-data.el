@@ -529,9 +529,9 @@
                 (re-search-backward "#include")
                 (unless (re-search-backward "base/examine_stack.h" nil t)
                   (let ((line "#include \"base/examine_stack.h\""))
-                  (message "adding %s" line)
-                  (insert line)
-                  (newline-and-indent))))))
+                    (message "adding %s" line)
+                    (insert line)
+                    (newline-and-indent))))))
         ;; + operator
         ("m" (cmd-ins "absl::StreamFormat(\"{}\"{});"))
         ("c" (cmd-ins "absl::StrCat(\"{}\"{})"))
@@ -1210,9 +1210,9 @@
                     (ins "#+OPTIONS: num:nil") (nli)
                     (ins "#+TITLE: "
                          (->> (buffer-file-name)
-                              (f-base)
-                              (replace-regexp-in-string "[_-]" " ")
-                              (capitalize))
+                           (f-base)
+                           (replace-regexp-in-string "[_-]" " ")
+                           (capitalize))
                          (nli))))
       ("t"
        (but
