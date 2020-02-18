@@ -175,7 +175,8 @@
   (let ((kmap (make-sparse-keymap)))
     (define-key kmap (kbd "RET") #'sip-send-chat-line)
     kmap)
-  (toggle-truncate-lines t))
+  (toggle-truncate-lines nil)
+  (visual-line-mode t))
 
 (autobuild-define-rule sip-chat-send (sip-chat-mode)
   (autobuild-nice 6)
