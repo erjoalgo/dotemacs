@@ -5,4 +5,5 @@
 
 (defun indent-on-save-indent ()
   "Indent the entire buffer."
-  (indent-region (point-min) (point-max)))
+  (unless (bound-and-true-p python-mode)
+    (indent-region (point-min) (point-max))))
