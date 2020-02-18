@@ -136,3 +136,13 @@ globals().update(args)
   (python-dir-on-expression a b t))
 
 1
+
+(defun python-set-custom-check-command ()
+  (interactive)
+  (when (buffer-file-name nil)
+    (setf
+     python-check-custom-command
+     (let ((basename (-> (buffer-file-name nil) f-filename)))
+       (format
+        "pylint %s | sed 's/^[A-Z]: *\\([0-9]*\\),/%s:\\1: /g'"
+        basename basename)))))
