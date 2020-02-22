@@ -2,20 +2,21 @@
 
 (defvar sms-fanout-address nil)
 (defvar sms-fanout-client nil)
+(defvar sms-fanout-client-last-pong-sent nil)
 (defvar sms-fanout-client-last-pong nil)
 (defvar sms-fanout-reconnect-interval-mins 1)
 (defvar sms-fanout-ping-interval-seconds 30)
 
 (defun sms-fanout-connected-p (&optional client)
-  (let ((client (or client sms-fanout-client))
-        (last-pong-min-time
-         (- (time-now-seconds)
-            (/ sms-fanout-ping-interval-seconds 2))))
-    (and client
-         (websocket-openp client)
-         (>= sms-fanout-client-last-pong
-             last-pong-min-time)
-         client)))
+  (when (and (setq client (or client sms-fanout-client))
+             (websocket-openp client)
+             sms-fanout-client-last-pong
+             (let ((last-pong-ago-secs
+                    (- (float-time)
+                       sms-fanout-client-last-pong)))
+               (<= last-pong-ago-secs
+                   (* sms-fanout-ping-interval-seconds 2))))
+    client))
 
 (defun json-parse (json)
   (with-temp-buffer
