@@ -66,11 +66,21 @@
 
 (defvar sip-last-message-buffer nil)
 
+(defun sip-chat-buffer (other-number &optional self-number)
+  (let* ((buffer-name (format sip-buffer-fmt
+                              (concat other-number
+                                      (when self-number
+                                        (concat "-to-" self-number)))))
+         (buffer (get-buffer-create buffer-name)))
+    (with-current-buffer buffer
+      (sip-chat-mode)
+      (setq sip-from-phone-number other-number))
+    buffer))
+
 (defun sip-message-received (to from message id)
   (if (not (sip-add-message-id id))
       (sip-ws-log (format "skipping previously-received message with id %s" id))
-    (let* ((buffer-name (format sip-buffer-fmt (concat from "-to-" to)))
-           (buffer (get-buffer-create buffer-name))
+    (let* ((buffer (sip-chat-buffer from to))
            (line (format "%s says: %s" from message))
            (was-at-bottom (eq (point-max) (point))))
       (with-current-buffer buffer
@@ -85,6 +95,14 @@
           (goto-char (point-max))))
       (message "%s" line)
       (setq sip-last-message-buffer buffer))))
+
+(defun sip-clean-phone-number (number)
+  (replace-regexp-in-string "[^0-9]" "" number))
+
+(defun sip-chat (number)
+  (let* ((number-clean (sip-clean-phone-number number))
+         (buffer (sip-chat-buffer number-clean)))
+    (switch-to-buffer buffer)))
 
 (defun sip-goto-last-message-buffer ()
   (interactive)
