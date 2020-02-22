@@ -82,9 +82,10 @@
       (sip-ws-log (format "skipping previously-received message with id %s" id))
     (let* ((buffer (sip-chat-buffer from to))
            (line (format "%s says: %s" from message))
-           (was-at-bottom (eq (point-max) (point))))
+           was-at-bottom)
       (with-current-buffer buffer
-          (sip-chat-mode t)
+        (sip-chat-mode t)
+        (setq was-at-bottom (eq (point-max) (point)))
         (save-excursion
           (goto-char (point-max))
           (goto-char (line-beginning-position))
