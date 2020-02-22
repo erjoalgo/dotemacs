@@ -3,17 +3,17 @@
 (defvar sms-fanout-address nil)
 (defvar sms-fanout-client nil)
 (defvar sms-fanout-client-last-pong-sent nil)
-(defvar sms-fanout-client-last-pong nil)
+(defvar sms-fanout-client-last-pong-received nil)
 (defvar sms-fanout-reconnect-interval-mins 1)
 (defvar sms-fanout-ping-interval-seconds 30)
 
 (defun sms-fanout-connected-p (&optional client)
   (when (and (setq client (or client sms-fanout-client))
              (websocket-openp client)
-             sms-fanout-client-last-pong
+             sms-fanout-client-last-pong-received
              (let ((last-pong-ago-secs
                     (- (float-time)
-                       sms-fanout-client-last-pong)))
+                       sms-fanout-client-last-pong-received)))
                (<= last-pong-ago-secs
                    (* sms-fanout-ping-interval-seconds 2))))
     client))
@@ -123,8 +123,8 @@
 ;; TODO use consistent namespace
 
 (defun sip-ws-maybe-reconnect ()
-  (let ((elapsed (when sms-last-connection-timestamp
-                   (- (float-time) sms-last-connection-timestamp))))
+  (let ((elapsed (when sms-fanout-client-last-pong-sent
+                   (- (float-time) sms-fanout-client-last-pong-sent))))
     (if (and elapsed (> elapsed 10))
         ;; throttle reconnection
         (progn
@@ -146,13 +146,13 @@
    sms-fanout-address
    :on-open (lambda (_websocket)
               (sip-ws-log "ws connected")
-              (setq sms-fanout-client-last-pong (float-time)))
+              (setq sms-fanout-client-last-pong-received (float-time)))
    :on-message
    (lambda (_websocket frame)
      (let* ((text (websocket-frame-text frame))
             (json (json-parse text)))
        (sip-ws-log (format "received: %s" text))
-       (setq sms-fanout-client-last-pong (float-time))
+       (setq sms-fanout-client-last-pong-received (float-time))
        (alist-let json (status message-type)
          (cond
           ((not (zerop status))
