@@ -167,13 +167,13 @@
           (t
            (setq sip-messages json)
            (let ((messages (alist-get 'body json)))
-               (if (null messages)
-                   (error "0 messages in body")
-                 (cl-loop
-                  for message across messages
-                  do
-                  (alist-let message (to from message id)
-                    (sip-message-received to from message id))))))))))
+             (if (null messages)
+                 (error "0 messages in body")
+               (cl-loop
+                for message across messages
+                do
+                (alist-let message (to from message id)
+                  (sip-message-received to from message id))))))))))
    :on-close (lambda (_websocket)
                (sip-ws-log
                 (format "ws closed after %s seconds"
