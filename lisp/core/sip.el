@@ -28,9 +28,6 @@
 
 (defvar-local sip-from-phone-number nil)
 
-(defun time-now-seconds ()
-  (/ (current-time-ms) 1000))
-
 (defun linphonecsh (&rest args)
   "Execute a linphonec command via linphonecsh."
   (message "running: linphonecsh %s" (string-join args " "))
@@ -130,13 +127,13 @@
    sms-fanout-address
    :on-open (lambda (_websocket)
               (sip-ws-log "ws connected")
-              (setq sms-last-connection-timestamp (float-time)))
+              (setq sms-fanout-client-last-pong (float-time)))
    :on-message
    (lambda (_websocket frame)
      (let* ((text (websocket-frame-text frame))
             (json (json-parse text)))
        (sip-ws-log (format "received: %s" text))
-       (setq sms-fanout-client-last-pong (time-now-seconds))
+       (setq sms-fanout-client-last-pong (float-time))
        (alist-let json (status message-type)
          (cond
           ((not (zerop status))
