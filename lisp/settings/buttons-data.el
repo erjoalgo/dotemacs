@@ -1536,5 +1536,6 @@ server {
         ("a" 'xref-find-apropos)
         ("c" 'eglot-code-actions)))))))
 
+(message "buttons loaded")
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; buttons-data.el ends here
