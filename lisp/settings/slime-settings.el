@@ -33,3 +33,23 @@
     (interactive)
     (kill-buffers-matching-regexp "[*]\\(slime-repl\\|inferior-lisp\\|slime\\)")
     (slime-disconnect-all)))
+
+(defmacro slime-eval-async-and-message (form)
+  "slime-eval-async-and-message FORM."
+  `(slime-eval-async ,form
+    (lambda (result) (message "%s" result))))
+
+(defun slime-unexport-all-symbols (package)
+  "Unexport all symbols in PACKAGE."
+  (interactive (list
+                (slime-read-package-name "from package: "
+                                         (slime-current-package))))
+  (slime-eval-async-and-message `(dbg:unexport-all-symbols ,package)))
+
+(defun slime-unintern-shadowing-symbols (package)
+  "Unintern the symbol given with SYMBOL-NAME PACKAGE."
+  (interactive
+   (list
+    (slime-read-package-name "from package: "
+                             (slime-current-package))))
+  (slime-eval-async-and-message `(dbg:unintern-all-symbols ,package)))
