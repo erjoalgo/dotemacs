@@ -214,7 +214,7 @@
         ("v" (cmd-ins "(defvar {}){(nli)}"))
         ("f" (cmd-ins "(defun {} ({}){(nli)}{})"))
         ("m" (cmd-ins "(defmacro {} ({}){(nli)}{})"))
-        ("h" (cmd-ins "(defmethod {} ({}){(nli)}{})"))
+        ("e" (cmd-ins "(defmethod {} ({}){(nli)}{})"))
         ("s" (cmd-ins "(defstruct {}{(nli)}{})"))
         ("b"
          (but
@@ -1145,16 +1145,27 @@
           ("o" (cmd-ins "CHECK_OK({})"))))
         ("m"
          (but
-          ("a" (cmd-ins "ASSIGN_OR_RETURN(auto {}, {});"))
-          ("A"
-           (cmd (save-excursion
-                  (beginning-of-line)
-                  (when
-                      (re-search-forward "auto +\\(.*?\\) +=\\(.*\\);"
-                                         (line-end-position) t)
-                    (replace-match "ASSIGN_OR_RETURN(auto \\1,\\2);")))))
+          ("a"
+           (cmd (if (not (region-active-p))
+                    (buttons-template-insert "ASSIGN_OR_RETURN(auto {}, {});")
+                  (save-excursion
+                    (back-to-indentation)
+                    (cl-assert
+                     (re-search-forward
+                      "\\(auto *[*]? +\\)?\\(.*?\\) *=\\(.*\\);"
+                      (line-end-position) t))
+                    (replace-match "ASSIGN_OR_RETURN(\\1\\2,\\3);")
+                    nil))))
           ("r" (cmd-ins "RETURN_IF_ERROR({});"))
-          ("R" (cmd-ins "RET_CHECK({});"))))))))
+          ("R" (cmd-ins "RET_CHECK({});"))))
+        ("l"
+         (but
+          ("e"
+           (but
+            ("f" (cmd-ins "util::FailedPreconditionError(\"{}\")"))
+            ("i" (cmd-ins "util::InternalError(\"{}\")"))
+            ("a" (cmd-ins "util::InvalidArgumentError(\"{}\")"))
+            ("o" (cmd-ins "util::OkStatus()"))))))))))
 
    (defbuttons yacc-buttons programming-buttons (yacc-mode-map)
      (but
