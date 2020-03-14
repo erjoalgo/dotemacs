@@ -780,12 +780,13 @@ This requires the external program `diff' to be in your `exec-path'."
              (choice-key
               (save-match-data
                 (selcand-select (mapcar #'car choices-alist)
-                                "select merge option: ")))
+                                "select merge option: "
+                                nil nil nil t)))
              (choice (alist-get choice-key choices-alist nil nil #'equal)))
         (cl-assert choice)
         (goto-char start)
         (replace-match choice t t nil)
-        (cl-assert (y-or-n-p "Continue? "))))))
+        '(cl-assert (y-or-n-p "Continue? "))))))
 
 (defun switch-to-buffer-with-process-pid (pid)
   "Switch to the buffer associated with a process with PID."
