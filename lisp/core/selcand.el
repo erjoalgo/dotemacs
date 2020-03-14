@@ -72,8 +72,8 @@
              for cand in cands
              collect (cons hint cand))))
 
-(defun selcand-select (cands &optional prompt stringify autoselect-if-single
-                             initial-input)
+(cl-defun selcand-select (cands &optional prompt stringify autoselect-if-single
+                                initial-input read-char)
   "Use PROMPT to prompt for a selection from CANDS candidates."
   (let* ((hints-cands (selcand-hints cands))
          (sep ") ")
@@ -88,12 +88,17 @@
          (prompt (or prompt "select candidate: "))
          (choice (if (and autoselect-if-single (null (cdr choices)))
                      (car choices)
-                     (minibuffer-with-setup-hook
-                     #'minibuffer-completion-help
-                   (completing-read prompt choices
-                                    nil
-                                    t
-                                    initial-candidate))))
+                   (cond
+                    (read-char
+                     (char-to-string
+                      (read-char
+                       (concat prompt "\n" (s-join "\n" choices)))))
+                    (t (minibuffer-with-setup-hook
+                           #'minibuffer-completion-help
+                         (completing-read prompt choices
+                                          nil
+                                          t
+                                          initial-candidate))))))
          (cand (let* ((hint (car (split-string choice sep))))
                  (cdr (assoc hint hints-cands #'equal)))))
     cand))
