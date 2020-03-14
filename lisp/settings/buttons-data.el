@@ -1121,7 +1121,7 @@
       ("l"
        (but
         ("s" (cmd-ins ".size()"))
-        ("S" (cmd-ins ".empty()"))
+        ("e" (cmd-ins ".empty()"))
         ("t" (cmd-ins ".length()"))))
       ("s" (cmd-ins "scanf( \"{(inm)}{}\", {} )"))
       ("s" (cmd-ins "scanf( \"%d\", &{(inm)}{} );"))
@@ -1162,10 +1162,10 @@
          (but
           ("e"
            (but
-            ("f" (cmd-ins "util::FailedPreconditionError(\"{}\")"))
-            ("i" (cmd-ins "util::InternalError(\"{}\")"))
-            ("a" (cmd-ins "util::InvalidArgumentError(\"{}\")"))
-            ("o" (cmd-ins "util::OkStatus()"))))))))))
+            ("f" (cmd-ins "util::FailedPreconditionError(absl::StrFormat(\"{}\", {}));"))
+            ("i" (cmd-ins "util::InternalError(absl::StrFormat(\"{}\", {}));"))
+            ("a" (cmd-ins "util::InvalidArgumentError(absl::StrFormat(\"{}\", {}));"))
+            ("o" (cmd-ins "util::OkStatus();"))))))))))
 
    (defbuttons yacc-buttons programming-buttons (yacc-mode-map)
      (but
