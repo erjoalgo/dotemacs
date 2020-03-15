@@ -35,9 +35,18 @@
 
 (defvar *sip-default-host* "sanjose2.voip.ms")
 
+(defun sip-phone-number-clean (number)
+  (let* ((number-clean (replace-regexp-in-string "[^0-9]" "" number))
+         (number-clean
+          (if (and (eq 11 (length number-clean))
+                   (s-starts-with-p "1" number-clean))
+              (substring number-clean 1)
+            number-clean)))
+    number-clean))
+
 (defun sip-phone-number-to-address (number &optional sip-host)
   (let* ((sip-host (or sip-host *sip-default-host*))
-         (number-clean (replace-regexp-in-string "[^0-9]" "" number))
+         (number-clean (sip-phone-number-clean number))
          (sip-address (format "sip:%s@%s" number-clean sip-host)))
     sip-address))
 
@@ -67,14 +76,16 @@
 (defvar sip-last-message-buffer nil)
 
 (defun sip-chat-buffer (other-number &optional self-number)
-  (let* ((buffer-name (format sip-buffer-fmt
-                              (concat other-number
+  (cl-assert (not (s-blank-p other-number)))
+  (let* ((other-number-clean (sip-phone-number-clean other-number))
+         (buffer-name (format sip-buffer-fmt
+                              (concat other-number-clean
                                       (when self-number
                                         (concat "-to-" self-number)))))
          (buffer (get-buffer-create buffer-name)))
     (with-current-buffer buffer
       (sip-chat-mode)
-      (setq sip-from-phone-number other-number))
+      (setq sip-from-phone-number other-number-clean))
     buffer))
 
 (defun sip-message-received (to from message id)
