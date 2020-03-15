@@ -228,4 +228,37 @@
                      #'sms-fanout-client-loop)))
 
 (sms-fanout-client-start-timer)
+
+(defun sip-chat-menu ()
+  (interactive)
+  (switch-to-buffer (get-buffer-create "*sip-chat-menu*"))
+  (erase-buffer)
+  (save-match-data
+    (cl-loop
+     for buffer in (buffer-list)
+     do
+     (if-let
+         ((_is-sip-chat-buffer
+           (s-starts-with-p "#sip-sms-" (buffer-name buffer)))
+          (line (with-current-buffer buffer
+                  (goto-char (point-max))
+                  (if (not (re-search-backward "^[0-9]+ says: .*"))
+                      (warn "no message found on buffer %s" buffer)
+                    (match-string 0)))))
+         (progn (insert line)
+                (let ((map (make-sparse-keymap)))
+                  (define-key map (kbd "RET")
+                    `(lambda () (interactive)
+                       (switch-to-buffer ,buffer)))
+                  (put-text-property (line-beginning-position)
+                                     (line-end-position) 'keymap map)
+                  (add-text-properties
+                   (line-beginning-position)
+                   (line-end-position)
+                   '(link highlight
+                          help-echo
+                          "mouse-2: visit chat buffer for this conversation")))
+                (newline)))))
+  (read-only-mode t))
+
 ;; (sms-fanout-connected-p)
