@@ -70,7 +70,8 @@
 
 (require 'f)
 
-(push (f-join emacs-top "../../autobuild/") load-path)
+(push (expand-file-name "~/git/autobuild/examples") load-path)
+(require 'autobuild-rules)
 
 (dolist (feature
          '(f
@@ -89,8 +90,7 @@
            company
            sticky-windows
            header2
-           flycheck
-           autobuild-examples))
+           flycheck))
   (safe-funcall
    (require feature)))
 
