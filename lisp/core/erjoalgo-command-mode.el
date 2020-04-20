@@ -394,7 +394,8 @@
       ("b" (buff "*Inferior Octave*" (inferior-octave t)))
       ("3" (buff "*eww*" (call-interactively 'eww)))
       ("q" (buff "*SQL*" (call-interactively
-                          (selcand-select inferior-sql-mode-providers)))))))))
+                          (selcand-select inferior-sql-mode-providers))))
+      ("m" (buff "*sip-chat-menu*" (call-interactively 'sip-chat-menu))))))))
 
 (defun buffer-matching (string &optional regexp-p)
   "Find buffers matching STRING, interpreted as a regexp when REGEXP-P."
