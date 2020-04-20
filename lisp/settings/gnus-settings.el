@@ -271,6 +271,15 @@ machine smtp.gmail.com login %s password %s port 587"
 (defvar gnus-email-templates-home
   (expand-file-name "~/.gnus-templates"))
 
+(defun gnus-email-templates-add-or-edit (hostname)
+  (interactive
+   (list
+    (completing-read
+     "select or enter hostname: "
+     (when (file-exists-p gnus-email-templates-home)
+       (directory-files gnus-email-templates-home nil "^[^.]")))))
+  (find-file (f-join gnus-email-templates-home hostname)))
+
 (defun gnus-email-templates-toaddress-to-hostname (toaddr)
   (cadr (split-string toaddr "@")))
 
