@@ -242,8 +242,10 @@
            (s-starts-with-p "#sip-sms-" (buffer-name buffer)))
           (line (with-current-buffer buffer
                   (goto-char (point-max))
-                  (if (not (re-search-backward "^[0-9]+ says: .*"))
-                      (warn "no message found on buffer %s" buffer)
+                  (if (not (re-search-backward "^[0-9]+ says: .*" nil t))
+                      (progn
+                        (warn "no message found on buffer %s" buffer)
+                        nil)
                     (match-string 0)))))
          (progn (insert line)
                 (let ((map (make-sparse-keymap)))
