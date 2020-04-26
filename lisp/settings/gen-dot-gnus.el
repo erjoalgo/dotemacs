@@ -4,6 +4,7 @@
   (destructuring-bind ((smtp-server . smtp-port) . (imap-server . imap-port))
       (cons smtp-server-port imap-server-port)
     `(let ((email ,email)
+           (hostname ,(replace-regexp-in-string "^.*?@" "" email))
 	   (smtp-server ,smtp-server)
 	   (smtp-port ,smtp-port)
 	   (imap-server ,imap-server)
