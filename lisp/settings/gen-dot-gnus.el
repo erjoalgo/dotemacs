@@ -9,24 +9,23 @@
 	   (smtp-port ,smtp-port)
 	   (imap-server ,imap-server)
 	   (imap-port ,imap-port))
-       (setf gnus-select-method
-	     `(nnimap ,email
+       (setq gnus-select-method
+	     `(nnimap ,hostname
 		      (nnimap-address ,imap-server)
 		      (nnimap-server-port ,imap-port)
 		      (nnimap-stream ssl)))
-
-       (setf message-send-mail-function 'smtpmail-send-it
-	     smtpmail-starttls-credentials `((,smtp-server ,smtp-port nil nil))
-	     smtpmail-auth-credentials `((,smtp-server ,smtp-port
-						       ,email nil))
-	     smtpmail-default-smtp-server smtp-server
-	     smtpmail-smtp-server smtp-server
-	     smtpmail-smtp-service smtp-port
-	     gnus-ignored-newsgroups
+       ;; avoid one big setq to skip formatting issues
+       (setq message-send-mail-function 'smtpmail-send-it)
+       (setq smtpmail-starttls-credentials `((,smtp-server ,smtp-port nil nil)))
+       (setq smtpmail-auth-credentials `((,smtp-server ,smtp-port
+						       ,email nil)))
+       (setq smtpmail-default-smtp-server smtp-server)
+       (setq smtpmail-smtp-server smtp-server)
+       (setq smtpmail-smtp-service smtp-port)
+       (setq gnus-ignored-newsgroups
 	     "^to\\.\\|^[0-9. ]+\\( \\|$\\)\\|^[\"]\"[#'()]")
-
-       (setf user-mail-address email)
-       (setf smtpmail-stream-type 'starttls))))
+       (setq user-mail-address email)
+       (setq smtpmail-stream-type 'starttls))))
 
 
 (cl-defun gnus-gen-dot-gnus (email &key smtp imap dot-gnus
