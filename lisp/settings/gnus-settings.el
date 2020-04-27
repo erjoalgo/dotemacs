@@ -269,7 +269,7 @@ machine smtp.gmail.com login %s password %s port 587"
     (mml-insert-tag '/part)))
 
 (defvar gnus-email-templates-home
-  (expand-file-name "~/.gnus-templates"))
+  (expand-file-name "~/.email-templates"))
 
 (defun gnus-email-templates-add-or-edit (hostname)
   (interactive
