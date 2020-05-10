@@ -70,8 +70,8 @@
 
 (require 'f)
 
-(push (expand-file-name "~/git/autobuild/examples") load-path)
-(require 'autobuild-rules)
+(push (expand-file-name "~/git/autobuild/common-rules") load-path)
+(require 'autobuild-common-rules)
 
 (dolist (feature
          '(f
