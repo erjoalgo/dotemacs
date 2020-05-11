@@ -220,15 +220,20 @@
 (defvar inferior-sql-mode-providers nil
   "Functions that may be called to provide a *SQL* eval buffer.")
 
+(defmacro switch-to-buff-or-else-command
+    (buff-spec &optional on-nonexistent)
+  (let ((buff-sym (gensym "buff-")))
+    `(buttons-defcmd
+      (let ((,buff-sym (buffer-matching ,buff-spec)))
+        (or (when ,buff-sym (switch-to-buffer ,buff-sym))
+            ,on-nonexistent
+            (error (format "no such buffer: %s" ,buff-spec)))))))
+
 (buttons-macrolet
  ((dir (dir) `(read-file-name "select file: " ,dir))
   (buff (buff-spec &optional on-nonexistent)
-        (let ((buff-sym (gensym "buff-")))
-          `(cmd
-           (let ((,buff-sym (buffer-matching ,buff-spec)))
-              (or (when ,buff-sym (switch-to-buffer ,buff-sym))
-                  ,on-nonexistent
-                  (error (format "no such buffer: %s" ,buff-spec)))))))
+        `(switch-to-buff-or-else-command
+          ,buff-spec ,on-nonexistent))
   (file (file) `(cmd (find-file ,file))))
  (defbuttons
    erjoalgo-command-mode-buttons
