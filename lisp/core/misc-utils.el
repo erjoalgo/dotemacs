@@ -804,29 +804,5 @@ This requires the external program `diff' to be in your `exec-path'."
                          (kill-process proc)))
                      t)))
 
-(defmacro char-dial-pad-digit (char)
-  `(case ,char
-     ,@(loop with dial-pad =
-             `(("abc" . 2) ("def" . 3)
-               ("gih" . 4) ("jkl" . 5) ("mno" . 6)
-               ("pqrs" . 7) ("tuv" . 8) ("xyz" . 9))
-             for (chars . digit) in dial-pad
-             append (cl-loop for c across chars
-                             collect `(,c ,digit)))
-     (t (error "no dial-pad digit for char %s"
-               (string-to-char char)))))
-
-(defun alpha-text-to-number (text)
-  (cl-labels (())
-    (cl-loop
-     with CHAR-SPACE = 32
-     with CHAR-ZERO = 48
-     with as-number = (make-string (length text) CHAR-SPACE)
-     for c across text
-     for i from 0
-     as d = (char-dial-pad-digit c)
-     do (setf (aref as-number i) (+ CHAR-ZERO d))
-     finally (return as-number))))
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; misc-utils.el ends here
