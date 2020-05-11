@@ -387,10 +387,12 @@
       ("f" 'find-iregex)
       ("u" 'universal-argument)
       ([f2] 'call-last-kbd-macro)
-      ("w" (buttons-make
+      ("W" (buttons-make
             ("1" 'slime-sbcl)
             ("2" 'slime-stumpwm)
             ("3" 'cider-buffer-or-jack-in)))
+      ("w" (switch-to-buff-or-else-command
+            "regexp:[*]slime-repl sbcl"))
       ("r" 'replace-regexp)
       ("R" 'query-replace-regexp)
       ("A" (buff "[*]Async Shell Command[*]"))
