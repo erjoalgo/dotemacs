@@ -46,6 +46,7 @@
 	(insert (pp form))
 	(insert (pp `(setf inbox-group-name ,inbox-group-name)))
 	(insert (pp `(setf sent-group-name ,sent-group-name)))
+        (emacs-lisp-mode)
 	(add-file-local-variable 'mode 'emacs-lisp))
       (message "wrote to %s" dot-gnus))))
 
