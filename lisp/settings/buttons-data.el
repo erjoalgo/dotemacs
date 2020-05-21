@@ -221,6 +221,9 @@
           ("d" (cmd-ins "(cl-destructuring-bind ({}){})"))
           ("m" (cmd-ins "(cl-multiple-value-bind ({}){})"))))
         ("t" (cmd-ins "(ert-deftest test-{} (){(nli)}{})"))
+        ("T" (cmd-ins
+              "(cl-letf (((symbol-function #'{})" (nli)
+              "{}" ")))"))
         ("c" (cmd-ins "(defclass {} ({}){(nli)}({}))"))
         ("u" (cmd-ins "(defcustom {} \"{}\""
                       (nli) ":type '"
