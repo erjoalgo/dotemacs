@@ -933,7 +933,7 @@
           ("k" (cmd-ins "test -a "))
           ("j" (cmd-ins "test -o "))
           ("=" (cmd-ins "test {} = "))
-          ("c" (cmd-ins "command -v "))))))
+          ("v" (cmd-ins "command -v "))))))
       ("<" (cmd-ins " <<< "))))
 
    (defbuttons tex-buttons programming-buttons (tex-mode-map)
