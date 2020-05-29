@@ -151,3 +151,4 @@
           do (message "%dms to load %s" ms file))))
 ;; (define-key key-translation-map [?\C-h] [?\C-?])
 ;; (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
+"🤔"
