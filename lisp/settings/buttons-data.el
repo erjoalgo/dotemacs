@@ -374,7 +374,9 @@
                     (nli)
                     (rec)
                     (nli)
-                    "(error {}))"))))
+                    "(error {}))"))
+      ("." (but
+            ("f" #'find-function)))))
 
    (defbuttons cl-buttons emacs-lisp-buttons
      (lisp-mode-map slime-mode-map slime-mode-indirect-map)
