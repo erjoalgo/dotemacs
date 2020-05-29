@@ -91,7 +91,7 @@
                    (cond
                     (read-char
                      (cl-assert
-                      (= 1 (max (mapcar (lambda (hint-cand)
+                      (= 1 (apply #'max (mapcar (lambda (hint-cand)
                                           (length (car hint-cand)))
                                         hints-cands))))
                      (char-to-string
