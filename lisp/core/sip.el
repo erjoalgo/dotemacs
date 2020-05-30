@@ -258,7 +258,7 @@
 
 (defun sip-chat-last-message ()
   (goto-char (point-max))
-  (if (re-search-backward "^\\([0-9]+\\|YOU\\) +says: .*" nil t)
+  (if (re-search-backward "^\\([0-9]+\\| *YOU\\) +says?: .*" nil t)
       (buffer-substring (match-beginning 0) (point-max))
     (warn "no message found on buffer %s" buffer)))
 
