@@ -9,7 +9,8 @@
       (browser-new-tab (format "file://%s" fn))) "html")
    ("gimp" "xcf")
    ("mpg321" "mp3")
-   ("vlc" "mp4" )))
+   ("vlc" "mp4" )
+   ("xournal" "xoj")))
 
 (defvar open-exe
   (s-trim (shell-command-to-string "which open")))
