@@ -146,3 +146,5 @@ globals().update(args)
        (format
         "pylint %s | sed 's/^[A-Z]: *\\([0-9]*\\),/%s:\\1: /g'"
         basename basename)))))
+
+(setq python-shell-interpreter "python3")
