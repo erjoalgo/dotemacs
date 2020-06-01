@@ -765,6 +765,9 @@ This requires the external program `diff' to be in your `exec-path'."
 (defun git-merge ()
   "Simple git merge."
   (interactive)
+  (revert-buffer-no-confirm)
+  (save-excursion
+    (goto-char (point-min))
   (while (re-search-forward "^<<<<<<<" nil t)
     (goto-char (match-beginning 0))
     (re-search-forward
@@ -786,7 +789,7 @@ This requires the external program `diff' to be in your `exec-path'."
         (cl-assert choice)
         (goto-char start)
         (replace-match choice t t nil)
-        '(cl-assert (y-or-n-p "Continue? "))))))
+          '(cl-assert (y-or-n-p "Continue? ")))))))
 
 (defun switch-to-buffer-with-process-pid (pid)
   "Switch to the buffer associated with a process with PID."
