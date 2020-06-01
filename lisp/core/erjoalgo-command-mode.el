@@ -327,7 +327,7 @@
                     do (join-line '(4)))))
     ("m"
      (buttons-make
-      ("e" (file "~/.emacs"))
+      ("e" (file (file-truename "~/.emacs")))
       ("C" (buff "regexp:[*]ansi-term[*].*" (ansi-term "/bin/bash")))
       ("c" (lambda (arg) (interactive "P")
              (switch-to-nth-most-recent-buffer "^[*]compilation[*]" arg)))
