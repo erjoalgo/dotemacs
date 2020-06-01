@@ -515,19 +515,19 @@
        (but
         ("t" (cmd-ins (ins "printf(\"{}\\n\"{});")))
         ("s" (cmd-ins "scanf( \"{}\"{} );"))
-        ("v" (cmd-ins "std::cout << \"DEBUG "
+        ("v" (cmd-ins "LOG(ERROR) << \"DEBUG "
                       (f-base (buffer-file-name))
                       " {(rnd)}, {0}: \""
                       (nli)
-                      "<< {0} << std::endl;"))
+                      "<< {0};"))
         ("V" (cmd-ins
-              "std::cout << \"DEBUG "
+              "LOG(ERROR) << \"DEBUG "
               (f-base (buffer-file-name))
               " {(rnd)}: proto {0}: \""
               (nli)
-              "<< {0}.DebugString() << std::endl;"))
+              "<< {0}.DebugString();"))
         ("k" (cmd
-              (ins "std::cout << \"DEBUG STACKTRACE {(rnd)}: \" << CurrentStackTrace();")
+              (ins "LOG(ERROR) << \"DEBUG STACKTRACE {(rnd)}: \" << CurrentStackTrace();")
               (newline-and-indent)
               (save-excursion
                 (goto-char (point-max))
@@ -541,7 +541,7 @@
         ("m" (cmd-ins "absl::StreamFormat(\"{}\"{});"))
         ("c" (cmd-ins "absl::StrCat(\"{}\"{})"))
         ("C" (cmd-ins ".c_str()"))
-        ("r" (cmd-ins "absl::PrintF(\"DEBUG TRACE {(buf)}, ({}): {(rnd)}\\n\");"))
+        ("r" (cmd-ins "LOG(ERROR) <<\"DEBUG TRACE {(buf)}, ({}): {(rnd)}\\n\";"))
         ("." (cmd-ins ".c_str()"))
         ("," (cmd-ins "<< {} << endl;{(nli)}"))
         ("<" (cmd-ins "cout << "))
@@ -552,9 +552,9 @@
           ("w" (cmd-ins "LOG(WARNING) << "))
           ("e" (cmd-ins "LOG(ERROR) << "))
           ("d" (cmd-ins "LOG(DFATAL) << "))
-          ("f" (cmd-ins "LOG(FATAL / CHECK) << "))
+          ("f" (cmd-ins "LOG(FATAL) << "))
           ("d" (cmd-ins "LOG(DCHECK) << "))
-          ("q" (cmd-ins "LOG(QFATAL / QCHECK) << "))))))
+          ("q" (cmd-ins "LOG(QFATAL) << "))))))
       ("l" (cmd-ins "strlen( {} )"))
       ("'" (cmd-ins "/*{}*/{(nli)}"))
       ("/" nil)
@@ -572,7 +572,7 @@
                 (ins ";{(nli)}")))
       ("d"
        (but
-        ("f" (cmd-ins " ( {} ){(cbd)}"))
+        ("f" (cmd-ins "({}){(cbd)}"))
         ("m" (cmd-ins "int main (int argc, char* argv[]){(cbd)}"))))
       ("i"
        (but
@@ -617,7 +617,16 @@
       ("b"
        (but
         ("c" (cmd-ins "continue;"))
-        ("k" (cmd-ins "break;"))))))
+        ("k" (cmd-ins "break;"))))
+      ("'" (cmd (if (region-active-p)
+                    (save-excursion
+                      (goto-char (region-beginning))
+                      (insert "/*")
+                      (goto-char (region-end))
+                      (insert "*/"))
+                  (progn (ins "/*")
+                         (rec)
+                         (ins "*/")))))))
 
    (defbuttons java-buttons c-buttons (java-mode-map)
      (but
@@ -811,7 +820,7 @@
       ("M" (cmd-ins "package main{(nli)}"))
       ("n"
        (but
-        ("v" (cmd-ins "fmt.Printf(\"DEBUG VALUEOF "
+        ("v" (cmd-ins "fmt.Printf(\"DEBUG "
                       (f-filename buffer-file-name)
                       ", "
                       (ins "{0}: %+v\\n\","
@@ -895,7 +904,7 @@
         ("v" (cmd-ins "echo \"DEBUG VALUEOF "
                       (f-filename buffer-file-name)
                       ", "
-                      (ins "{0}: ${" "0}" (nli?))))
+                      (ins "\\{0}: {0}\"" (nli?))))
         ("r" (cmd-ins "echo \"DEBUG TRACE "
                       (f-filename buffer-file-name)
                       " {(rnd)}\""))))
@@ -1083,15 +1092,17 @@
        (but
         ("q"
          (but
-          ("u" (cmd-ins "std::unique_ptr<{}> " (inm)))
+          ("u" (cmd
+                (reg? (ins "std::unique_ptr<{(reg)}> ")
+                      (ins "std::unique_ptr<{0}> "))))
           ("m" (cmd-ins "absl::make_unique<{}>" (inm)))
           ("w" (cmd-ins "absl::WrapUnique({})" (inm)))))
-        ("m" (cmd-ins "map<{}> " (inm)))
-        ("p" (cmd-ins "pair<{}> " (inm)))
-        ("V" (cmd-ins "vector<{}> "))
-        ("s" (cmd-ins "std::string "))
-        ("S" (cmd-ins "std::string& "))
-        ("v" (cmd-ins "absl::string_view "))
+        ("m" (cmd-ins "map<{}>" (inm)))
+        ("p" (cmd-ins "pair<{}>" (inm)))
+        ("V" (cmd-ins "std::vector<{}>"))
+        ("s" (cmd-ins "std::string"))
+        ("S" (cmd-ins "std::string&"))
+        ("v" (cmd-ins "absl::string_view"))
         ("t"
          (but
           ("e" (cmd-ins "true"))
@@ -1138,6 +1149,7 @@
                     (ins "#include <assert.h>") (nli)
                     (ins "using namespace std;") (nli)))
       ("a" (cmd-ins "[{}]({}){" "{}" "}"))
+      ("/" (cmd-ins "/*{}=*/"))
       ("t"
        (but
         ("u" (cmd-ins "true"))
@@ -1154,15 +1166,16 @@
            (cmd (if (not (region-active-p))
                     (buttons-template-insert "ASSIGN_OR_RETURN(auto {}, {});")
                   (save-excursion
-                    (back-to-indentation)
+                    (goto-char (region-beginning))
                     (cl-assert
                      (re-search-forward
-                      "\\(auto *[*]? +\\)?\\(.*?\\) *=\\(.*\\);"
-                      (line-end-position) t))
-                    (replace-match "ASSIGN_OR_RETURN(\\1\\2,\\3);")
+                      "\\([^=]+?\\) *=\\([^;]+\\)"
+                      nil t))
+                    (replace-match "ASSIGN_OR_RETURN(\\1,\\2);")
                     nil))))
           ("r" (cmd-ins "RETURN_IF_ERROR({});"))
-          ("R" (cmd-ins "RET_CHECK({});"))))
+          ("R" (cmd-ins "RET_CHECK({});"))
+          ("v" (cmd-ins "std::move({})"))))
         ("l"
          (but
           ("e"
@@ -1170,6 +1183,7 @@
             ("f" (cmd-ins "util::FailedPreconditionError(absl::StrFormat(\"{}\", {}));"))
             ("i" (cmd-ins "util::InternalError(absl::StrFormat(\"{}\", {}));"))
             ("a" (cmd-ins "util::InvalidArgumentError(absl::StrFormat(\"{}\", {}));"))
+            ("u" (cmd-ins "util::UnimplementedError(absl::StrFormat(\"{}\", {}));"))
             ("o" (cmd-ins "util::OkStatus();"))))))))))
 
    (defbuttons yacc-buttons programming-buttons (yacc-mode-map)
@@ -1522,6 +1536,7 @@ server {
    (defbuttons global-buttons nil (global-map)
      (but
       ((kbd "M-c") #'autobuild-build)
+      ((kbd "s-C") #'autobuild-rebuild)
       ((kbd "M-q") #'sticky-window-delete-window)
       ((kbd "M-Q") #'sticky-window-toggle)
       ((kbd "M-/") 'my-comment-out)
