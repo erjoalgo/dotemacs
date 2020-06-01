@@ -768,27 +768,27 @@ This requires the external program `diff' to be in your `exec-path'."
   (revert-buffer-no-confirm)
   (save-excursion
     (goto-char (point-min))
-  (while (re-search-forward "^<<<<<<<" nil t)
-    (goto-char (match-beginning 0))
-    (re-search-forward
-     (concat
-      "^<<<<<<< ?\\(.*\\)\n\\(\\(.*\n\\)*?\\)"
-      "=======.*\n\\(\\(.*\n\\)*?\\)>>>>>>> \\(.*\\)\n"))
-    (register-groups-bind (_ opt1-name opt1-data _ opt2-data _ opt2-name)
-      (let* ((start (match-beginning 0))
-             (end (match-end 0))
-             (choices-alist
-              `((,(substring-no-properties opt1-name) . ,opt1-data)
-                (,(substring-no-properties opt2-name) . ,opt2-data)))
-             (choice-key
-              (save-match-data
-                (selcand-select (mapcar #'car choices-alist)
-                                "select merge option: "
-                                nil nil nil t)))
-             (choice (alist-get choice-key choices-alist nil nil #'equal)))
-        (cl-assert choice)
-        (goto-char start)
-        (replace-match choice t t nil)
+    (while (re-search-forward "^<<<<<<<" nil t)
+      (goto-char (match-beginning 0))
+      (re-search-forward
+       (concat
+        "^<<<<<<< ?\\(.*\\)\n\\(\\(.*\n\\)*?\\)"
+        "=======.*\n\\(\\(.*\n\\)*?\\)>>>>>>> \\(.*\\)\n"))
+      (register-groups-bind (_ opt1-name opt1-data _ opt2-data _ opt2-name)
+        (let* ((start (match-beginning 0))
+               (end (match-end 0))
+               (choices-alist
+                `((,(substring-no-properties opt1-name) . ,opt1-data)
+                  (,(substring-no-properties opt2-name) . ,opt2-data)))
+               (choice-key
+                (save-match-data
+                  (selcand-select (mapcar #'car choices-alist)
+                                  "select merge option: "
+                                  nil nil nil t)))
+               (choice (alist-get choice-key choices-alist nil nil #'equal)))
+          (cl-assert choice)
+          (goto-char start)
+          (replace-match choice t t nil)
           '(cl-assert (y-or-n-p "Continue? ")))))))
 
 (defun switch-to-buffer-with-process-pid (pid)
