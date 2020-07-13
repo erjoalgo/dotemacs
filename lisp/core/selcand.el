@@ -91,8 +91,8 @@
                     (read-char
                      (cl-assert
                       (= 1 (apply #'max (mapcar (lambda (hint-cand)
-                                          (length (car hint-cand)))
-                                        hints-cands))))
+                                                  (length (car hint-cand)))
+                                                hints-cands))))
                      (char-to-string
                       (read-char
                        (concat prompt "\n" (s-join "\n" choices)))))
