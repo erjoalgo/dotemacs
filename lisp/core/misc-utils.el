@@ -807,5 +807,10 @@ This requires the external program `diff' to be in your `exec-path'."
                          (kill-process proc)))
                      t)))
 
+(defun debian-file->string (filename &optional not-literal-p)
+  (with-temp-buffer
+    (funcall (if not-literal-p 'insert-file-contents 'insert-file-contents-literally) filename)
+    (buffer-string)))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; misc-utils.el ends here
