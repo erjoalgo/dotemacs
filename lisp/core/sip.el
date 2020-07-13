@@ -84,6 +84,14 @@
     (unless (eq (point) (line-beginning-position))
       (newline))))
 
+(defun sip-send-region (a b)
+  (interactive "r")
+  (let ((sip-address (sip-phone-number-to-address sip-from-phone-number)))
+    (linphonecsh "generic" (format "chat %s %s"
+                                   sip-address
+                                   (buffer-substring (min a b)
+                                                     (max a b))))))
+
 (defvar sip-last-message-buffer nil)
 
 (defun sip-chat-buffer (other-number &optional self-number)
