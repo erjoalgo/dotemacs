@@ -194,7 +194,6 @@
             (error "0 messages in body")
           (cl-loop
            for message across messages
-           do (message "DEBUG xfbo message: %s" message)
            do
            (alist-let message (to from message id timestamp)
              (sip-message-received to from message id timestamp))))))
