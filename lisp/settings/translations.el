@@ -245,11 +245,6 @@
         (kill-new text)
 	(translation-new-correction translation-name  nil nil)))))
 
-(defun debian-file->string (filename &optional not-literal-p)
-  (with-temp-buffer
-    (funcall (if not-literal-p 'insert-file-contents 'insert-file-contents-literally) filename)
-    (buffer-string)))
-
 (defun wdiff (a b dest-txt dest-html)
   (check-cmd "which" '("wdiff") "missing wdiff")
   (loop
