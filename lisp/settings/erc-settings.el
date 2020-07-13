@@ -19,8 +19,9 @@
 		       (let* ((choices-alist
 			       (loop for login in logins collect
 				     (cons (apply 'erc-login-to-string login) login)))
-			      (choice (completing-read "select an irc server: "
-						       (mapcar 'car choices-alist) nil t)))
+			      (choice (completing-read
+                                       "select an existing irc server config: "
+				       (mapcar 'car choices-alist) nil t)))
 			 (cdr (assoc choice choices-alist))))))
       selected)))
 
