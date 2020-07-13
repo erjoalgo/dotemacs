@@ -250,14 +250,19 @@
   #'sip-send-chat-line)
 
 (defun sms-fanout-client-loop ()
-  (when-let ((disconnected (sms-fanout-disconnected-p)))
-    (sip-ws-log (format "disconnected: %s. attempting to reconnect on loop"
-                        disconnected))
-    (condition-case ex
-        (setf sms-fanout-client (sms-fanout-connect))
-      (error (sip-ws-log (format "unable to connect: %s" ex)))))
-  (websocket-send-text sms-fanout-client "ping")
-  (setq sms-fanout-client-last-pong-sent (float-time)))
+  (let (err)
+    (when-let ((disconnected (sms-fanout-disconnected-p)))
+      (sip-ws-log (format "disconnected: %s. attempting to reconnect on loop"
+                          disconnected))
+      (condition-case ex
+          (setf sms-fanout-client (sms-fanout-connect))
+        (error
+         (sip-ws-log (format "unable to connect: %s" ex))
+         (setq err ex))))
+    (unless err
+      (sip-ws-log "pinging")
+      (websocket-send-text sms-fanout-client "ping")
+      (setq sms-fanout-client-last-pong-sent (float-time)))))
 
 (defun sip-chat-buffers-list ()
   (cl-loop for buffer in (buffer-list)
