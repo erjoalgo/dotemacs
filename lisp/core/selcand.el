@@ -47,7 +47,6 @@
 
 
 (defcustom selcand-default-hints
-  ;; "qwertasdfzxcv1234"
   "1234acdefqrstvwxz"
   "Default hint chars."
   :type 'string
@@ -56,26 +55,26 @@
 (defun selcand-hints (cands &optional chars)
   "Return an alist (HINT . CAND) for each candidate in CANDS.
 
-  each hint consists of characters in the string CHARS."
+  Each hint consists of characters in the string CHARS."
   (setf chars (or chars selcand-default-hints))
   (cl-assert cands)
-  (let* ((w (ceiling (log (length cands) (length chars))))
-         (hints (cl-loop with curr = '("")
-                         for wi below w do
-                         (setf curr
-                               (cl-loop for c across chars
-                                        append (mapcar (apply-partially
-                                                        'concat (char-to-string c))
-                                                       curr)))
-                         finally (return curr))))
-    (cl-loop for hint in hints
-             for cand in cands
-             collect (cons hint cand))))
+  (cl-loop with hint-width = (ceiling (log (length cands) (length chars)))
+           with current = '("")
+           for _ below hint-width do
+           (setq current
+                 (cl-loop for c across chars nconc
+                          (mapcar (apply-partially 'concat (char-to-string c))
+                                  current)))
+           finally
+           (return
+            (cl-loop for hint in current
+                     for cand in cands
+                     collect (cons hint cand)))))
 
-(cl-defun selcand-select (cands &optional prompt stringify autoselect-if-single
-                                initial-input read-char)
+(defun selcand-select (candidates &optional prompt stringify autoselect-if-single
+                                  initial-input read-char)
   "Use PROMPT to prompt for a selection from CANDS candidates."
-  (let* ((hints-cands (selcand-hints cands))
+  (let* ((hints-cands (selcand-hints candidates))
          (sep ") ")
          (stringify (or stringify #'prin1-to-string))
          (initial-candidate nil)
