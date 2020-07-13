@@ -104,8 +104,14 @@
       ("T" (cmd-ins "try:"
                     (nli)
                     (rec)
-                    (nli)
-                    "except:"
+                    (when (looking-at ".+")
+                      (end-of-line))
+                    (if (looking-back "^[ 	]+$")
+                        ""
+                      (progn
+                        (nli)
+                        (python-indent-dedent-line)))
+                    "except Exception{}:"
                     (nli)))
       ("z" (cmd-ins "if {}:{(nli)}"))
       ("x" (cmd-ins "elif {}:{(nli)}"))
@@ -175,6 +181,10 @@
       ("N" (cmd (remove-trailing-whitespace (point-min) (point-max))
                 (ins "a=[{}]{(nli)}print(getattr(Solution(), dir(Solution)[-1])(*a))")))
       ("E" (cmd-ins "raise Exception({})"))
+      ("b"
+       (but
+        ("c" (cmd-ins "continue"))
+        ("k" (cmd-ins "break"))))
       ("u"
        (but
         ("a" (cmd-ins "assert({})"))
@@ -407,7 +417,7 @@
         ("n" (cmd-ins "(format {})"))
         ("r" (cmd-ins "(format t \"trace: {(buf)} {(rnd)}~%\")"))
         ("[" (cmd-ins "~{~A~^" "{}" "~}"))
-        ("v" (cmd-ins "(format t \"{(buf)}: value of {0}: ~A~%\" {0})"))
+        ("v" (cmd-ins "(format t \"{(buf)} {(rnd)}: value of {0}: ~A~%\" {0})"))
         ("m"
          (but
           ("i" (cmd-ins "(vom:info \"{}~%\"{})"))
@@ -1432,8 +1442,8 @@
 
      (defbuttons gnus-article-buttons nil (gnus-article-mode-map)
        (but
-        ("F" 'gnus-summary-mail-forward)
-        ("R" 'gnus-article-wide-reply-with-original)
+        ((kbd "s-f") 'gnus-summary-mail-forward)
+        ((kbd "s-r") 'gnus-article-wide-reply-with-original)
         ((kbd "s-s") 'gnus-mime-save-all-attachments)))
 
      (defbuttons gnus-summary-buttons nil (gnus-summary-mode-map)
