@@ -54,4 +54,7 @@ realm=\"${realm}\"
     (with-current-buffer (find-file-noselect linphonerc)
       (goto-char (point-max))
       (newline)
-      (insert proxy-and-authinfo))))
+      (insert proxy-and-authinfo)
+      (save-buffer)
+      ;; TODO restart linphone
+      )))
