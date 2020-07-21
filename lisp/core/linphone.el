@@ -56,5 +56,4 @@ realm=\"${realm}\"
       (newline)
       (insert proxy-and-authinfo)
       (save-buffer)
-      ;; TODO restart linphone
-      )))
+      (async-shell-command "linphone-restart.sh"))))
