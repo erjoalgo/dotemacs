@@ -1564,7 +1564,10 @@ server {
         ("R" (cmd (message "starting server...") (server-start nil t)))
         ("x" 'xref-find-references)
         ("a" 'xref-find-apropos)
-        ("c" 'eglot-code-actions)))))))
+        ("c" 'eglot-code-actions)
+        ("g"
+         (but
+          ("m" #'git-merge)))))))))
 
 (message "buttons loaded")
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
