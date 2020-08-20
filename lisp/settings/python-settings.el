@@ -32,8 +32,8 @@ if breakpoints are present in `python-mode' files"
 (defvar python-argparse-template
   "import argparse
 parser = argparse.ArgumentParser()
-parser.add_argument(\"line\", help = \"universally unique line\")
-parser.add_argument(\"filename\", help = \"input/output file\")
+parser.add_argument(\"line\", help=\"universally unique line\")
+parser.add_argument(\"filename\", help=\"input/output file\")
 parser.add_argument(\"-b\", \"--begining_append\",  action=\"store_true\",
                     help = \"preppend instead of append\")
 parser.add_argument(\"-o\", \"--output\",
