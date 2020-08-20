@@ -292,10 +292,13 @@
                           -1))))
      as line = (with-current-buffer buffer
                  (sip-chat-last-message))
+     as phone-number = (buffer-local-value 'sip-from-phone-number buffer)
      when line
      do (let ((map (make-sparse-keymap)))
           (define-key map (kbd "RET") `(lambda () (interactive)
-                                         (switch-to-buffer ,buffer)))
+                                         (if (buffer-live-p ,buffer)
+                                             (switch-to-buffer ,buffer)
+                                           (sip-chat ,phone-number))))
           (insert (s-replace "\n" "\\n" line))
           (put-text-property (line-beginning-position)
                              (line-end-position) 'keymap map)
