@@ -39,6 +39,14 @@
    when buf do (kill-buffer buf)
    while (and char (dired-mark-file-as char))))
 
+(defun dired-kill-marked-filenames ()
+  (interactive)
+  (->> (dired-remember-marks (point-min) (point-max))
+    (mapcar (lambda (item)
+              (f-filename (car item))))
+    (s-join ", ")
+    (kill-new)))
+
 (defun dired-tagger-move ()
   (interactive)
 
