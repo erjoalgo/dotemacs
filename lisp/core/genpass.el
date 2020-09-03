@@ -41,11 +41,15 @@
 		             (aset str i c))
 		    str)))
 
+(defvar genpass-bag-syms nil "Symbols denoting genpass character bags.")
+
 (defmacro genpass-def-char-bags (&rest name-spec-pairs)
+  "Convenience macro defines a series of named character bags NAME-SPEC-PAIRS."
   (let (syms)
   `(progn
      ,@(cl-loop for (name spec) in name-spec-pairs
                 as sym = (intern (concat "genpass-" (symbol-name name)))
+                collect `(defvar ,sym nil)
                 collect `(setq ,sym (genpass-ranges-to-bag ,spec))
                 do (push sym syms))
      (setf genpass-bag-syms ',syms))))
@@ -67,7 +71,7 @@
   (gui-set-selection 'PRIMARY text))
 
 (defun genpass-genpass (n bag &optional no-kill)
-  "Generate a passsword of length N using char-bag BAG."
+  "Generate a passsword of length N using char-bag BAG.  NO-KILL skips clipboard."
   (interactive (list (read-number "password length: " genpass-default-len)
                      (->
                          (completing-read "select character bag: "
