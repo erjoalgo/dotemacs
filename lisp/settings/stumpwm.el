@@ -78,6 +78,7 @@ in the current STUMPWM group/workspace."
                     (list "-d" url-request-data))
                 ,@(cl-loop for (k . v) in url-request-extra-headers
                            append (list "-H" (format "%s: %s" k v))))))
+    ;; TODO display errors
     (apply #'start-process proc-name proc-name "x-service-curl" args)))
 
 (defun stumpwm-request (path &rest args)
