@@ -73,13 +73,11 @@
 (defun genpass-genpass (n bag &optional no-kill)
   "Generate a passsword of length N using char-bag BAG.  NO-KILL skips clipboard."
   (interactive (list (read-number "password length: " genpass-default-len)
-                     (->
-                         (completing-read "select character bag: "
-                                          (mapcar #'symbol-name genpass-bag-syms)
-                                          nil t
-                                          ;; "alnum"
-                                          )
-                       intern symbol-value)))
+                     (symbol-value
+                      (intern
+                       (completing-read "select character bag: "
+                                        (mapcar #'symbol-name genpass-bag-syms)
+                                        nil t "genpass-alnum")))))
   (cl-loop with str = (make-string n 0)
 	   for i below n do
 	   (aset str i (seq-random-elt bag))
