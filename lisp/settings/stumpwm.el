@@ -109,6 +109,17 @@ in the current STUMPWM group/workspace."
   (unless (zerop (length text))
     (stumpwm-clipboard-set text)))
 
+(defun stumpwm-search-engine-search (query engine-letter)
+  (interactive
+   (list
+    (if (region-active-p)
+        (buffer-substring (region-beginning) (region-end))
+      (read-string "enter search query: "))
+    (read-char "enter search engine letter: ")))
+  (let ((url-request-extra-headers
+         `(("ENGINE-LETTER" . ,(char-to-string engine-letter)))))
+    (stumpwm-request-post "/search" query)))
+
 (advice-add #'gui-select-text :after #'gui-select-text--stumpwm)
 
 (stumpwm-message (format "connected to emacs on %s" system-name) 'green)
