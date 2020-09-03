@@ -132,7 +132,7 @@
                     (cmt)
                     (ins "{(nli)}")))
       ("m" (cmd-ins
-            "from __future__ import print_function" (nli)))
+            "import "))
       ("n"
        (but
         ("t" (cmd-ins "print ({}){(nli)}"))
@@ -551,7 +551,7 @@
         ("m" (cmd-ins "absl::StreamFormat(\"{}\"{});"))
         ("c" (cmd-ins "absl::StrCat(\"{}\"{})"))
         ("C" (cmd-ins ".c_str()"))
-        ("r" (cmd-ins "LOG(ERROR) <<\"DEBUG TRACE {(buf)}, ({}): {(rnd)}\\n\";"))
+        ("r" (cmd-ins "LOG(ERROR) << \"DEBUG TRACE {(buf)}, ({}): {(rnd)}\\n\";"))
         ("." (cmd-ins ".c_str()"))
         ("," (cmd-ins "<< {} << endl;{(nli)}"))
         ("<" (cmd-ins "cout << "))
@@ -1190,10 +1190,10 @@
          (but
           ("e"
            (but
-            ("f" (cmd-ins "util::FailedPreconditionError(absl::StrFormat(\"{}\", {}));"))
-            ("i" (cmd-ins "util::InternalError(absl::StrFormat(\"{}\", {}));"))
-            ("a" (cmd-ins "util::InvalidArgumentError(absl::StrFormat(\"{}\", {}));"))
-            ("u" (cmd-ins "util::UnimplementedError(absl::StrFormat(\"{}\", {}));"))
+            ("f" (cmd-ins "absl::FailedPreconditionError(absl::StrFormat(\"{}\", {}));"))
+            ("i" (cmd-ins "absl::InternalError(absl::StrFormat(\"{}\", {}));"))
+            ("a" (cmd-ins "absl::InvalidArgumentError(absl::StrFormat(\"{}\", {}));"))
+            ("u" (cmd-ins "absl::UnimplementedError(absl::StrFormat(\"{}\", {}));"))
             ("o" (cmd-ins "util::OkStatus();"))))))))))
 
    (defbuttons yacc-buttons programming-buttons (yacc-mode-map)
@@ -1309,7 +1309,8 @@
       ("=" (git-hunk-toggle-cmd "+"))
       ("0" (git-hunk-toggle-cmd " "))))
 
-   (defbuttons backtrace-bindings nil (debugger-mode-map emacs-lisp-mode-map inferior-emacs-lisp-mode-map)
+   (defbuttons backtrace-bindings nil
+     (debugger-mode-map emacs-lisp-mode-map inferior-emacs-lisp-mode-map)
      (but
       ("h"
        (but
@@ -1546,7 +1547,7 @@ server {
    (defbuttons global-buttons nil (global-map)
      (but
       ((kbd "M-c") #'autobuild-build)
-      ((kbd "s-C") #'autobuild-rebuild)
+      ((kbd "s-C") #'autobuild-rebuild-last-action)
       ((kbd "M-q") #'sticky-window-delete-window)
       ((kbd "M-Q") #'sticky-window-toggle)
       ((kbd "M-/") 'my-comment-out)
