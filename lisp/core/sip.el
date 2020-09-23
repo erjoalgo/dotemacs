@@ -1,7 +1,6 @@
 (require 'websocket)
 
 (defvar sms-fanout-address nil)
-(defvar sms-fanout-hostname nil)
 (defvar sms-fanout-client nil)
 (defvar sms-fanout-client-last-pong-sent nil)
 (defvar sms-fanout-client-last-pong-received nil)
@@ -52,7 +51,7 @@
     number-clean))
 
 (defun sip-phone-number-to-address (number &optional sip-host)
-  (let* ((sip-host (or sip-host *sip-default-host*))
+  (let* ((sip-host (or sip-host (sip-default-host)))
          (number-clean (sip-phone-number-clean number))
          (sip-address (format "sip:%s@%s" number-clean sip-host)))
     sip-address))
@@ -324,12 +323,14 @@
 
 
 (defun sms-fanout-read-address ()
-  (when-let* ((info (authinfo-get sms-fanout-hostname))
-              (api-key (alist-get 'password info)))
-    (format "wss://%s/fanout?api-key=%s" sms-fanout-hostname api-key)))
+  (when-let* ((info (authinfo-get-by-app "sms-fanout"))
+              (api-key (alist-get 'password info))
+              (hostname (alist-get 'machine info)))
+    (format "wss://%s/fanout?api-key=%s" hostname api-key)))
+
 
 (unless sms-fanout-address
   (setq sms-fanout-address (sms-fanout-read-address)))
 
-(when sms-fanout-hostname
+(when sms-fanout-address
   (sms-fanout-client-start-timer))

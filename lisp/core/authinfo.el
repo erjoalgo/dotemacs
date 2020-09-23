@@ -10,7 +10,12 @@
                         collect (cons (intern key) val))))))
 
 
-(defun authinfo-get (host)
+(defun authinfo-get-by-host (host)
   (cl-loop for alist in (authinfo-parse)
            thereis (when (equal host (alist-get 'machine alist))
+                     alist)))
+
+(defun authinfo-get-by-app (app)
+  (cl-loop for alist in (authinfo-parse)
+           thereis (when (equal app (alist-get 'app alist))
                      alist)))
