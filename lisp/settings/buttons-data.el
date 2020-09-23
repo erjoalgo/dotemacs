@@ -131,8 +131,7 @@
       ("M" (cmd-ins "from {} import *"
                     (cmt)
                     (ins "{(nli)}")))
-      ("m" (cmd-ins
-            "import "))
+      ("m" (cmd-ins "import "))
       ("n"
        (but
         ("t" (cmd-ins "print ({}){(nli)}"))

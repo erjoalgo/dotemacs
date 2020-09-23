@@ -31,7 +31,7 @@
     (goto-char (point-min))
     (json-read)))
 
-(setq sip-buffer-fmt "#sip-sms-%s")
+(defvar sip-buffer-fmt "#sip-sms-%s")
 
 (defvar-local sip-from-phone-number nil)
 (defvar-local sip-max-timestamp nil)
@@ -207,7 +207,7 @@
     (cl-assert status)
     (cond
      ((not (zerop status))
-      (error "non-zero status from server: %s" text))
+      (error "Non-Zero status from server: %s" text))
      ((s-starts-with-p "push-messages/" message-type)
       ;; (setq sip-messages json)
       (let ((messages (alist-get 'body json)))

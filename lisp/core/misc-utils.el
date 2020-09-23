@@ -47,7 +47,6 @@
 
 
 (require 'cl-lib)
-(require 'cl)
 (require 's)
 (require 'f)
 
