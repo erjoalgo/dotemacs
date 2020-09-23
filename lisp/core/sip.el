@@ -350,6 +350,53 @@
               (hostname (alist-get 'machine info)))
     (format "wss://%s/fanout?api-key=%s" hostname api-key)))
 
+(setq sip-cursor-colors
+      '(
+        "IndianRed" "ForestGreen" "DarkCyan" "DarkOliveGreen" "MidnightBlue"
+        "MediumPurple3" "LightSalmon"
+        "LightYellow4"  "LimeGreen"  "MediumAquamarine"
+        "MediumBlue"  "MediumOrchid"  "MediumOrchid1"
+        "MediumOrchid2"
+        "MediumOrchid3"  "MediumOrchid4"
+        "MediumPurple"  "MediumPurple1"  "MediumPurple2"
+        "MediumPurple3"
+        "MediumPurple4"
+        "MediumSeaGreen"  "MediumSlateBlue"
+        "MediumSpringGreen"  "MediumTurquoise"
+        "MediumVioletRed"  "MidnightBlue"  "MintCream"
+        "MistyRose"  "MistyRose1"  "MistyRose2"  "MistyRose3"
+        "MistyRose4"  "NavajoWhite"  "NavajoWhite1"
+        "NavajoWhite2"  "NavajoWhite3"  "NavajoWhite4"  "NavyBlue"
+        "OldLace"  "OliveDrab"  "OliveDrab1"
+        "OliveDrab2"  "OliveDrab3"  "OliveDrab4"
+        "OrangeRed"  "OrangeRed1"  "OrangeRed2"  "OrangeRed3"
+        "OrangeRed4"  "PaleGoldenrod"  "PaleGreen"
+        "PaleGreen1"  "PaleGreen2"  "PaleGreen3"  "PaleGreen4"))
+
+(defun sip-color-cursor-from-identity ()
+  (let* ((user (first (sip-current-identity)))
+         (hash-code (sxhash-equal user))
+         (index (mod hash-code (length sip-cursor-colors)))
+         (color (nth index sip-cursor-colors)))
+    (set-cursor-color color)))
+
+(defvar sip-color-cursor-from-identity-timer nil)
+
+(defun sip-color-cursor-from-identity-schedule ()
+  (when
+      (and sip-chat-mode (null sip-color-cursor-from-identity-timer))
+    (setq sip-color-cursor-from-identity-timer
+          (run-at-time 1
+                       nil
+                       (lambda ()
+                         (let ((sip-inhibit-echo-linphone-command t))
+                           (sip-color-cursor-from-identity))
+                         (setq sip-color-cursor-from-identity-timer nil))))))
+
+(setq buffer-list-update-hook nil)
+
+(add-hook ' buffer-list-update-hook
+          #'sip-color-cursor-from-identity-schedule)
 
 (unless sms-fanout-address
   (setq sms-fanout-address (sms-fanout-read-address)))
