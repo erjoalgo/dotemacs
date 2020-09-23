@@ -6,6 +6,7 @@
 (defvar sms-fanout-client-last-pong-received nil)
 (defvar sms-fanout-reconnect-interval-mins 1)
 (defvar sms-fanout-ping-interval-seconds 30)
+(defvar sip-last-known-identity nil)
 (defvar sip-inhibit-echo-linphone-command nil)
 
 (defun sms-fanout-disconnected-p (&optional client)
@@ -39,9 +40,20 @@
   "Execute a linphonec command via linphonecsh."
   (unless sip-inhibit-echo-linphone-command
     (message "running: linphonecsh %s" (string-join args " ")))
-  (apply #'call-process "linphonecsh" nil "*linphonecsh*" nil args))
+  (with-temp-buffer
+    (apply #'call-process "linphonecsh" nil (current-buffer) nil args)
+    (buffer-string)))
 
-(defvar *sip-default-host* "sanjose2.voip.ms")
+(defun sip-current-identity ()
+  (save-match-data
+    (let* ((output (linphonecsh "generic" "proxy show default"))
+           (identity (string-match "identity: sip:\\(.*\\)@\\(.*\\)" output)))
+      (unless identity (error "unable to determine default proxy: %s"
+                              output))
+      (list (match-string 1 output) (match-string 2 output)))))
+
+(defun sip-default-host ()
+  (second (sip-current-identity)))
 
 (defun sip-phone-number-clean (number)
   (let* ((number-clean (replace-regexp-in-string "[^0-9]" "" number))
@@ -73,10 +85,18 @@
 (defun sip-send-chat-line ()
   (interactive)
   (cl-assert (bound-and-true-p sip-from-phone-number))
-  (let ((message (buffer-substring
+  (let* ((current-identity (sip-current-identity))
+        (message (buffer-substring
                   (line-beginning-position)
                   (line-end-position)))
-        (sip-address (sip-phone-number-to-address sip-from-phone-number)))
+        (sip-address (sip-phone-number-to-address sip-from-phone-number
+                                                  (second current-identity))))
+    (unless (or (null sip-last-known-identity)
+                (equal current-identity sip-last-known-identity)
+                (y-or-n-p (format "use new sip identity: %s? "
+                                  (s-join "@" current-identity))))
+      (error "identity change not acknowledged"))
+    (setq sip-last-known-identity current-identity)
     (linphonecsh "generic" (format "chat %s %s" sip-address message))
     (goto-char (line-beginning-position))
     (insert "        YOU say: ")
