@@ -894,12 +894,12 @@
       ("$" (cmd-ins "$({})"))
       ("j" (cmd-ins " || "))
       ("k" (cmd-ins " && "))
-      ("s" (cmd-ins "{(idt)}"
+      ("S" (cmd-ins "{(idt)}"
                     (insert "case ${")
                     (rec)
                     (upcase-last)
                     (ins "} in{(nli)}{}{(nli)}esac{(nli)}")))
-      ("S" (cmd-ins "{(idt)}){(nli)}{}{(nli)};;{(nli)}"))
+      ("s" (cmd-ins "{(idt)}){(nli)}{}{(nli)};;{(nli)}"))
       ("o" (cmd-ins "${" "OPTARG}"))
       ("4" (cmd-ins "[ {} ]"))
       ("z" (cmd-ins "if {}; then{(nli)}{}{(nli)}fi{(idt)}{(nli)}"))
