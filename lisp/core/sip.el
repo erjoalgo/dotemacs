@@ -6,6 +6,7 @@
 (defvar sms-fanout-client-last-pong-received nil)
 (defvar sms-fanout-reconnect-interval-mins 1)
 (defvar sms-fanout-ping-interval-seconds 30)
+(defvar sip-inhibit-echo-linphone-command nil)
 
 (defun sms-fanout-disconnected-p (&optional client)
   (cond
@@ -36,7 +37,8 @@
 
 (defun linphonecsh (&rest args)
   "Execute a linphonec command via linphonecsh."
-  (message "running: linphonecsh %s" (string-join args " "))
+  (unless sip-inhibit-echo-linphone-command
+    (message "running: linphonecsh %s" (string-join args " ")))
   (apply #'call-process "linphonecsh" nil "*linphonecsh*" nil args))
 
 (defvar *sip-default-host* "sanjose2.voip.ms")
