@@ -3,7 +3,7 @@
    ("zathura" "pdf" )
    ("libreoffice" "doc" "ppt" "odt" "docx"  "pptx" "xls" "ods")
    ("evince" "ps" "eps")
-   ("eog" "png" "pgm" "tif" "jpg" "jpeg" "gif")
+   ("eog" "png" "pgm" "tif" "jpg" "jpeg" "gif" "pnm")
    ("aplay" "wav")
    ((lambda (fn)
       (browser-new-tab (format "file://%s" fn))) "html")
