@@ -1159,7 +1159,7 @@
                     (ins "#include <assert.h>") (nli)
                     (ins "using namespace std;") (nli)))
       ("a" (cmd-ins "[{}]({}){" "{}" "}"))
-      ("/" (cmd-ins "/*{}=*/"))
+      ;; ("/" (cmd-ins "/*{}=*/"))
       ("t"
        (but
         ("u" (cmd-ins "true"))
