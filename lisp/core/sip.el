@@ -300,6 +300,7 @@
 (defun sip-chat-menu ()
   (interactive)
   (switch-to-buffer (get-buffer-create "*sip-chat-menu*"))
+  (read-only-mode 0)
   (erase-buffer)
   (save-match-data
     (cl-loop
