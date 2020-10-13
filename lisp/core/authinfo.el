@@ -1,7 +1,8 @@
 (defun authinfo-parse (&optional authinfo-filename)
   (let ((filename (or authinfo-filename (expand-file-name "~/.authinfo"))))
     (if (not (file-exists-p filename))
-        (warn "authinfo doesn't exist: %s" filename)
+        (progn (message "authinfo doesn't exist: %s" filename)
+               nil)
       (cl-loop with contents = (debian-file->string filename)
                for line in (s-split "\n" contents t)
                collect
