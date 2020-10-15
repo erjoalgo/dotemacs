@@ -1392,7 +1392,7 @@
        (but
         ("n" 'image-next-file)
         ("b" 'image-previous-file)
-        ("s" 'share-current-image)
+        ("S" 'share-current-image)
         ("c" 'exif-set-usercomment)))
 
      (defbuttons dired-buttons nil (dired-mode-map)
