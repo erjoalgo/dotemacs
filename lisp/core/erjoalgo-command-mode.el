@@ -370,8 +370,9 @@
       ("0" 'open-google-calendar)
       ("b" (buff "*Inferior Octave*" (inferior-octave t)))
       ("3" (buff "*eww*" (call-interactively 'eww)))
-      ("q" (buff "*SQL*" (call-interactively
-                          (selcand-select inferior-sql-mode-providers nil nil t))))
+      ("q" (buff "regexp:[*]SQL.*[*]"
+                 (call-interactively
+                  (selcand-select inferior-sql-mode-providers nil nil t))))
       ("m" (cmd (call-interactively 'sip-chat-menu))))))))
 
 (defun buffer-matching (string &optional regexp-p)
