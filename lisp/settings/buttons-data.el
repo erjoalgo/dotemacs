@@ -1521,7 +1521,6 @@ server {
       ("f" (cmd-ins " FROM "))
       ("w" (cmd-ins " WHERE "))
       ("g" (cmd-ins " GROUP BY "))
-      ("d" (cmd-ins " DISTINCT "))
       ("o" (cmd-ins " ORDER BY "))
       ("a" (cmd-ins " AS "))
       ("T" (cmd-ins " CAST({} AS {})"))
@@ -1537,7 +1536,10 @@ server {
       ("=" (cmd-ins " = "))
       ("2" (cmd-ins "'{}'"))
       ("L" (cmd-ins " LIKE '{}'"))
-      (";" (cmd (end-of-line) (ins ";") (comint-send-input)))))
+      (";" (cmd (end-of-line) (ins ";") (comint-send-input)))
+      ("d"
+       (but
+        ("i" (cmd-ins " DISTINCT "))))))
 
    '(defbuttons ediff-mode-buttons nil (ediff-mode-map)
       (but
