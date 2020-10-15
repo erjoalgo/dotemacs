@@ -71,7 +71,7 @@ share-current-image"
 	(expand-file-name directory)))
 
 (defun share-current-image ()
-  "symlink current image to the specified directory"
+  "Symlink current image to the specified directory"
   (interactive)
   (let ((cmd (format "ln -s %s %s" (buffer-file-name nil)
 		     image-share-image-directory)))
