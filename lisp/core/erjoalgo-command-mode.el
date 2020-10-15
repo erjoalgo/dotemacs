@@ -379,7 +379,6 @@
   "Find buffers matching STRING, interpreted as a regexp when REGEXP-P."
   (let ((prefix "regexp:"))
     (when (s-starts-with-p prefix string)
-      (message "DEBUG nell TRACE")
       (setf regexp-p t
 	    string (substring string (length prefix))))
 
@@ -387,7 +386,6 @@
       (cl-loop with matching
             for buff in (buffer-list)
             as name = (buffer-name buff)
-            do (message "DEBUG f9jz name: %s" name)
             if (string-match string name)
             collect name into matching
             finally

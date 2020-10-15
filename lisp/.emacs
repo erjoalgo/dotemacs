@@ -3,9 +3,6 @@
 ;;; Emacs Startup File --- initialization for Emacs
 ;;; Code:
 
-(load
- "/usr/local/google/home/ejalfonso/.emacs.d/elpa/buttons-20181130.906/buttons.el")
-
 (defvar emacs-top
   (file-name-directory (file-truename user-init-file))
   "Find the LISP src directory.")
