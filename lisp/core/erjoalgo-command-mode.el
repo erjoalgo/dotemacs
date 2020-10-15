@@ -78,36 +78,6 @@
      (if (equal (key-description (this-command-keys-vector)) "M-n")
          'move-line-down 'move-line-up))))
 
-(defcustom engine-alist
-  "Alist of search engine (IDENTIFIER . URL)."
-  '(("ddg" . "https://duckduckgo.com/lite/?q=%s")
-    ("linguee" . "https://www.linguee.com/english-spanish/search?source=auto&query=%s"))
-  :type 'alist
-  :group 'erjoalgo-command-mode)
-
-(defun search-engine-search (term &optional engine)
-  "Search for TERM using search engine ENGINE."
-  (interactive (list (if (region-active-p)
-			 (buffer-substring-no-properties
-			  (region-beginning) (region-end))
-		       (read-string "enter search terms: " (car kill-ring)))
-                     (if (boundp 'engine) engine
-                       (completing-read-alist
-                        "select search engine: " engine-alist))))
-  (let ((search-engine-query-url-format (cdr (assoc-string engine engine-alist))))
-  (message "searching for %s..." term)
-  (browser-new-tab (format search-engine-query-url-format
-			   (uri-encode
-			    (replace-regexp-in-string "[\n]" "" term))))))
-
-(defmacro search-engine-search-cmd (engine)
-  "Generate a command to search terms using ENGINE."
-  `(defun ,(intern (format "search-engine-search-%s" engine)) ()
-     ,(format "search using the %s search engine" engine)
-     (interactive)
-     (let ((engine ,engine))
-       (call-interactively 'search-engine-search))))
-
 (defun my-tab-command ()
   "Context-sensitive tab command."
   (interactive)
