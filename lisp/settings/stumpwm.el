@@ -1,4 +1,5 @@
 (defun slime-sbcl (arg)
+  "Start an sbcl repl via slime or switch to an existing repl buffer."
   (interactive "P")
   (require 'slime)
   (let* ((slime-sbcl-buffer-name "*slime-repl sbcl")
@@ -13,7 +14,7 @@
 (defvar *stumpwm-swank-port* 4005)
 
 (defun slime-stumpwm (&optional arg)
-  "switch to a stumpwm slime buffer. if ‘arg' is non-nil, force a new connection"
+  "Switch to a stumpwm slime buffer, or force a new connection ff ‘ARG' is non-nil."
   (interactive "P")
   (require 'slime)
   (let ((slime-stumpwm-buffer
@@ -29,17 +30,15 @@
 	(slime-connect "localhost" *stumpwm-swank-port*)))))
 
 (defun slime-stumpwm-connection-hook ()
-  '(slime-repl-set-package "STUMPWM")
-  '(remove-hook 'slime-editing-mode-hook
-	       'slime-stumpwm-connection-hook))
+  "Function run upon connecting to slime.")
 
-(defun stumpwm-visible-window-ids (&optional pid)
-  "Return a list of the parent process pids of all visible windows
-in the current STUMPWM group/workspace."
+(defun stumpwm-visible-window-ids ()
+  "List parent process pids of all currently-visible stumpwm windows."
   (-> (stumpwm-request "/visible-window-pids")
     (s-split "\n")))
 
 (defun stumpwm-message (text &optional color host ports)
+  "Send a message notification TEXT to stumpwm COLOR HOST PORTS."
   (let ((url-request-extra-headers
          (when color
            `(("STUMPWM-MESSAGE-COLOR" . ,(prin1-to-string color))))))
@@ -47,11 +46,12 @@ in the current STUMPWM group/workspace."
 
 
 (defun stumpwm-request-sync (path &optional host ports)
+  "Send a synchronous http request PATH to stumpwm.  HOST PORTS"
   (let* ((host (or host "localhost"))
          (ports (or (if (numberp ports) (list ports) ports)
                     '(1959 1960 1961 1962))))
     (cl-assert (or url-request-data (not (equal url-request-method "post"))))
-    (loop for port in ports
+    (cl-loop for port in ports
           as url = (format "http://%s:%s%s" host port path)
           do (with-elapsed-time
               elapsed-ms
@@ -72,6 +72,7 @@ in the current STUMPWM group/workspace."
                        url)))))
 
 (defun stumpwm-request-subprocess (path &optional host ports)
+  "Send a stumpwm request via a subprocess.  PATH HOST PORTS"
   (let ((proc-name "*x-service-request*")
         (args `(,path
                 ,@(when url-request-data
@@ -82,6 +83,7 @@ in the current STUMPWM group/workspace."
     (apply #'start-process proc-name proc-name "x-service-curl" args)))
 
 (defun stumpwm-request (path &rest args)
+  "Send a stumpwm request.  PATH ARGS"
   (stumpwm-request-subprocess path))
 
 (defun stumpwm-request-post (path data &optional host ports)
