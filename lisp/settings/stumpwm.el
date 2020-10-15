@@ -1,3 +1,5 @@
+(require 'cl-lib)
+
 (defun slime-sbcl (arg)
   "Start an sbcl repl via slime or switch to an existing repl buffer."
   (interactive "P")
@@ -46,7 +48,7 @@
 
 
 (defun stumpwm-request-sync (path &optional host ports)
-  "Send a synchronous http request PATH to stumpwm.  HOST PORTS"
+  "Send a synchronous http request PATH to stumpwm.  HOST PORTS."
   (let* ((host (or host "localhost"))
          (ports (or (if (numberp ports) (list ports) ports)
                     '(1959 1960 1961 1962))))
