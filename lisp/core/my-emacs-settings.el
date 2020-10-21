@@ -53,7 +53,8 @@
   (add-to-list
    'package-archives
    '("melpa" . "http://melpa.org/packages/")
-   t))
+   t)
+  (package-initialize))
 
 (column-number-mode);;enable columns
 
