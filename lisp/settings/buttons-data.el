@@ -910,7 +910,7 @@
       ("n"
        (but
         ("t" (cmd-ins "echo "))
-        ("v" (cmd-ins "echo \"DEBUG VALUEOF "
+        ("v" (cmd-ins "echo \"DEBUG {(rnd)} VALUE OF "
                       (f-filename buffer-file-name)
                       ", "
                       (ins "\\{0}: {0}\"" (nli?))))
