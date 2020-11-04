@@ -119,7 +119,8 @@
    (list
     (if (region-active-p)
         (buffer-substring (region-beginning) (region-end))
-      (read-string "enter search query: "))
+      (read-string "enter search query: "
+                   (or (car kill-ring) (x-get-clipboard))))
     (read-char "enter search engine letter: ")))
   (let ((url-request-extra-headers
          `(("ENGINE-LETTER" . ,(char-to-string engine-letter)))))
