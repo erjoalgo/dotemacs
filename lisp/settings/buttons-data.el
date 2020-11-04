@@ -601,8 +601,8 @@
         ("b" (cmd-ins "bool " (inm)))
         ("t"
          (but
-          ("u" (cmd-ins "util::Status "))
-          ("U" (cmd-ins "util::StatusOr<{}> "))))))
+          ("u" (cmd-ins "absl::Status "))
+          ("U" (cmd-ins "absl::StatusOr<{}> "))))))
       ("s" (cmd-ins "sizeof({})"))
       ("S" (cmd-ins "sizeof({0})/sizeof(*{0})"))
       ("-" (cmd-ins "->"))
@@ -1193,7 +1193,7 @@
             ("i" (cmd-ins "absl::InternalError(absl::StrFormat(\"{}\", {}));"))
             ("a" (cmd-ins "absl::InvalidArgumentError(absl::StrFormat(\"{}\", {}));"))
             ("u" (cmd-ins "absl::UnimplementedError(absl::StrFormat(\"{}\", {}));"))
-            ("o" (cmd-ins "util::OkStatus();"))))))))))
+            ("o" (cmd-ins "absl::OkStatus();"))))))))))
 
    (defbuttons yacc-buttons programming-buttons (yacc-mode-map)
      (but
