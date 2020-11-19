@@ -290,6 +290,7 @@
     ([s-f11] 'global-erjoalgo-command-mode-toggle);; f1 toggle command mode
     ([ë] 'global-erjoalgo-command-mode-toggle);; f1 toggle command mode
     ("y" 'stumpwm-search-engine-search)
+    ("Y" 'stumpwm-search-engine-search-clipboard)
     ("J" (lambda (arg)
            (interactive "P")
            (cl-loop for _ below (or arg 1)

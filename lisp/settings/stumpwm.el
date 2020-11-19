@@ -117,14 +117,20 @@
 (defun stumpwm-search-engine-search (query engine-letter)
   (interactive
    (list
+    (or (bound-and-true-p search-engine-query)
     (if (region-active-p)
         (buffer-substring (region-beginning) (region-end))
       (read-string "enter search query: "
-                   (or (car kill-ring) (x-get-clipboard))))
+                   (or (car kill-ring) (x-get-clipboard)))))
     (read-char "enter search engine letter: ")))
   (let ((url-request-extra-headers
          `(("ENGINE-LETTER" . ,(char-to-string engine-letter)))))
     (stumpwm-request-post "/search" query)))
+
+(defun stumpwm-search-engine-search-clipboard ()
+  (interactive)
+  (let ((search-engine-query (car kill-ring)))
+    (call-interactively #'stumpwm-search-engine-search)))
 
 (advice-add #'gui-select-text :after #'gui-select-text--stumpwm)
 
