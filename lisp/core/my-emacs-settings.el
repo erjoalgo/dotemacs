@@ -174,5 +174,6 @@
 
 ;; (add-variable-watcher 'debug-on-quit #'watch-var)
 
+(setq revert-without-query '(".*"))
 (provide 'my-emacs-settings)
 ;;; emacs-settings.el ends here
