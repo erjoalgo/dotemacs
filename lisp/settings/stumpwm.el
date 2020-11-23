@@ -129,7 +129,10 @@
 
 (defun stumpwm-search-engine-search-clipboard ()
   (interactive)
-  (let ((search-engine-query (car kill-ring)))
+  (let ((search-engine-query
+         (if (region-active-p)
+             (buffer-substring (region-beginning) (region-end))
+           (car kill-ring))))
     (call-interactively #'stumpwm-search-engine-search)))
 
 (advice-add #'gui-select-text :after #'gui-select-text--stumpwm)
