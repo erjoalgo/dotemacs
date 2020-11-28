@@ -281,7 +281,8 @@
          (but
           ("t" (cmd-ins "(list {})"))
           ("g" (cmd-ins "(length {})"))))
-        ("1" (cmd-ins "(null {})"))
+        ("1" (cmd-ins "(not {})"))
+        ("!" (cmd-ins "(null {})"))
         ("m"
          (but
           ("x" (cmd-ins "(" "macroexpand-1 " "'{}){(nli)}"))))
