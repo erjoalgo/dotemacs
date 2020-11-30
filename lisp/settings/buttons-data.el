@@ -741,7 +741,11 @@
       ("Z" (cmd-ins "if ( {}"
                     (insert " ){ ")
                     (ins "{} }")))
-      ("v" (cmd-ins "var {(inm)}"))
+      ("v"
+       (but
+        ("a" (cmd-ins "var {(inm)}"))
+        ("c" (cmd-ins "const {(inm)}"))
+        ("l" (cmd-ins "let {(inm)}"))))
       ("V" (cmd-ins "?{}: {}"))
       ("[" (cmd-ins "{}"))
       ("]" (cmd-ins ".format({})"))
