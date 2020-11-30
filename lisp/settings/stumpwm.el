@@ -15,13 +15,13 @@
 
 (defvar *stumpwm-swank-port* 4005)
 
-(defun slime-stumpwm (&optional arg)
-  "Switch to a stumpwm slime buffer, or force a new connection ff ‘ARG' is non-nil."
+(defun slime-stumpwm (&optional force-new-connection)
+  "Switch to a stumpwm slime buffer, or FORCE-NEW-CONNECTION if non-nil."
   (interactive "P")
   (require 'slime)
   (let ((slime-stumpwm-buffer
 	 (find-buffer-by-prefix "*slime-repl sbcl")))
-    (if (and (not arg) slime-stumpwm-buffer)
+    (if (and (not force-new-connection) slime-stumpwm-buffer)
 	(switch-to-buffer slime-stumpwm-buffer)
 
       ;;doesn't work since slime-connect does async stuff
