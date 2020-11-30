@@ -31,6 +31,9 @@
     text-scale-mode
     (lambda () (text-scale-mode 1)))
 
+(defvar-local text-scale-mode-amount 0)
+(setq-default text-scale-mode-amount 0)
+
 (defun global-text-scale-adjust (inc) (interactive)
     (text-scale-set 1)
     (kill-local-variable 'text-scale-mode-amount)
