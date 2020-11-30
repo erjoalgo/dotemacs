@@ -15,6 +15,6 @@
   (lambda ()
     (let ((backtrace (get-buffer "*Backtrace*")))
       (when backtrace (kill-buffer backtrace)))
-  (eval-buffer)))
+    (eval-buffer)))
 
 (autobuild-mode)
