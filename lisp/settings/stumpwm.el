@@ -139,4 +139,12 @@
 
 (stumpwm-message (format "connected to emacs on %s" system-name) 'green)
 
+(defun slime-stumpwm-consume-error ()
+  (save-window-excursion
+    (condition-case ex
+        (slime-stumpwm)
+      (error (message "failed to connect to stumpwm")))))
+
+(add-hook #'after-init-hook #'slime-stumpwm-consume-error)
+
 1
