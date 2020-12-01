@@ -136,7 +136,13 @@
        (but
         ("t" (cmd-ins "print ({}){(nli)}"))
         ("r" (cmd-ins "print (\"DEBUG TRACE: {(buf)} {(rnd)} {}\")"))
-        ("v" (cmd-ins "print (\"DEBUG {(buf)} {(rnd)}: value of {0}: {" "}\".format({0}))"))))
+        ("v" (cmd-ins "print (\"DEBUG {(buf)} {(rnd)}: value of {0}: {" "}\".format({0}))"))
+        ("l"
+         (but
+          ("i" (cmd-ins "logging.info(\"" (rec) "\"" (rec) ")"))
+          ("e" (cmd-ins "logging.error(\"" (rec) "\"" (rec) ")"))
+          ("d" (cmd-ins "logging.debug(\"" (rec) "\"" (rec) ")"))
+          ("w" (cmd-ins "logging.warning(\"" (rec) "\"" (rec) ")"))))))
       ("r" (cmd-ins "return {}{(nli)}{(idt)}"))
       ("L" (cmd-ins "class {}(object):{(nli)}"))
       ("l" (cmd-ins "len({})"))
@@ -159,7 +165,9 @@
         (">" (cmd-ins "import traceback;traceback.print_exc(){(nli)}"))
         ("2" (but
               ("s" (cmd-ins "@staticmethod"))
-              ("c" (cmd-ins "@classmethod"))))))
+              ("c" (cmd-ins "@classmethod"))))
+        ("w" (cmd-ins "await "))
+        ("W" (cmd-ins "async "))))
       ("." nil)
       ("_" (cmd-ins "if __name__ == \"__main__\":{(nli)}"))
       ("=" (cmd-ins " == "))
