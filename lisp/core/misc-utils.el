@@ -811,5 +811,21 @@ This requires the external program `diff' to be in your `exec-path'."
     (funcall (if not-literal-p 'insert-file-contents 'insert-file-contents-literally) filename)
     (buffer-string)))
 
+(defun diff-a-b (a b)
+  (with-temp-buffer
+    (insert a)
+    (let ((a-buff (current-buffer)))
+      (with-temp-buffer
+        (insert b)
+        (diff a-buff (current-buffer) nil 'noasync)))))
+
+
+(defun diff-region-with-kill-ring (a b)
+  (interactive "r")
+  (unless (region-active-p) (error "no region"))
+  (unless kill-ring (error "no kill-ring"))
+  (diff-a-b (region) (car kill-ring)))
+
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; misc-utils.el ends here
