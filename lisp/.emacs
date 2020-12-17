@@ -41,8 +41,9 @@
         do
         (progn
           (unless already-refreshed
-            (add-to-list ' package-archives
-                           '("melpa" . "https://melpa.org/packages/"))
+            (cl-pushnew '("melpa" . "https://melpa.org/packages/")
+                        package-archives
+                        :test #'equal)
             (safe-funcall (package-refresh-contents))
 	    (setf already-refreshed t))
           (safe-funcall (package-install package)))))
