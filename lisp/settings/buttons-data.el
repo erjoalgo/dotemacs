@@ -732,13 +732,13 @@
       ("A" (cmd-ins " => "))
       ("n"
        (but
-        ("c" (cmd-ins "console.log(\"{}\"{});"))
-        ("e" (cmd-ins "console.error( \"{}\"{});"))
+        ("c" (cmd-ins "console.log(`{}`);"))
+        ("e" (cmd-ins "console.error(`{}`);"))
         ("r" (cmd-ins "console.log(\"DEBUG trace {(buf)} {(rnd)}\");"))
         ("v" (cmd-ins "console.log(\"DEBUG {(rnd)} value of {0}: \"+{0});"))
         ("V" (cmd-ins "console.log(\"DEBUG {(rnd)} value of {0}: \"+JSON.stringify({0}));"))
         ("A" (cmd-ins "alert(\"DEBUG {(rnd)} value of {0}: \"+{0});"))
-        ("a" (cmd-ins "alert(\"{}\");"))
+        ("a" (cmd-ins "alert(`{}`);"))
         ("R" (cmd-ins "alert(\"DEBUG TRACE {(buf)} {(rnd)}\");"))))
       ("T" (cmd-ins "try{(cbd)}catch(err){(cbd)}"))
       ("f" (cmd-ins "for (var {0} = 0; {0}<{}; {0}++){(cbd)}"))
@@ -753,7 +753,8 @@
        (but
         ("a" (cmd-ins "var {(inm)}"))
         ("c" (cmd-ins "const {(inm)}"))
-        ("l" (cmd-ins "let {(inm)}"))))
+        ("l" (cmd-ins "let {(inm)}"))
+        ("4" (cmd-ins "${" (rec) "}"))))
       ("V" (cmd-ins "?{}: {}"))
       ("[" (cmd-ins "{}"))
       ("]" (cmd-ins ".format({})"))
