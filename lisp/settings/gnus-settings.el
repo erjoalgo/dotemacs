@@ -351,4 +351,21 @@ machine smtp.gmail.com login %s password %s port 587"
     ;; "data:image/jpg;base64,/*base64-data-string here*/"
     (insert (format "\"data:image/%s;base64,%s\"" ext base64))))
 
+(defun send-multiple-emails (template-filename)
+  (interactive "fselect template filename: ")
+  (cl-loop
+   with send-another = t
+   while send-another do
+   (with-temp-buffer
+     (insert-file template-filename)
+     (switch-to-buffer (current-buffer))
+     (while (re-search-forward "[$]{\\([A-Z_]+\\)}" nil t)
+       (replace-match
+        (read-string (format "enter value for %s: " (match-string 1)))
+        t t))
+     (message-mode)
+     (message "edit and send email, then exit recursive edit.")
+     (recursive-edit)
+     (setq send-another (y-or-n-p "send another email? ")))))
+
 '(require erjoalgo-indent-mode)
