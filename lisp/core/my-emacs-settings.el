@@ -175,5 +175,11 @@
 ;; (add-variable-watcher 'debug-on-quit #'watch-var)
 
 (setq revert-without-query '(".*"))
+
+(add-hook
+ 'comint-exec-hook
+ (lambda ()
+   (set-process-query-on-exit-flag (get-buffer-process (current-buffer)) nil)))
+
 (provide 'my-emacs-settings)
 ;;; emacs-settings.el ends here
