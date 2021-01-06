@@ -826,6 +826,17 @@ This requires the external program `diff' to be in your `exec-path'."
   (unless kill-ring (error "no kill-ring"))
   (diff-a-b (region) (car kill-ring)))
 
+(defun diff-two-regions ()
+  (interactive)
+  (cl-labels
+      ((prompt-region (&optional prompt)
+                      (unless prompt
+                        (setq prompt "select region, then exit rec. edit."))
+                      (message prompt)
+                      (recursive-edit)
+                      (region)))
+    (diff-a-b (prompt-region) (prompt-region))))
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; misc-utils.el ends here
