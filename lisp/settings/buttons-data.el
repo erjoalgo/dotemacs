@@ -430,7 +430,8 @@
          (but
           ("i" (cmd-ins "(vom:info \"{}~%\"{})"))
           ("d" (cmd-ins "(vom:debug \"{}~%\"{})"))
-          ("w" (cmd-ins "(vom:warn \"{}~%\"){}"))))))
+          ("w" (cmd-ins "(vom:warn \"{}~%\"){}"))
+          ("e" (cmd-ins "(vom:error \"{}~%\"){}"))))))
       ("t"
        (but
         ("a" (cmd-ins "(assert {})"))))
