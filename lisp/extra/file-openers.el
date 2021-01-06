@@ -9,7 +9,7 @@
       (browser-new-tab (format "file://%s" fn))) "html")
    ("gimp" "xcf")
    ("mpg321" "mp3")
-   ("vlc" "mp4"  "mov")
+   ("vlc" "mp4" "mov" "mkv")
    ("xournal" "xoj")))
 
 (defvar open-exe
