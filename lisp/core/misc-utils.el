@@ -518,7 +518,8 @@ for customization of the printer command."
   (interactive)
   (flush-lines "^$" (point-min) (point-max)))
 
-(defmacro def-file-local-set-command (file-local-var-sym &optional prompt)
+(defmacro def-file-local-set-command (file-local-var-sym
+                                      &optional prompt-form old-value-sym)
   "Define a command to set the file-local value of FILE-LOCAL-VAR-SYM.
 
   If PROMPT is a string, read the variable's value via ‘read-string'.
@@ -526,20 +527,24 @@ for customization of the printer command."
   current value of FILE-LOCAL-VAR-SYM and returns the new value."
 
   (let* ((fun-sym (intern (format "file-local-set-%s" file-local-var-sym)))
-	 (prompt-fun (if (functionp prompt)
-                         prompt
-                       `(lambda (_old &optional prompt)
-                          (read-string
-                           (or prompt
-                               ,(format "Enter new value for %s: " file-local-var-sym)))))))
-    (make-variable-buffer-local file-local-var-sym)
-    `(defun ,fun-sym (arg)
-       (interactive "P")
-       (let* ((curr-value (when (boundp ',file-local-var-sym)
-			    ,file-local-var-sym))
-	      (new-value (funcall ,prompt-fun ,prompt curr-value)))
-	 (add-file-local-variable ',file-local-var-sym new-value)
-	 (setf ,file-local-var-sym new-value)))))
+         (old-value-sym (or old-value-sym (gensym "old-value-")))
+	 (prompt-form (or prompt-form
+                          `(read-string
+                            (format "Enter file-local value for %s (currently %s): "
+                                    ',file-local-var-sym
+                                    ,old-value-sym)))))
+    `(progn
+       (make-variable-buffer-local ',file-local-var-sym)
+       (defun ,fun-sym (arg)
+         (interactive "P")
+         (let* ((curr-value (when (boundp ',file-local-var-sym)
+			      ,file-local-var-sym))
+	        (new-value ,prompt-form))
+	   (add-file-local-variable ',file-local-var-sym new-value)
+	   (setf ,file-local-var-sym new-value))))))
+
+(def-file-local-set-command js-indent-mode
+  (read-number "enter value for js-indent-mode: "))
 
 (defmacro def-file-local-toggle-command (file-local-var-sym)
   "Define a command to toggle the file-local value of FILE-LOCAL-VAR-SYM on/off."
