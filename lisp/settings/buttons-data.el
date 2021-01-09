@@ -727,10 +727,8 @@
    (defbuttons js-buttons c-buttons (js-mode-map)
      (but
       ("d" (cmd-ins "function {} ( {} ){(cbd)}"))
-      ("a" (cmd-ins "function({}"
-                    (insert "){")
-                    (ins "{}}")))
-      ("A" (cmd-ins " => "))
+      ("a" (cmd-ins "(" (rec) ") => "))
+      ("A" (cmd-ins "() => "))
       ("n"
        (but
         ("c" (cmd-ins "console.log(`{}`);"))
@@ -778,6 +776,7 @@
       ("p" (cmd-ins ".prototype."))
       ("m" (cmd-ins "const {0} = require('{0}')"))
       ("[" (cmd-ins "{" (ins "{}}")))
+      ("0" (cmd-ins "window.onload = function(){" (nli) "};"))
       ("t"
        (but
         ("." (cmd-ins "debugger;"))
@@ -788,6 +787,7 @@
         ("w" (cmd-ins "await "))
         ("W" (cmd-ins "async "))
         ("e" (cmd-ins "new Error({})"))
+        ("a" (cmd-ins "Array.from({})"))
         ("x" (cmd
               (ins
                "
@@ -815,7 +815,11 @@
           ("b" (cmd-ins "document.body"))
           ("g" (cmd-ins "document.getElementById({})"))
           ("a" (cmd-ins ".appendChild({})"))
-          ("t" (cmd-ins ".textContent({})"))))
+          ("t" (cmd-ins ".textContent({})"))
+          ("q" (cmd-ins "document.querySelector({})"))
+          ("n" (cmd-ins ".nextElementSibling"))
+          ("i" (cmd-ins ".innerText"))
+          ("Q" (cmd-ins "document.querySelectorAll({})"))))
         ("_" (cmd-ins "if (require.main === module)" (cbd)))
         ("y" (cmd-ins "try {(cbd)}catch ({}){(cbd)}"))
         ("p"
