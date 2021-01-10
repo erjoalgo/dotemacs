@@ -34,10 +34,12 @@
 (defun slime-stumpwm-connection-hook ()
   "Function run upon connecting to slime.")
 
-(defun stumpwm-visible-window-ids ()
+(defun stumpwm-visible-window-pids ()
   "List parent process pids of all currently-visible stumpwm windows."
-  (-> (stumpwm-request "/visible-window-pids")
-    (s-split "\n")))
+  (slime-eval '(STUMPWM::visible-window-pids)))
+
+(defun stumpwm-is-emacs-window-visible ()
+  (find (emacs-pid) (stumpwm-visible-window-pids)))
 
 (defun stumpwm-message (text &optional color host ports)
   "Send a message notification TEXT to stumpwm COLOR HOST PORTS."
