@@ -738,6 +738,7 @@
         ("A" (cmd-ins "alert(\"DEBUG {(rnd)} value of {0}: \"+{0});"))
         ("a" (cmd-ins "alert(`{}`);"))
         ("R" (cmd-ins "alert(\"DEBUG TRACE {(buf)} {(rnd)}\");"))))
+      ("T" (cmd-ins "try{(cbd)} catch(err){(cbd)}"))
       ("f" (cmd-ins "for (var {0} = 0; {0}<{}; {0}++){(cbd)}"))
       ("F" (cmd-ins "for (var {} of {}){(cbd)}"))
       ("l" (cmd-ins ".length"))
