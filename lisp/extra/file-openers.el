@@ -1,16 +1,16 @@
 (setf *file-programs*
   '(
-   ("zathura" "pdf" )
-   ("libreoffice" "doc" "ppt" "odt" "docx"  "pptx" "xls" "ods")
-   ("evince" "ps" "eps")
-   ("eog" "png" "pgm" "tif" "jpg" "jpeg" "gif" "pnm" "svg")
+   ("zathura" . ("pdf"))
+   ("libreoffice" . ("doc" "ppt" "odt" "docx"  "pptx" "xls" "ods"))
+   ("evince" . ("ps" "eps"))
+   ("eog" . ("png" "pgm" "tif" "jpg" "jpeg" "gif" "pnm" "svg"))
    ("aplay" "wav")
    ((lambda (fn)
       (browser-new-tab (format "file://%s" fn))) "html")
-   ("gimp" "xcf")
-   ("mpg321" "mp3")
-   ("vlc" "mp4" "mov" "mkv" "aac")
-   ("xournal" "xoj")))
+   ("gimp" . ("xcf"))
+   ("mpg321" . ("mp3"))
+   ("vlc" . ("mp4" "mov" "mkv" "aac"))
+   ("xournal" . ("xoj"))))
 
 (defvar open-exe
   (s-trim (shell-command-to-string "which open")))
