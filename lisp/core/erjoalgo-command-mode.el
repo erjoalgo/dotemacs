@@ -121,9 +121,10 @@
   (file-name-directory (file-truename user-init-file))
   "Find the LISP src directory.")
 
-(defmacro cmd-find-most-recent-file-in-directory (name directories &optional kill-only)
+(defmacro cmd-find-most-recent-file-in-directory (name directories)
   "Define a command NAME to find the nth file in DIRECTORIES."
-  `(defun ,name (&optional nth)
+  (declare (indent 1))
+  `(defun ,name (&optional nth kill-only)
      ,(format "find the last file in %s" directories)
      (interactive "P")
      (when nth (assert (> nth 0)))
@@ -132,8 +133,11 @@
        (most-recent-file-name-in-directories (when nth (1- nth))))))
        (kill-new file)
        (message "killed %s" file)
-       (unless ,kill-only
-         (find-file file)))))
+       (unless kill-only
+         (find-file file))
+       file)))
+
+(cmd-find-most-recent-file-in-directory find-last-download '("~/Downloads"))
 
 (defalias #'sort-by #'sort-key)
 
@@ -325,8 +329,17 @@
       ("T" (cmd (org-todo-list org-match)))
       ("O" nil)
       ("j" (buff "*-jabber-roster-*"))
-      ("d" (cmd-find-most-recent-file-in-directory find-last-download '("~/Downloads")))
-      ("D" (cmd-find-most-recent-file-in-directory find-last-download '("~/Downloads") t))
+      ("d"
+       (but
+        ("f" #'find-last-download)
+
+        ("k" (cmd (find-last-download nil t)))
+        ("m" (cmd
+              (let*
+                  ((last-download (find-last-download nil t))
+                   (dest (f-join default-directory (f-filename last-download))))
+                (rename-file last-download dest)
+                (kill-new dest))))))
       ("p" 'project-open)))
     ("x"
      (buttons-make
