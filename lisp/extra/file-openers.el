@@ -29,6 +29,8 @@
 (defun open-file (fn)
   (interactive (list (dired-file-name-at-point)))
   (setf fn (expand-file-name fn))
+  (setq fn
+        (replace-regexp-in-string "^/sudo:root@[^:]+:" "" fn))
   (let ((program (get-file-program fn)))
     (if (not program)
 	(error (concat "no program known for file: " fn))
