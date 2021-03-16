@@ -166,8 +166,7 @@
         ("2" (but
               ("s" (cmd-ins "@staticmethod"))
               ("c" (cmd-ins "@classmethod"))))
-        ("w" (cmd-ins "await "))
-        ("W" (cmd-ins "async "))))
+        ("w" (cmd-ins "await "))))
       ("." nil)
       ("_" (cmd-ins "if __name__ == \"__main__\":{(nli)}"))
       ("=" (cmd-ins " == "))
@@ -739,7 +738,6 @@
         ("A" (cmd-ins "alert(\"DEBUG {(rnd)} value of {0}: \"+{0});"))
         ("a" (cmd-ins "alert(`{}`);"))
         ("R" (cmd-ins "alert(\"DEBUG TRACE {(buf)} {(rnd)}\");"))))
-      ("T" (cmd-ins "try{(cbd)}catch(err){(cbd)}"))
       ("f" (cmd-ins "for (var {0} = 0; {0}<{}; {0}++){(cbd)}"))
       ("F" (cmd-ins "for (var {} of {}){(cbd)}"))
       ("l" (cmd-ins ".length"))
@@ -785,7 +783,9 @@
         ("G" (cmd-ins "null"))
         ("N" (cmd-ins "new {}({}) "))
         ("w" (cmd-ins "await "))
-        ("W" (cmd-ins "async "))
+        ("y" (cmd-ins "async "))
+        ("W" (cmd-ins "await waitFor(" (nli) "() => " (rec) ")"))
+        ("Y" (cmd-ins "try{(cbd)} catch(err){(cbd)}"))
         ("e" (cmd-ins "new Error({})"))
         ("a" (cmd-ins "Array.from({})"))
         ("x" (cmd
@@ -821,7 +821,6 @@
           ("i" (cmd-ins ".innerText"))
           ("Q" (cmd-ins "document.querySelectorAll({})"))))
         ("_" (cmd-ins "if (require.main === module)" (cbd)))
-        ("y" (cmd-ins "try {(cbd)}catch ({}){(cbd)}"))
         ("p"
          (but
           ("m" (cmd-ins "new Promise(function(resolve, reject){(cbd)});"))
