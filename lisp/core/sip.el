@@ -397,7 +397,7 @@
 
 (setq buffer-list-update-hook nil)
 
-(add-hook ' buffer-list-update-hook
+(add-hook 'buffer-list-update-hook
           #'sip-color-cursor-from-identity-schedule)
 
 (unless sms-fanout-address
