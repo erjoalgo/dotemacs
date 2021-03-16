@@ -346,7 +346,6 @@
         (run-at-time nil sms-fanout-ping-interval-seconds
                      #'sms-fanout-client-loop)))
 
-
 (defun sms-fanout-read-address ()
   (when-let* ((info (authinfo-get-by-app "sms-fanout"))
               (api-key (alist-get 'password info))
