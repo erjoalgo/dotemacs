@@ -67,6 +67,8 @@
 (require 'server)
 (progn
   (server-force-delete)
+  (setq server-name (or (getenv "DESKTOP_GROUP_NUMBER")
+                        server-name))
   (server-start))
 
 ;(setq split-window-preferred-function 'split-window-vertically) doesn't work
