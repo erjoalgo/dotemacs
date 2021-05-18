@@ -435,7 +435,7 @@ Buffers other than the current buffer are preferred."
 	(message "%s" (process-command proc))
       (message "buffer has no process"))))
 
-(defun flush-repeatedly ()
+(defun flush-lines-repeatedly ()
   (interactive)
   (goto-char (point-min))
   (let (regexp)
