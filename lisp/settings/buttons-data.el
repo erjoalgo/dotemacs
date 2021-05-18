@@ -89,6 +89,13 @@
           ("d" 'my-downcase-region)
           ;; "sentence" case
           ("s" 'capitalize-region)))))
+      ("t"
+       (but
+        ("o" (cmd-ins comment-start
+                      (if (s-ends-with-p " " comment-start)
+                          "" " ")
+                      "TODO(" user-login-name "): "
+                      (inm)))))
       ((kbd "M-.") 'my-next-error)
       ((kbd "M-,") 'my-prev-error)
       ("R" (cmd-ins "***REMOVED***"))
@@ -134,9 +141,9 @@
       ("m" (cmd-ins "import "))
       ("n"
        (but
-        ("t" (cmd-ins "print ({}){(nli)}"))
-        ("r" (cmd-ins "print (\"DEBUG TRACE: {(buf)} {(rnd)} {}\")"))
-        ("v" (cmd-ins "print (\"DEBUG {(buf)} {(rnd)}: value of {0}: {" "}\".format({0}))"))
+        ("t" (cmd-ins "print({}){(nli)}"))
+        ("r" (cmd-ins "print(\"DEBUG TRACE: {(buf)} {(rnd)} {}\")"))
+        ("v" (cmd-ins "print(\"DEBUG {(buf)} {(rnd)}: value of {0}: {" "}\".format({0}))"))
         ("l"
          (but
           ("i" (cmd-ins "logging.info(\"" (rec) "\"" (rec) ")"))
@@ -541,7 +548,7 @@
         ("V" (cmd-ins
               "LOG(ERROR) << \"DEBUG "
               (f-base (buffer-file-name))
-              " {(rnd)}: proto {0}: \""
+              " {(rnd)}: {0} proto: \""
               (nli)
               "<< {0}.DebugString();"))
         ("k" (cmd
@@ -558,6 +565,7 @@
         ;; + operator
         ("m" (cmd-ins "absl::StreamFormat(\"{}\"{});"))
         ("c" (cmd-ins "absl::StrCat(\"{}\"{})"))
+        ("u" (cmd-ins "absl::Substitute(\"{}\", {})"))
         ("C" (cmd-ins ".c_str()"))
         ("r" (cmd-ins "LOG(ERROR) << \"DEBUG TRACE {(buf)}, ({}): {(rnd)}\\n\";"))
         ("." (cmd-ins ".c_str()"))
@@ -1120,17 +1128,15 @@
        (but
         ("q"
          (but
-          ("u" (cmd
-                (reg? (ins "std::unique_ptr<{(reg)}> ")
-                      (ins "std::unique_ptr<{0}> "))))
+          ("u" (cmd (ins "std::unique_ptr<{}> ")))
           ("m" (cmd-ins "absl::make_unique<{}>" (inm)))
           ("w" (cmd-ins "absl::WrapUnique({})" (inm)))))
         ("m" (cmd-ins "map<{}>" (inm)))
         ("p" (cmd-ins "pair<{}>" (inm)))
-        ("V" (cmd-ins "std::vector<{}>"))
+        ("v" (cmd-ins "std::vector<{}>"))
+        ("D" (cmd-ins "void"))
         ("s" (cmd-ins "std::string"))
-        ("S" (cmd-ins "std::string&"))
-        ("v" (cmd-ins "absl::string_view"))
+        ("S" (cmd-ins "absl::string_view"))
         ("t"
          (but
           ("e" (cmd-ins "true"))
@@ -1208,10 +1214,10 @@
          (but
           ("e"
            (but
-            ("f" (cmd-ins "absl::FailedPreconditionError(absl::StrFormat(\"{}\", {}));"))
-            ("i" (cmd-ins "absl::InternalError(absl::StrFormat(\"{}\", {}));"))
-            ("a" (cmd-ins "absl::InvalidArgumentError(absl::StrFormat(\"{}\", {}));"))
-            ("u" (cmd-ins "absl::UnimplementedError(absl::StrFormat(\"{}\", {}));"))
+            ("f" (cmd-ins "absl::FailedPreconditionError({});"))
+            ("i" (cmd-ins "absl::InternalError({});"))
+            ("a" (cmd-ins "absl::InvalidArgumentError({});"))
+            ("u" (cmd-ins "absl::UnimplementedError({});"))
             ("o" (cmd-ins "absl::OkStatus();"))))))))))
 
    (defbuttons yacc-buttons programming-buttons (yacc-mode-map)
@@ -1555,10 +1561,15 @@ server {
       ("=" (cmd-ins " = "))
       ("2" (cmd-ins "'{}'"))
       ("L" (cmd-ins " LIKE '{}'"))
+      ("v" (cmd-ins "${" (rec) "}"))
       (";" (cmd (end-of-line) (ins ";") (comint-send-input)))
       ("d"
        (but
         ("i" (cmd-ins " DISTINCT "))))))
+
+   (defbuttons gfm-mode-buttons nil (gfm-mode-map)
+      (but
+       ("l" 'markdown-insert-link)))
 
    '(defbuttons ediff-mode-buttons nil (ediff-mode-map)
       (but
