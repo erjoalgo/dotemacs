@@ -34,7 +34,6 @@
 
 (defun ensure-packages-exist (packages)
   "Ensure each package in PACKAGES is installed."
-  (package-initialize)
   (loop with already-refreshed = nil
         for package in packages
         unless (package-installed-p package)
