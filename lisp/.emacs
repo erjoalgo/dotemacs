@@ -148,6 +148,21 @@
     (sort load-times (lambda (a b) (< (car a) (car b))))
     (cl-loop for (ms . file) in load-times
           do (message "%dms to load %s" ms file))))
+
+;; debug byte-compile errors. from https://emacs.stackexchange.com/a/39217/2846
+;; (defun dont-delay-compile-warnings (fun type &rest args)
+;;   (if (eq type 'bytecomp)
+;;       (let ((after-init-time t))
+;;         (apply fun type args))
+;;     (apply fun type args)))
+;; (advice-add 'display-warning :around #'dont-delay-compile-warnings)
+
+;; debug dependencies of deprecated 'cl package, etc
+;; (require 'loadhist)
+;; (file-dependents (feature-file 'cl))
+
+(add-to-list 'load-path (expand-file-name "~/git/babel/"))
+
 ;; (define-key key-translation-map [?\C-h] [?\C-?])
 ;; (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
 "🤔"
