@@ -42,14 +42,14 @@ to reflect opt-chars actually declared in the loop body"
               (match-string 1)))
            (missing "")
            (opt-actual-chars
-            (loop initially (goto-char a)
+            (cl-loop initially (goto-char a)
                   while (re-search-forward "^[     ]+\\([a-z]\\))$" b t)
                   as opt-char = (match-string 1)
                   concat opt-char
                   unless (s-contains-p opt-char optstring)
                   do (setf missing (concat missing opt-char))))
            (optstring-sans-extra
-            (loop with start = 0
+            (cl-loop with start = 0
                   as start = (string-match "[a-z]:?" optstring start)
                   while start
                   as opt-char = (char-to-string (aref optstring start))

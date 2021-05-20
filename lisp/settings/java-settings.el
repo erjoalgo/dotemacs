@@ -11,7 +11,7 @@
 (defun buffer-indentations ()
   (save-excursion
     (goto-char (point-min))
-    (loop as
+    (cl-loop as
 	  match = (search-forward-regexp "^[ \t]+" nil t nil)
 	  while match
 	  collect (match-string 0)
@@ -113,7 +113,7 @@ q: Don't fix\n" func file))
          (new-body
           (if (null body)
               replace-form
-            (loop for elt in body collect
+            (cl-loop for elt in body collect
                   (if (eq elt replacement-placeholder-sym)
                       replace-form elt)))))
   `(defun ,name (,a-sym ,b-sym)

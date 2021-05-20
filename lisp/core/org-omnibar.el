@@ -28,7 +28,7 @@
 (defvar org-top-dir)
 
 (defun org-all-headings (top-level &optional max-depth)
-  (loop with org-files = (remove-if-not
+  (cl-loop with org-files = (remove-if-not
 			  (lambda (fn) (equal "org"
 					      (f-ext fn)))
 			  (f--collect-entries top-level t))
@@ -45,7 +45,7 @@
     (save-excursion-file
      org-filename
      (goto-char (point-min))
-     (loop while (search-forward-regexp heading-regexp nil t)
+     (cl-loop while (search-forward-regexp heading-regexp nil t)
 	   as heading = (match-string 1)
 	   collect (cons heading (cons org-filename (point)))))))
 
@@ -53,7 +53,7 @@
   (interactive (let* ((org-headings (org-all-headings org-top-dir 4))
 		      (heading-text (completing-read "enter org heading: " org-headings)))
 		 (list (assoc heading-text org-headings))))
-  (destructuring-bind (heading-text . (filename . point)) org-heading
+  (cl-destructuring-bind (heading-text . (filename . point)) org-heading
     (find-file filename)
     (goto-char point)))
 

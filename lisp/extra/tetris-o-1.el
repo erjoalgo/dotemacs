@@ -69,7 +69,7 @@
 ;on emacs-23, things are different
 (if (string-match "^24.*" emacs-version)
     (defun tetris-get-leftmost-x ()
-      (loop for i upto 3
+      (cl-loop for i upto 3
 	    minimize (+ tetris-pos-x (aref (tetris-get-shape-cell i) 0))))
   (progn
     (defun tetris-get-leftmost-x () tetris-pos-x)
@@ -94,11 +94,11 @@
 ;not necessary to use advice. will use tetris-mode-hook
 ;(defun tetris-o-1-bindings ()
 
-  (loop for key in tetris-o-1-horizontal-keys
+  (cl-loop for key in tetris-o-1-horizontal-keys
 	for i from 0 do
 	(define-key tetris-mode-map key (tetris-move-x-factory i)))
 
-  (loop for key in tetris-o-1-rotation-keys
+  (cl-loop for key in tetris-o-1-rotation-keys
 	for i from 0 do
 	(define-key tetris-mode-map key (tetris-rot-x-factory i)))
 
@@ -106,7 +106,7 @@
   (when tetris-o-1-enable-hints
     (let
 	((hor-chars
-	  (loop with str = (make-string (length tetris-o-1-horizontal-keys) 0)
+	  (cl-loop with str = (make-string (length tetris-o-1-horizontal-keys) 0)
 		for key in tetris-o-1-horizontal-keys
 		for i from 0
 		as c = (unwind-protect (tetris-key-to-char key) 63)
@@ -125,7 +125,7 @@
 				      32))
 			   finally (return new-str))))
 
-      (loop for keystring across (join-space hor-chars)
+      (cl-loop for keystring across (join-space hor-chars)
 	    for i from 0 do
 	    (gamegrid-set-cell
 	     (+ tetris-top-left-x i)

@@ -12,7 +12,7 @@
   (let ((cands (->>
                 (s-split "\n" (shell-command-to-string "pidof emacs") t)
                 (mapcar 'string-to-number)
-                (remove-if (lambda (pid) (= (emacs-pid) pid))))))
+                (cl-remove-if (lambda (pid) (= (emacs-pid) pid))))))
     (when cands
       (shell-command (format "kill -USR1 %d" (car cands))))))
 

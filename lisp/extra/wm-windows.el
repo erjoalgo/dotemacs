@@ -33,7 +33,7 @@
 
 (require 's);;only needed for s-join
 
-(defstruct wm-window
+(cl-defstruct wm-window
   id desktop pid class hostname title)
 
 (defun wm-windows-list ()
@@ -41,9 +41,9 @@
   (wm-window-ensure-wmctrl-exists)
   (let ((output (shell-command-to-string "wmctrl -xpl")))
 
-    (loop for line in (split-string output "\n" t)
+    (cl-loop for line in (split-string output "\n" t)
 	  collect
-	  (destructuring-bind (id desktop pid class hostname . title)
+	  (cl-destructuring-bind (id desktop pid class hostname . title)
 	      (split-string line " " t)
 					;only title can have spaces, hopefully
 					;actually, hostname or class may have spaces
@@ -72,11 +72,11 @@
 		   "wmctrl" "-ia" (wm-window-id wm-window))))
 
 (defun wm-windows-find-window-by-class (class)
-  (loop for win in (wm-windows-list)
+  (cl-loop for win in (wm-windows-list)
 	thereis (and (string= (wm-window-class win) class) win)))
 
 (defun wm-windows-find-window-by-title-regexp (regexp)
-  (loop for win in (wm-windows-list)
+  (cl-loop for win in (wm-windows-list)
 	thereis (and (string-match regexp (wm-window-title win)) win)))
 
 (provide 'wm-windows)

@@ -80,10 +80,9 @@
 ;; User quotes: "You sir, are a sick, sick, _sick_ person. :)"
 ;;                  -- Bill Perry, author of Emacs/W3
 
- 
 ;;; Code:
 
-(require 'cl)
+(require 'cl-lib)
 (eval-when-compile
   (if (string-match "XEmacs" emacs-version)
       (byte-compiler-options
@@ -824,7 +823,7 @@ If no rgb.txt file is found, return nil."
 ;; type `htmlize-fstruct', while the term "face" is reserved for Emacs
 ;; faces.
 
-(defstruct htmlize-fstruct
+(cl-defstruct htmlize-fstruct
   foreground				; foreground color, #rrggbb
   background				; background color, #rrggbb
   size					; size
@@ -838,7 +837,7 @@ If no rgb.txt file is found, return nil."
 
 (defun htmlize-face-emacs21-attr (fstruct attr value)
   ;; For ATTR and VALUE, set the equivalent value in FSTRUCT.
-  (case attr
+  (cl-case attr
     (:foreground
      (setf (htmlize-fstruct-foreground fstruct) (htmlize-color-to-rgb value)))
     (:background
@@ -957,7 +956,7 @@ If no rgb.txt file is found, return nil."
   ;;      (setf (htmlize-fstruct-ATTR dest) (htmlize-fstruct-ATTR source)))
   ;; for the given list of boolean attributes.
   (cons 'progn
-	(loop for attr in attr-list
+	(cl-loop for attr in attr-list
 	      for attr-sym = (intern (format "htmlize-fstruct-%s" attr))
 	      collect `(and (,attr-sym ,source)
 			    (setf (,attr-sym ,dest) (,attr-sym ,source))))))

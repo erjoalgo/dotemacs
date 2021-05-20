@@ -87,7 +87,7 @@
 (defun my-move-beginning-of-line ()
   ;;TODO use mode-hook-initialized variables
   (interactive)
-  (case major-mode
+  (cl-case major-mode
     ('eshell-mode
      (eshell-bol))
 
@@ -452,7 +452,7 @@ Buffers other than the current buffer are preferred."
 
 (defun cycle-buffer (same-name-filter)
   (interactive "P")
-  (let ((buf-list (remove-if (lambda (buf)
+  (let ((buf-list (cl-remove-if (lambda (buf)
                                ;; (or (equal buf (current-buffer))
                                    (if same-name-filter
                                        (not (equal (buffer-name-no-qualifier)
@@ -471,7 +471,7 @@ Buffers other than the current buffer are preferred."
           (switch-to-buffer (funcall nth-mod cycle-buffer-index buf-list)))
       (progn
         (setq cycle-buffer-index
-              (loop for i from 0
+              (cl-loop for i from 0
                     for buff in (buffer-list)
                     thereis (and (eq (current-buffer) buff) i)))
         (switch-to-buffer nil)))))

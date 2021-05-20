@@ -61,7 +61,7 @@
 
 
 (when (file-exists-p org-top-dir)
-  (pushnew org-top-dir org-agenda-files :test 'equal)
+  (cl-pushnew org-top-dir org-agenda-files :test 'equal)
   '(org-todo-list org-match)
 
   (setq initial-buffer-choice
@@ -106,13 +106,13 @@
      #+NAME:
      [[./img/a.jpg]]"
   (when (bound-and-true-p org-inline-image-directory)
-    (assert (file-directory-p org-inline-image-directory))
+    (cl-assert(file-directory-p org-inline-image-directory))
     (let ((original filename))
       (setq filename (f-join org-inline-image-directory
                              (org-sanitize-filename (f-filename filename))))
       (call-process "mv" nil nil nil
                     original filename)))
-  (assert (file-exists-p filename))
+  (cl-assert(file-exists-p filename))
   (insert "#+CAPTION: " (or caption "")) (newline-and-indent)
   (when width
     (insert (format "#+ATTR_HTML: :width %d" width)) (newline-and-indent))
@@ -140,13 +140,13 @@
 
 
 (defun directory-files-exclude-dots (top)
-  (remove-if (lambda (filename) (member filename '("." "..")))
+  (cl-remove-if (lambda (filename) (member filename '("." "..")))
 	     (directory-files top)))
 
 
 (defun list-directories-flatten (top-dirs)
-  (loop for top in top-dirs nconc
-	(loop for basename in (directory-files-exclude-dots top)
+  (cl-loop for top in top-dirs nconc
+	(cl-loop for basename in (directory-files-exclude-dots top)
 	      collect (f-join top basename))))
 
 (defun most-recent-file-name-in-directories (top-dirs &optional nth)
@@ -182,7 +182,7 @@
   (interactive "p\nr")
   (save-excursion
     (goto-char a)
-    (loop with offset = 0
+    (cl-loop with offset = 0
           with len = (or arg 1)
           while (re-search-forward "^\\(.\\)?" (+ b offset) t)
           as new-char = (if (equal (match-string 1) "*") "*" " ")
@@ -223,7 +223,7 @@
 (defun org-toggle-list-heading ()
   (interactive)
   (let* ((elm-at-point (org-element-at-point))
-	 (at-list-p (case (car elm-at-point)
+	 (at-list-p (cl-case (car elm-at-point)
 		      ((item paragraph) t)
 		      (headline nil)
 		      (t (error "unknown element %s: "

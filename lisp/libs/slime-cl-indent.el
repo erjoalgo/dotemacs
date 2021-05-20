@@ -43,7 +43,7 @@
 
 ;; (require 'slime) ; only for its cl-lib loading smartness
 (require 'cl-lib)
-(eval-when-compile (require 'cl))
+(eval-when-compile (require 'cl-lib))
 
 (defgroup lisp-indent nil
   "Indentation in Lisp."
@@ -468,7 +468,7 @@ OPTIONS are:
   (:variables
    (lisp-lambda-list-keyword-parameter-indentation 0))
   (:indentation
-   (case (4 &rest (&whole 2 &rest 3)))
+   (cl-case (4 &rest (&whole 2 &rest 3)))
    (if   (4 2 2))))
 
 (define-common-lisp-style "modern"
@@ -1314,14 +1314,14 @@ environment\\|more\
              (backward-sexp)
              (looking-at "nil\\|("))))
      (+ sexp-column
-        (case (car path)
+        (cl-case (car path)
           ((1 3) 4)
           (2 4)
           (t 2))))
     ;; Short form.
     (t
      (+ sexp-column
-        (case (car path)
+        (cl-case (car path)
           (1 4)
           (2 4)
           (t 2)))))
@@ -1493,7 +1493,7 @@ Cause subsequent clauses to be indented.")
         (when (eolp)
           (forward-line 1)
           (end-of-line)
-          ;; If indenting first line after "(loop <newline>"
+          ;; If indenting first line after "(cl-loop <newline>"
           ;; cop out ...
           (if (<= indent-point (point))
               (throw 'return-indentation (+ lisp-loop-clauses-indentation
@@ -1691,7 +1691,7 @@ Cause subsequent clauses to be indented.")
 ;;;; Indentation specs for standard symbols, and a few semistandard ones.
 (defun common-lisp-init-standard-indentation ()
   (let ((l '((block 1)
-             (case        (4 &rest (&whole 2 &rest 1)))
+             (cl-case       (4 &rest (&whole 2 &rest 1)))
              (ccase       (as case))
              (ecase       (as case))
              (typecase    (as case))
@@ -1721,9 +1721,9 @@ Cause subsequent clauses to be indented.")
              (deftype      (as defun))
              (defmethod   lisp-indent-defmethod)
              (defpackage  (4 2))
-             (defstruct   ((&whole 4 &rest (&whole 2 &rest 1))
+             (cl-defstruct   ((&whole 4 &rest (&whole 2 &rest 1))
                            &rest (&whole 2 &rest 1)))
-             (destructuring-bind (&lambda 4 &body))
+             (cl-destructuring-bind (&lambda 4 &body))
              (do          lisp-indent-do)
              (do*         (as do))
              (dolist      ((&whole 4 2 1) &body))
@@ -1746,7 +1746,7 @@ Cause subsequent clauses to be indented.")
              (handler-bind (as let))
              (restart-bind (as let))
              (locally 1)
-             (loop           lisp-indent-loop)
+             (cl-loop          lisp-indent-loop)
              (:method        lisp-indent-defmethod) ; in `defgeneric'
              (multiple-value-bind ((&whole 6 &rest 1) 4 &body))
              (multiple-value-call (4 &body))

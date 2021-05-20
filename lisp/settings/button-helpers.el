@@ -77,16 +77,16 @@
         ((rec (form)
               (cond
                ((atom form) form)
-               (t (case (car form)
+               (t (cl-case (car form)
                     (mk-cmd
-                     (loop with curr = ""
+                     (cl-loop with curr = ""
                            with ret = '(cmd)
                            for (act . rest) in (append (cdr form)  '(nil))
                            when (and (eq act 'ins) (string-match "{" (car rest)))
                            do (setf act 'insert)
-                           do (case act
+                           do (cl-case act
                                 (ins
-                                 (assert (null (cdr rest)))
+                                 (cl-assert(null (cdr rest)))
                                  (setf curr (concat curr (car rest))))
                                 (rec (setf curr (concat curr "{}")))
                                 (var-rec (setf curr (concat curr "{0}")))
@@ -108,18 +108,18 @@
                                  (when act
                                    (if (eq 'evl act)
                                        (progn
-                                         (assert (null (cdr rest)))
+                                         (cl-assert(null (cdr rest)))
                                          (push (car rest) ret))
                                      (push `(,act ,@rest) ret)))))
                            finally (return (reverse ret))))
-                    (defbuttons (destructuring-bind (sym modes parent body) (cdr form)
+                    (defbuttons (cl-destructuring-bind (sym modes parent body) (cdr form)
                                   `(defbuttons ,sym
                                      ,parent
                                      ,(if (and modes (atom modes)) (list modes) modes)
                                      ,(rec body))))
                     (t
                      ;; (mapcar 'rec form)
-                     (loop for sub in form collect (rec sub))
+                     (cl-loop for sub in form collect (rec sub))
                      ))))))
       (let* ((contents
               (format "(progn %s)" (debian-file->string from-file)))

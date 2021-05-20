@@ -14,10 +14,10 @@
 (defmacro macrolet+ (lets &rest body)
       `(macrolet
            ;; list
-           ,(loop for (name arglist . body) in lets
+           ,(cl-loop for (name arglist . body) in lets
                   collect (if (atom arglist)
                               (let ((alias arglist))
-                                (assert (null body))
+                                (cl-assert(null body))
                                 ;; (backquote ,(list name (list (quote &rest) (quote body)) (list alias ``,@body)))
                                 `(,name (&rest body) (,alias ,@body))
                                 )

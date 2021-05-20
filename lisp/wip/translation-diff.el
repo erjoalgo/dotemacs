@@ -10,8 +10,8 @@
 
 (defun translation-diff-wdiff-marker (type start-end)
   (concat "<"
-          (case type ('insert "insert")  ('delete "delete"))
-          (case start-end ('start "") ('end "/"))
+          (cl-case type ('insert "insert")  ('delete "delete"))
+          (cl-case start-end ('start "") ('end "/"))
           ">"))
 
 (defun find-file-copy-noselect (file directory)

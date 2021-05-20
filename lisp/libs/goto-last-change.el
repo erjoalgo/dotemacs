@@ -64,7 +64,7 @@
 (provide 'goto-last-change)
 
 (or (fboundp 'last)			; Emacs 20
-    (require 'cl))			; Emacs 19
+    (require 'cl-lib))			; Emacs 19
 
 (defvar goto-last-change-undo nil
   "The `buffer-undo-list' entry of the previous \\[goto-last-change] command.")
@@ -139,4 +139,3 @@ in a sequence of invocations."
 ;; (global-set-key "\C-x\C-\\" 'goto-last-change)
 
 ;;; goto-last-change.el ends here
-

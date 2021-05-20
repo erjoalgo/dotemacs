@@ -1,7 +1,7 @@
 ;;link to this file from ~/.gnus
 
 (defun gnus-imap-smtp-form (email smtp-server-port imap-server-port)
-  (destructuring-bind ((smtp-server . smtp-port) . (imap-server . imap-port))
+  (cl-destructuring-bind ((smtp-server . smtp-port) . (imap-server . imap-port))
       (cons smtp-server-port imap-server-port)
     `(let ((email ,email)
            (hostname ,(replace-regexp-in-string "^.*?@" "" email))
@@ -35,7 +35,7 @@
 	 (dot-gnus (f-expand (or dot-gnus "~/.gnus"))))
     (when (or (not (file-exists-p dot-gnus))
 	      (when
-		  (case if-file-exists
+		  (cl-case if-file-exists
 		    (overwrite t)
 		    (ignore nil)
 		    (prompt (y-or-n-p (format "%s file exists. overwrite?" dot-gnus))))

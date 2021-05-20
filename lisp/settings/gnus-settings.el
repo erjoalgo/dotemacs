@@ -10,7 +10,7 @@
 			      (s-split " ")
 			      (mapcar 'string-to-number)
 			      reverse))
-	 (gnus-init-idx (loop for i from 0
+	 (gnus-init-idx (cl-loop for i from 0
 			      for pid in all-emacs-pids
 			      when (eql pid emacs-self-pid)
 			      return i))
@@ -25,7 +25,7 @@
 
 (defun longest-common-prefix (cands)
   (when cands
-    (loop with min-len = (apply 'min (mapcar 'length cands))
+    (cl-loop with min-len = (apply 'min (mapcar 'length cands))
 	  with i = 0
 	  while (and (< i min-len)
 		     (let ((char (aref (car cands) i)))
@@ -117,7 +117,7 @@
   (setq gnus-desktop-notify-function 'gnus-desktop-notify-exec
 					;gnus-desktop-notify-exec-program )
 	gnus-desktop-notify-exec-program
-	(case system-type
+	(cl-case system-type
 	  ((gnu/linux) "notify-send")
 	  ((darwin) "growlnotify -a Emacs.app -m")))
   (gnus-desktop-notify-mode)
@@ -263,7 +263,7 @@ machine smtp.gmail.com login %s password %s port 587"
   (mml-insert-tag 'part
 		  'type "text/html"
 		  'disposition "inline")
-  (destructuring-bind (_ len)
+  (cl-destructuring-bind (_ len)
       (insert-file-contents filename nil nil nil)
     (goto-char (+ (point) len))
     (mml-insert-tag '/part)))
@@ -338,7 +338,7 @@ machine smtp.gmail.com login %s password %s port 587"
 			 (message-fetch-field "To"))))
 	    (when (zerop (length art-addresses))
 	      (error "unable to fetch message fields"))
-	    (when (loop for addr in addresses thereis
+	    (when (cl-loop for addr in addresses thereis
 			(s-contains-p addr art-addresses))
 	      (message "saving  %s" (message-fetch-field "Subject")
 		       (gnus-mime-save-all-attachments (gnus-dir-name-for-message))

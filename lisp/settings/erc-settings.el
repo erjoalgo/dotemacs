@@ -17,7 +17,7 @@
 			 logins
 		       ;; we have a list of servers
 		       (let* ((choices-alist
-			       (loop for login in logins collect
+			       (cl-loop for login in logins collect
 				     (cons (apply 'erc-login-to-string login) login)))
 			      (choice (completing-read
                                        "select an existing irc server config: "
@@ -45,7 +45,7 @@
 
 (defun erc-my-message-notify (match-type nickuserhost msg)
   ;; dbus rarely works reliably
-  (destructuring-bind (nick user host) (erc-parse-user nickuserhost)
+  (cl-destructuring-bind (nick user host) (erc-parse-user nickuserhost)
     (message "%s says: %s" nick (s-trim msg))))
 
 '(with-eval-after-load 'erc

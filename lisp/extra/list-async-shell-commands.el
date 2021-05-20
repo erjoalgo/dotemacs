@@ -6,7 +6,7 @@
        #'temp-buffer-show-function
        nil
 
-       (loop for buf in (buffer-list) if
+       (cl-loop for buf in (buffer-list) if
 	     (or
 	      (get-buffer-process buf)
 	      (s-starts-with? "*Async Shell Command*"

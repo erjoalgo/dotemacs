@@ -238,7 +238,7 @@
         ("f" (cmd-ins "(defun {} ({}){(nli)}{})"))
         ("m" (cmd-ins "(defmacro {} ({}){(nli)}{})"))
         ("e" (cmd-ins "(defmethod {} ({}){(nli)}{})"))
-        ("s" (cmd-ins "(defstruct {}{(nli)}{})"))
+        ("s" (cmd-ins "(cl-defstruct {}{(nli)}{})"))
         ("b"
          (but
           ("d" (cmd-ins "(cl-destructuring-bind ({}){})"))
@@ -276,7 +276,7 @@
         ("x" (cmd-ins "(lexical-let ({}){(nli)}{}){(nli)}"))
         ("X" (cmd-ins "(lexical-let* ({}){(nli)}{}){(nli)}"))
         ("m" (cmd-ins "(macrolet ({}){(nli)}{}){(nli)}"))
-        ("d" (cmd-ins "(destructuring-bind ({}){})"))
+        ("d" (cmd-ins "(cl-destructuring-bind ({}){})"))
         ("b" (cmd-ins "(multiple-value-bind ({}){})"))))
       ("e" (cmd-ins "(setq {})"))
       ("E" (cmd (forward-sexp)
@@ -315,7 +315,7 @@
           ("r" (cmd-ins "(error \"{}\"{})"))))
         ("f"
          (but
-          ("r" (cmd-ins "(remove-if {})"))
+          ("r" (cmd-ins "(cl-remove-if {})"))
           ("R" (cmd-ins "(remove-if-not {})"))))
         ("+" (cmd-ins "(1+ {})"))
         ("r" (cmd-ins "(return {})"))
@@ -420,7 +420,7 @@
         ("a" (cmd-ins "(defalias {})"))
         ("b"
          (but
-          ("d" (cmd-ins "(destructuring-bind ({}){})"))
+          ("d" (cmd-ins "(cl-destructuring-bind ({}){})"))
           ("m" (cmd-ins "(multiple-value-bind ({}){})"))))))
       ("T" (cmd-ins "(handler-case{}{(nli)}(error (err) {}))"))
       ("n"
@@ -440,7 +440,7 @@
           ("e" (cmd-ins "(vom:error \"{}~%\"){}"))))))
       ("t"
        (but
-        ("a" (cmd-ins "(assert {})"))))
+        ("a" (cmd-ins "(cl-assert{})"))))
       ("5"
        (but
         ("s" (cmd-ins "~A"))
@@ -1356,7 +1356,7 @@
       ("a" 'sldb-abort)
       ("c" 'sldb-continue)
       ("q" 'sldb-quit)
-      ;; (loop for i below 5 collect
+      ;; (cl-loop for i below 5 collect
       ;;       `(,(number-to-string i)
       ;;         ',(intern (format "sldb-invoke-restart-%d" i))))
       ("0" 'sldb-invoke-restart-0)

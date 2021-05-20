@@ -5,8 +5,8 @@
   (advice-mapc (lambda (advice _props) (advice-remove sym advice)) sym))
 
 (defmacro mock (fn-spec &rest body)
-  (destructuring-bind (fn-sym-spec arg-spec . new-def) fn-spec
-    (destructuring-bind (fn-sym optional-new-name)
+  (cl-destructuring-bind (fn-sym-spec arg-spec . new-def) fn-spec
+    (cl-destructuring-bind (fn-sym optional-new-name)
         (if (listp fn-sym-spec) fn-sym-spec (list fn-sym-spec nil))
       `(cl-letf* (,@(when optional-new-name
                       `(((symbol-function ',optional-new-name)

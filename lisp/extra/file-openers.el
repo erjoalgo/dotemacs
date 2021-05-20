@@ -19,11 +19,11 @@
   (if (equal system-type 'darwin)
       open-exe
     (let ((ext (downcase (file-name-extension fn))))
-      (loop for (program . exts) in *file-programs* thereis
+      (cl-loop for (program . exts) in *file-programs* thereis
             (and (member ext exts) program)))))
 
 (defun coalesce (&rest strings)
-  (loop for s in strings
+  (cl-loop for s in strings
         thereis (and s (> (length s) 0) s)))
 
 (defun open-file (fn)

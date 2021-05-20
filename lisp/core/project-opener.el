@@ -24,7 +24,8 @@
 ;;; Code:
 
 (require 'f)
-(require 'cl)
+(require 'cl-lib)
+
 (defun add-one-time-hook (hook-var fn)
   "Add to HOOK-VAR a function which calls FN and then removes itself from HOOK-VAR."
   (let ((fun-sym (gensym "anon-hook-fn")))
@@ -63,7 +64,7 @@
 
 (defun find-files-recursively (top &optional pred action)
   "Recursively find files in directory TOP.  Filter by PRED and invoke ACTION on each."
-  (assert (f-absolute? top))
+  (cl-assert (f-absolute? top))
   ;; (lexical-let ((default-directory (f-expand top)))
   (setf pred (or pred 'identity)
         action (or action 'find-file-noselect))
@@ -110,7 +111,7 @@
                            (apply-partially 'file-extension-matches-p "asd"))
                           car)))
 
-  (assert asd-filename)
+  (cl-assertasd-filename)
 
   (message "on project-open-cl-post-slime-connected")
 

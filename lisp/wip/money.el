@@ -58,6 +58,6 @@
 
 (defun money-agg-from-csv (categories csv-files)
   (let ((data (mapcan #'csv-parse csv-files)))
-    (-> (loop for (cat . amt) in (money-agg data categories)
+    (-> (cl-loop for (cat . amt) in (money-agg data categories)
               collect (cons cat (round amt)))
       (sort-by #'cdr :descending t))))

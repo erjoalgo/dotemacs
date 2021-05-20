@@ -52,15 +52,15 @@
 
   (let* ((arr (make-vector 256 nil)))
 
-    (loop for (file . mark) in (dired-remember-marks (point-min) (point-max))
-          do (assert mark)
+    (cl-loop for (file . mark) in (dired-remember-marks (point-min) (point-max))
+          do (cl-assertmark)
           if (eq mark dired-mark-char) do
           (error "remove the standard mark from all files first: %s"
                  file)
           else do
           (push file (aref arr mark)))
 
-    (loop for files across arr
+    (cl-loop for files across arr
           for mark from 0
           if files do
           (progn (message "mark: %s: %s" mark files)

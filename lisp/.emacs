@@ -30,22 +30,22 @@
 	       (concat emacs-top dir)))
 
 (require 'package)
-(require 'cl)
+(require 'cl-lib)
 
 (defun ensure-packages-exist (packages)
   "Ensure each package in PACKAGES is installed."
-  (loop with already-refreshed = nil
-        for package in packages
-        unless (package-installed-p package)
-        do
-        (progn
-          (unless already-refreshed
-            (cl-pushnew '("melpa" . "https://melpa.org/packages/")
-                        package-archives
-                        :test #'equal)
-            (safe-funcall (package-refresh-contents))
-	    (setf already-refreshed t))
-          (safe-funcall (package-install package)))))
+  (cl-loop with already-refreshed = nil
+           for package in packages
+           unless (package-installed-p package)
+           do
+           (progn
+             (unless already-refreshed
+               (cl-pushnew '("melpa" . "https://melpa.org/packages/")
+                           package-archives
+                           :test #'equal)
+               (safe-funcall (package-refresh-contents))
+	       (setf already-refreshed t))
+             (safe-funcall (package-install package)))))
 
 (ensure-packages-exist
  '(company
@@ -78,7 +78,6 @@
            goto-last-change
            quick-yes
            cl-lib
-           cl
            zoom-global
            isearch-fast-reverse
            my-emacs-settings
@@ -94,7 +93,7 @@
   (safe-funcall
    (require feature)))
 
-(loop with top = (f-join emacs-top "libs")
+(cl-loop with top = (f-join emacs-top "libs")
       for lib-dir in (directory-files top)
       as fn = (f-join top lib-dir)
       if (file-directory-p fn)  do
@@ -102,7 +101,7 @@
 
 (defun current-time-ms ()
   "Return the current time in MS."
-  (destructuring-bind (_ secs usecs __) (current-time)
+  (cl-destructuring-bind (_ secs usecs __) (current-time)
     (+ (* 1000 secs) (/ usecs 1000))))
 
 (defmacro with-elapsed-time (elapsed-time-ms-var form &rest body)
@@ -116,13 +115,13 @@
 
 (defun load-rec (top-dir)
   "Load *.el files under TOP-DIR recursively."
-  (loop for file in (directory-files top-dir)
+  (cl-loop for file in (directory-files top-dir)
         as filename-abs = (f-join top-dir file)
         when (and (not (member file '("." "..")))
                   (file-directory-p filename-abs))
-        do (pushnew filename-abs load-path))
+        do (cl-pushnew filename-abs load-path))
 
-  (loop for file in (directory-files top-dir)
+  (cl-loop for file in (directory-files top-dir)
         as filename-abs = (f-join top-dir file)
         if (file-directory-p filename-abs) append
         (unless (member file '("." ".."))
@@ -137,7 +136,7 @@
 
 (let ((default-directory emacs-top))
   (let ((load-times
-         (loop for dir in (list
+         (cl-loop for dir in (list
                            "vars"
                            "core" "private" "settings" "extra"
                            "experimental"
@@ -147,7 +146,7 @@
                when (file-exists-p dir)
                append (load-rec (expand-file-name dir)))))
     (sort load-times (lambda (a b) (< (car a) (car b))))
-    (loop for (ms . file) in load-times
+    (cl-loop for (ms . file) in load-times
           do (message "%dms to load %s" ms file))))
 ;; (define-key key-translation-map [?\C-h] [?\C-?])
 ;; (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")

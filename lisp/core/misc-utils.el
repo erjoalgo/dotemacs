@@ -54,7 +54,7 @@
   "Search PATH for PROGRAM."
   (interactive "senter program: ")
   (let ((dirs
-	 (loop for dir in (split-string (getenv "PATH") ":" t)
+	 (cl-loop for dir in (split-string (getenv "PATH") ":" t)
 	       if (and (file-exists-p dir)
 		       (member program (directory-files dir)))
 	       collect (f-join dir program))))
@@ -203,15 +203,15 @@
 (defun check-unsaved-buffers ()
   "Check buffers with changes not persisted in the filesystem."
   (interactive)
-  (loop as next-buff =
-	(loop for buff in (buffer-list)
+  (cl-loop as next-buff =
+	(cl-loop for buff in (buffer-list)
 	      thereis (and
 		       (not (get-buffer-process buff))
                        (or (not (buffer-file-name buff))
 			   (buffer-modified-p buff))
                        (not (member (buffer-local-value 'major-mode buff) '(dired-mode)))
                        (not
-                        (loop for re in
+                        (cl-loop for re in
                               check-unsaved-buffers-skip-buffers-regexp-list
                               thereis (string-match  re (buffer-name buff))))
 		       buff))
@@ -249,7 +249,7 @@
 
 (defun diff-sexps (sexp-a sexp-b)
   "Signal an error where SEXP-A, SEXP-B differ."
-  (loop for a in sexp-a
+  (cl-loop for a in sexp-a
 	for b in sexp-b
 	do
 	(if (not (eq (atom a) (atom b)))
@@ -294,9 +294,9 @@
           (kmap-name (completing-read "select map: " (mapcar 'car kmaps) nil t))
           (kmap (symbol-value (intern kmap-name))))
      (list key kmap)))
-  (assert key)
-  (assert kmap)
-  (assert (lookup-key kmap key))
+  (cl-assertkey)
+  (cl-assertkmap)
+  (cl-assert(lookup-key kmap key))
   (define-key kmap key nil))
 
 (defun keymap-current-active-keymap-symbols ()
@@ -323,14 +323,14 @@
 		     (unless was-modified (save-buffer))
 		     (unless was-open (kill-buffer buffer)))))))
   (lexical-let ((fun fun))
-    (loop with front = (list top)
+    (cl-loop with front = (list top)
 	  with new-front = nil
 	  while front do
-	  (loop while front
+	  (cl-loop while front
 		as dir = (pop front)
-		as files = (progn (assert (f-dir? dir))
+		as files = (progn (cl-assert(f-dir? dir))
 				  (directory-files dir))
-		do (loop for base in files
+		do (cl-loop for base in files
 			 as fn = (f-join dir base)
 			 do (if (f-dir? fn)
 				(unless (member base '(".." "."))
@@ -467,7 +467,7 @@ for customization of the printer command."
         (let* ((text (match-string 0))
 	       (_ (message "text is %s" text))
 	       (replacement (save-match-data
-			      (loop for (regexp replacement) in text-replacement-alist
+			      (cl-loop for (regexp replacement) in text-replacement-alist
 				    thereis (when (string-match regexp text)
 					      replacement)))))
           (replace-match replacement))))))
@@ -476,7 +476,7 @@ for customization of the printer command."
 					&optional a b)
   "Replace each (FROM TO) pair in TEXT-REPLACEMENT-ALIST sequentially on region A, B."
   (unless (and a b) (setf a (point-min) b (point-max)))
-  (loop for (regexp replacement) in text-replacement-alist
+  (cl-loop for (regexp replacement) in text-replacement-alist
 	do (progn (goto-char a)
 		  (while (re-search-forward regexp b t)
 		    (replace-match replacement)))))
@@ -561,7 +561,7 @@ for customization of the printer command."
 (defun new-buffer-focus ()
   "Switch to the next 'new buffer'."
   (interactive)
-  (switch-to-buffer (loop for buff in (buffer-list)
+  (switch-to-buffer (cl-loop for buff in (buffer-list)
 			  thereis
 			  (and (s-starts-with-p "new-buffer" (buffer-name buff)) buff))))
 
@@ -588,8 +588,8 @@ for customization of the printer command."
   "Source shell vars defined in the file SH-VARS-FILENAME.  No echo on QUIET."
   (interactive (list
                 (read-file-name "enter shell file to source: ")))
-  (assert (file-exists-p sh-vars-filename))
-  (loop with cmd = (format "bash -c 'set -a; source %s &> /dev/null; env'"
+  (cl-assert (file-exists-p sh-vars-filename))
+  (cl-loop with cmd = (format "bash -c 'set -a; source %s &> /dev/null; env'"
                            sh-vars-filename)
         with out = (shell-command-to-string cmd)
         with env = (s-split "\n" out t)
@@ -601,8 +601,8 @@ for customization of the printer command."
                (unless quiet (message "setting %s to %s" var val))
                (setenv var val)
                (when (equal "PATH" var)
-                 (loop for dir in (s-split ":" val t)
-                       do (pushnew dir exec-path :test #'equal)))))))
+                 (cl-loop for dir in (s-split ":" val t)
+                       do (cl-pushnew dir exec-path :test #'equal)))))))
 
 (defun diff-buffer-with-another-file (buffer file)
   "View the differences between BUFFER and another file FILE.
@@ -642,7 +642,7 @@ This requires the external program `diff' to be in your `exec-path'."
 
    If NOQUERY is non-nil, use ‘replace-regexp' to replace every match.
    Otherwise, use ‘query-replace-regexp'"
-  (destructuring-bind (regexp . replacement)
+  (cl-destructuring-bind (regexp . replacement)
       (selcand-select regexp-replacement-alist)
     (funcall
      (if noquery 'replace-regexp 'query-replace-regexp)
@@ -689,7 +689,7 @@ This requires the external program `diff' to be in your `exec-path'."
   (let ((cum-string-sym (gensym "proc-filter-buff"))
 	(newline (or separator-char (string-to-char "\n")))
 	(string-indexof (lambda (string char start)
-			  (loop for i from start below (length string)
+			  (cl-loop for i from start below (length string)
 				thereis (when (eq char (aref string i))
 					  i)))))
     (set cum-string-sym "")
@@ -728,7 +728,7 @@ This requires the external program `diff' to be in your `exec-path'."
   (let ((buffname "*A B region diff*"))
     (with-help-window buffname
       (with-current-buffer buffname
-        (loop for (msg lines) on
+        (cl-loop for (msg lines) on
               (list
                "common lines" (intersection a b :test #'equal)
                "unique to A" (set-difference a b :test #'equal)

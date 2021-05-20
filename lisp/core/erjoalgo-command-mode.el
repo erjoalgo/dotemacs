@@ -127,7 +127,7 @@
   `(defun ,name (&optional nth kill-only)
      ,(format "find the last file in %s" directories)
      (interactive "P")
-     (when nth (assert (> nth 0)))
+     (when nth (cl-assert(> nth 0)))
      (let ((file
      (-> (mapcar #'expand-file-name ,directories)
        (most-recent-file-name-in-directories (when nth (1- nth))))))
@@ -146,7 +146,7 @@
 
   OFFSET is relative to the current buffer If it matches BUFFER-REGEXP."
   (interactive "P")
-  (assert (or (null offset) (> offset 0)))
+  (cl-assert(or (null offset) (> offset 0)))
   (let* ((buffers
           (sort-by
            (cl-remove-if-not (lambda (buffer)
@@ -417,7 +417,7 @@
                    (let ((kmap-sym (->> mode-symbol
                                      (format "%s-map")
                                      intern)))
-                     (assert (boundp kmap-sym))
+                     (cl-assert(boundp kmap-sym))
                      (symbol-value kmap-sym)))
    with entry = (cons mode-symbol kmap)
    for alist-var in '(minor-mode-map-alist minor-mode-overriding-map-alist)

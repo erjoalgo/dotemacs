@@ -70,7 +70,7 @@
 (defvar music-player-last-regex nil  "last user regex search for music")
 
 
-(require 'cl);need this for reduce and remove-if-nil (or filter) functions
+(require 'cl-lib) ;; need this for reduce and remove-if-nil (or filter) functions
 
 (defun music-player-get-all-songs (&optional regex reload)
   (when (not music-player-top-dirs) (error "music-player-top-dirs is not defined."))

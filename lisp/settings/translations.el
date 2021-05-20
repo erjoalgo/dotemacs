@@ -38,7 +38,7 @@
 (defun translation-mkdir (name &optional path)
   (unless path
     (setf path (read-file-name "enter path: " translations-home "")))
-  (assert (s-starts-with? (f-full translations-home) (f-full path)))
+  (cl-assert(s-starts-with? (f-full translations-home) (f-full path)))
   (let ((dir (f-join path name)))
     (unless (file-exists-p dir)
       (make-directory dir t))
@@ -83,7 +83,7 @@
   (let ((text-english
          (translation-interactive-create-file
           (translation-suffix name 'english dir) text-english)))
-        (assert text-english)
+        (cl-asserttext-english)
         (translation-interactive-create-file
          (translation-suffix name 'spanish dir)
          (babel-english-to-spanish text-english))
@@ -133,12 +133,12 @@
                               (cdr (assoc address translation-submissions-address-alist))
                               'plaintext)))
        (list subject body address attachment-type (buffer-file-name)))))
-  (assert address)
+  (cl-assertaddress)
   (translation-commit default-directory)
   (compose-mail
    address subject nil)
   (goto-char (point-max))
-  (case attachment-type
+  (cl-case attachment-type
     ('plaintext (insert body))
     ('attachment (gnus-attach-file-simple original-buffer))
     (t (error "unknown attachment-type: %s" attachment-type))))
@@ -310,7 +310,7 @@ a translation from scratch"
 		  (format "\\(%s+?\\)" wildcard)
 		  post-line)))
     (let ((m (string-match regexp s)))
-      (assert m)
+      (cl-assertm)
       (erase-buffer)
       (insert (match-string 2 s))
       (save-buffer))))
@@ -360,7 +360,7 @@ a translation from scratch"
 
 (setq month-regexp
       (s-join "\\|"
-              (loop for mon in
+              (cl-loop for mon in
                     (append
                      '("enero" "febrero" "marzo" "abril"
                        "mayo" "junio" "julio" "agosto"
@@ -411,7 +411,7 @@ a translation from scratch"
 (defun translation-fix-quotes ()
   (interactive)
   (save-excursion
-    (loop for (from . to) in translation-regexp-rules-alist
+    (cl-loop for (from . to) in translation-regexp-rules-alist
           do
           (progn
             (goto-char (point-min))
