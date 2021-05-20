@@ -294,9 +294,9 @@
           (kmap-name (completing-read "select map: " (mapcar 'car kmaps) nil t))
           (kmap (symbol-value (intern kmap-name))))
      (list key kmap)))
-  (cl-assertkey)
-  (cl-assertkmap)
-  (cl-assert(lookup-key kmap key))
+  (cl-assert key)
+  (cl-assert kmap)
+  (cl-assert (lookup-key kmap key))
   (define-key kmap key nil))
 
 (defun keymap-current-active-keymap-symbols ()
@@ -328,7 +328,7 @@
 	  while front do
 	  (cl-loop while front
 		as dir = (pop front)
-		as files = (progn (cl-assert(f-dir? dir))
+		as files = (progn (cl-assert (f-dir? dir))
 				  (directory-files dir))
 		do (cl-loop for base in files
 			 as fn = (f-join dir base)

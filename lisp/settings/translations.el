@@ -38,7 +38,7 @@
 (defun translation-mkdir (name &optional path)
   (unless path
     (setf path (read-file-name "enter path: " translations-home "")))
-  (cl-assert(s-starts-with? (f-full translations-home) (f-full path)))
+  (cl-assert (s-starts-with? (f-full translations-home) (f-full path)))
   (let ((dir (f-join path name)))
     (unless (file-exists-p dir)
       (make-directory dir t))
@@ -83,7 +83,7 @@
   (let ((text-english
          (translation-interactive-create-file
           (translation-suffix name 'english dir) text-english)))
-        (cl-asserttext-english)
+        (cl-assert text-english)
         (translation-interactive-create-file
          (translation-suffix name 'spanish dir)
          (babel-english-to-spanish text-english))
@@ -133,7 +133,7 @@
                               (cdr (assoc address translation-submissions-address-alist))
                               'plaintext)))
        (list subject body address attachment-type (buffer-file-name)))))
-  (cl-assertaddress)
+  (cl-assert address)
   (translation-commit default-directory)
   (compose-mail
    address subject nil)
@@ -310,7 +310,7 @@ a translation from scratch"
 		  (format "\\(%s+?\\)" wildcard)
 		  post-line)))
     (let ((m (string-match regexp s)))
-      (cl-assertm)
+      (cl-assert m)
       (erase-buffer)
       (insert (match-string 2 s))
       (save-buffer))))

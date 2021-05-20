@@ -86,7 +86,7 @@
                            do (setf act 'insert)
                            do (cl-case act
                                 (ins
-                                 (cl-assert(null (cdr rest)))
+                                 (cl-assert (null (cdr rest)))
                                  (setf curr (concat curr (car rest))))
                                 (rec (setf curr (concat curr "{}")))
                                 (var-rec (setf curr (concat curr "{0}")))
@@ -108,7 +108,7 @@
                                  (when act
                                    (if (eq 'evl act)
                                        (progn
-                                         (cl-assert(null (cdr rest)))
+                                         (cl-assert (null (cdr rest)))
                                          (push (car rest) ret))
                                      (push `(,act ,@rest) ret)))))
                            finally (return (reverse ret))))

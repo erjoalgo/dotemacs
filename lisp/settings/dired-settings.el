@@ -53,7 +53,7 @@
   (let* ((arr (make-vector 256 nil)))
 
     (cl-loop for (file . mark) in (dired-remember-marks (point-min) (point-max))
-          do (cl-assertmark)
+          do (cl-assert mark)
           if (eq mark dired-mark-char) do
           (error "remove the standard mark from all files first: %s"
                  file)

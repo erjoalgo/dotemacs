@@ -17,7 +17,7 @@
            ,(cl-loop for (name arglist . body) in lets
                   collect (if (atom arglist)
                               (let ((alias arglist))
-                                (cl-assert(null body))
+                                (cl-assert (null body))
                                 ;; (backquote ,(list name (list (quote &rest) (quote body)) (list alias ``,@body)))
                                 `(,name (&rest body) (,alias ,@body))
                                 )

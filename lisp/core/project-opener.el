@@ -111,7 +111,7 @@
                            (apply-partially 'file-extension-matches-p "asd"))
                           car)))
 
-  (cl-assertasd-filename)
+  (cl-assert asd-filename)
 
   (message "on project-open-cl-post-slime-connected")
 

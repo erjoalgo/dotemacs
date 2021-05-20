@@ -440,7 +440,7 @@
           ("e" (cmd-ins "(vom:error \"{}~%\"){}"))))))
       ("t"
        (but
-        ("a" (cmd-ins "(cl-assert{})"))))
+        ("a" (cmd-ins "(cl-assert {})"))))
       ("5"
        (but
         ("s" (cmd-ins "~A"))
