@@ -1,5 +1,11 @@
 (defvar slime-helper-filename nil "Quicklisp slime helper")
 
+(defun quicklisp-slime-helper-slime-directory--override (oldfun &rest result)
+  (expand-file-name "~/git/slime/"))
+
+(advice-add 'quicklisp-slime-helper-slime-directory :around
+            'quicklisp-slime-helper-slime-directory--override)
+
 (setq slime-helper-filename
       (expand-file-name "~/quicklisp/slime-helper.el"))
 

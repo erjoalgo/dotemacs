@@ -3,6 +3,8 @@
 ;;; Emacs Startup File --- initialization for Emacs
 ;;; Code:
 
+(add-to-list 'load-path (expand-file-name "~/git/babel/"))
+
 (defvar emacs-top
   (file-name-directory (file-truename user-init-file))
   "Find the LISP src directory.")
