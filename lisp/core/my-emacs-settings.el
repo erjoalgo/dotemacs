@@ -68,7 +68,8 @@
   (setq server-name (or (getenv "DESKTOP_GROUP_NUMBER")
                         server-name))
   (server-force-delete server-name)
-  (server-start t))
+  (server-start)
+  (cl-assert (server-running-p server-name)))
 
 ;(setq split-window-preferred-function 'split-window-vertically) doesn't work
 ;(setq split-height-threshold 0)
