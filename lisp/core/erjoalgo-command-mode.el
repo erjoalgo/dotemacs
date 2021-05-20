@@ -262,7 +262,9 @@
     ("5" (buttons-make
           ("g" (cmd (dir "~/git")))
           ("l" (cmd (dir "~/private-data/leet/")))
-          ("G" (cmd (find-file "~/git/google-utils/google3/experimental/users/ejalfonso/google-utils/emacs-lisp")))))
+          ("G" (cmd
+                (find-file
+                 "~/git/google-utils/google3/experimental/users/ejalfonso/google-utils")))))
     ("6" (cmd (dir org-top-dir)))
     ("s" 'save-buffer);;originally C-x s
     ("l" 'recenter-top-bottom);;originally C-l
