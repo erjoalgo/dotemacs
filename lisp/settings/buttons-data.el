@@ -1132,7 +1132,7 @@
        (but
         ("q"
          (but
-          ("u" (cmd (ins "std::unique_ptr<{}> ")))
+          ("u" (cmd (ins "std::unique_ptr<{}>")))
           ("m" (cmd-ins "absl::make_unique<{}>" (inm)))
           ("w" (cmd-ins "absl::WrapUnique({})" (inm)))))
         ("m" (cmd-ins "map<{}>" (inm)))
@@ -1143,6 +1143,7 @@
         ("S" (cmd-ins "absl::string_view"))
         ("t"
          (but
+          ("a" (cmd-ins "static "))
           ("e" (cmd-ins "true"))
           ("s" (cmd-ins "std::"))
           ("f" (cmd-ins "file::"))
@@ -1544,9 +1545,12 @@ server {
    (defbuttons sql-buttons programming-buttons
      (sql-interactive-mode-map sql-mode-map)
      (but
+      ("1" (cmd-ins " NOT "))
       ("s" (cmd-ins " SELECT "))
       ("f" (cmd-ins " FROM "))
       ("w" (cmd-ins " WHERE "))
+      ("h" (cmd-ins " WITH {} AS (" (nli) (rec) (nli) ")"))
+      ("H" (cmd-ins " AS (" (nli) (rec) (nli) ")"))
       ("g" (cmd-ins " GROUP BY "))
       ("o" (cmd-ins " ORDER BY "))
       ("a" (cmd-ins " AS "))
