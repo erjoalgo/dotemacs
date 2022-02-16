@@ -161,7 +161,7 @@
                (max-char)))
            :descending t))
          (offset (or offset 1))
-         (start (or (position (current-buffer) buffers) -1))
+         (start (or (cl-position (current-buffer) buffers) -1))
          (idx (if (zerop (length buffers))
                   (user-error "no more compilation buffers")
                 (mod (+ start offset) (length buffers)))))

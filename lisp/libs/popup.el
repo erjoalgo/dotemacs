@@ -1145,7 +1145,7 @@ PROMPT is a prompt string when reading events during event loop."
 (defun popup-menu-item-of-mouse-event (event)
   (when (and (consp event)
              (memq (cl-first event) '(mouse-1 mouse-2 mouse-3 mouse-4 mouse-5)))
-    (let* ((position (cl-second event))
+    (let* ((cl-position (cl-second event))
            (object (elt position 4)))
       (when (consp object)
         (get-text-property (cdr object) 'popup-item (car object))))))
