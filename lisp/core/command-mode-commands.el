@@ -467,7 +467,7 @@ Buffers other than the current buffer are preferred."
       (error "no more buffers"))
     (if (member last-command '(cycle-buffer 'cycle-prev-buffer))
         (progn
-          (incf cycle-buffer-index direction)
+          (cl-incf cycle-buffer-index direction)
           (switch-to-buffer (funcall nth-mod cycle-buffer-index buf-list)))
       (progn
         (setq cycle-buffer-index
