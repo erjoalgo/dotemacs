@@ -746,7 +746,7 @@
         ("A" (cmd-ins "alert(\"DEBUG {(rnd)} value of {0}: \"+{0});"))
         ("a" (cmd-ins "alert(`{}`);"))
         ("R" (cmd-ins "alert(\"DEBUG TRACE {(buf)} {(rnd)}\");"))))
-      ("T" (cmd-ins "try{(cbd)} catch(err){(cbd)}"))
+      ("T" (cmd-ins "try {" (nli) (rec) (nli) "} catch(err) {" (nli) (rec) (nli) "}"))
       ("f" (cmd-ins "for (var {0} = 0; {0}<{}; {0}++){(cbd)}"))
       ("F" (cmd-ins "for (var {} of {}){(cbd)}"))
       ("l" (cmd-ins ".length"))
@@ -787,6 +787,7 @@
       ("t"
        (but
         ("." (cmd-ins "debugger;"))
+        ("a" (cmd-ins "assert({})"))
         ("u" (cmd-ins "true"))
         ("g" (cmd-ins "false"))
         ("G" (cmd-ins "null"))
@@ -823,6 +824,8 @@
           ("c" (cmd-ins "document.createElement({})"))
           ("b" (cmd-ins "document.body"))
           ("g" (cmd-ins "document.getElementById({})"))
+          ("q" (cmd-ins "document.querySelector({})"))
+          ("Q" (cmd-ins "document.querySelectorAll({})"))
           ("a" (cmd-ins ".appendChild({})"))
           ("t" (cmd-ins ".textContent({})"))
           ("q" (cmd-ins "document.querySelector({})"))
