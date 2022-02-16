@@ -281,9 +281,10 @@ Buffers other than the current buffer are preferred."
       (with-current-buffer buff-name
 	(erase-buffer)))
 
-    (let ((proc
-	   (start-process buff-name buff-name "find"
-			  directory "-iregex" (format ".*%s.*" regex))))
+    (let* ((args
+           (list "find" directory "-iregex" (format ".*%s.*" regex)))
+          (proc
+	   (apply #'start-process buff-name buff-name args)))
       (set-process-sentinel
        proc
        `(lambda (proc change)
