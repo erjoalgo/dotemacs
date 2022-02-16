@@ -483,12 +483,14 @@
     ;; disable accidentally entering h h
     ((kbd "h") nil))))
 
+(defun apropos-mode-hook-auto-switch-windows (&rest args)
+  (if-let ((apropos-win
+            (or (get-buffer-window "*Apropos*")
+                (get-buffer-window "*slime-apropos*"))))
+      (select-window apropos-win)))
+
 (add-hook 'apropos-mode-hook
-	  (lambda (&rest args)
-	    (add-one-time-hook
-	     'post-command-hook
-	     (lambda (&rest args)
-	       (select-window (get-buffer-window "*Apropos*"))))))
+          #'apropos-mode-hook-auto-switch-windows)
 
 (defun one-char-insert-mode (&optional _arg)
   "Insert the next char as text."
