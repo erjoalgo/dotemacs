@@ -420,7 +420,7 @@
         ("a" (cmd-ins "(defalias {})"))
         ("b"
          (but
-          ("d" (cmd-ins "(cl-destructuring-bind ({}){})"))
+          ("d" (cmd-ins "(destructuring-bind ({}){})"))
           ("m" (cmd-ins "(multiple-value-bind ({}){})"))))))
       ("T" (cmd-ins "(handler-case{}{(nli)}(error (err) {}))"))
       ("n"
