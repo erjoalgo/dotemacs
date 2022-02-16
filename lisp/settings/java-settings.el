@@ -146,5 +146,5 @@ q: Don't fix\n" func file))
         (replace-match (concat (match-string 1) sep
                                (downcase (match-string 2))))
         (backward-char); avoid skipping overlap
-        (incf b (length sep))))
+        (cl-incf b (length sep))))
     (downcase-region a (1+ a))))

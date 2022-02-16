@@ -115,7 +115,7 @@
 	 join-space)
 
       (fset 'join-space (lambda (str)
-			  (loop
+			  (cl-loop
 			   with len = (1- (* 2 (length str)))
 			   with new-str = (make-string len 0)
 			   for i below len

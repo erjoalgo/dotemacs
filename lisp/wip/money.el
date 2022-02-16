@@ -41,7 +41,7 @@
                                  category))
            unless category collect (cons desc amount) into unclassified
            when category do
-           (incf (alist-get category agg) amount)
+           (cl-incf (alist-get category agg) amount)
            finally (progn
                      (let ((buffer "*money-unclassified*"))
                        (with-current-buffer (get-buffer-create buffer)

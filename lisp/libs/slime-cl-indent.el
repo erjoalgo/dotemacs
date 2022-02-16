@@ -1353,7 +1353,7 @@ environment\\|more\
            (when (setq nskip (lisp-beginning-of-defmethod-qualifiers))
              (skip-chars-forward " \t\n")
              (while (looking-at "\\sw\\|\\s_")
-               (incf nskip)
+               (cl-incf nskip)
                (forward-sexp)
                (skip-chars-forward " \t\n"))
              t))

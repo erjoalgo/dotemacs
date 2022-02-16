@@ -373,7 +373,7 @@
              (save-excursion (funcall to))
            to)
          t)
-        (incf count)))
+        (cl-incf count)))
     count))
 
 (defun replace-regexp-dir (dir exts from to &optional pause)
@@ -403,7 +403,7 @@
         (when (or (null exts) (member (f-ext fn) exts))
           (with-temporary-current-file
            fn
-           (incf ,count-sym (regexp-replace-current-buffer from to pause))
+           (cl-incf ,count-sym (regexp-replace-current-buffer from to pause))
            (when (buffer-modified-p)
              (save-buffer))))))
     (message "%d occurrences replaced" (symbol-value count-sym))))

@@ -92,7 +92,7 @@ globals().update(args)
   (let ((ret (apply orig-fn args)))
     (when ret
       ;; (edebug)
-      (sort-key ret (apply-partially #'count (string-to-char "_"))))))
+      (sort-key ret (apply-partially #'cl-count (string-to-char "_"))))))
 
 (advice-add #'python-shell-completion-native-get-completions
             :around

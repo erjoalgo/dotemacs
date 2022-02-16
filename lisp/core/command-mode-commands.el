@@ -211,7 +211,7 @@ Buffers other than the current buffer are preferred."
      (interactive "P")
      (or
       (unless arg
-        (loop
+        (cl-loop
 	 for ,buff-sym in (buffer-list)
          thereis (and (not (eq (current-buffer) ,buff-sym))
                       ,buffer-pred-form

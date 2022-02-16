@@ -31,7 +31,7 @@
 		     (let ((char (aref (car cands) i)))
 		       (every (lambda (s) (eql (aref s i) char))
 			      cands)))
-	  do (incf i)
+	  do (cl-incf i)
 	  finally (return (substring (or (car cands) "") 0 i)))))
 
 (defun gnus-select-init-filename ()
@@ -324,7 +324,7 @@ machine smtp.gmail.com login %s password %s port 587"
 	 (article-buffer (format "*Article %s*" summary-name))
 	 (gnus-prompt-before-saving nil)
 	 )
-    (loop
+    (cl-loop
      do (progn
 	  (switch-to-buffer summary-buffer)
 	  (gnus-summary-prev-article)

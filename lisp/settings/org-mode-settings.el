@@ -189,7 +189,7 @@
           as rep = (concat (match-string 0)
                            (make-string len (string-to-char new-char)))
           do (replace-match rep nil t)
-          do (incf offset len))))
+          do (cl-incf offset len))))
 
 
 (defun my-org-shift-left (arg a b)

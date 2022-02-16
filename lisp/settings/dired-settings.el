@@ -33,7 +33,7 @@
 
 (defun dired-tagger-tag-loop (&optional open)
   (interactive "P")
-  (loop
+  (cl-loop
    as buf = (when open (dired-find-file))
    as char = (dired-tagger-read-char)
    when buf do (kill-buffer buf)

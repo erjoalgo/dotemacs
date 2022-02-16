@@ -562,12 +562,12 @@ output.")
 	     ;; Increase COLUMN by the length of the text we've
 	     ;; skipped since last tab or newline.  (Encountering
 	     ;; newline resets it.)
-	     (incf column (- match-pos last-match))
+	     (cl-incf column (- match-pos last-match))
 	     ;; Calculate tab size based on tab-width and COLUMN.
 	     (setq tab-size (- tab-width (% column tab-width)))
 	     ;; Expand the tab.
 	     (push (aref htmlize-tab-spaces tab-size) chunks)
-	     (incf column tab-size)
+	     (cl-incf column tab-size)
 	     (setq chunk-start (1+ match-pos)))
 	    (t
 	     ;; Reset COLUMN at beginning of line.
@@ -865,7 +865,7 @@ If no rgb.txt file is found, return nil."
   ;; The size (height) of FACE, taking inheritance into account.
   ;; Only works in Emacs 21 and later.
   (let ((size-list
-	 (loop
+	 (cl-loop
 	  for f = face then (face-attribute f :inherit)
 	  until (or (not f) (eq f 'unspecified))
 	  for h = (face-attribute f :height)
@@ -1066,7 +1066,7 @@ If no rgb.txt file is found, return nil."
 	    ;; Uniquify the face's css-name by using NAME-1, NAME-2,
 	    ;; etc.
 	    (while (member new-name css-names)
-	      (setq new-name (format "%s-%s" css-name (incf i))))
+	      (setq new-name (format "%s-%s" css-name (cl-incf i))))
 	    (unless (equal new-name css-name)
 	      (setf (htmlize-fstruct-css-name fstruct) new-name))
 	    (push new-name css-names)))))
