@@ -559,7 +559,8 @@
                 (re-search-backward "#include")
                 (unless (re-search-backward "base/examine_stack.h" nil t)
                   (let ((line "#include \"base/examine_stack.h\""))
-                    (message "adding %s" line)
+                    (message
+                     "please add \"//base:examine_stack\" as build dependency")
                     (insert line)
                     (newline-and-indent))))))
         ;; + operator
