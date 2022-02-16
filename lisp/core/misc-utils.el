@@ -848,6 +848,12 @@ This requires the external program `diff' to be in your `exec-path'."
                       (region)))
     (diff-a-b (prompt-region) (prompt-region))))
 
+(defun eval-buffer-debug ()
+  (interactive)
+  (goto-char (point-min))
+  (while t
+    (forward-sexp)
+    (eval-last-sexp nil)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; misc-utils.el ends here
