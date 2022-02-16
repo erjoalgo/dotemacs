@@ -49,6 +49,7 @@
 	       (setf already-refreshed t))
              (safe-funcall (package-install package)))))
 
+(package-initialize)
 (ensure-packages-exist
  '(company
    legalese
