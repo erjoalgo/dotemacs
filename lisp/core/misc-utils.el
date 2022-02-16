@@ -855,5 +855,14 @@ This requires the external program `diff' to be in your `exec-path'."
     (forward-sexp)
     (eval-last-sexp nil)))
 
+(defun buffer-process-id ()
+  (interactive)
+  (let ((proc (get-buffer-process (current-buffer))))
+    (cond
+     ((not proc) (message "buffer has no process"))
+     ((not (process-live-p proc))
+           (message "buffer has no live process"))
+     (t (message "%s" (process-id proc))))))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; misc-utils.el ends here
