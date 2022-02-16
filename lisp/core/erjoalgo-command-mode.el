@@ -379,7 +379,7 @@
             ("2" 'slime-stumpwm)
             ("3" 'cider-buffer-or-jack-in)))
       ("w" (switch-to-buff-or-else-command
-            "regexp:[*]slime-repl sbcl"))
+            "regexp:[*]slime-repl sbcl\\|[*]cider-repl"))
       ("r" 'replace-regexp)
       ("R" 'query-replace-regexp)
       ("A" (buff "[*]Async Shell Command[*]"))
