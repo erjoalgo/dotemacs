@@ -1164,13 +1164,16 @@
       ("m" (but
             ("i" (cmd-ins "#include"))
             ("u" (cmd-ins "using "))))
-      ("M" (cmd-ins "using namespace std;" (nli)
-                    (ins "#include <vector>") (nli)
-                    (ins "#include <unordered_map>") (nli)
-                    (ins "#include <iostream>") (nli)
-                    (ins "#define MAX(a, b) ((a)>(b)? (a):(b))") (nli)
-                    (ins "#define MIN(a, b) ((a)<(b)? (a):(b))") (nli)
-                    (ins "#define ABS(a) ((a)>=0? (a):-(a))") (nli)))
+      ("M" (cmd-ins
+            (ins "#include <vector>") (nli)
+            (ins "#include <string>") (nli)
+            (ins "#include <unordered_map>") (nli)
+            (ins "#include <iostream>") (nli)
+            (ins "#include <assert.h>") (nli)
+            (ins "#define MAX(a, b) ((a)>(b)? (a):(b))") (nli)
+            (ins "#define MIN(a, b) ((a)<(b)? (a):(b))") (nli)
+            (ins "#define ABS(a) ((a)>=0? (a):-(a))") (nli)
+            (ins "using namespace std;") (nli)))
       ("l"
        (but
         ("s" (cmd-ins ".size()"))
@@ -1180,11 +1183,6 @@
       ("s" (cmd-ins "scanf( \"%d\", &{(inm)}{} );"))
       ("S" (cmd-ins "int {0}; scanf( \"%d\", &{0} );{(nli)}"))
       (";" (cmd-ins "::"))
-      ("M" (cmd-ins "#include <unordered_map>" (nli)
-                    (ins "#include <iostream>") (nli)
-                    (ins "#include <string>") (nli)
-                    (ins "#include <assert.h>") (nli)
-                    (ins "using namespace std;") (nli)))
       ("a" (cmd-ins "[{}]({}){" "{}" "}"))
       ;; ("/" (cmd-ins "/*{}=*/"))
       ("t"
