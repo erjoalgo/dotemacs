@@ -584,6 +584,12 @@ for customization of the printer command."
   (setenv "PATH" (concat (getenv "PATH") ":" dir))
   (push dir exec-path))
 
+(defun path-ls ()
+  "Display the current PATH."
+  (interactive)
+  (message "PATH:\n%s"
+           (replace-regexp-in-string ":" "\n" (getenv "PATH"))))
+
 (defun source-shell-vars (sh-vars-filename &optional quiet)
   "Source shell vars defined in the file SH-VARS-FILENAME.  No echo on QUIET."
   (interactive (list
