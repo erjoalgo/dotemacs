@@ -86,7 +86,7 @@ will return point to the current position."
     (push-mark))
   (unless minimal-line-distance
     (setq minimal-line-distance 10))
-  (let ((cl-position nil)
+  (let ((position nil)
 	(undo-list (if (and (eq this-command last-command)
 			    goto-last-change-undo)
 		       (cdr (memq goto-last-change-undo buffer-undo-list))
@@ -117,7 +117,7 @@ will return point to the current position."
 	    ((null undo))		; nil
 	    (t (error "Invalid undo entry: %s" undo)))
       (setq undo-list (cdr undo-list)))
-    (cond (cl-position
+    (cond (position
 	   (setq goto-last-change-undo undo)
 	   (goto-char (min position (point-max))))
 	  ((and (eq this-command last-command)
