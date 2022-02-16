@@ -73,6 +73,11 @@
     (message "translated: %s" english)
     english))
 
+(defun babel-spanish-to-english (text)
+  (interactive "senter spanish text: ")
+  (let ((english (babel-string text "es" "en" 'google)))
+    (message "translated: %s" english)
+    english))
 
 ;;;###autoload
 (defun translation-new (name &optional text-english dir)
