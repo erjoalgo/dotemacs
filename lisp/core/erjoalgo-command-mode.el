@@ -204,6 +204,16 @@
             ,on-nonexistent
             (error (format "no such buffer: %s" ,buff-spec)))))))
 
+(defun markdown-indent-code-by-4-spaces (a b)
+  "Indent code in region (A, B) by 4 spaces."
+  (interactive "r")
+  (when (and a (= a b)) (setq a nil b nil))
+  (let ((a (or a (point-min)))
+        (b (or b (point-max)))
+        (save-match-data
+          (replace-regexp
+           "^" "    " nil a b)))))
+
 (buttons-macrolet
  ((dir (dir) `(read-file-name "select file: " ,dir))
   (buff (buff-spec &optional on-nonexistent)
@@ -302,6 +312,7 @@
            (interactive "P")
            (cl-loop for _ below (or arg 1)
                     do (join-line '(4)))))
+    ((kbd "s->") 'markdown-indent-code-by-4-spaces)
     ("m"
      (buttons-make
       ("e" (file (file-truename "~/.emacs")))
