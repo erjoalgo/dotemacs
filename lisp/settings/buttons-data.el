@@ -1231,10 +1231,22 @@
       ("d" (cmd-ins "{(nli)}|	"))))
 
    (defbuttons dot-buttons programming-buttons
-     (dot-mode-map graphviz-dot-mode-map)
+               (dot-mode-map graphviz-dot-mode-map)
      (but
       ("l" (cmd-ins " [label=\"{}\"];"))
-      ("-" (cmd-ins " -> "))))
+      ("-" (cmd-ins " -> "))
+      ("0" (cmd-ins
+            "digraph D {
+
+  A [shape=diamond]
+  B [shape=box]
+  C [shape=circle]
+
+  A -> B [style=dashed, color=grey]
+  A -> C [color="black:invis:black"]
+  A -> D [penwidth=5, arrowhead=none]
+
+}"))))
 
    (defbuttons protobuf-buttons programming-buttons (protobuf-mode-map)
      (but
