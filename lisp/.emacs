@@ -3,13 +3,6 @@
 ;;; Emacs Startup File --- initialization for Emacs
 ;;; Code:
 
-(defun var-watcher (sym new-val op where)
-  (message "%s was %s to %s new-val at %s"
-           sym op new-val where)
-  (edebug))
-
-(add-variable-watcher 'slime-backend #'var-watcher)
-
 (add-to-list 'load-path (expand-file-name "~/git/babel/"))
 
 (defvar emacs-top
