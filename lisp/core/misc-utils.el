@@ -851,8 +851,9 @@ This requires the external program `diff' to be in your `exec-path'."
 (defun eval-buffer-debug ()
   (interactive)
   (goto-char (point-min))
-  (while t
-    (forward-sexp)
+  (while (let ((old-point (point)))
+           (forward-sexp)
+           (not (= (point) old-point)))
     (eval-last-sexp nil)))
 
 (defun buffer-process-id ()
