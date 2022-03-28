@@ -60,4 +60,20 @@
 
 (advice-add 'compilation-start :before #'compilation-autorename-existing-buffer)
 
+(defvar-local compilation-original-buffer nil
+  "The buffer where compile was originally called")
+
+(defun compile--remember-original-buffer
+    (original-fn &rest r)
+  "Remember the original buffer where compilation was invoked."
+  (let ((original-buffer (current-buffer))
+        (result (apply original-fn r)))
+    (with-current-buffer result
+      (setq-local compilation-original-buffer
+                  original-buffer))
+    result))
+
+(advice-add 'compile :around
+            #'compile--remember-original-buffer)
+
 1
