@@ -604,19 +604,19 @@
       ("i"
        (but
         ("u" (cmd-ins "unsigned " (inm)))
-        ("a" (cmd-ins "auto " (inm)))
-        ("n" (cmd-ins "int " (inm)))
-        ("3" (cmd-ins "int32 " (inm)))
-        ("6" (cmd-ins "int64 " (inm)))
-        ("d" (cmd-ins "double " (inm)))
-        ("f" (cmd-ins "float " (inm)))
-        ("l" (cmd-ins "long " (inm)))
-        ("c" (cmd-ins "char " (inm)))
-        ("C" (cmd-ins "char* " (inm)))
-        ("s" (cmd-ins "char* " (inm)))
-        ("v" (cmd-ins "void " (inm)))
-        ("o" (cmd-ins "const " (inm)))
-        ("b" (cmd-ins "bool " (inm)))
+        ("a" (cmd-ins "auto" (inm)))
+        ("n" (cmd-ins "int" (inm)))
+        ("3" (cmd-ins "int32" (inm)))
+        ("6" (cmd-ins "int64" (inm)))
+        ("d" (cmd-ins "double" (inm)))
+        ("f" (cmd-ins "float" (inm)))
+        ("l" (cmd-ins "long" (inm)))
+        ("c" (cmd-ins "char" (inm)))
+        ("C" (cmd-ins "char*" (inm)))
+        ("s" (cmd-ins "char*" (inm)))
+        ("v" (cmd-ins "void" (inm)))
+        ("o" (cmd-ins "const" (inm)))
+        ("b" (cmd-ins "bool" (inm)))
         ("t"
          (but
           ("u" (cmd-ins "absl::Status "))
@@ -1127,7 +1127,7 @@
      (but
       ("f"
        (but
-        ("a" (cmd-ins "for (const auto& {} : {}){(cbd)}"))))
+        ("a" (cmd-ins "for (const {}& {} : {}){(cbd)}"))))
       ("i"
        (but
         ("q"
@@ -1221,6 +1221,7 @@
             ("i" (cmd-ins "absl::InternalError({});"))
             ("a" (cmd-ins "absl::InvalidArgumentError({});"))
             ("u" (cmd-ins "absl::UnimplementedError({});"))
+            ("k" (cmd-ins "absl::UnknownError({});"))
             ("o" (cmd-ins "absl::OkStatus();"))))))))))
 
    (defbuttons yacc-buttons programming-buttons (yacc-mode-map)
@@ -1248,7 +1249,8 @@
 
 }"))))
 
-   (defbuttons protobuf-buttons programming-buttons (protobuf-mode-map)
+   (defbuttons protobuf-buttons programming-buttons
+     (protobuf-mode-map protobuffer-mode-map)
      (but
       ("i"
        (but
@@ -1262,7 +1264,10 @@
         ("s" (cmd-ins "string " (inm)))
         ("6" (cmd-ins "int64 " (inm)))
         ("3" (cmd-ins "int32 " (inm)))))
-      ("m" (cmd-ins "import \"{}\";"))))
+      ("m" (cmd-ins "import \"{}\";"))
+      ("0" (cmd-ins
+            "# proto-file: google3/" (rec) (nli)
+            "# proto-message: "))))
 
    (defbuttons org-buttons nil (org-mode-map)
      (but
@@ -1561,18 +1566,26 @@ server {
       ("s" (cmd-ins " SELECT "))
       ("f" (cmd-ins " FROM "))
       ("w" (cmd-ins " WHERE "))
-      ("h" (cmd-ins " WITH {} AS (" (nli) (rec) (nli) ")"))
-      ("H" (cmd-ins " AS (" (nli) (rec) (nli) ")"))
-      ("g" (cmd-ins " GROUP BY "))
+      ("H" (cmd-ins " WITH {} AS (" (nli) (rec) (nli) ")"))
+      ("h" (cmd-ins " AS (" (nli) (rec) (nli) ")"))
+      ("g" (but
+            ("b" (cmd-ins " GROUP BY "))
+            ("a" (cmd-ins " ANY_VALUE(" (rec) ")"))
+            ("g" (cmd-ins " ARRAY_AGG(" (rec) ")"))
+            ("s" (cmd-ins " STRING_AGG(" (rec) ")"))
+            ("u" (cmd-ins " UNION ALL "))))
       ("o" (cmd-ins " ORDER BY "))
       ("a" (cmd-ins " AS "))
       ("T" (cmd-ins " CAST({} AS {})"))
       ("t" (but
             ("s" (cmd-ins "STRING"))
-            ("6" (cmd-ins "INT64"))))
+            ("6" (cmd-ins "INT64"))
+            ("u" (cmd-ins "TRUE"))
+            ("g" (cmd-ins "FALSE"))
+            ("G" (cmd-ins "NULL"))))
       ("l" (cmd-ins " LIMIT "))
       ("8" (cmd-ins "*"))
-      ("c" (cmd-ins " COUNT({}) "))
+      ("c" (cmd-ins " COUNT(*) "))
       ("k" (cmd-ins " AND "))
       ("j" (cmd-ins " OR "))
       ("J" (cmd-ins " JOIN "))
@@ -1583,7 +1596,10 @@ server {
       (";" (cmd (end-of-line) (ins ";") (comint-send-input)))
       ("d"
        (but
-        ("i" (cmd-ins " DISTINCT "))))))
+        ("i" (cmd-ins " DISTINCT "))))
+      ("i"
+       (but
+        ("s" (cmd-ins " IS "))))))
 
    (defbuttons gfm-mode-buttons nil (gfm-mode-map)
       (but
