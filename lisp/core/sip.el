@@ -125,7 +125,16 @@
          (buffer (get-buffer-create buffer-name)))
     (with-current-buffer buffer
       (sip-chat-mode)
-      (setq sip-from-phone-number other-number-clean))
+      (setq sip-from-phone-number other-number-clean)
+      (when
+          (and (eq 1 (line-number-at-pos))
+               (not (string-empty-p sip-autosend-message))
+               (not (save-excursion
+                      (goto-char (point-min))
+                      (re-search-forward (regexp-quote sip-autosend-message) nil t))))
+        (insert sip-autosend-message)
+        (sip-send-chat-line)
+        (sit-for 1)))
     buffer))
 
 (defun sip-message-received (to from message id datetime)
