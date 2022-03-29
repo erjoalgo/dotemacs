@@ -115,6 +115,17 @@
 
 (defvar sip-last-message-buffer nil)
 
+(defun sip-chat-maybe-autosend-message ()
+  (when
+      (and (eq 1 (line-number-at-pos))
+           (not (string-empty-p sip-autosend-message))
+           (not (save-excursion
+                  (goto-char (point-min))
+                  (re-search-forward (regexp-quote sip-autosend-message) nil t))))
+    (insert sip-autosend-message)
+    (sip-send-chat-line)
+    (sit-for 1)))
+
 (defun sip-chat-buffer (other-number &optional self-number)
   (cl-assert (not (s-blank-p other-number)))
   (let* ((other-number-clean (sip-phone-number-clean other-number))
@@ -126,15 +137,7 @@
     (with-current-buffer buffer
       (sip-chat-mode)
       (setq sip-from-phone-number other-number-clean)
-      (when
-          (and (eq 1 (line-number-at-pos))
-               (not (string-empty-p sip-autosend-message))
-               (not (save-excursion
-                      (goto-char (point-min))
-                      (re-search-forward (regexp-quote sip-autosend-message) nil t))))
-        (insert sip-autosend-message)
-        (sip-send-chat-line)
-        (sit-for 1)))
+      (sip-chat-maybe-autosend-message))
     buffer))
 
 (defun sip-chat-all-region ()
@@ -182,7 +185,8 @@
   (interactive "senter phone number: \nenter message: ")
   (let* ((number-clean (sip-clean-phone-number number))
          (buffer (sip-chat-buffer number-clean)))
-    (switch-to-buffer buffer)))
+    (switch-to-buffer buffer)
+    (sip-chat-maybe-autosend-message)))
 
 (defun sip-goto-last-message-buffer ()
   (interactive)
