@@ -157,4 +157,8 @@
 
 (stumpwm-message (format "connected to emacs on %s" system-name) 'green)
 
+(defun slime-connected-hook-switch-to-stumpwm-package ()
+  (slime-repl-set-package "STUMPWM"))
 
+(add-hook #'slime-editing-mode-hook
+          #'slime-connected-hook-switch-to-stumpwm-package)
