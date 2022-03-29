@@ -66,7 +66,9 @@
    buttons
    flycheck
    babel
-   slime
+   ;; load slime from quicklisp instead:
+   ;; https://github.com/purcell/emacs.d/issues/332#issuecomment-310255633
+   ;; slime
    cider
    websocket
    autobuild))
