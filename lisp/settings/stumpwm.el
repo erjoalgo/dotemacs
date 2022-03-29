@@ -15,12 +15,14 @@
 
 (defvar *stumpwm-swank-port* 4005)
 
+(defun stumpwm-find-slime-buffer ()
+  (find-buffer-by-prefix "*slime-repl sbcl"))
+
 (defun slime-stumpwm (&optional force-new-connection)
   "Switch to a stumpwm slime buffer, or FORCE-NEW-CONNECTION if non-nil."
   (interactive "P")
   (require 'slime)
-  (let ((slime-stumpwm-buffer
-	 (find-buffer-by-prefix "*slime-repl sbcl")))
+  (let ((slime-stumpwm-buffer (stumpwm-find-slime-buffer)))
     (if (and (not force-new-connection) slime-stumpwm-buffer)
 	(switch-to-buffer slime-stumpwm-buffer)
 
