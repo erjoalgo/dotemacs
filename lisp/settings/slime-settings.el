@@ -53,3 +53,15 @@
     (slime-read-package-name "from package: "
                              (slime-current-package))))
   (slime-eval-async-and-message `(dbg:unintern-all-symbols ,package)))
+
+(defun process-ignore-on-exit (regexp)
+  (cl-loop for proc in (process-list)
+           when (s-matches-p regexp (process-name proc))
+           do
+           (progn (message "disabling query-on-exit for '%s'" proc)
+                  (set-process-query-on-exit-flag proc nil))))
+
+(defun slime-ignore-processes-on-exit (&rest r)
+  (process-ignore-on-exit "SLIME"))
+
+(advice-add #'save-some-buffers :before #'slime-ignore-processes-on-exit)
