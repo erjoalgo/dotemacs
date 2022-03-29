@@ -188,6 +188,21 @@
     (switch-to-buffer buffer)
     (sip-chat-maybe-autosend-message)))
 
+(defun sip-message-exists-p (number message)
+  (with-current-buffer (sip-chat-buffer number)
+    (save-excursion
+      (goto-char (point-min))
+      (search-forward message))))
+
+(defun sip-chat-mass (numbers message)
+  (interactive "senter newline-separated phone numbers: \nsenter sms message: ")
+  (cl-loop for number in (split-string numbers "\n" t)
+           if (sip-message-exists-p number message)
+           do (message "skipping previously-sent message to %s" number)
+           else do (progn
+                     (sip-chat number message)
+                     (sit-for 1))))
+
 (defun sip-goto-last-message-buffer ()
   (interactive)
   (cl-assert sip-last-message-buffer)
