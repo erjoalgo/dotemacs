@@ -137,6 +137,15 @@
         (sit-for 1)))
     buffer))
 
+(defun sip-chat-all-region ()
+  (interactive)
+  (let ((numbers (cl-remove-if
+                  #'string-blank-p
+                  (split-string (region) "[,\"]" t "[][]"))))
+    (cl-loop for number in numbers
+             do (message "opening %s" number)
+             do (sip-chat number))))
+
 (defun sip-message-received (to from message id datetime)
   (if (sip-get-message-id id)
       (sip-ws-log (format "skipping previously-received message with id %s" id))
