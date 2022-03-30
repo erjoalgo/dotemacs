@@ -54,9 +54,6 @@
                              (or prompt "select ~/.gnus init file: ") cands
 			     nil t (longest-common-prefix cands) nil (car cands)))))
 	     (filename (f-join "~" selection)))
-        (setf gnus-init-file filename)
-        '(when (y-or-n-p "persist gnus init file selection for the current user? ")
-           (customize-save-variable 'gnus-autoselect-init-filename filename))
         filename))
 
 (setf mm-default-directory (expand-file-name "~/Downloads"))
