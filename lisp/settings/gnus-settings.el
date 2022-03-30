@@ -1,6 +1,7 @@
-(setf gnus-attachments-top
-      (expand-file-name
-       "~/Downloads/gnus-attachments/"))
+(defvar gnus-attachments-top
+  (expand-file-name
+   "~/Downloads/gnus-attachments/")
+  "Directory where to save email attachments.")
 
 (defun gnus-init-filename ()
   "return a ~/.gnus filename based on the current emacs session"
