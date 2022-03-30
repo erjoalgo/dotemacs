@@ -115,6 +115,9 @@
 
 (defvar sip-last-message-buffer nil)
 
+(defvar sip-autosend-message nil
+  "A message to send automatically to any new SMS chat")
+
 (defun sip-chat-maybe-autosend-message ()
   (when
       (and (eq 1 (line-number-at-pos))
