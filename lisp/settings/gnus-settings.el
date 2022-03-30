@@ -3,26 +3,31 @@
    "~/Downloads/gnus-attachments/")
   "Directory where to save email attachments.")
 
+(defun sort-< (seq)
+  (sort seq #'<))
+
 (defun gnus-init-filename ()
   "return a ~/.gnus filename based on the current emacs session"
   (let* ((emacs-self-pid (emacs-pid))
-	 (all-emacs-pids (->> (shell-command-to-string "pidof emacs")
-			      s-trim
-			      (s-split " ")
-			      (mapcar 'string-to-number)
-			      reverse))
-	 (gnus-init-idx (cl-loop for i from 0
-			      for pid in all-emacs-pids
-			      when (eql pid emacs-self-pid)
-			      return i))
-	 (gnus-init-filename (format "~/.gnus%s"
-				     (if (or (null gnus-init-idx)
-					     (zerop gnus-init-idx)) ""
-				       (format "-%d" gnus-init-idx))))
-	 )
-    (if (file-exists-p gnus-init-filename)
-	gnus-init-filename
-      (and (boundp 'gnus-init-file) gnus-init-file))))
+	 (all-emacs-pids-sorted
+          (->>
+              (shell-command-to-string "pidof emacs")
+	    s-trim
+	    (s-split " ")
+	    (mapcar 'string-to-number)
+            sort-<))
+	 (gnus-init-idx (cl-position emacs-self-pid all-emacs-pids-sorted))
+	 (gnus-init-filename (format "~/.gnus-%s" gnus-init-idx)))
+    (unless (file-exists-p gnus-init-filename)
+      (let ((real-gnus-init-filename
+             (gnus-select-init-filename
+              (format
+               "select a default init filename for emacs session number %s: "
+               gnus-init-idx))))
+        (message "symlinking %s as %s" real-gnus-init-filename gnus-init-filename)
+        (f-symlink real-gnus-init-filename gnus-init-filename)))
+    (cl-assert (file-exists-p gnus-init-filename))
+    gnus-init-filename))
 
 (defun longest-common-prefix (cands)
   (when cands
@@ -35,20 +40,21 @@
 	  do (cl-incf i)
 	  finally (return (substring (or (car cands) "") 0 i)))))
 
-(defun gnus-select-init-filename ()
-  (interactive)
-  (let* ((cands (remove-if-not (lambda (fn) (string-match "^[.]gnus-?.*" fn))
-			       (directory-files (expand-file-name "~"))))
-	 (selection (cond
-		     ((null cands) (error "no ~/.gnus* found"))
-		     ((null (cdr cands)) (car cands))
-		     (t (completing-read "select ~/.gnus init file: " cands
-					 nil t (longest-common-prefix cands) nil (car cands)))))
-	 (filename (f-join "~" selection)))
-    (setf gnus-init-file filename)))
+'(defcustom gnus-autoselect-init-filename nil
+  "If set, skips prompt for gnus init filename.")
 
-(setf gnus-init-file
-      (gnus-init-filename))
+(defun gnus-select-init-filename (&optional prompt)
+  (interactive)
+      (let* ((cands (remove-if-not (lambda (fn) (string-match "^[.]gnus-?.*" fn))
+			           (directory-files (expand-file-name "~"))))
+	     (selection (cond
+		         ((null cands) (error "no ~/.gnus* found"))
+		         ((null (cdr cands)) (car cands))
+		         (t (completing-read
+                             (or prompt "select ~/.gnus init file: ") cands
+			     nil t (longest-common-prefix cands) nil (car cands)))))
+	     (filename (f-join "~" selection)))
+        filename))
 
 (setf mm-default-directory (expand-file-name "~/Downloads"))
 
@@ -66,8 +72,7 @@
 	(switch-to-buffer inbox-buffer)
       (when (get-buffer "*Group*")
 	(kill-buffer "*Group*"))
-      (gnus-select-init-filename)
-      (load gnus-init-file)
+      (load (gnus-init-filename))
       (gnus)
       ;; (gnus-group-read-group 5000 t sent-group-name )
       (gnus-group-read-group 1000 t inbox )
