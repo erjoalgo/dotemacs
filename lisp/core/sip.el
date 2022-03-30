@@ -118,10 +118,13 @@
 (defvar sip-autosend-message nil
   "A message to send automatically to any new SMS chat")
 
+(defun string-null-or-empty-p (string)
+  (or (null string) (string-empty-p string)))
+
 (defun sip-chat-maybe-autosend-message ()
   (when
       (and (eq 1 (line-number-at-pos))
-           (not (string-empty-p sip-autosend-message))
+           (not (string-null-or-empty-p sip-autosend-message))
            (not (save-excursion
                   (goto-char (point-min))
                   (re-search-forward (regexp-quote sip-autosend-message) nil t))))
