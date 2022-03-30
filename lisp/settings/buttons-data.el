@@ -144,6 +144,7 @@
         ("t" (cmd-ins "print({}){(nli)}"))
         ("r" (cmd-ins "print(\"DEBUG TRACE: {(buf)} {(rnd)} {}\")"))
         ("v" (cmd-ins "print(\"DEBUG {(buf)} {(rnd)}: value of {0}: {" "}\".format({0}))"))
+        ("[" (cmd-ins "{" (rec) "}"))
         ("l"
          (but
           ("i" (cmd-ins "logging.info(\"" (rec) "\"" (rec) ")"))
