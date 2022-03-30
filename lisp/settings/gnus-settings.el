@@ -32,29 +32,29 @@
 (defun longest-common-prefix (cands)
   (when cands
     (cl-loop with min-len = (apply 'min (mapcar 'length cands))
-	  with i = 0
-	  while (and (< i min-len)
-		     (let ((char (aref (car cands) i)))
-		       (every (lambda (s) (eql (aref s i) char))
-			      cands)))
-	  do (cl-incf i)
-	  finally (return (substring (or (car cands) "") 0 i)))))
+	     with i = 0
+	     while (and (< i min-len)
+		        (let ((char (aref (car cands) i)))
+		          (every (lambda (s) (eql (aref s i) char))
+			         cands)))
+	     do (cl-incf i)
+	     finally (return (substring (or (car cands) "") 0 i)))))
 
 '(defcustom gnus-autoselect-init-filename nil
-  "If set, skips prompt for gnus init filename.")
+   "If set, skips prompt for gnus init filename.")
 
 (defun gnus-select-init-filename (&optional prompt)
   (interactive)
-      (let* ((cands (remove-if-not (lambda (fn) (string-match "^[.]gnus-?.*" fn))
-			           (directory-files (expand-file-name "~"))))
-	     (selection (cond
-		         ((null cands) (error "no ~/.gnus* found"))
-		         ((null (cdr cands)) (car cands))
-		         (t (completing-read
-                             (or prompt "select ~/.gnus init file: ") cands
-			     nil t (longest-common-prefix cands) nil (car cands)))))
-	     (filename (f-join "~" selection)))
-        filename))
+  (let* ((cands (remove-if-not (lambda (fn) (string-match "^[.]gnus-?.*" fn))
+			       (directory-files (expand-file-name "~"))))
+	 (selection (cond
+		     ((null cands) (error "no ~/.gnus* found"))
+		     ((null (cdr cands)) (car cands))
+		     (t (completing-read
+                         (or prompt "select ~/.gnus init file: ") cands
+			 nil t (longest-common-prefix cands) nil (car cands)))))
+	 (filename (f-join "~" selection)))
+    filename))
 
 (setf mm-default-directory (expand-file-name "~/Downloads"))
 
@@ -161,10 +161,10 @@
 	 (subject (message-fetch-field "Subject"))
 	 (from-nw (gnus-replace-in-string from ".*<\\(.*\\)>.*" "\\1"))
 	 (date-nw (-> date
-		      (gnus-replace-in-string "^[A-Z][a-z]\\{2\\}, \\([0-9]+ [A-Z][a-z]+ [0-9]\\{4\\} [0-9]\\{2\\}:[0-9]\\{2\\}:[0-9]\\{2\\} [-+][0-9]\\{4\\} \\(([A-Z]\\{3\\})\\)?\\).*" "\\1")
-                      (concat subject " ")
-		      s-trim
-		      (gnus-replace-in-string "[^a-z-A-Z0-9+-]" "-"))))
+		    (gnus-replace-in-string "^[A-Z][a-z]\\{2\\}, \\([0-9]+ [A-Z][a-z]+ [0-9]\\{4\\} [0-9]\\{2\\}:[0-9]\\{2\\}:[0-9]\\{2\\} [-+][0-9]\\{4\\} \\(([A-Z]\\{3\\})\\)?\\).*" "\\1")
+                    (concat subject " ")
+		    s-trim
+		    (gnus-replace-in-string "[^a-z-A-Z0-9+-]" "-"))))
     (f-join gnus-attachments-top from-nw date-nw)))
 
 
@@ -173,27 +173,27 @@
   (interactive (list (gnus-dir-name-for-message)))
   (unless (file-exists-p dir)
     (unless (or (not gnus-mime-save-all-attachments-prompt-mkdir-p)
-		 (y-or-n-p (format "making directory %s" dir)))
+		(y-or-n-p (format "making directory %s" dir)))
       (error "failed to confirm"))
     (mkdir dir t))
   (gnus-summary-save-parts ".*" dir nil )
   (find-file dir))
 
 (defadvice gnus-group-select-group
-  ;;there must be a better way
-  (around select-unread-email-advice activate)
+    ;;there must be a better way
+    (around select-unread-email-advice activate)
   '(ad-set-arg 0 t)
   ad-do-it
   (gnus-summary-sort-by-most-recent-date))
 
 (defadvice gnus-summary-insert-new-articles
-  ;;there must be a better way
-  (after sort-by-date-after-refresh activate)
+    ;;there must be a better way
+    (after sort-by-date-after-refresh activate)
   (gnus-summary-sort-by-most-recent-date))
 
 (defadvice gnus-group-read-group
-  ;;there must be a better way!
-  (after sort-by-date-after-nnir activate)
+    ;;there must be a better way!
+    (after sort-by-date-after-nnir activate)
   (gnus-summary-sort-by-most-recent-date))
 
 (defadvice smtpmail-send-it (around fix-using-openssl activate)
@@ -244,7 +244,7 @@
 machine smtp.gmail.com login %s password %s port 587"
 	  email pass
 	  email pass) nil
-	  authinfo-fn)))))
+	 authinfo-fn)))))
 
 (setq gnutls-min-prime-bits 2048)
 ;; https://www.emacswiki.org/emacs/GnusSpeed#toc3
@@ -261,8 +261,8 @@ machine smtp.gmail.com login %s password %s port 587"
     (gnus-group-change-level group 1)))
 
 '(with-eval-after-load "gnus-start"
-  (condition-case ex (gnus-prioritize-inbox)
-    (error (warn "(gnus-prioritize-inbox) failed: %s" ex))))
+   (condition-case ex (gnus-prioritize-inbox)
+     (error (warn "(gnus-prioritize-inbox) failed: %s" ex))))
 
 (defun gnus-insert-html-from-file (filename)
   (interactive "fenter html filename: ")
@@ -300,8 +300,8 @@ machine smtp.gmail.com login %s password %s port 587"
     (when to-addr
       (let ((filename
 	     (-> to-addr
-		 gnus-email-templates-toaddress-to-hostname
-		 gnus-email-templates-hostname-to-filename)))
+	       gnus-email-templates-toaddress-to-hostname
+	       gnus-email-templates-hostname-to-filename)))
 	(when (file-exists-p filename)
 	  ;; TODO how to insert this before the body?
 	  (message "inserting template from %s" filename)
@@ -311,9 +311,9 @@ machine smtp.gmail.com login %s password %s port 587"
 (defun gnus-templates-add-template (hostname &optional text)
   (interactive
    (list (read-string "enter 'To' field hostname: "
-		     (when (x-get-selection)
-		       (let ((toaddr (x-get-selection)))
-			 (gnus-email-templates-toaddress-to-hostname toaddr))))))
+		      (when (x-get-selection)
+		        (let ((toaddr (x-get-selection)))
+			  (gnus-email-templates-toaddress-to-hostname toaddr))))))
   (find-file (gnus-email-templates-hostname-to-filename hostname))
   (when text (insert text)))
 
@@ -345,7 +345,7 @@ machine smtp.gmail.com login %s password %s port 587"
 	    (when (zerop (length art-addresses))
 	      (error "unable to fetch message fields"))
 	    (when (cl-loop for addr in addresses thereis
-			(s-contains-p addr art-addresses))
+			   (s-contains-p addr art-addresses))
 	      (message "saving  %s" (message-fetch-field "Subject")
 		       (gnus-mime-save-all-attachments (gnus-dir-name-for-message))
 		       (gnus-summary-save-article-mail))))))))
