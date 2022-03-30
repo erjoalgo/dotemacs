@@ -311,7 +311,7 @@
   #'sip-send-chat-line)
 
 (defun sms-fanout-client-loop ()
-  (let (err)
+  '(let (err)
     (when-let ((disconnected (sms-fanout-disconnected-p)))
       (sip-ws-log (format "disconnected: %s. attempting to reconnect on loop"
                           disconnected))
