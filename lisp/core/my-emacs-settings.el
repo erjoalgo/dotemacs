@@ -169,13 +169,6 @@
 
 (setq debug-on-quit nil)
 
-(defun watch-var (sym newval op where)
-  "(ADD-VARIABLE-WATCHER SYM NEWVAL OP WHERE) fn to log changes to a variable."
-  (message "WARN: %s modified to %s via %s at %s"
-           sym newval op where))
-
-;; (add-variable-watcher 'debug-on-quit #'watch-var)
-
 (setq revert-without-query '(".*"))
 
 (add-hook
