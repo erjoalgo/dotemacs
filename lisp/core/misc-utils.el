@@ -388,8 +388,8 @@
            (split-string
             (read-string
              "enter space-separated extensions (eg 'cc h'): "
-             (f-ext (or (buffer-file-name (current-buffer)) "")) nil  '(nil))
-            " "))
+             (f-ext (or (buffer-file-name (current-buffer)) "")) nil  "")
+            " " t))
 	  (dir (if current-prefix-arg
 		   (read-directory-name "enter directory: ")
 		 default-directory))
@@ -397,18 +397,25 @@
 	  (to (read-string "Enter to regexp: "))
 	  (pause (y-or-n-p "Pause at every match? ")))
      (list dir exts from to pause)))
-  (let ((count-sym (gensym)))
-    (set count-sym 0)
+  (let ((count 0))
     (walk-dir-tree
      dir
-     `(lambda (fn)
-        (when (or (null exts) (member (f-ext fn) exts))
+     `(lambda (filename)
+        (when (or (null exts) (member (f-ext filename) exts))
+          (message "replacing '%s' => '%s' in %s" from to filename)
+          (let ((local-count 0)
+                ;; support relative symlinks
+                (default-directory (f-dirname filename)))
           (with-temporary-current-file
-           fn
-           (cl-incf ,count-sym (regexp-replace-current-buffer from to pause))
+           filename
+           (cl-incf count
+                    (setq local-count
+                          (regexp-replace-current-buffer from to pause)))
            (when (buffer-modified-p)
-             (save-buffer))))))
-    (message "%d occurrences replaced" (symbol-value count-sym))))
+             (save-buffer)))
+          (message "%s occurrences replaced in %s" count filename)))))
+    (message "%d occurrences replaced in directory"
+             count)))
 
 (defun keymap-symbol (keymaps)
   "Return the symbol to which any keymap in KEYMAPS is bound, or nil if no such symbol exists."
