@@ -27,6 +27,17 @@
           (when debug-on-error
             (error ,err-sym)))))))
 
+(defun watch-var (sym)
+  "Watch for changes to the given SYM."
+  (interactive)
+  (add-variable-watcher sym #'watch-var-helper))
+
+(defun watch-var-helper (sym newval op where)
+  "Log when SYM is redefined to NEWVAL via OP in WHERE."
+  (message "WARN: %s modified to %s via %s at %s"
+           sym newval op where)
+  (when (fboundp 'edebug) (edebug)))
+
 (dolist (dir '("libs" "core" "extra"))
   (add-to-list 'load-path
 	       (concat emacs-top dir)))
