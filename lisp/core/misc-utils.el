@@ -376,10 +376,12 @@
         (cl-incf count)))
     count))
 
-(defun replace-regexp-dir (dir exts from to &optional pause)
-  "Replace regexp FROM with replacement TO on all EXTENSION files under DIR.
+(defun replace-regexp-recursively (dir exts from to &optional pause)
+  "REGEXP replace FROM => TO on all files under DIR with extension in EXTS.
 
-  When PAUSE is non-nil, prompt every match."
+   When PAUSE is non-nil, prompt every match.
+   If EXTS is nil, all file extensions are considered."
+
   ;;TODO colored output
   (interactive
    (let* ((exts
