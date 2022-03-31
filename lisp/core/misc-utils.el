@@ -555,6 +555,11 @@ for customization of the printer command."
 (def-file-local-set-command js-indent-mode
   (read-number "enter value for js-indent-mode: "))
 
+(defun file-local-set (sym value)
+  "Set SYM to VALUE persistently using a file-local variable."
+  (interactive "SEnter variable to set: \nXEnter value: ")
+  (add-file-local-variable sym value t))
+
 (defmacro def-file-local-toggle-command (file-local-var-sym)
   "Define a command to toggle the file-local value of FILE-LOCAL-VAR-SYM on/off."
   `(def-file-local-set-command ,file-local-var-sym (lambda (_prompt old) (not old))))
