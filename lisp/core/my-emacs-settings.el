@@ -63,14 +63,6 @@
 (setf next-error-highlight-no-select t)
 ;;TODO the same for async-shell-command file names
 
-(require 'server)
-(progn
-  (setq server-name (or (getenv "DESKTOP_GROUP_NUMBER")
-                        server-name))
-  (server-force-delete server-name)
-  (server-start)
-  (cl-assert (server-running-p server-name)))
-
 ;(setq split-window-preferred-function 'split-window-vertically) doesn't work
 ;(setq split-height-threshold 0)
 
@@ -175,6 +167,16 @@
  'comint-exec-hook
  (lambda ()
    (set-process-query-on-exit-flag (get-buffer-process (current-buffer)) nil)))
+
+(defun server-init  ()
+  (require 'server)
+  (setq server-name (or (getenv "DESKTOP_GROUP_NUMBER")
+                        server-name))
+  (server-force-delete server-name)
+  (server-start)
+  (cl-assert (server-running-p server-name)))
+
+(server-init)
 
 (provide 'my-emacs-settings)
 ;;; emacs-settings.el ends here
