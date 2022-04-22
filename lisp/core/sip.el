@@ -77,7 +77,7 @@
          (exists (gethash id sip-message-ids-received)))
     (when (and add (not exists))
       (puthash id t sip-message-ids-received))
-    add))
+    (or exists add)))
 
 (defun sip-add-message-id (id)
   (sip-get-message-id id t))
