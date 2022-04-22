@@ -261,11 +261,11 @@
          do
          (alist-let message (to from message id timestamp)
            (if (null timestamp)
-               (message "skipping message with null timestamp: %s" message)
+               (sip-ws-log "skipping message with null timestamp: %s" message)
              (condition-case err
                  (sip-message-received to from message id timestamp supress-echo)
                (error
-                (message "failed to insert message %s: %s" message err))))))))
+                (sip-ws-log "failed to insert message %s: %s" message err))))))))
      ((s-starts-with-p "status" message-type)
       ;;
       )
@@ -278,7 +278,7 @@
         sms-fanout-client-last-pong-sent nil)
   (when sms-fanout-client
     (unless (eq 'closed (websocket-ready-state sms-fanout-client))
-      (message "disconnecting...")
+      (sip-ws-log "disconnecting...")
       (websocket-close sms-fanout-client))))
 
 (defun sms-fanout-connect ()
@@ -347,7 +347,7 @@
   (goto-char (point-max))
   (if (re-search-backward "^\\([0-9]+\\| *YOU\\) +says?: .*" nil t)
       (buffer-substring (match-beginning 0) (point-max))
-    (progn (warn "no message found on buffer %s" buffer)
+    (progn (sip-ws-log "no message found on buffer %s" buffer)
            nil)))
 
 (defun sip-chat-menu ()
