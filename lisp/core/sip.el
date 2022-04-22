@@ -316,7 +316,15 @@
   (let ((kmap (make-sparse-keymap)))
     (define-key kmap (kbd "RET") #'sip-send-chat-line)
     kmap)
-  (toggle-truncate-lines nil)
+  (let ((real-message #'message))
+  (cl-letf (
+            ;; '(real-message #'message)
+            ((symbol-function #'message)
+             (lambda (fmt &rest args)
+               (if (equal fmt "Truncate long lines %s")
+                   '(funcall real-message "DEBUG kx5a TRACE")
+                 '(funcall real-message fmt args)))))
+    (toggle-truncate-lines nil)))
   (visual-line-mode t))
 
 (autobuild-define-rule sip-chat-send (sip-chat-mode)
