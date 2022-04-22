@@ -241,7 +241,7 @@
   (with-current-buffer (get-buffer-create "*sip-sms-ws*")
     (goto-char (point-max))
     (insert (format "%s %s" (format-time-string "%Y-%m-%d at %H:%M:%S")
-                    log-message))
+                    (substring log-message 0 (min 1000 (length log-message)))))
     (newline-and-indent)))
 
 (defun sms-fanout-on-message (json)
