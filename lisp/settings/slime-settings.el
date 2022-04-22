@@ -50,7 +50,7 @@
    (list
     (slime-read-package-name "from package: "
                              (slime-current-package))))
-  (slime-eval-async-and-message `(dbg:unintern-all-symbols ,package)))
+  (slime-eval-async-and-message `(dbg:unintern-shadowing-symbols ,package)))
 
 (defun process-ignore-on-exit (regexp)
   (cl-loop for proc in (process-list)
