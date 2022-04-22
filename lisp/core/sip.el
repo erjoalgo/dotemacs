@@ -273,7 +273,9 @@
         sms-fanout-client-last-pong-received nil
         sms-fanout-client-last-pong-sent nil)
   (when sms-fanout-client
-    (websocket-close sms-fanout-client)))
+    (unless (eq 'closed (websocket-ready-state sms-fanout-client))
+      (message "disconnecting...")
+      (websocket-close sms-fanout-client))))
 
 (defun sms-fanout-connect ()
   (sms-fanout-disconnect)
@@ -290,7 +292,8 @@
                    (sip-ws-log (format "received: %s" text))
                    (condition-case err
                        (sms-fanout-on-message json)
-                     (error "sms-fanout-on-message failed: %s" err))))
+                     (sip-ws-log (format "sms-fanout-on-message failed: %s" err))
+                     (error err))))
    :on-close (lambda (_websocket)
                (sip-ws-log
                 (if (null sms-last-connection-timestamp)
