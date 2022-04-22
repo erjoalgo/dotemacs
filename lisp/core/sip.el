@@ -387,7 +387,8 @@
 (defun sms-fanout-client-start-timer ()
   (when sms-fanout-client-timer
     (sip-ws-log (format "stopping previous timer"))
-    (cancel-timer sms-fanout-client-timer))
+    (cancel-timer sms-fanout-client-timer)
+    (setq sms-fanout-client-timer nil))
   (sms-fanout-disconnect)
   (setq sms-fanout-client-timer
         (run-at-time nil sms-fanout-ping-interval-seconds
