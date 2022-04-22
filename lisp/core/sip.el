@@ -254,15 +254,18 @@
      ((not (zerop status))
       (error "Non-Zero status from server: %s" text))
      ((s-starts-with-p "push-messages/" message-type)
-      ;; (setq sip-messages json)
-      (let ((messages (alist-get 'body json)))
-        (if (null messages)
-            (error "0 messages in body")
-          (cl-loop
-           for message across messages
-           do
-           (alist-let message (to from message id timestamp)
-             (sip-message-received to from message id timestamp))))))
+      (let ((messages (alist-get 'body json))
+            (supress-echo (equal message-type "push-messages/old")))
+        (cl-loop
+         for message across messages
+         do
+         (alist-let message (to from message id timestamp)
+           (if (null timestamp)
+               (message "skipping message with null timestamp: %s" message)
+             (condition-case err
+                 (sip-message-received to from message id timestamp supress-echo)
+               (error
+                (message "failed to insert message %s: %s" message err))))))))
      ((s-starts-with-p "status" message-type)
       ;;
       )
