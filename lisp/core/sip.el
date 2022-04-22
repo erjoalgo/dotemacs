@@ -155,7 +155,7 @@
              do (message "opening %s" number)
              do (sip-chat number))))
 
-(defun sip-message-received (to from message id datetime)
+(defun sip-message-received (to from message id datetime supress-echo)
   (if (sip-get-message-id id)
       (sip-ws-log (format "skipping previously-received message with id %s" id))
     (let* ((buffer (sip-chat-buffer from to))
@@ -180,7 +180,8 @@
           (setq-local sip-max-timestamp (max timestamp (or sip-max-timestamp 0))))
         (when was-at-bottom
           (goto-char (point-max))))
-      (message "%s" line)
+      (unless supress-echo
+        (message "%s" line))
       (setq sip-last-message-buffer buffer)
       (sip-add-message-id id))))
 
