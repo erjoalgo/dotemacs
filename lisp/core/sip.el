@@ -295,10 +295,7 @@
                  (let* ((text (websocket-frame-text frame))
                         (json (json-parse (or text (error "text is nil")))))
                    (sip-ws-log (format "received: %s" text))
-                   (condition-case err
-                       (sms-fanout-on-message json)
-                     (sip-ws-log (format "sms-fanout-on-message failed: %s" err))
-                     (error err))))
+                   (sms-fanout-on-message json)))
    :on-close (lambda (_websocket)
                (sip-ws-log
                 (if (null sms-last-connection-timestamp)
