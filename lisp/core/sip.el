@@ -160,13 +160,14 @@
       (sip-ws-log (format "skipping previously-received message with id %s" id))
     (let* ((buffer (sip-chat-buffer from to))
            (line (format "%s says: %s" from message))
-           (timestamp (condition-case ex
-                          (->> datetime
-                            parse-time-string
-                            (apply #'encode-time)
-                            time-to-seconds)
-                        (warn "failed to parse timestamp: %s"
-                              'datetime)))
+           (timestamp
+            (condition-case ex (->> datetime
+                                 parse-time-string
+                                 (apply #'encode-time)
+                                 time-to-seconds)
+              (error
+               (sip-ws-log (format "failed to parse timestamp: %s"
+                                   'datetime)))))
            was-at-bottom)
       (with-current-buffer buffer
         (sip-chat-mode t)
