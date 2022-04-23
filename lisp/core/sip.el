@@ -8,6 +8,7 @@
 (defvar sms-fanout-ping-interval-seconds 30)
 (defvar sip-last-known-identity nil)
 (defvar sip-inhibit-echo-linphone-command nil)
+(defvar sip-message-ids-received (make-hash-table))
 
 (defun sms-fanout-disconnected-p (&optional client)
   (cond
@@ -70,7 +71,6 @@
          (sip-address (format "sip:%s@%s" number-clean sip-host)))
     sip-address))
 
-(defvar sip-message-ids-received (make-hash-table))
 
 (defun sip-get-message-id (id &optional add)
   (let* ((id (if (stringp id) (string-to-number id) id))
