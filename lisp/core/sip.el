@@ -456,13 +456,16 @@
                            (sip-color-cursor-from-identity))
                          (setq sip-color-cursor-from-identity-timer nil))))))
 
-(setq buffer-list-update-hook nil)
-
 (add-hook 'buffer-list-update-hook
           #'sip-color-cursor-from-identity-schedule)
 
-(unless sms-fanout-address
-  (setq sms-fanout-address (sms-fanout-read-address)))
 
-(when sms-fanout-address
-  (sms-fanout-client-start-timer))
+(defun sip-restart ()
+  (setq buffer-list-update-hook nil)
+  (unless sms-fanout-address
+    (setq sms-fanout-address (sms-fanout-read-address)))
+  (setq websocket-callback-debug-on-error t)
+  (when sms-fanout-address
+    (sms-fanout-client-start-timer)))
+
+(sip-restart)
