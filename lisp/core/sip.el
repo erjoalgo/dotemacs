@@ -257,8 +257,11 @@
      ((s-starts-with-p "push-messages/" message-type)
       (let ((messages (alist-get 'body json))
             (supress-echo (equal message-type "push-messages/old")))
+        (sip-ws-log (format "received %s messages" (length messages)))
         (cl-loop
          for message across messages
+         for i from 1
+         do (sip-ws-log (format "on message %s/%s" i (length messages)))
          do
          (alist-let message (to from message id timestamp)
            (if (null timestamp)
