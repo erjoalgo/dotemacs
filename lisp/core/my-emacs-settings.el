@@ -34,7 +34,6 @@
   (setq backup-directory-alist `((".*" . ,backups-dir))
         auto-save-file-name-transforms
         `((".*" ,(file-name-as-directory auto-save-dir) t))
-	auto-save-list-file-prefix (concat backups-dir "/")
 	backup-by-copying t
 	delete-old-versions t
 	kept-new-versions 6
