@@ -1563,44 +1563,55 @@ server {
    (defbuttons sql-buttons programming-buttons
      (sql-interactive-mode-map sql-mode-map)
      (but
-      ("1" (cmd-ins " NOT "))
-      ("s" (cmd-ins " SELECT "))
-      ("f" (cmd-ins " FROM "))
-      ("w" (cmd-ins " WHERE "))
-      ("H" (cmd-ins " WITH {} AS (" (nli) (rec) (nli) ")"))
+      ("1" (cmd-ins "NOT "))
+      ("s" (cmd-ins "SELECT "))
+      ("f" (cmd-ins "FROM "))
+      ("w" (cmd-ins "WHERE "))
+      ("H" (cmd-ins "WITH {} AS (" (nli) (rec) (nli) ")"))
       ("h" (cmd-ins " AS (" (nli) (rec) (nli) ")"))
       ("g" (but
-            ("b" (cmd-ins " GROUP BY "))
-            ("a" (cmd-ins " ANY_VALUE(" (rec) ")"))
-            ("g" (cmd-ins " ARRAY_AGG(" (rec) ")"))
-            ("s" (cmd-ins " STRING_AGG(" (rec) ")"))
-            ("u" (cmd-ins " UNION ALL "))))
-      ("o" (cmd-ins " ORDER BY "))
+            ("b" (cmd-ins "GROUP BY "))
+            ("a" (cmd-ins "ANY_VALUE(" (rec) ")"))
+            ("g" (cmd-ins "ARRAY_AGG(" (rec) ")"))
+            ("s" (cmd-ins "STRING_AGG(" (rec) ")"))
+            ("u" (cmd-ins "UNION ALL "))
+            ("n" (cmd-ins "UNNEST "))))
+      ("o" (but
+            ("r" (cmd-ins "ORDER BY "))
+            ("n" (cmd-ins " ON "))))
       ("a" (cmd-ins " AS "))
-      ("T" (cmd-ins " CAST({} AS {})"))
+      ("T" (cmd-ins "CAST({} AS {})"))
       ("t" (but
             ("s" (cmd-ins "STRING"))
             ("6" (cmd-ins "INT64"))
             ("u" (cmd-ins "TRUE"))
             ("g" (cmd-ins "FALSE"))
             ("G" (cmd-ins "NULL"))))
-      ("l" (cmd-ins " LIMIT "))
-      ("8" (cmd-ins "*"))
-      ("c" (cmd-ins " COUNT(*) "))
+      ("l"
+       (but
+        ("e" (cmd-ins "LEFT JOIN "))
+        ("m" (cmd-ins "LIMIT "))
+        ("k" (cmd-ins "LIKE "))))
+      ("8" (cmd-ins " * "))
+      ("c" (cmd-ins "COUNT(*) "))
       ("k" (cmd-ins " AND "))
       ("j" (cmd-ins " OR "))
-      ("J" (cmd-ins " JOIN "))
+      ("J" (cmd-ins "JOIN "))
       ("=" (cmd-ins " = "))
       ("2" (cmd-ins "'{}'"))
-      ("L" (cmd-ins " LIKE '{}'"))
-      ("v" (cmd-ins "${" (rec) "}"))
+      ("L" (cmd-ins "LIKE '{}'"))
+      ("v" (cmd-ins "${" (rec) (upcase-last) "}"))
       (";" (cmd (end-of-line) (ins ";") (comint-send-input)))
       ("d"
        (but
-        ("i" (cmd-ins " DISTINCT "))))
+        ("i" (cmd-ins "DISTINCT "))
+        ("c" (cmd-ins "CREATE OR REPLACE TEMP CONSTANT {} = {} "))
+        ("v" (cmd-ins "CREATE OR REPLACE VIEW {} " (nli)
+                      "OPTIONS(privilege_model = 'INVOKER_RIGHTS'{})"
+                      " AS (" (nli) "{}" ")" (nli)))))
       ("i"
        (but
-        ("s" (cmd-ins " IS "))))))
+        ("s" (cmd-ins "IS "))))))
 
    (defbuttons gfm-mode-buttons nil (gfm-mode-map)
       (but
