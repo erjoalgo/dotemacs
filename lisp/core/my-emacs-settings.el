@@ -178,5 +178,7 @@
 
 (server-init)
 
+(setq async-shell-command-buffer 'new-buffer)
+
 (provide 'my-emacs-settings)
 ;;; emacs-settings.el ends here
