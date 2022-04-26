@@ -423,7 +423,6 @@
          (but
           ("d" (cmd-ins "(destructuring-bind ({}){})"))
           ("m" (cmd-ins "(multiple-value-bind ({}){})"))))))
-      ("T" (cmd-ins "(handler-case{}{(nli)}(error (err) {}))"))
       ("n"
        (but
         ("g" (cmd-ins "(format nil {})"))
@@ -453,7 +452,8 @@
       (":" (cmd-ins "::"))
       ("h"
        (but
-        ("D" (cmd-ins "(declaim (optimize (debug 3) (speed 0)))"))))
+        ("D" (cmd-ins "(declaim (optimize (debug 3) (speed 0)))"))
+        ("c" (cmd-ins "(handler-case{(nli)}(error (err) {}))"))))
       ((kbd "M-.") 'slime-next-note)
       ((kbd "M-,") 'slime-previous-note)
       ("."
