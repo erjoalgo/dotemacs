@@ -19,6 +19,13 @@ object."
   (package-delete pkg 'force 'nosave)
   (package-install pkg 'dont-select)))
 
+(defun edebug-on-require-cl (feature &rest r)
+  (when (equal 'cl feature)
+    (require 'edebug)
+    (edebug)))
+
+(advice-add 'require :after #'edebug-on-require-cl)
+
 (add-to-list 'load-path (expand-file-name "~/git/babel/"))
 
 (defvar emacs-top
