@@ -1,6 +1,6 @@
+(setq inferior-lisp-program "sbcl")
 
 (with-eval-after-load "slime"
-  (setq inferior-lisp-program "sbcl")
   (setq slime-contribs '(slime-fancy))
   (require 'slime-autoloads)
   (add-hook 'lisp-mode-hook 'slime-mode)
