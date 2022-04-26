@@ -3,6 +3,22 @@
 ;;; Emacs Startup File --- initialization for Emacs
 ;;; Code:
 
+(defun package-reinstall (pkg)
+  "Reinstall package PKG.
+PKG should be either a symbol, the package name, or a `package-desc'
+object."
+  (interactive (list (intern (completing-read
+                              "Reinstall package: "
+                              (mapcar #'symbol-name
+                                      (mapcar #'car package-alist))))))
+  (let ((pkg-desc
+         (or
+          (if (package-desc-p pkg) pkg
+            (cadr (assq pkg package-alist)))
+          (error "package %s is not installed" pkg))))
+  (package-delete pkg 'force 'nosave)
+  (package-install pkg 'dont-select)))
+
 (add-to-list 'load-path (expand-file-name "~/git/babel/"))
 
 (defvar emacs-top
