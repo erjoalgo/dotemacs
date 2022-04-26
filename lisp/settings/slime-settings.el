@@ -53,7 +53,6 @@
 
 (advice-add #'save-some-buffers :before #'slime-ignore-processes-on-exit)
 
-
 (defun asdf-setup-link-farm ()
   ;; Use instructions in
   ;; https://asdf.common-lisp.dev/asdf/Configuring-ASDF-to-find-your-systems.html
