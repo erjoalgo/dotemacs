@@ -886,7 +886,8 @@ This requires the external program `diff' to be in your `exec-path'."
   (cl-loop
    with glob = (f-join
                   emacs-all-sources-dir
-                  (format "emacs-%s*" emacs-version)
+                  (format "emacs-%s*"
+                          (replace-regexp-in-string "[.].*" "" emacs-version))
                   "src")
    for filename
    in (f-glob glob)
