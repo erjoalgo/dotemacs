@@ -404,7 +404,7 @@
             ("f" #'find-function)))))
 
    (defbuttons cl-buttons emacs-lisp-buttons
-     (lisp-mode-map slime-mode-map slime-mode-indirect-map)
+     (lisp-mode-map slime-mode-map slime-repl-mode-map slime-mode-indirect-map)
      (but
       ("e" (cmd-ins "(setf {})"))
       ("d"
