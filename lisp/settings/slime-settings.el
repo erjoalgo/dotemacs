@@ -29,8 +29,11 @@
 (defun slime-unexport-all-symbols (package)
   "Unexport all symbols in PACKAGE."
   (interactive (list
-                (slime-read-package-name "from package: "
-                                         (slime-current-package))))
+                (slime-read-package-name
+                 "from package: "
+                 (replace-regexp-in-string
+                  "^[:#]" ""
+                  (upcase (slime-current-package))))))
   (slime-eval-async-and-message `(dbg:unexport-all-symbols ,package)))
 
 (defun slime-unintern-shadowing-symbols (package)
