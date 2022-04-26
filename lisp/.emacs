@@ -91,8 +91,8 @@ object."
    dash
    dash-functional
    go-mode
-   calfw
-   calfw-gcal
+   ;; calfw
+   ;; calfw-gcal
    java-imports
    bbdb
    nginx-mode
@@ -103,7 +103,7 @@ object."
    ;; load slime from quicklisp instead:
    ;; https://github.com/purcell/emacs.d/issues/332#issuecomment-310255633
    slime
-   cider
+   ;; cider
    websocket
    autobuild))
 
