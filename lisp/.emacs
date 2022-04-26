@@ -12,12 +12,11 @@ object."
                               (mapcar #'symbol-name
                                       (mapcar #'car package-alist))))))
   (let ((pkg-desc
-         (or
-          (if (package-desc-p pkg) pkg
-            (cadr (assq pkg package-alist)))
-          (error "package %s is not installed" pkg))))
-  (package-delete pkg 'force 'nosave)
-  (package-install pkg 'dont-select)))
+         (if (package-desc-p pkg) pkg
+           (or (cadr (assq pkg package-alist))
+               (error "Package %s is not installed" pkg)))))
+    (package-delete pkg 'force 'nosave)
+    (package-install pkg 'dont-select)))
 
 (defun edebug-on-require-cl (feature &rest r)
   (when (equal 'cl feature)
