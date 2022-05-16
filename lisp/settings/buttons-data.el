@@ -942,9 +942,9 @@
       ("n"
        (but
         ("t" (cmd-ins "echo "))
-        ("v" (cmd-ins "echo \"DEBUG {(rnd)} VALUE OF "
+        ("v" (cmd-ins "echo \"DEBUG {(rnd)} "
                       (f-filename buffer-file-name)
-                      ", "
+                      " VALUE OF "
                       (ins "\\{0}: {0}\"" (nli?))))
         ("r" (cmd-ins "echo \"DEBUG TRACE "
                       (f-filename buffer-file-name)
