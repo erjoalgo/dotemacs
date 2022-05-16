@@ -1586,7 +1586,12 @@ server {
             ("6" (cmd-ins "INT64"))
             ("u" (cmd-ins "TRUE"))
             ("g" (cmd-ins "FALSE"))
-            ("G" (cmd-ins "NULL"))))
+            ("G" (cmd-ins "NULL"))
+            ("a"
+             (but
+              ("b" " TABLESAMPLE BERNOULLI")
+              ("s" " TABLESAMPLE SYSTEM")
+              ("r" " TABLESAMPLE RESERVOIR")))))
       ("l"
        (but
         ("e" (cmd-ins "LEFT JOIN "))
