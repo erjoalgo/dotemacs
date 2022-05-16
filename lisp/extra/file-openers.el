@@ -5,6 +5,7 @@
    ("evince" . ("ps" "eps"))
    ("eog" . ("png" "pgm" "tif" "jpg" "jpeg" "gif" "pnm" "svg"))
    ("aplay" "wav")
+   ("timidity" . ("midi" "mid"))
    ((lambda (fn)
       (browser-new-tab (format "file://%s" fn))) "html")
    ("gimp" . ("xcf"))
