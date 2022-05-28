@@ -1101,7 +1101,8 @@
       ("-" (cmd-ins "attr({}, \"{}\" )"))
       ("N" (cmd-ins "print({})"))))
 
-   (defbuttons octave-buttons matlab-buttons (octave-mode-map inferior-octave-mode-map)
+   (defbuttons octave-buttons matlab-buttons
+     (octave-mode-map inferior-octave-mode-map)
      (but
       ("d" (cmd-ins "function [{}] = {}({}){(nli)}{}{(nli)}endfunction"))
       ("'" (cmd-ins "#{"
