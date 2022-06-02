@@ -46,6 +46,9 @@
 ;;; Code:
 
 
+(require 'cl-lib)
+(require 's)
+
 (defcustom selcand-default-hints
   "1234acdefqrstvwxz"
   "Default hint chars."
@@ -71,9 +74,21 @@
                      for cand in cands
                      collect (cons hint cand)))))
 
-(defun selcand-select (candidates &optional prompt stringify autoselect-if-single
-                                  initial-input read-char)
-  "Use PROMPT to prompt for a selection from CANDS candidates."
+(defun selcand-select (candidates
+                       &optional prompt stringify
+                       autoselect-if-single
+                       initial-input
+                       read-char)
+  "Use PROMPT to prompt for a selection from CANDIDATES.
+
+STRINGIFY is an optional function to represent a candidate as a string.
+If AUTOSELECT-IF-SINGLE is non-nil and there is exactly one candidate,
+prompting the user is skipped.
+INITIAL-INPUT, if non-nil, is used as the initial input in a
+COMPLETING-READ call.
+If READ-CHAR is non-nil, a single character key press is read
+and mapped to the corresponding single-char candidate."
+
   (let* ((hints-cands (selcand-hints candidates))
          (sep ") ")
          (stringify (or stringify #'prin1-to-string))
