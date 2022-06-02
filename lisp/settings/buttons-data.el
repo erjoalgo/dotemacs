@@ -1578,7 +1578,7 @@ server {
             ("u" (cmd-ins "UNION ALL "))
             ("n" (cmd-ins "UNNEST "))))
       ("o" (but
-            ("r" (cmd-ins "ORDER BY "))
+            ("b" (cmd-ins "ORDER BY "))
             ("n" (cmd-ins " ON "))))
       ("a" (cmd-ins " AS "))
       ("T" (cmd-ins "CAST({} AS {})"))
@@ -1590,9 +1590,9 @@ server {
             ("G" (cmd-ins "NULL"))
             ("a"
              (but
-              ("b" " TABLESAMPLE BERNOULLI")
-              ("s" " TABLESAMPLE SYSTEM")
-              ("r" " TABLESAMPLE RESERVOIR")))))
+              ("b" (cmd-ins " TABLESAMPLE BERNOULLI({} PERCENT)"))
+              ("s" (cmd-ins " TABLESAMPLE SYSTEM({} PERCENT)"))
+              ("r" (cmd-ins " TABLESAMPLE RESERVOIR({} PERCENT)"))))))
       ("l"
        (but
         ("e" (cmd-ins "LEFT JOIN "))
@@ -1630,7 +1630,7 @@ server {
    (defbuttons global-buttons nil (global-map)
      (but
       ((kbd "M-c") #'autobuild-build)
-      ((kbd "s-C") #'autobuild-rebuild-last-action)
+      ((kbd "s-C") #'autobuild-rebuild)
       ((kbd "M-q") #'sticky-window-delete-window)
       ((kbd "M-Q") #'sticky-window-toggle)
       ((kbd "M-/") 'my-comment-out)
