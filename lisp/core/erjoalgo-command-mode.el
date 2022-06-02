@@ -214,6 +214,15 @@
           (replace-regexp
            "^" "    " nil a b)))))
 
+(defun find-file-or-url-at-point ()
+  (interactive)
+  (if (or (thing-at-point 'url)
+          (let ((text (prin1-to-string (sexp-at-point))))
+            (when text
+              (s-matches-p "^\\(b\\|cl\\|go\\)/" text))))
+      (call-interactively #'browse-url-at-point)
+    (call-interactively #'find-file-at-point)))
+
 (buttons-macrolet
  ((dir (dir) `(read-file-name "select file: " ,dir))
   (buff (buff-spec &optional on-nonexistent)
@@ -267,7 +276,7 @@
     ("z" (cmd (kill-buffer (current-buffer))));;originally C-x k
     ("Z" 'new-buffer-focus)
     ("q" 'bury-buffer);; move current buffer to end of the list
-    ("3" 'find-file-at-point);;originally C-x f
+    ("3" 'find-file-or-url-at-point);;originally C-x f
     ("4" 'switch-to-buffer);;originally C-x b
     ("5" (buttons-make
           ("g" (cmd (dir "~/git")))
