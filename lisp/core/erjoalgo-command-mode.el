@@ -370,7 +370,7 @@
       ("P" 'message-current-buffer-process)
       ("i" 'ielm)
       ("I" 'load-dark-theme-toggle)
-      ("c" 'music-player-play-songs)
+      ("c" 'autobuild-rebuild-recent)
       ("C" 'kill-current-buffer-filename)
       ("e" 'my-eval-defun)
       ("E" (cmd (eval-defun t)))
