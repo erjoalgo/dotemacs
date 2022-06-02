@@ -117,8 +117,8 @@
   (stumpwm-request-post "/browse" url))
 
 (defun browse-url--stumpwm (orig url &rest args)
-  (when args
-    (warn "extra browse-url args ignored"))
+  (when (and args (or (car args) (cdr args)))
+    (warn "extra browse-url args ignored: %s" args))
   (stumpwm-browse-url url))
 
 (advice-add #'browse-url :around #'browse-url--stumpwm)
