@@ -96,7 +96,8 @@ and mapped to the corresponding single-char candidate."
          (choices (cl-loop for (hint . cand) in hints-cands
                            as string = (funcall stringify cand)
                            as choice = (concat hint sep string)
-                           when (equal string initial-input)
+                           when (and initial-input
+                                     (equal string initial-input))
                            do (setq initial-candidate choice)
                            collect choice))
          (prompt (or prompt "select candidate: "))
