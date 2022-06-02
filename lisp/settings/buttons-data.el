@@ -142,8 +142,8 @@
       ("n"
        (but
         ("t" (cmd-ins "print({}){(nli)}"))
-        ("r" (cmd-ins "print(\"DEBUG TRACE: {(buf)} {(rnd)} {}\")"))
-        ("v" (cmd-ins "print(\"DEBUG {(buf)} {(rnd)}: value of {0}: {" "}\".format({0}))"))
+        ("r" (cmd-ins "print(\"DDEBUG TRACE: {(buf)} {(rnd)} {}\")"))
+        ("v" (cmd-ins "print(\"DDEBUG {(buf)} {(rnd)}: value of {0}: {" "}\".format({0}))"))
         ("[" (cmd-ins "{" (rec) "}"))
         ("l"
          (but
@@ -349,9 +349,9 @@
        (but
         ("t" (cmd-ins "(format {})"))
         ("m" (cmd-ins "(message \"{}\"{})"))
-        ("r" (cmd-ins "(message \"DEBUG " (rnd) " TRACE" "\")"))
-        ("v" (cmd-ins "(message \"DEBUG " (rnd) " {0}: %s\"" (nli?) " {0})"))
-        ("V" (cmd-ins "(message \"DEBUG " (rnd) " {0} (in {}): %s\""
+        ("r" (cmd-ins "(message \"DDEBUG " (rnd) " TRACE" "\")"))
+        ("v" (cmd-ins "(message \"DDEBUG " (rnd) " {0}: %s\"" (nli?) " {0})"))
+        ("V" (cmd-ins "(message \"DDEBUG " (rnd) " {0} (in {}): %s\""
                       (nli?)
                       "{0})"))))
       ("\\" (cmd-ins "\\\\({}\\\\)"))
@@ -371,7 +371,7 @@
                   (ins "'"))))
       ("-" (cmd-ins "(-> {})"))
       ("_" (cmd-ins "(->> {})"))
-      ;; ("`" (cmd-ins "`{}'"))
+      ;; ("\"" (cmd-ins "`{}'"))
       ((kbd "s-\"") (cmd-ins "‘{}'"))
       ("#" (cmd-ins "#'" (inm)))
       ("p"
@@ -481,8 +481,8 @@
       ("n"
        (but
         ("t" (cmd-ins "(printf \"{}\\n\"{})"))
-        ("r" (cmd-ins "(log/info \"DEBUG " (rnd) " TRACE" "\")"))
-        ("v" (cmd-ins "(log/infof \"DEBUG " (rnd) " {0}: %s\"" (nli?) " {0})"))))
+        ("r" (cmd-ins "(log/info \"DDEBUG " (rnd) " TRACE" "\")"))
+        ("v" (cmd-ins "(log/infof \"DDEBUG " (rnd) " {0}: %s\"" (nli?) " {0})"))))
       (";" (cmd-ins ": "))
       ("[" (cmd-ins "{"
                     (ins "{}}")))
@@ -541,19 +541,19 @@
        (but
         ("t" (cmd-ins (ins "printf(\"{}\\n\"{});")))
         ("s" (cmd-ins "scanf( \"{}\"{} );"))
-        ("v" (cmd-ins "LOG(ERROR) << \"DEBUG "
+        ("v" (cmd-ins "LOG(ERROR) << \"DDEBUG "
                       (f-base (buffer-file-name))
                       " {(rnd)}, {0}: \""
                       (nli)
                       "<< {0};"))
         ("V" (cmd-ins
-              "LOG(ERROR) << \"DEBUG "
+              "LOG(ERROR) << \"DDEBUG "
               (f-base (buffer-file-name))
               " {(rnd)}: {0} proto: \""
               (nli)
               "<< {0}.DebugString();"))
         ("k" (cmd
-              (ins "LOG(ERROR) << \"DEBUG STACKTRACE {(rnd)}: \" << CurrentStackTrace();")
+              (ins "LOG(ERROR) << \"DDEBUG STACKTRACE {(rnd)}: \" << CurrentStackTrace();")
               (newline-and-indent)
               (save-excursion
                 (goto-char (point-max))
@@ -569,7 +569,7 @@
         ("c" (cmd-ins "absl::StrCat(\"{}\"{})"))
         ("u" (cmd-ins "absl::Substitute(\"{}\", {})"))
         ("C" (cmd-ins ".c_str()"))
-        ("r" (cmd-ins "LOG(ERROR) << \"DEBUG TRACE {(buf)}, ({}): {(rnd)}\\n\";"))
+        ("r" (cmd-ins "LOG(ERROR) << \"DDEBUG TRACE {(buf)}, ({}): {(rnd)}\\n\";"))
         ("." (cmd-ins ".c_str()"))
         ("," (cmd-ins "<< {} << endl;{(nli)}"))
         ("<" (cmd-ins "cout << "))
@@ -742,12 +742,12 @@
        (but
         ("c" (cmd-ins "console.log(`{}`);"))
         ("e" (cmd-ins "console.error(`{}`);"))
-        ("r" (cmd-ins "console.log(\"DEBUG trace {(buf)} {(rnd)}\");"))
-        ("v" (cmd-ins "console.log(\"DEBUG {(rnd)} value of {0}: \"+{0});"))
-        ("V" (cmd-ins "console.log(\"DEBUG {(rnd)} value of {0}: \"+JSON.stringify({0}));"))
-        ("A" (cmd-ins "alert(\"DEBUG {(rnd)} value of {0}: \"+{0});"))
+        ("r" (cmd-ins "console.log(\"DDEBUG trace {(buf)} {(rnd)}\");"))
+        ("v" (cmd-ins "console.log(\"DDEBUG {(rnd)} value of {0}: \"+{0});"))
+        ("V" (cmd-ins "console.log(\"DDEBUG {(rnd)} value of {0}: \"+JSON.stringify({0}));"))
+        ("A" (cmd-ins "alert(\"DDEBUG {(rnd)} value of {0}: \"+{0});"))
         ("a" (cmd-ins "alert(`{}`);"))
-        ("R" (cmd-ins "alert(\"DEBUG TRACE {(buf)} {(rnd)}\");"))))
+        ("R" (cmd-ins "alert(\"DDEBUG TRACE {(buf)} {(rnd)}\");"))))
       ("T" (cmd-ins "try {" (nli) (rec) (nli) "} catch(err) {" (nli) (rec) (nli) "}"))
       ("f" (cmd-ins "for (var {0} = 0; {0}<{}; {0}++){(cbd)}"))
       ("F" (cmd-ins "for (var {} of {}){(cbd)}"))
@@ -861,13 +861,13 @@
       ("M" (cmd-ins "package main{(nli)}"))
       ("n"
        (but
-        ("v" (cmd-ins "fmt.Printf(\"DEBUG "
+        ("v" (cmd-ins "fmt.Printf(\"DDEBUG "
                       (f-filename buffer-file-name)
                       ", "
                       (ins "{0}: %+v\\n\","
                            (nli?)
                            "{0})")))
-        ("r" (cmd-ins "fmt.Println(\"DEBUG TRACE "
+        ("r" (cmd-ins "fmt.Println(\"DDEBUG TRACE "
                       (f-filename buffer-file-name)
                       ", {} {(rnd)}\")"))
         ("s" (cmd-ins "fmt.Sprintf( \"{}\\n\"{} )"))
@@ -877,7 +877,7 @@
       ("z" (cmd-ins "if {}; {}{(cbd)}"))
       (":" (cmd-ins ": "))
       ("Z" (cmd-ins "if {}{(cbd)}"))
-      ("Z" (cmd-ins "if ; DEBUG{(cbd)}"))
+      ("Z" (cmd-ins "if ; DDEBUG{(cbd)}"))
       ("F" (cmd-ins "for i := 0; i < {}; i++{(cbd)}"))
       ("W" (cmd-ins "switch {(cbd)}"))
       ("w" (cmd-ins "case {}:{(nli)}"))
@@ -942,11 +942,11 @@
       ("n"
        (but
         ("t" (cmd-ins "echo "))
-        ("v" (cmd-ins "echo \"DEBUG {(rnd)} "
+        ("v" (cmd-ins "echo \"DDEBUG {(rnd)} "
                       (f-filename buffer-file-name)
                       " VALUE OF "
                       (ins "\\{0}: {0}\"" (nli?))))
-        ("r" (cmd-ins "echo \"DEBUG TRACE "
+        ("r" (cmd-ins "echo \"DDEBUG TRACE "
                       (f-filename buffer-file-name)
                       " {(rnd)}\""))))
       ("d" (cmd-ins "function {}{(cbd)}"))
@@ -1123,7 +1123,7 @@
        (but
         ("t" (cmd-ins "printf('{}', {});"))
         ("s" (cmd-ins "sprintf('{}'{});"))
-        ("v" (cmd-ins "disp(sprintf('DEBUG {(rnd)} value of {0}: %s', {0}));"))))))
+        ("v" (cmd-ins "disp(sprintf('DDEBUG {(rnd)} value of {0}: %s', {0}));"))))))
 
    (defbuttons cpp-buttons c-buttons (c++-mode-map)
      (but
