@@ -431,7 +431,8 @@
         ("n" (cmd-ins "(format {})"))
         ("r" (cmd-ins "(format t \"trace: {(buf)} {(rnd)}~%\")"))
         ("[" (cmd-ins "~{~A~^" "{}" "~}"))
-        ("v" (cmd-ins "(format t \"{(buf)} {(rnd)}: value of {0}: ~A~%\" {0})"))
+        ("v" (cmd-ins
+              "(format t \"DDEBUG {(buf)} {(rnd)}: value of {0}: ~A~%\" {0})"))
         ("m"
          (but
           ("i" (cmd-ins "(vom:info \"{}~%\"{})"))
