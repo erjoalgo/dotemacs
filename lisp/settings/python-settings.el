@@ -73,10 +73,30 @@ globals().update(args)
 
 (add-hook 'python-mode-hook 'python-autodetect-indent-level)
 
-(defun python-sort-imports ()
+(defun python-space-imports ()
+  "Add spaces around multiline import ... from statements."
   (interactive)
   (when (eq major-mode 'python-mode)
     (save-excursion
+      (goto-char (point-min))
+      (while (re-search-forward "^from .*( *\n[^)]+)" nil t)
+        (save-excursion
+          (let ((beginning (match-beginning 0))
+                (end (match-end 0)))
+            (goto-char end) ;; modify end first to avoid corrupting match end
+            (unless (looking-at "\n\n")
+              (open-line 1))
+            (goto-char beginning)
+            (unless (looking-back "\n\n" nil)
+              (open-line 1))))))))
+
+
+(defun python-sort-imports ()
+  "Sort python imports."
+  (interactive)
+  (when (eq major-mode 'python-mode)
+    (save-excursion
+      (python-space-imports)
       (goto-char (point-min))
       (while (re-search-forward "\\(^\\(import \\|from \\).*\n\\)+" nil t)
         (sort-lines nil (match-beginning 0)
