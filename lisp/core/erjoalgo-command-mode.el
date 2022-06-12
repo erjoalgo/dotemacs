@@ -215,6 +215,7 @@
            "^" "    " nil a b)))))
 
 (defun find-file-or-url-at-point ()
+  "FFAP."
   (interactive)
   (if (or (thing-at-point 'url)
           (let ((text (prin1-to-string (sexp-at-point))))
