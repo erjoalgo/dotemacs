@@ -103,7 +103,7 @@
 (defun highlight-long-lines ()
   (interactive)
   (highlight-lines-matching-regexp
-   (format ".\\{%d\\}" (1+ max-source-line-width)) 'hi-yellow))
+   (format ".\\{%d\\}" (1+ max-source-line-width)) 'hi-green))
 
 (setf source-modes
       '(emacs-lisp-mode clojure-mode go-mode java-mode js-mode c-mode
