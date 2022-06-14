@@ -1631,7 +1631,8 @@ server {
    (defbuttons global-buttons nil (global-map)
      (but
       ((kbd "M-c") #'autobuild-build)
-      ((kbd "s-C") #'autobuild-rebuild)
+      ((kbd "s-c") #'autobuild-rebuild-last-global)
+      ((kbd "M-C") #'autobuild-rebuild-last-global)
       ((kbd "M-q") #'sticky-window-delete-window)
       ((kbd "M-Q") #'sticky-window-toggle)
       ((kbd "M-/") 'my-comment-out)
