@@ -123,6 +123,10 @@ object."
 (push (expand-file-name "~/git/autobuild/common-rules") load-path)
 (require 'autobuild-common-rules)
 
+(let ((autobuild-dev "~/git/autobuild/autobuild.el"))
+  (when (file-exists-p autobuild-dev)
+    (load autobuild-dev)))
+
 (dolist (feature
          '(f
            goto-last-change
