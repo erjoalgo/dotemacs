@@ -52,7 +52,8 @@
 
 (defun whereis (program)
   "Search PATH for PROGRAM."
-  (interactive "senter program: ")
+  (interactive
+   (list (read-shell-command "enter program: ")))
   (let ((dirs
 	 (cl-loop for dir in (split-string (getenv "PATH") ":" t)
 	       if (and (file-exists-p dir)
