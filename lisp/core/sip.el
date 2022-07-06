@@ -498,7 +498,6 @@
 (add-hook 'buffer-list-update-hook
           #'sip-color-cursor-from-identity-schedule)
 
-
 (defun sip-restart ()
   (setq buffer-list-update-hook nil)
   (unless sms-fanout-address
