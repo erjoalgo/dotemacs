@@ -1,4 +1,4 @@
-(defun advice-unadvice (sym)
+(defun advice-remove-all (sym)
   ;; from somewhere on the internet
   "Remove all advices from symbol SYM."
   (interactive "aFunction symbol: ")
