@@ -8,7 +8,7 @@
 (defvar sms-fanout-ping-interval-seconds 30)
 (defvar sip-last-known-identity nil)
 (defvar sip-inhibit-echo-linphone-command nil)
-(defvar sip-message-ids-received (make-hash-table))
+(defvar sip-messages (make-hash-table))
 
 (defun sms-fanout-disconnected-p (&optional client)
   (cond
@@ -72,15 +72,13 @@
     sip-address))
 
 
-(defun sip-get-message-id (id &optional add)
-  (let* ((id (if (stringp id) (string-to-number id) id))
-         (exists (gethash id sip-message-ids-received)))
-    (when (and add (not exists))
-      (puthash id t sip-message-ids-received))
-    (or exists add)))
-
-(defun sip-add-message-id (id)
-  (sip-get-message-id id t))
+(defun sip-add-message (sip-message)
+  (let* ((id (sip-message-id sip-message))
+         (id-numeric (if (stringp id) (string-to-number id) id))
+         (exists (gethash id-numeric sip-messages)))
+    (when (not exists)
+      (puthash id-numeric sip-message sip-messages)
+      t)))
 
 (defun sip-send-chat-line ()
   (interactive)
@@ -155,36 +153,48 @@
              do (message "opening %s" number)
              do (sip-chat number))))
 
-(defun sip-message-received (to from message id datetime supress-echo)
-  (if (sip-get-message-id id)
-      (sip-ws-log (format "skipping previously-received message with id %s" id))
-    (let* ((buffer (sip-chat-buffer from to))
-           (line (format "%s says: %s" from message))
-           (timestamp
-            (condition-case ex (->> datetime
-                                 parse-time-string
-                                 (apply #'encode-time)
-                                 time-to-seconds)
-              (error
-               (sip-ws-log (format "failed to parse timestamp: %s"
-                                   'datetime)))))
-           was-at-bottom)
-      (with-current-buffer buffer
-        (sip-chat-mode t)
-        (setq was-at-bottom (eq (point-max) (point)))
-        (save-excursion
-          (goto-char (point-max))
-          (goto-char (line-beginning-position))
-          (open-line 1)
-          (insert line)
-          (setq-local sip-from-phone-number from)
-          (setq-local sip-max-timestamp (max timestamp (or sip-max-timestamp 0))))
-        (when was-at-bottom
-          (goto-char (point-max))))
-      (unless supress-echo
-        (message "%s" line))
-      (setq sip-last-message-buffer buffer)
-      (sip-add-message-id id))))
+(cl-defstruct sip-message id from to message timestamp)
+
+(defmacro my-with-slots (class-name slots object &rest body)
+  `(let
+       ,(cl-loop for slot in slots
+                 collect
+                 (list slot
+                       `(,(intern
+                           (format "%s-%s" class-name slot))
+                         ,object)))
+     ,@body))
+
+(defun sip-message-received (sip-message &optional supress-echo)
+  (my-with-slots sip-message (id from to message timestamp) sip-message
+    (if (null (sip-add-message sip-message))
+        (sip-ws-log (format "skipping previously-received message with id %s" id))
+      (let* ((buffer (sip-chat-buffer from to))
+             (line (format "%s says: %s" from message))
+             (timestamp
+              (condition-case ex (->> timestamp
+                                   parse-time-string
+                                   (apply #'encode-time)
+                                   time-to-seconds)
+                (error
+                 (sip-ws-log (format "failed to parse timestamp: %s" ex))))))
+        (with-current-buffer buffer
+          (sip-chat-mode t)
+          (setq was-at-bottom (eq (point-max) (point)))
+          (save-excursion
+            (goto-char (point-max))
+            (goto-char (line-beginning-position))
+            (open-line 1)
+            (insert
+             (format-time-string "%d %b %I:%M%p (%a)" (seconds-to-time timestamp)))
+            (insert line)
+            (setq-local sip-from-phone-number from)
+            (setq-local sip-max-timestamp (max timestamp (or sip-max-timestamp 0))))
+          (when was-at-bottom
+            (goto-char (point-max))))
+        (unless supress-echo
+          (message "%s" line))
+        (setq sip-last-message-buffer buffer)))))
 
 (defun sip-clean-phone-number (number)
   (replace-regexp-in-string "[^0-9]" "" number))
@@ -267,7 +277,12 @@
            (if (null timestamp)
                (sip-ws-log (format "skipping message with null timestamp: %s" message))
              (condition-case err
-                 (sip-message-received to from message id timestamp supress-echo)
+                 (sip-message-received (make-sip-message
+                                        :id id :to to
+                                        :from from
+                                        :message message
+                                        :timestamp timestamp)
+                                       supress-echo)
                (error
                 (sip-ws-log (format "failed to insert message %s: %s" message err)))))))))
      ((s-starts-with-p "status" message-type)
@@ -354,7 +369,7 @@
 
 (defun sip-chat-last-message ()
   (goto-char (point-max))
-  (if (re-search-backward "^\\([0-9]+\\| *YOU\\) +says?: .*" nil t)
+  (if (re-search-backward "^.*? says: .*" nil t)
       (buffer-substring (match-beginning 0) (point-max))
     (progn (sip-ws-log (format "no message found on buffer %s" buffer))
            nil)))
