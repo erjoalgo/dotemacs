@@ -921,5 +921,31 @@ This requires the external program `diff' to be in your `exec-path'."
 (setq find-function-C-source-directory
       (emacs-fetch-c-sources))
 
+(defun espeak-read-text ()
+  (cond
+   ((region-active-p)
+    (buffer-substring (region-beginning)
+                      (region-end)))
+   (t (read-string "enter text to speak: "))))
+
+(cl-defun espeak (text &key (lang "en")
+                       (speed 160)
+                       (gap 10))
+  (interactive (list (espeak-read-text)))
+  (message "DEBUG tjvd text: %s" text)
+  (start-process "espeak" "*espeak*" "espeak"
+                 text
+                 "-v" lang
+                 "-s" (format "%d" speed)
+                 "-g" (format "%d" gap)))
+
+(defun espeak-spell (text)
+  (interactive (list (espeak-read-text)))
+  (sit-for 2)
+  (espeak
+   (replace-regexp-in-string "" ". " text)
+   :speed 160
+   :gap 2))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; misc-utils.el ends here
