@@ -771,10 +771,22 @@ This requires the external program `diff' to be in your `exec-path'."
   (call-interactively #'package-install))
 
 (defun detect-indent-level ()
-  (save-excursion
-    (goto-char (point-min))
-    (cl-loop while (re-search-forward "^[ ]+" nil t)
-             minimize (length (match-string 0)))))
+  ;; (save-excursion
+  (interactive)
+  (goto-char (point-min))
+  (cl-loop with min-spaces = 1.0e+INF
+           with min-loc = nil
+           while (re-search-forward "^[ ]+" nil t)
+           as spaces = (length (match-string 0))
+           when (< spaces min-spaces)
+           do (setq min-spaces spaces
+                    min-loc (match-beginning 0))
+           finally
+           (progn
+             (when min-loc
+               (goto-char min-loc)
+               (message "%d" min-spaces)
+               (return min-spaces)))))
 
 
 (defmacro register-groups-bind (vars &rest body)
