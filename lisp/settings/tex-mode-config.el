@@ -1,4 +1,7 @@
 (require 'f)
+(condition-case ex
+    (require 'wm-windows)
+  (error (warn "wm-windows not available: %s" ex)))
 
 
 (defun latex-compile ()
@@ -35,4 +38,3 @@
 	    (add-hook 'after-save-hook 'latex-compile nil t)))
 
 ;;require this later in case it's not available
-(require 'wm-windows)
