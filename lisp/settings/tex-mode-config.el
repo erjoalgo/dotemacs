@@ -23,8 +23,16 @@
     (if (= ret-code 0)
 	(progn
 	  (message "successful compilation")
-	  (let ((win (wm-windows-find-window-by-title-regexp (regexp-quote base-sans-ext))))
-	    (if win (wm-window-raise win)
+	  (let ((win
+                 (cl-loop for win in (wm-windows-list)
+	                  thereis
+                          (and
+                           (string-match (regexp-quote base-sans-ext) (wm-window-title win))
+                           (let ((case-fold-search t))
+                             (string-match-p ".*zathura.*" "zathura.Zathura"))
+                           win))))
+	    (if win
+                (wm-window-raise win)
 	      (start-process "view-pdf" "view-pdf" "zathura" pdf))))
       (save-excursion
 	(switch-to-buffer-other-window compile-errors-buffer)
