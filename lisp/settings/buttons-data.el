@@ -570,7 +570,7 @@
         ("c" (cmd-ins "absl::StrCat(\"{}\"{})"))
         ("u" (cmd-ins "absl::Substitute(\"{}\", {})"))
         ("C" (cmd-ins ".c_str()"))
-        ("r" (cmd-ins "LOG(ERROR) << \"DDEBUG TRACE {(buf)}, ({}): {(rnd)}\\n\";"))
+        ("r" (cmd-ins "printf(\"DDEBUG TRACE (" (buf) ") " (rnd)"\\n\");"))
         ("." (cmd-ins ".c_str()"))
         ("," (cmd-ins "<< {} << endl;{(nli)}"))
         ("<" (cmd-ins "cout << "))
@@ -1623,6 +1623,10 @@ server {
    (defbuttons gfm-mode-buttons nil (gfm-mode-map)
       (but
        ("l" 'markdown-insert-link)))
+
+   (defbuttons sip-chat-mode nil ()
+      (but
+       ("i" #'sip-chat-insert-pretyped-message)))
 
    '(defbuttons ediff-mode-buttons nil (ediff-mode-map)
       (but
