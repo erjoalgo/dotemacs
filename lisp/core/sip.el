@@ -93,6 +93,7 @@
 (defun sip-send-chat-line ()
   (interactive)
   (cl-assert (bound-and-true-p sip-from-phone-number))
+  (goto-char (point-max))
   (let* ((current-identity (sip-current-identity))
         (message (buffer-substring
                   (line-beginning-position)
@@ -137,6 +138,18 @@
                   (goto-char (point-min))
                   (re-search-forward (regexp-quote sip-autosend-message) nil t))))
     (insert sip-autosend-message)
+    (sip-send-chat-line)
+    (sit-for 1)))
+
+(defvar sip-chat-pretyped-messages nil)
+
+(defun sip-chat-insert-pretyped-message ()
+  (interactive)
+  (let ((selection
+         (selcand-select sip-chat-pretyped-messages
+                         "select a reply: ")))
+    (goto-char (point-max))
+    (insert selection)
     (sip-send-chat-line)
     (sit-for 1)))
 
@@ -341,6 +354,7 @@
   "sip-chat-mode"
   (let ((kmap (make-sparse-keymap)))
     (define-key kmap (kbd "RET") #'sip-send-chat-line)
+    (define-key kmap (kbd "s-i") #'sip-chat-send-automated-message)
     kmap)
   (let ((real-message #'message))
   (cl-letf (
