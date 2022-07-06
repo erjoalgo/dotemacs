@@ -37,13 +37,23 @@
 (defvar-local sip-from-phone-number nil)
 (defvar-local sip-max-timestamp nil)
 
+(defvar linphone-profile-id nil)
+
+(defun linphone-current-profile-id ())
+
 (defun linphonecsh (&rest args)
   "Execute a linphonec command via linphonecsh."
-  (unless sip-inhibit-echo-linphone-command
-    (message "running: linphonecsh %s" (string-join args " ")))
-  (with-temp-buffer
-    (apply #'call-process "linphonecsh" nil (current-buffer) nil args)
-    (buffer-string)))
+  (let ((linphone-profile-id (linphone-current-profile-id))
+        (env-args (append
+                   (list (format "LINPHONE_PROFILE_ID=%s" (linphone-current-profile-id))
+                         "linphonecsh")
+                   args)))
+    (unless nil
+      (message "running: env %s" (string-join env-args " ")))
+    (with-temp-buffer
+      (apply #'call-process "env" nil (current-buffer) nil env-args)
+      (buffer-string))))
+
 
 (defun sip-current-identity ()
   (save-match-data
