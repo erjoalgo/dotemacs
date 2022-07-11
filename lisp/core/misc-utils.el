@@ -828,21 +828,23 @@ This requires the external program `diff' to be in your `exec-path'."
           (replace-match choice t t nil)
           '(cl-assert (y-or-n-p "Continue? ")))))))
 
-(defun switch-to-buffer-with-process-pid (pid)
+(defun pid-to-buffer (pid)
   "Switch to the buffer associated with a process with PID."
   (interactive "nenter pid: ")
-  (cl-loop for proc in (process-list)
-           thereis (when (eq (process-id proc) pid)
-                     (if-let* ((buff (process-buffer proc))
-                              (_is-live (buffer-live-p buff)))
-                         (switch-to-buffer buff)
-                       (when (y-or-n-p
-                              (format (concat
-                                       "process %s is a child of emacs, "
-                                      "but has no buffer. kill?")
-                                      pid))
-                         (kill-process proc)))
-                     t)))
+  (or
+   (cl-loop for proc in (process-list)
+            thereis (when (eq (process-id proc) pid)
+                      (if-let* ((buff (process-buffer proc))
+                                (_is-live (buffer-live-p buff)))
+                          (switch-to-buffer buff)
+                        (when (y-or-n-p
+                               (format (concat
+                                        "process %s is a child of emacs, "
+                                        "but has no buffer. kill?")
+                                       pid))
+                          (kill-process proc)))
+                      t))
+   (error "no buffer found with pid: %s" pid)))
 
 (defun debian-file->string (filename &optional not-literal-p)
   (with-temp-buffer
