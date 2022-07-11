@@ -556,8 +556,7 @@ a translation from scratch"
 
 (define-minor-mode translation-mode
   "Translation minor mode"
-  nil
-  "translation-mode"
+  :lighter "translation-mode"
   (buttons-make
    ((kbd "s-t")
     (buttons-make

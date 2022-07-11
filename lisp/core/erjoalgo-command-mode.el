@@ -41,7 +41,7 @@
 
 (define-minor-mode erjoalgo-command-mode
     "command mode"
-    0 "-CM" erjoalgo-command-mode-map)
+    :init-value 0 :lighter "-CM" :keymap erjoalgo-command-mode-map)
 
 (define-globalized-minor-mode global-erjoalgo-command-mode
   erjoalgo-command-mode erjoalgo-command-mode)
@@ -460,7 +460,7 @@
               (symbol-file symbol))))
 
 (add-hook 'after-load-functions
-	  '(lambda (_something)
+	  #'(lambda (_something)
 	     (force-mode-first 'erjoalgo-command-mode)))
 
 (buttons-macrolet
