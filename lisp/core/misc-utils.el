@@ -928,6 +928,33 @@ This requires the external program `diff' to be in your `exec-path'."
              (signal 'caca))
     ((error signal) (warn "failed to fetch emacs sources: %s" ex))))
 
+(defun debug-statements-remove--next ()
+  (case major-mode
+    (c++-mode
+     (when
+         (re-search-forward
+          "\n.*LOG[^\"]+\"DDEBUG[^;]+;\n" nil t)
+       (cons (match-beginning 0) (match-end 0))))
+    ((skylark-mode python-mode)
+     (when (re-search-forward "\n.*print(\"DDEBUG" nil t)
+       (let ((a (match-beginning 0)))
+         (goto-char a)
+         (forward-sexp 2)
+         (re-search-forward "\n")
+         (cons a (point)))))
+    (t (error "unsupported mode: %s" major-mode))))
+
+(defun debug-statements-remove ()
+  (interactive)
+  (save-excursion
+    (goto-char (point-min))
+    (cl-loop
+     as ab = (debug-statements-remove--next)
+     while ab
+     do (cl-destructuring-bind (a . b) ab
+          (delete-region a b)
+          (goto-char a)))))
+
 (emacs-init-C-source-directory)
 
 (defun espeak-read-text ()
