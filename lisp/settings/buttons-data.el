@@ -674,7 +674,7 @@
         ("s" (cmd-ins "static "))))
       ("s" (cmd-ins "this.{(inm)}"))
       ("S" (cmd (java-new)))
-      ("F" (cmd-ins "for ({}: {}){(cbd)}"))
+      ("F" (cmd-ins "for ({} : {}){(cbd)}"))
       ("L" (cmd-ins "class {}{(cbd)}"))
       ("i"
        (but
@@ -987,7 +987,8 @@
           ("j" (cmd-ins "test -o "))
           ("=" (cmd-ins "test {} = "))
           ("v" (cmd-ins "command -v "))))))
-      ("<" (cmd-ins " <<< "))))
+      ("<" (cmd-ins " <<< "))
+      ("-" (cmd-ins "--"))))
 
    (defbuttons tex-buttons programming-buttons (tex-mode-map)
      (but
