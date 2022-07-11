@@ -180,5 +180,14 @@
 
 (setq async-shell-command-buffer 'new-buffer)
 
+(defun my-shorten-auto-save-file-name (&rest args)
+  ;; https://emacs.stackexchange.com/questions/48301/
+  (let ((buffer-file-name
+         (when buffer-file-name (sha1 buffer-file-name))))
+    (apply args)))
+
+(advice-add 'make-auto-save-file-name :around
+            #'my-shorten-auto-save-file-name)
+
 (provide 'my-emacs-settings)
 ;;; emacs-settings.el ends here
