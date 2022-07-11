@@ -920,8 +920,15 @@ This requires the external program `diff' to be in your `exec-path'."
         (cl-assert (emacs-c-source-directory))
         (emacs-c-source-directory))))
 
-(setq find-function-C-source-directory
-      (emacs-fetch-c-sources))
+(defun emacs-init-C-source-directory ()
+  (condition-case ex
+      (progn (setq find-function-C-source-directory
+                   (emacs-fetch-c-sources))
+             (signal 'cl-assertion-failed ())
+             (signal 'caca))
+    ((error signal) (warn "failed to fetch emacs sources: %s" ex))))
+
+(emacs-init-C-source-directory)
 
 (defun espeak-read-text ()
   (cond
