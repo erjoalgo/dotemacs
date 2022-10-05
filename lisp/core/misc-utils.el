@@ -940,6 +940,13 @@ This requires the external program `diff' to be in your `exec-path'."
          (forward-sexp 2)
          (re-search-forward "\n")
          (cons a (point)))))
+    ((sh-mode)
+     (when (re-search-forward "echo.*DDEBUG" nil t)
+       (let ((a (match-beginning 0)))
+         (goto-char a)
+         (forward-sexp 2)
+         (re-search-forward "\n")
+         (cons a (point)))))
     (t (error "unsupported mode: %s" major-mode))))
 
 (defun debug-statements-remove ()
