@@ -215,9 +215,10 @@
   (when (and a (= a b)) (setq a nil b nil))
   (let ((a (or a (point-min)))
         (b (or b (point-max)))
-        (save-match-data
-          (replace-regexp
-           "^" "    " nil a b)))))
+        (rep (if google3-mode "  " "    ")))
+    (save-match-data
+      (replace-regexp
+       "^" rep nil a b))))
 
 (defun find-file-or-url-at-point ()
   "FFAP."
