@@ -18,26 +18,35 @@ object."
     (package-delete pkg 'force 'nosave)
     (package-install pkg 'dont-select)))
 
+;;; BEGIN debugging "require cl" issues
 (defun edebug-on-require-cl (feature &rest r)
-  (when (equal 'cl feature)
+  (when (equal 'with-editor feature)
+    (message "DDEBUG ml0v (locate-library \"with-editor\"): %s"
+              (locate-library "with-editor"))
     (require 'edebug)
     (edebug)))
-
 (advice-add 'require :after #'edebug-on-require-cl)
-
 (defvar messages-to-debug nil)
-
 (push "Package cl is deprecated" messages-to-debug)
-
 (defun debug-on-message (oldfun fmt &rest r)
   "Around advice to trigger edebug on specific messages."
   (when (member (apply oldfun fmt r) messages-to-debug)
     (require 'edebug)
     (edebug)))
-
 (advice-add 'message :around #'debug-on-message)
-
 (add-to-list 'load-path (expand-file-name "~/git/babel/"))
+(defvar load-patch-watcher-regexp nil)
+;; '(push "with-editor" load-patch-watcher-regexp)
+(defun watch-load-path-changes (symbol newval operation where)
+  (cl-loop with car = (car newval)
+           for regexp in load-patch-watcher-regexp
+           when (string-match-p regexp car)
+           do (progn
+                (message "DDEBUG kfyo car: %s" car)
+                (require 'edebug)
+                (edebug))))
+(add-variable-watcher 'load-path #'watch-load-path-changes)
+;;; END debugging "require cl" issues
 
 (defvar emacs-top
   (file-name-directory (file-truename user-init-file))
