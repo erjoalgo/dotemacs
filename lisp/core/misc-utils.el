@@ -931,7 +931,7 @@ This requires the external program `diff' to be in your `exec-path'."
     (c++-mode
      (when
          (re-search-forward
-          "\n.*LOG[^\"]+\"DDEBUG[^;]+;\n" nil t)
+          "\n.*LOG[^\"]+\"DDEBUG[^;]+;" nil t)
        (cons (match-beginning 0) (match-end 0))))
     ((skylark-mode python-mode)
      (when (re-search-forward "\n.*print(\"DDEBUG" nil t)
