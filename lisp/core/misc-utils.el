@@ -786,8 +786,7 @@ This requires the external program `diff' to be in your `exec-path'."
              (when min-loc
                (goto-char min-loc)
                (message "%d" min-spaces)
-               (return min-spaces)))))
-
+               (cl-return min-spaces)))))
 
 (defmacro register-groups-bind (vars &rest body)
   "Bind capture groups from the last string match as VARS."
