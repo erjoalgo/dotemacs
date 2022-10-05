@@ -30,7 +30,7 @@
 (MAJOR-MODE . INTERPRETER-LINE)")
 
 (setf plusx-interpreter-line-alist
-  `((python-mode (concat "#!" (s-trim (shell-command-to-string "which python"))))
+  `((python-mode ,(concat "#!" (s-trim (shell-command-to-string "which python3"))))
     (sh-mode "#!/bin/bash -x\n\nset -euo pipefail")
     (lisp-mode)
     (perl-mode "#!/usr/bin/perl")
