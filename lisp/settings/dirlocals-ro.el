@@ -35,7 +35,8 @@
 (advice-add ' dir-locals--all-files :around
               #'dir-locals--all-files--custom-path-function)
 
-(defun dir-locals-collect-variables (class-variables root variables)
+(defun dir-locals-collect-variables (class-variables root variables
+                                                     &optional predicate)
   "Collect entries from CLASS-VARIABLES into VARIABLES.
 ROOT is the root directory of the project.
 Return the new variables list."
