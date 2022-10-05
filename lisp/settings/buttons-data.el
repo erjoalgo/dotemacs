@@ -54,7 +54,7 @@
 (buttons-macrolet
  ((inm () (when (functionp 'global-erjoalgo-command-mode)
             `(global-erjoalgo-command-mode 0)))
-  (spc? () `(unless (looking-back " ") (insert " ")))
+  (spc? () `(unless (looking-back " " nil) (insert " ")))
   (rnd () `(downcase (genpass-genpass 4 genpass-alnum t)))
   (buf () `(f-filename (buffer-name)))
   (nli? (&optional col) `(if (>= (current-column) (or ,col 60))
@@ -104,7 +104,7 @@
 
    (defbuttons python-buttons programming-buttons (python-mode-map)
      (but
-      ("e" (cmd-ins (if (looking-back "^[ 	]*[a-zA-Z_.,]+ *") " = " "=")))
+      ("e" (cmd-ins (if (looking-back "^[ 	]*[a-zA-Z_.,]+ *" nil) " = " "=")))
       ("f" (cmd-ins "for {} in {}:{(nli)}{}{(nli)}{(idt)}"))
       ("F" (cmd-ins "[{} for {} in {}]"))
       ("w" (cmd-ins "while {}:{(nli)}{}{(nli)}{(idt)}"))
@@ -113,7 +113,7 @@
                     (rec)
                     (when (looking-at ".+")
                       (end-of-line))
-                    (if (looking-back "^[ 	]+$")
+                    (if (looking-back "^[ 	]+$"  nil)
                         ""
                       (progn
                         (nli)
@@ -570,7 +570,7 @@
         ("c" (cmd-ins "absl::StrCat(\"{}\"{})"))
         ("u" (cmd-ins "absl::Substitute(\"{}\", {})"))
         ("C" (cmd-ins ".c_str()"))
-        ("r" (cmd-ins "printf(\"DDEBUG TRACE (" (buf) ") " (rnd)"\\n\");"))
+        ("r" (cmd-ins "LOG(ERROR) << \"DDEBUG TRACE (" (buf) ") " (rnd)"\\n\";"))
         ("." (cmd-ins ".c_str()"))
         ("," (cmd-ins "<< {} << endl;{(nli)}"))
         ("<" (cmd-ins "cout << "))
@@ -693,7 +693,7 @@
      (but
       ("/" (cmd-ins "<!--{}-->{(nli)}"))
       ((kbd "M-/") 'xml-toggle-line-comment)
-      ("." (cmd-ins "</{0}>"))
+      ("<" (cmd-ins "</{0}>"))
       ("e" (cmd-ins "="))
       ("2" (cmd-ins "\"{}\""))
       ("u" (cmd-ins "<u>{}</u>"))
@@ -961,7 +961,7 @@
       ("g" (cmd-ins "true"))
       ("G" (cmd-ins "false"))
       ("C" (cmd-ins "<<EOF{(nli)}{}"
-                    (unless (looking-back "^[ 	]*") (nli))
+                    (unless (looking-back "^[ 	]*" nil) (nli))
                     "EOF"))
       ;; ( "x" 'shell-command-of-region)
       ("0" (cmd-ins sh-getopt-template))
@@ -1571,12 +1571,13 @@ server {
       ("f" (cmd-ins "FROM "))
       ("w" (cmd-ins "WHERE "))
       ("H" (cmd-ins "WITH {} AS (" (nli) (rec) (nli) ")"))
-      ("h" (cmd-ins " AS (" (nli) (rec) (nli) ")"))
+      ("h" (cmd-ins " AS (" (nli) (rec) (nli) "),"))
       ("g" (but
             ("b" (cmd-ins "GROUP BY "))
-            ("a" (cmd-ins "ANY_VALUE(" (rec) ")"))
+            ("y" (cmd-ins "ANY_VALUE(" (rec) ")"))
             ("g" (cmd-ins "ARRAY_AGG(" (rec) ")"))
             ("s" (cmd-ins "STRING_AGG(" (rec) ")"))
+            ("S" (cmd-ins "ARRAY_TO_STRING(" (rec) ")"))
             ("u" (cmd-ins "UNION ALL "))
             ("n" (cmd-ins "UNNEST "))))
       ("o" (but
@@ -1599,7 +1600,8 @@ server {
        (but
         ("e" (cmd-ins "LEFT JOIN "))
         ("m" (cmd-ins "LIMIT "))
-        ("k" (cmd-ins "LIKE "))))
+        ("k" (cmd-ins "LIKE "))
+        ("a" (cmd-ins "ARRAY_LENGTH({})"))))
       ("8" (cmd-ins " * "))
       ("c" (cmd-ins "COUNT(*) "))
       ("k" (cmd-ins " AND "))
