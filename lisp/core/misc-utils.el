@@ -797,7 +797,6 @@ This requires the external program `diff' to be in your `exec-path'."
                  collect `(,var (match-string ,num)))
      ,@body))
 
-
 (defun git-merge ()
   "Simple git merge."
   (interactive)
