@@ -230,6 +230,19 @@
       (call-interactively #'browse-url-at-point)
     (call-interactively #'find-file-at-point)))
 
+(defun next-async-shell-command-buffer()
+  "Open the next async shell command buffer."
+  (let* ((buffer-spec
+          "regexp:[*]Async Shell Command[*]\\(<[0-9]+>\\)?")
+         (buffer (buffer-matching buffer-spec)))
+    (if (not buffer)
+        (error (format "no such buffer: %s" buffer-spec))
+      (switch-to-buffer buffer)
+      (let ((proc (get-buffer-process buffer)))
+        (if proc
+            (message "cmd: %s" (process-command proc))
+          (message "buffer has no process: %s" buffer))))))
+
 (buttons-macrolet
  ((dir (dir) `(read-file-name "select file: " ,dir))
   (buff (buff-spec &optional on-nonexistent)
@@ -409,7 +422,7 @@
             "regexp:[*]slime-repl sbcl\\|[*]cider-repl"))
       ("r" 'replace-regexp)
       ("R" 'query-replace-regexp)
-      ("A" (buff "[*]Async Shell Command[*]"))
+      ("A" (cmd (next-async-shell-command-buffer)))
       ("o" 'gnus-goto-inbox)
       ("0" 'open-google-calendar)
       ("b" (buff "*Inferior Octave*" (inferior-octave t)))
