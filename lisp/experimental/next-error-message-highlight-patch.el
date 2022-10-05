@@ -15,10 +15,11 @@
   "Overlay highlighting the current error message in the ‘next-error’ buffer")
 (make-variable-buffer-local 'next-error-message-highlight-overlay)
 
-(defun next-error-message-highlight ()
-  "Highlight the current error message in the ‘next-error’ buffer."
+(defun next-error-message-highlight (&optional from-buffer)
+  "Highlight the current error message in the ‘next-error’ FROM-BUFFER."
+  (unless from-buffer (setq from-buffer next-error-last-buffer))
   (when next-error-message-highlight-p
-    (with-current-buffer next-error-last-buffer
+    (with-current-buffer from-buffer
       (when next-error-message-highlight-overlay
         (delete-overlay next-error-message-highlight-overlay))
       (save-excursion
