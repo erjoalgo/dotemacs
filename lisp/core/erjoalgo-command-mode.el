@@ -169,11 +169,16 @@
     (switch-to-buffer (nth idx buffers))))
 
 (defun kill-buffer--maybe-switch-to-next-compilation (orig buffer)
-  (let ((regexp "^[*]compilation[*]")
-        (name (and (bufferp buffer) (buffer-name buffer))))
+  (let ((name (and (bufferp buffer) (buffer-name buffer))))
+    ;; capture buffer name before it is killed
     (funcall orig buffer)
-    (when (and name (string-match-p regexp name))
-      (switch-to-nth-most-recent-buffer regexp nil))))
+    (let ((compilation-regexp ))
+      (when name
+        (cond
+         ((string-match-p "^[*]compilation[*]" name)
+          (switch-to-nth-most-recent-buffer compilation-regexp nil))
+         ((string-match-p "^[*]Async Shell Command[*].*" name)
+          (next-async-shell-command-buffer)))))))
 
 (advice-add #'kill-buffer :around
             #'kill-buffer--maybe-switch-to-next-compilation)
