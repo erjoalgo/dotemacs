@@ -927,7 +927,7 @@ This requires the external program `diff' to be in your `exec-path'."
     ((error signal) (warn "failed to fetch emacs sources: %s" ex))))
 
 (defun debug-statements-remove--next ()
-  (case major-mode
+  (cl-case major-mode
     (c++-mode
      (when
          (re-search-forward
