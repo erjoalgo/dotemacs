@@ -20,7 +20,7 @@ object."
 
 ;;; BEGIN debugging "require cl" issues
 (defun edebug-on-require-cl (feature &rest r)
-  (when (equal 'with-editor feature)
+  '(when (equal 'with-editor feature)
     (message "DDEBUG ml0v (locate-library \"with-editor\"): %s"
               (locate-library "with-editor"))
     (require 'edebug)
