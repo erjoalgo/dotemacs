@@ -150,9 +150,8 @@
   (let* ((buffers
           (sort-by
            (cl-remove-if-not (lambda (buffer)
-                               (->> buffer
-                                 buffer-name
-                                 (string-match buffer-regexp)))
+                               (if-let ((buffer-name (buffer-name buffer)))
+                                   (string-match buffer-regexp buffer-name)))
                              (buffer-list))
            (lambda (buffer)
              (if-let ((name (buffer-name buffer))
