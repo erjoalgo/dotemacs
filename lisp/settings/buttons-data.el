@@ -659,13 +659,20 @@
 
    (defbuttons java-buttons c-buttons (java-mode-map)
      (but
-      ("n" (cmd-ins "System.out.printf( \"{}\\n\"{} );{(nli)}"))
+      ("n"
+       (but
+        ("t" (cmd-ins "System.out.printf(\"{}\\n\"{} );{(nli)}"))
+        ("r" (cmd-ins "System.out.printf(\"DDEBUG TRACE: {(buf)} {(rnd)}\");"))
+        ("v" (cmd-ins "System.out.printf(" (nli)
+                      "\"DDEBUG {(buf)} {(rnd)}: value of {0}: %s\\n\","
+                      (nli)
+                      "{0});"))))
       ("l" (cmd-ins ".length"))
       ("G" (cmd-ins "null"))
       ("d"
        (but
         ("d" (cmd-ins " ( {} ){(cbd)}"))
-        ("m" (cmd-ins "public static void main ( String[] argv){(cbd)}"))))
+        ("m" (cmd-ins "public static void main (String[] argv){(cbd)}"))))
       ("p"
        (but
         ("p" (cmd-ins "public "))
@@ -675,6 +682,8 @@
       ("s" (cmd-ins "this.{(inm)}"))
       ("S" (cmd (java-new)))
       ("F" (cmd-ins "for ({} : {}){(cbd)}"))
+      ("f" (but
+            ("f" ("for (int {0} = 0; {0} < {}; {0}++){(cbd)}"))))
       ("L" (cmd-ins "class {}{(cbd)}"))
       ("i"
        (but
