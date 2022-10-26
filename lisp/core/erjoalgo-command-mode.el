@@ -171,10 +171,10 @@
   (let ((name (and (bufferp buffer) (buffer-name buffer))))
     ;; capture buffer name before it is killed
     (funcall orig buffer)
-    (let ((compilation-regexp ))
+    (let ((compilation-regexp "^[*]compilation[*]"))
       (when name
         (cond
-         ((string-match-p "^[*]compilation[*]" name)
+         ((string-match-p compilation-regexp name)
           (switch-to-nth-most-recent-buffer compilation-regexp nil))
          ((string-match-p "^[*]Async Shell Command[*].*" name)
           (next-async-shell-command-buffer)))))))
