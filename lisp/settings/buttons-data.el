@@ -682,8 +682,9 @@
       ("s" (cmd-ins "this.{(inm)}"))
       ("S" (cmd (java-new)))
       ("F" (cmd-ins "for ({} : {}){(cbd)}"))
-      ("f" (but
-            ("f" ("for (int {0} = 0; {0} < {}; {0}++){(cbd)}"))))
+      ("f"
+       (but
+        ("f" (cmd-ins "for (int {0} = 0; {0} < {}; {0}++){(cbd)}"))))
       ("L" (cmd-ins "class {}{(cbd)}"))
       ("i"
        (but
