@@ -141,6 +141,13 @@
 
 (defalias #'sort-by #'sort-key)
 
+(defvar compilation-contents-regexp-filter nil
+  "If nonnil, skip compilation buffers whose contents don't match this regexp.")
+
+(defun set-compilation-contents-regexp-filter (regexp)
+  (interactive "senter compilation buffer contents regexp: ")
+  (setq compilation-contents-regexp-filter regexp))
+
 (defun switch-to-nth-most-recent-buffer (buffer-regexp offset)
   "Switch to the OFFSET most recent buffer matching BUFFER-REGEXP.
 
@@ -150,8 +157,14 @@
   (let* ((buffers
           (sort-by
            (cl-remove-if-not (lambda (buffer)
-                               (if-let ((buffer-name (buffer-name buffer)))
-                                   (string-match buffer-regexp buffer-name)))
+                               (and
+                                (if-let ((buffer-name (buffer-name buffer)))
+                                   (string-match buffer-regexp buffer-name))
+                                (or (null compilation-contents-regexp-filter)
+                                    (save-match-data
+                                      (string-match compilation-contents-regexp-filter
+                                                    (with-current-buffer buffer
+                                                      (buffer-string)))))))
                              (buffer-list))
            (lambda (buffer)
              (if-let ((name (buffer-name buffer))
