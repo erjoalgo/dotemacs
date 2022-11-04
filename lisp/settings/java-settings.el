@@ -48,6 +48,43 @@
 
 (add-hook 'java-mode-hook 'java-imports-scan-file)
 
+(defun java-find-class-name ()
+  "Find the class name in the current java file."
+  (cl-assert (eq major-mode 'java-mode))
+  (save-excursion
+    (save-match-data
+      (goto-char (point-min))
+      (or
+       (cl-loop with class-name-or-comment-regexp =
+                "/[*]\\|^\\(\\(public\\|static\\|final\\)[ \t\n]+\\)*\\(class\\|interface\\)[ \t\n]+\\([^ \t\n]+\\)[^{]*{"
+                with class-name = nil
+                as has-match-p =
+                (re-search-forward class-name-or-comment-regexp nil t)
+                while (and (null class-name) has-match-p)
+                do (if
+                       (equal "/*" (match-string 0))
+                       ;; skip to the end of the comment. do err if not found,
+                       ;; since we expect comment to close
+                              (re-search-forward "[*]/" nil nil)
+                       (setq class-name (match-string 4)))
+                finally (cl-return class-name))
+       (warn "no java class name found")))))
+
+(ert-deftest test-java-find-class-name ()
+  (cl-labels
+      ((test-find-class-name
+        (java-code expected-class-name)
+        (with-temp-buffer
+          (java-mode)
+          (insert java-code)
+          (should (equal (java-find-class-name) expected-class-name)))))
+    (test-find-class-name "public class FooNameService {" "FooNameService")
+    (test-find-class-name "/*\npublic class caca*/\npublic class FooNameService {" "FooNameService")
+    (test-find-class-name "\npublic class caca\npublic class FooNameService {" "caca")))
+
+(ert-run-tests-batch "test-java-find-class-name")
+
+
 (defun java-sync-function-file-names ()
   ;; adapted from octave.el: octave-sync-function-file-names
   ;; TODO make generic
@@ -55,15 +92,7 @@
 See Info node `(octave)Function Files'."
   (interactive)
   (when buffer-file-name
-    (let* ((java-public-class-regexp
-	    "\\(class\\|interface\\)[ \t\n]+\\([^ \t\n]+\\)[^{]*{")
-	   (java-class-name
-	    (save-excursion
-	      (goto-char (point-min))
-	      (if (re-search-forward
-		   java-public-class-regexp nil t)
-		  (match-string 2)
-		(prog1 nil (warn "no class name found"))))))
+    (let* ((java-class-name (java-find-class-name)))
       (when java-class-name
         (let* ((func java-class-name)
                (file (file-name-sans-extension
