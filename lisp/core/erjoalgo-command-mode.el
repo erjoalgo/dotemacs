@@ -145,8 +145,8 @@
   "If nonnil, skip compilation buffers whose contents don't match this regexp.")
 
 (defun set-compilation-contents-regexp-filter (regexp)
-  (interactive "senter compilation buffer contents regexp: ")
-  (setq compilation-contents-regexp-filter regexp))
+  (interactive "sEnter compilation buffer contents regexp: ")
+  (setq compilation-contents-regexp-filter (unless (s-blank? regexp) regexp)))
 
 (defun switch-to-nth-most-recent-buffer (buffer-regexp offset)
   "Switch to the OFFSET most recent buffer matching BUFFER-REGEXP.
@@ -161,6 +161,7 @@
                                 (if-let ((buffer-name (buffer-name buffer)))
                                    (string-match buffer-regexp buffer-name))
                                 (or (null compilation-contents-regexp-filter)
+                                    (s-blank? compilation-contents-regexp-filter)
                                     (save-match-data
                                       (string-match compilation-contents-regexp-filter
                                                     (with-current-buffer buffer
