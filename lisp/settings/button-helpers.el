@@ -111,7 +111,7 @@
                                          (cl-assert (null (cdr rest)))
                                          (push (car rest) ret))
                                      (push `(,act ,@rest) ret)))))
-                           finally (return (reverse ret))))
+                           finally (cl-return (reverse ret))))
                     (defbuttons (cl-destructuring-bind (sym modes parent body) (cdr form)
                                   `(defbuttons ,sym
                                      ,parent
