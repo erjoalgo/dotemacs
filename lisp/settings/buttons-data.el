@@ -570,7 +570,8 @@
         ("c" (cmd-ins "absl::StrCat(\"{}\"{})"))
         ("u" (cmd-ins "absl::Substitute(\"{}\", {})"))
         ("C" (cmd-ins ".c_str()"))
-        ("r" (cmd-ins "LOG(ERROR) << \"DDEBUG TRACE (" (buf) ") " (rnd)"\\n\";"))
+        ("r" (cmd-ins "LOG(ERROR) << \"DDEBUG TRACE (" (buf) ") " (rnd)
+                      " (" (rec) ")\\n\";"))
         ("." (cmd-ins ".c_str()"))
         ("," (cmd-ins "<< {} << endl;{(nli)}"))
         ("<" (cmd-ins "cout << "))
@@ -662,11 +663,17 @@
       ("n"
        (but
         ("t" (cmd-ins "System.out.printf(\"{}\\n\"{} );{(nli)}"))
-        ("r" (cmd-ins "System.out.printf(\"DDEBUG TRACE: {(buf)} {(rnd)}\");"))
+        ("r" (cmd-ins "System.out.printf(\"DDEBUG TRACE: {(buf)} {(rnd)}\\n\");"))
         ("v" (cmd-ins "System.out.printf(" (nli)
                       "\"DDEBUG {(buf)} {(rnd)}: value of {0}: %s\\n\","
                       (nli)
-                      "{0});"))))
+                      "{0});"))
+        ("k"
+         (cmd-ins
+          "System.out.printf(" (nli)
+          "\"DDEBUG {(buf)} {(rnd)} STACKTRACE: %s\\n\","
+          (nli)
+          "java.lang.Thread.currentThread().getStackTrace());"))))
       ("l" (cmd-ins ".length"))
       ("G" (cmd-ins "null"))
       ("d"
