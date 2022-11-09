@@ -411,6 +411,7 @@
        (but
         ("i" (cmd-ins "(declare (ignore {}))"))
         ("n" (cmd-ins "(defcommand {} ({}) ({}){(nli)}{})"))
+        ("s" (cmd-ins "(defstruct {}{(nli)}{})"))
         ("p" (cmd-ins "(defparameter {})"))
         ("t" (cmd-ins "(deftest test-{} (){(nli)}{})"))
         ("T" (cmd-ins "(fiasco:define-test-package #:{0}/test{(nli)}"
