@@ -255,7 +255,8 @@ Buffers other than the current buffer are preferred."
 
 (defun revert-buffer-no-confirm ()
   "Revert buffer without confirmation."
-  (interactive) (revert-buffer t t))
+  (interactive)
+  (revert-buffer t t))
 
 (defun sanitize-filename (fn)
   (-> (if (string-match "^/sudo:root@[^:]+:\\(.*\\)" fn)
