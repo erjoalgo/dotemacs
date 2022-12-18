@@ -430,7 +430,7 @@
         ("t" (cmd-ins "(format t {})"))
         ("f" (cmd-ins "(format fh {})"))
         ("n" (cmd-ins "(format {})"))
-        ("r" (cmd-ins "(format t \"trace: {(buf)} {(rnd)}~%\")"))
+        ("r" (cmd-ins "(format t \"DDEBUG TRACE: {(buf)} {(rnd)}~%\")"))
         ("[" (cmd-ins "~{~A~^" "{}" "~}"))
         ("v" (cmd-ins
               "(format t \"DDEBUG {(buf)} {(rnd)}: value of {0}: ~A~%\" {0})"))
