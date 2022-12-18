@@ -224,7 +224,7 @@
   (replace-regexp-in-string "[^0-9]" "" number))
 
 (defun sip-chat (number &optional message)
-  (interactive "senter phone number: \nenter message: ")
+  (interactive "senter phone number: \nsenter message: ")
   (let* ((number-clean (sip-clean-phone-number number))
          (buffer (sip-chat-buffer number-clean)))
     (switch-to-buffer buffer)
