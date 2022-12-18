@@ -1,4 +1,5 @@
 (require 'websocket)
+(require 's)
 
 (defvar sms-fanout-address nil)
 (defvar sms-fanout-client nil)
@@ -154,7 +155,7 @@
     (sit-for 1)))
 
 (defun sip-chat-buffer (other-number &optional self-number)
-  (cl-assert (not (s-blank-p other-number)))
+  (cl-assert (not (s-blank? other-number)))
   (let* ((other-number-clean (sip-phone-number-clean other-number))
          (buffer-name (format sip-buffer-fmt
                               (concat other-number-clean
