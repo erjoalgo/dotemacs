@@ -64,7 +64,7 @@
       (list (match-string 1 output) (match-string 2 output)))))
 
 (defun sip-default-host ()
-  (second (sip-current-identity)))
+  (cl-second (sip-current-identity)))
 
 (defun sip-phone-number-clean (number)
   (let* ((number-clean (replace-regexp-in-string "[^0-9]" "" number))
@@ -99,7 +99,7 @@
                   (line-beginning-position)
                   (line-end-position)))
         (sip-address (sip-phone-number-to-address sip-from-phone-number
-                                                  (second current-identity))))
+                                                  (cl-second current-identity))))
     (unless (or (null sip-last-known-identity)
                 (equal current-identity sip-last-known-identity)
                 (y-or-n-p (format "use new sip identity: %s? "

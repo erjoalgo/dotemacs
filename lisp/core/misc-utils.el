@@ -277,7 +277,7 @@
                             while curr
                             when (not (keymapp curr))
                             do (let ((sym (keymap-symbol (list kmap))))
-                                 (return (cons
+                                 (cl-return (cons
                                           (mapcar #'keymap-symbol (mapcar #'list cum))
                                           curr))))
                    when binding
@@ -424,7 +424,7 @@
     (mapatoms (lambda (sym)
                 (and (not (eq sym 'keymap))
                      (boundp sym)
-                     (find (symbol-value sym) keymaps)
+                     (cl-find (symbol-value sym) keymaps)
                      (push sym syms))))
     syms))
 
