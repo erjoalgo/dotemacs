@@ -176,7 +176,7 @@
               ("c" (cmd-ins "@classmethod"))))
         ("w" (cmd-ins "await "))))
       ("." nil)
-      ("_" (cmd-ins "if __name__ == \"__main__\":{(nli)}"))
+      ("." (cmd-ins "if __name__ == \"__main__\":{(nli)}"))
       ("=" (cmd-ins " == "))
       ("j" (cmd-ins " or {(inm)}"))
       ("k" (cmd-ins " and {(inm)}"))
@@ -1474,7 +1474,8 @@
         ((kbd "s-g") #'revert-buffer)
         ((kbd "s-s") #'dired-sort-toggle-or-edit)
         ((kbd "b") 'dired-mark-file-as)
-        ((kbd "B") 'dired-tagger-tag-loop)))
+        ((kbd "B") 'dired-tagger-tag-loop)
+        ((kbd "s-8") #'dired-mark-files-regexp)))
 
      (defbuttons nxml-mode-buttons nil nxml-mode-map
        (but
@@ -1679,7 +1680,13 @@ server {
         ("c" 'eglot-code-actions)
         ("g"
          (but
-          ("m" #'git-merge)))))))))
+          ("m" #'git-merge)))))))
+
+   (defbuttons markdown-buttons programming-buttons (markdown-mode-map)
+      (but
+       ;; ("[" 'markdown-insert-link)
+       ("[" (cmd-ins "[" (rec) "](" (rec) ")"))
+       ("`" (cmd-ins "`" (rec) "`"))))))
 
 (message "buttons loaded")
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
