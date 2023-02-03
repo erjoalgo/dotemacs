@@ -10,7 +10,8 @@
       (browser-new-tab (format "file://%s" fn))) "html")
    ("gimp" . ("xcf"))
    ("mpg321" . ("mp3"))
-   ("vlc" . ("mp4" "mov" "mkv" "aac"))
+   ("vlc" . ("mov" "mkv" "aac"))
+   ("celluloid" . ("mp4"))
    ("xournal" . ("xoj"))))
 
 (defvar open-exe
