@@ -226,6 +226,17 @@ object."
 
 (add-to-list 'load-path (expand-file-name "~/git/babel/"))
 
+(defun server-switch-buffer--with-editor-server-window-alist
+    (fn &optional next-buffer killed-one filepos &rest args)
+  "Honor `with-editor-server-window-alist' (which see)."
+  (let ((server-window (with-current-buffer
+                           (or next-buffer (current-buffer))
+                         (when with-editor-mode
+                           (setq with-editor-previous-winconf
+                                 (current-window-configuration)))
+                         (with-editor-server-window))))
+    (funcall fn next-buffer killed-one filepos)))
+
 ;; (define-key key-translation-map [?\C-h] [?\C-?])
 ;; (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
 "🤔"
