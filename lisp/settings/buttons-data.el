@@ -175,7 +175,6 @@
               ("s" (cmd-ins "@staticmethod"))
               ("c" (cmd-ins "@classmethod"))))
         ("w" (cmd-ins "await "))))
-      ("." nil)
       ("." (cmd-ins "if __name__ == \"__main__\":{(nli)}"))
       ("=" (cmd-ins " == "))
       ("j" (cmd-ins " or {(inm)}"))
@@ -543,49 +542,17 @@
        (but
         ("t" (cmd-ins (ins "printf(\"{}\\n\"{});")))
         ("s" (cmd-ins "scanf( \"{}\"{} );"))
-        ("v" (cmd-ins "LOG(ERROR) << \"DDEBUG "
-                      (f-base (buffer-file-name))
-                      " {(rnd)}, {0}: \""
-                      (nli)
-                      "<< {0};"))
-        ("V" (cmd-ins
-              "LOG(ERROR) << \"DDEBUG "
-              (f-base (buffer-file-name))
-              " {(rnd)}: {0} proto: \""
-              (nli)
-              "<< {0}.DebugString();"))
-        ("k" (cmd
-              (ins "LOG(ERROR) << \"DDEBUG STACKTRACE {(rnd)}: \" << CurrentStackTrace();")
-              (newline-and-indent)
-              (save-excursion
-                (goto-char (point-max))
-                (re-search-backward "#include")
-                (unless (re-search-backward "base/examine_stack.h" nil t)
-                  (let ((line "#include \"base/examine_stack.h\""))
-                    (message
-                     "please add \"//base:examine_stack\" as build dependency")
-                    (insert line)
-                    (newline-and-indent))))))
+        ("v" (cmd-ins "printf(\"DDEBUG {(rnd)}: {0} %s\\n\", {0});"))
         ;; + operator
         ("m" (cmd-ins "absl::StreamFormat(\"{}\"{});"))
         ("c" (cmd-ins "absl::StrCat(\"{}\"{})"))
         ("u" (cmd-ins "absl::Substitute(\"{}\", {})"))
         ("C" (cmd-ins ".c_str()"))
-        ("r" (cmd-ins "LOG(ERROR) << \"DDEBUG TRACE (" (buf) ") " (rnd)
-                      " (" (rec) ")\\n\";"))
+        ("r" (cmd-ins "printf(\"DDEBUG TRACE (" (buf) ") " (rnd)
+                      " (" (rec) ")\\n\");"))
         ("." (cmd-ins ".c_str()"))
         ("," (cmd-ins "<< {} << endl;{(nli)}"))
-        ("<" (cmd-ins "cout << "))
-        ("l"
-         (but
-          ("v" (cmd-ins "LOG(VLOG) << "))
-          ("i" (cmd-ins "LOG(INFO) << "))
-          ("w" (cmd-ins "LOG(WARNING) << "))
-          ("e" (cmd-ins "LOG(ERROR) << "))
-          ("d" (cmd-ins "LOG(DFATAL) << "))
-          ("f" (cmd-ins "LOG(FATAL) << "))
-          ("d" (cmd-ins "LOG(DCHECK) << "))
-          ("q" (cmd-ins "LOG(QFATAL) << "))))))
+        ("<" (cmd-ins "cout << "))))
       ("l" (cmd-ins "strlen( {} )"))
       ("'" (cmd-ins "/*{}*/{(nli)}"))
       ("/" nil)
@@ -1048,10 +1015,8 @@
                     (ins "{}}")))
       ("K" (cmd-ins "{"
                     (ins "{} \\choose {}} {(inm)}")))
-      ("f" (cmd-ins "\\frac{"
-                    (rec)
-                    (insert "}{")
-                    (ins "{}}")))
+      ("f" (cmd-ins (tex-include-graphics (find-last-download nil t))))
+      ("F" (cmd-ins (tex-include-graphics (x-get-selection))))
       ("(" (cmd-ins "P({})"))
       ("8" (cmd-ins "P({})"))
       (")" (cmd-ins " + "))
@@ -1067,7 +1032,10 @@
                     (ins "{}\\}")))
       ("-" (cmd-ins "(1-p)^{(inm)}"))
       ("_" (cmd-ins "_"))
-      ("p" (cmd-ins "^{(inm)}"))
+      ("p" (cmd-ins
+            "\\includepdf[pages=-]{"
+            (find-last-download nil t)
+            "}" (nli)))
       (";" (cmd-ins "P(\\{X="
                     (ins "{}\\})")))
       ("=" (cmd-ins " + "))
@@ -1184,19 +1152,22 @@
                     (ins "printf(\"{}\\n\"{});"))))
         ("s" (cmd (if (bound-and-true-p google-emacs-version)
                       (ins "absl::StrFormat(\"{}\"{})")
-                    ("s" (cmd-ins "scanf( \"{}\"{} );")))))))
+                    ("s" (cmd-ins "scanf( \"{}\"{} );")))))
+        ("v" (cmd-ins "cout << \"DDEBUG {(rnd)} {0}: \" << " (nli)
+                      "{0} << endl;"))))
       ("m" (but
             ("i" (cmd-ins "#include"))
             ("u" (cmd-ins "using "))))
       ("M" (cmd-ins
-            (ins "#include <vector>") (nli)
+            (ins "#include <assert.h>") (nli)
+            (ins "#include <iostream>") (nli)
+            (ins "#include <map>") (nli)
             (ins "#include <string>") (nli)
             (ins "#include <unordered_map>") (nli)
-            (ins "#include <iostream>") (nli)
-            (ins "#include <assert.h>") (nli)
-            (ins "#define MAX(a, b) ((a)>(b)? (a):(b))") (nli)
-            (ins "#define MIN(a, b) ((a)<(b)? (a):(b))") (nli)
-            (ins "#define ABS(a) ((a)>=0? (a):-(a))") (nli)
+            (ins "#include <vector>") (nli)
+            (ins "#include <cmath>") (nli)
+            (ins "#include <algorithm>") (nli)
+            (nli)
             (ins "using namespace std;") (nli)))
       ("l"
        (but
