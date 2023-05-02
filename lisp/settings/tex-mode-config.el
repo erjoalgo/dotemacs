@@ -9,35 +9,44 @@
   (let* ((tex (buffer-file-name (current-buffer)))
 	 (base-sans-ext (f-base tex))
 	 (pdf (concat base-sans-ext ".pdf"))
-	 (compile-errors-buffer "*TEX-COMPILE-ERRORS*")
-	 (async-shell-command-buffer 'new-buffer)
-	 ret-code)
+	 (compile-errors-buffer "*TEX-COMPILE-ERRORS*"))
 
     (when (get-buffer compile-errors-buffer)
       (with-current-buffer compile-errors-buffer
 	(erase-buffer)))
 
-    (setf ret-code
-	  (call-process "pdflatex" nil compile-errors-buffer nil
-			"-halt-on-error" tex))
-    (if (= ret-code 0)
-	(progn
-	  (message "successful compilation")
-	  (let ((win
-                 (cl-loop for win in (wm-windows-list)
-	                  thereis
-                          (and
-                           (string-match (regexp-quote base-sans-ext) (wm-window-title win))
-                           (let ((case-fold-search t))
-                             (string-match-p ".*zathura.*" "zathura.Zathura"))
-                           win))))
-	    (if win
-                (wm-window-raise win)
-	      (start-process "view-pdf" "view-pdf" "zathura" pdf))))
-      (save-excursion
-	(switch-to-buffer-other-window compile-errors-buffer)
-	(goto-char (point-max))
-	(other-window -1)))))
+    (call-process "pdflatex" nil compile-errors-buffer nil
+			      "-halt-on-error" tex)
+
+    (async-start
+     ;; What to do in the child process
+     `(lambda ()
+        (let* ((async-shell-command-buffer 'new-buffer)
+               (ret-code
+                (call-process "pdflatex" nil ,compile-errors-buffer nil
+			      "-halt-on-error" ,tex)))
+          ret-code))
+
+     ;; What to do when it finishes
+     `(lambda (ret-code)
+       (if (= ret-code 0)
+	   (progn
+	     (message "successful compilation")
+	     (let ((win
+                    (cl-loop for win in (wm-windows-list)
+	                     thereis
+                             (and
+                              (string-match (regexp-quote ,base-sans-ext) (wm-window-title win))
+                              (let ((case-fold-search t))
+                                (string-match-p ".*zathura.*" "zathura.Zathura"))
+                              win))))
+	       (if win
+                   (wm-window-raise win)
+	         (start-process "view-pdf" "view-pdf" "zathura" ,pdf))))
+         (save-excursion
+	   (switch-to-buffer-other-window ,compile-errors-buffer)
+	   (goto-char (point-max))
+	   (other-window -1)))))))
 
 
 
