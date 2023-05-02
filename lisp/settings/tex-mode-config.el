@@ -45,4 +45,16 @@
 	  (lambda ()
 	    (add-hook 'after-save-hook 'latex-compile nil t)))
 
+(defun tex-include-graphics (filename)
+  (buttons-template-insert
+   "\\begin{" "figure}[H]"
+   (newline-and-indent)
+   "\\includegraphics[width=\\linewidth]{"
+   filename
+   "}"
+   (newline-and-indent)
+   "\\caption{" (recursive-edit) "}" (newline)
+   "\\end{" "figure}"
+   nil))
+
 ;;require this later in case it's not available
