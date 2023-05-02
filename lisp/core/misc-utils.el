@@ -947,6 +947,9 @@ This requires the external program `diff' to be in your `exec-path'."
          (forward-sexp 2)
          (re-search-forward "\n")
          (cons a (point)))))
+    ((js-mode)
+     (when (re-search-forward "^[[:space:]]*console.log(\"DDEBUG[^;]+;\n" nil t)
+       (cons (match-beginning 0) (point))))
     (t (error "unsupported mode: %s" major-mode))))
 
 (defun debug-statements-remove ()
