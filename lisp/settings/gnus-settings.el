@@ -204,14 +204,6 @@
     (after sort-by-date-after-nnir activate)
   (gnus-summary-sort-by-most-recent-date))
 
-(defadvice smtpmail-send-it (around fix-using-openssl activate)
-  ;;TODO where did this come from, is this secure
-  (let ((tls-program
-	 (or (when (eq smtpmail-stream-type 'ssl)
-	       '("openssl s_client -connect %h:%p -no_ssl2 -ign_eof -starttls smtp"))
-	     tls-program)))
-    ad-do-it))
-
 (defvar gmail-app-specific-url
   "https://security.google.com/settings/security/apppasswords?pli=1")
 
