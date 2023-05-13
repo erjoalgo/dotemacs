@@ -50,7 +50,10 @@
   (let* ((cands (cl-remove-if-not (lambda (fn) (string-match "^[.]gnus-?.*" fn))
 			       (directory-files (expand-file-name "~"))))
 	 (selection (cond
-		     ((null cands) (error "no ~/.gnus* found"))
+		     ((null cands)
+                      (progn
+                        (warn "no ~/.gnus* found")
+                        (call-interactively 'gen-dot-gnus-gmail-account)))
 		     ((null (cdr cands)) (car cands))
 		     (t (completing-read
                          (or prompt "select ~/.gnus init file: ") cands
