@@ -25,6 +25,8 @@
                "select a default init filename for emacs session number %s: "
                gnus-init-idx))))
         (message "symlinking %s as %s" real-gnus-init-filename gnus-init-filename)
+        (when (file-symlink-p gnus-init-filename)
+          (f-delete gnus-init-filename))
         (f-symlink real-gnus-init-filename gnus-init-filename)))
     (cl-assert (file-exists-p gnus-init-filename))
     gnus-init-filename))
