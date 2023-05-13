@@ -920,10 +920,8 @@ This requires the external program `diff' to be in your `exec-path'."
 
 (defun emacs-init-C-source-directory ()
   (condition-case ex
-      (progn (setq find-function-C-source-directory
-                   (emacs-fetch-c-sources))
-             (signal 'cl-assertion-failed ())
-             (signal 'caca))
+      (setq find-function-C-source-directory
+            (emacs-fetch-c-sources))
     ((error signal) (warn "failed to fetch emacs sources: %s" ex))))
 
 (defun debug-statements-remove--next ()
