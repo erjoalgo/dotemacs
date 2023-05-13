@@ -47,7 +47,7 @@
 
 (defun gnus-select-init-filename (&optional prompt)
   (interactive)
-  (let* ((cands (remove-if-not (lambda (fn) (string-match "^[.]gnus-?.*" fn))
+  (let* ((cands (cl-remove-if-not (lambda (fn) (string-match "^[.]gnus-?.*" fn))
 			       (directory-files (expand-file-name "~"))))
 	 (selection (cond
 		     ((null cands) (error "no ~/.gnus* found"))
