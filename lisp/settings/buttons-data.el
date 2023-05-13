@@ -1016,7 +1016,7 @@
                     (ins "{}}")))
       ("K" (cmd-ins "{"
                     (ins "{} \\choose {}} {(inm)}")))
-      ("f" (cmd-ins (tex-include-graphics (find-last-download nil t))))
+      ("f" (cmd-ins (tex-include-graphics (find-last-download-or-scrot nil t))))
       ("F" (cmd-ins (tex-include-graphics (x-get-selection))))
       ("(" (cmd-ins "P({})"))
       ("8" (cmd-ins "P({})"))
@@ -1035,7 +1035,7 @@
       ("_" (cmd-ins "_"))
       ("p" (cmd-ins
             "\\includepdf[pages=-]{"
-            (find-last-download nil t)
+            (read-file-name "enter pdf: " nil nil nil (find-last-download nil t))
             "}" (nli)))
       (";" (cmd-ins "P(\\{X="
                     (ins "{}\\})")))
@@ -1165,9 +1165,14 @@
             (ins "#include <map>") (nli)
             (ins "#include <string>") (nli)
             (ins "#include <unordered_map>") (nli)
+            (ins "#include <unordered_set>") (nli)
+            (ins "#include <set>") (nli)
             (ins "#include <vector>") (nli)
+            (ins "#include <queue>") (nli)
+            (ins "#include <array>") (nli)
             (ins "#include <cmath>") (nli)
             (ins "#include <algorithm>") (nli)
+            (ins "#include <stdio>") (nli)
             (nli)
             (ins "using namespace std;") (nli)))
       ("l"

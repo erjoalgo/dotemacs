@@ -138,6 +138,8 @@
        file)))
 
 (cmd-find-most-recent-file-in-directory find-last-download '("~/Downloads"))
+(cmd-find-most-recent-file-in-directory find-last-download-or-scrot
+  '("~/Downloads" "~/pictures/auto-scrots"))
 
 (defalias #'sort-by #'sort-key)
 
