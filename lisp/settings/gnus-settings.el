@@ -80,7 +80,7 @@
       (load (gnus-init-filename))
       (gnus)
       ;; (gnus-group-read-group 5000 t sent-group-name )
-      (gnus-group-read-group 1000 t inbox )
+      (gnus-group-read-group 1000 t inbox)
       (unless (byte-code-function-p (symbol-function 'gnus))
         (y-or-n-p
          "'you should byte-compile-gnus' warning is slowing down gnus"))
