@@ -545,6 +545,7 @@ for customization of the printer command."
                                     ,old-value-sym)))))
     `(progn
        (make-variable-buffer-local ',file-local-var-sym)
+       (message ,(format "defining %s" fun-sym))
        (defun ,fun-sym (arg)
          (interactive "P")
          (let* ((curr-value (when (boundp ',file-local-var-sym)
