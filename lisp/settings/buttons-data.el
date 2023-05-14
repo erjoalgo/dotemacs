@@ -1283,7 +1283,13 @@
                       (org-remove-inline-images)
                     (org-display-inline-images))))
             ("c" (cmd-ins "#+CAPTION: "))
-            ("y" (cmd-ins "[[yt:{}]]"))
+            ("y"
+             (cmd-ins
+              (if (region-active-p)
+                  (progn
+                    (replace-region text
+                                    (format "[[yt:%s]]" text)))
+                (cmd-ins "[[yt:{}]]"))))
             ("Y" (cmd-ins "[["
                           (gui-get-selection)
                           "][video]]"))))
