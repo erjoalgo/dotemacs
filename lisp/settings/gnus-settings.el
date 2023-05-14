@@ -37,7 +37,7 @@
 	     with i = 0
 	     while (and (< i min-len)
 		        (let ((char (aref (car cands) i)))
-		          (every (lambda (s) (eql (aref s i) char))
+		          (cl-every (lambda (s) (eql (aref s i) char))
 			         cands)))
 	     do (cl-incf i)
 	     finally (return (substring (or (car cands) "") 0 i)))))
