@@ -915,7 +915,8 @@ This requires the external program `diff' to be in your `exec-path'."
         (let ((default-directory emacs-all-sources-dir))
           (message "downloading emacs sources...")
           (shell-command "apt-get source emacs"))
-        (cl-assert (emacs-c-source-directory))
+        (cl-assert (emacs-c-source-directory) nil
+                   "No emacs source directory found!")
         (emacs-c-source-directory))))
 
 (defun emacs-init-C-source-directory ()
