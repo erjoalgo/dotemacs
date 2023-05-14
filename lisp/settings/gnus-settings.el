@@ -81,6 +81,7 @@
       '(unless (or (gnus))
         ;; Unable to open server nnimap+gmail.com due to: auth-source-netrc-parse-entries: Unexpected ‘machine’ token at line 3
         (error "we appear to have failed to connect via gnus"))
+      (gnus)
       ;; (gnus-group-read-group 5000 t sent-group-name )
       (gnus-group-read-group 1000 t inbox)
       (unless (byte-code-function-p (symbol-function 'gnus))
