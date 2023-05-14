@@ -38,13 +38,14 @@
 (setq org-html-validation-link nil)
 
 (def-file-local-toggle-command org-treat-as-readme-p)
+(def-file-local-toggle-command org-autoexport-html)
 
 (defun maybe-export-to-markdown ()
   (when (and (eq major-mode 'org-mode)
 	     (or (equal (f-filename (buffer-file-name))
 			"README.org")
-		 (and (boundp 'org-treat-as-readme-p)
-		      org-treat-as-readme-p)))
+                 (bound-and-true-p org-autoexport-html)
+                 (bound-and-true-p org-treat-as-readme-p)))
     (let ((dont-ask-user-about-supersession-threat t))
       (org-md-export-to-markdown)
       (org-html-export-to-html))))
