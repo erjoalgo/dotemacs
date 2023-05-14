@@ -298,6 +298,11 @@
           " frameborder=\"0\""
           " allowfullscreen>%s</iframe>"))
 
+(defun yt-extract-video-id (url)
+  ;; https://www.youtube.com/watch?v=Wzmacu2TgFg]]
+  (when (string-match "watch[?]v=\\([^&]+\\)" url)
+    (match-string 1 url)))
+
 (org-add-link-type
  ;; http://endlessparentheses.com/embedding-youtube-videos-with-org-mode-links.html
  "yt"
@@ -307,7 +312,12 @@
             handle)))
  (lambda (path desc backend)
    (cl-case backend
-     (html (format yt-iframe-format
-                   path (or desc "")))
-     (latex (format "\href{%s}{%s}"
+     (html
+      (let* ((url path)
+             (id (yt-extract-video-id url))
+             (thumb (format "https://img.youtube.com/vi/%s/maxresdefault.jpg"
+                            id)))
+        (format "<a href=\"%s\"><img src=\"%s\"></a>"
+                url thumb)))
+     (latex (format "\\href{%s}{%s}"
                     path (or desc "video"))))))
