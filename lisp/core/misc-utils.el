@@ -925,6 +925,8 @@ This requires the external program `diff' to be in your `exec-path'."
             (emacs-fetch-c-sources))
     ((error signal) (warn "failed to fetch emacs sources: %s" ex))))
 
+(emacs-init-C-source-directory)
+
 (defun debug-statements-remove--next ()
   (cl-case major-mode
     (c++-mode
@@ -961,8 +963,6 @@ This requires the external program `diff' to be in your `exec-path'."
      do (cl-destructuring-bind (a . b) ab
           (delete-region a b)
           (goto-char a)))))
-
-(emacs-init-C-source-directory)
 
 (defun espeak-read-text ()
   (cond
