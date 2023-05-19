@@ -454,7 +454,7 @@
       ("h"
        (but
         ("D" (cmd-ins "(declaim (optimize (debug 3) (speed 0)))"))
-        ("c" (cmd-ins "(handler-case{(nli)}(error (err) {}))"))))
+        ("c" (cmd-ins "(handler-case" (nli) (rec) (nli) "(error (err) {}))"))))
       ((kbd "M-.") 'slime-next-note)
       ((kbd "M-,") 'slime-previous-note)
       ("."
