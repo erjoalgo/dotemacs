@@ -168,16 +168,6 @@
  (lambda ()
    (set-process-query-on-exit-flag (get-buffer-process (current-buffer)) nil)))
 
-(defun server-init  ()
-  (require 'server)
-  (setq server-name (or (getenv "DESKTOP_GROUP_NUMBER")
-                        server-name))
-  (server-force-delete server-name)
-  (server-start)
-  (cl-assert (server-running-p server-name)))
-
-(server-init)
-
 (setq async-shell-command-buffer 'new-buffer)
 
 (defun my-shorten-auto-save-file-name (&rest args)
