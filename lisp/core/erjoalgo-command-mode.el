@@ -134,7 +134,7 @@
        (kill-new file)
        (message "killed %s" file)
        (unless kill-only
-         (find-file file))
+         (open-file file))
        file)))
 
 (cmd-find-most-recent-file-in-directory find-last-download '("~/Downloads"))
