@@ -230,7 +230,7 @@
   (when (and a (= a b)) (setq a nil b nil))
   (let ((a (or a (point-min)))
         (b (or b (point-max)))
-        (rep (if google3-mode "  " "    ")))
+        (rep (if (bound-and-true-p google3-mode) "  " "    ")))
     (save-match-data
       (replace-regexp
        "^" rep nil a b))))
