@@ -168,3 +168,18 @@ globals().update(args)
         basename basename)))))
 
 (setq python-shell-interpreter "python3")
+
+(defun python-auto-def-init ()
+  (interactive)
+  (when (save-excursion
+          (re-search-backward "def __init__(\\(.*\\))"))
+    (cl-loop with match = (match-string 1)
+             with param-regexp = " *\\([^: =]+\\)"
+             for param-text in (s-split "," match)
+             as param = (or (cl-second (s-match param-regexp param-text))
+                            (error "could not parse param text: %s"
+                                   param-text))
+             unless (equal "self" param)
+             do (progn
+                  (insert (format "self.%s = %s" param param))
+                  (newline-and-indent)))))
