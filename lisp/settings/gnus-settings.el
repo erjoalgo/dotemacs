@@ -311,14 +311,10 @@ machine smtp.gmail.com login %s password %s port 587"
       (delete-file output-filename))
     (with-current-buffer buffer
       (erase-buffer)
-      (insert password) (newline)
-      (insert password) (newline)
       (setq ret
-            (apply #'call-process-region
-                   ;; nil nil ;; start end
-                   (point-min) (point-max)
+            (apply #'call-process
                    "zip" ;; program
-                   t t t ;; delete buffer display
+                   nil t t ;; delete buffer display
                    args))
       (unless (zerop ret)
         (error "zip %s failed (%d): %s" args ret (buffer-string))))
