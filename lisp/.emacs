@@ -237,6 +237,20 @@ object."
                          (with-editor-server-window))))
     (funcall fn next-buffer killed-one filepos)))
 
+(defun python-util-clone-local-variables (from-buffer &optional regexp)
+  "Clone local variables from FROM-BUFFER.
+Optional argument REGEXP selects variables to clone and defaults
+to \"^python-\"."
+  (mapc
+   (lambda (pair)
+     (and (listp pair)
+          (symbolp (car pair))
+          (string-match (or regexp "^python-")
+                        (symbol-name (car pair)))
+          (set (make-local-variable (car pair))
+               (cdr pair))))
+   (buffer-local-variables from-buffer)))
+
 ;; (define-key key-translation-map [?\C-h] [?\C-?])
 ;; (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
 "🤔"
