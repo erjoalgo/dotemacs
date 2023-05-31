@@ -1426,7 +1426,8 @@
         ("a" nil )
         ("M" nil)
         ((kbd "s-a") 'gnus-attach-file-simple)
-        ((kbd "s-A") 'gnus-insert-html-from-file)))
+        ((kbd "s-A") 'gnus-insert-html-from-file)
+        ((kbd "s-j") 'gnus-attach-encrypted-files)))
 
      (defbuttons cider-repl-buttons nil (cider-repl-mode-map)
        (but
