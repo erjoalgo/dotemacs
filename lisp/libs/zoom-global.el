@@ -26,6 +26,8 @@
 
 
 
+(require 'text-scale-mode)
+
 (define-globalized-minor-mode
     global-text-scale-mode
     text-scale-mode
