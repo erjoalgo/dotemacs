@@ -277,6 +277,54 @@ machine smtp.gmail.com login %s password %s port 587"
     (goto-char (+ (point) len))
     (mml-insert-tag '/part)))
 
+(defun gnus-attach-encrypted-files ()
+  (interactive)
+  (gnus-attach-file-simple
+   (call-interactively #'zip-encrypt-file-or-directory "/tmp")))
+
+(defun zip-encrypt-file-or-directory (files &optional
+                                            output-filename)
+  (interactive
+   (let* ((files
+           (cl-loop
+            as file = (read-file-name "enter the next file to encrypt, or enter to quit: "
+                                      nil "" nil "")
+            while (not (s-blank? file))
+            collect (expand-file-name file)))
+          (default
+            (f-join "/tmp/" (format "%s.zip" (f-base (car files)))))
+          (output (expand-file-name
+                   (read-file-name "enter output filename: "
+                                  nil default nil default))))
+     (list files output)))
+  (let* ((files (if (atom files) (list files) files))
+         (sample (car files))
+         (output-filename (or output-filename
+                              (format "%s.zip"
+                                      (f-join "/tmp" (f-base sample)))))
+         (buffer (get-buffer-create "*zip-encrypt*"))
+         (password (password-read "enter zip password: "))
+         (args (apply #'list output-filename "-rejP" password files))
+         ret)
+    (when (and (file-exists-p output-filename)
+               (yes-or-no-p (format "remove existing filename: %s" output-filename)))
+      (delete-file output-filename))
+    (with-current-buffer buffer
+      (erase-buffer)
+      (insert password) (newline)
+      (insert password) (newline)
+      (setq ret
+            (apply #'call-process-region
+                   ;; nil nil ;; start end
+                   (point-min) (point-max)
+                   "zip" ;; program
+                   t t t ;; delete buffer display
+                   args))
+      (unless (zerop ret)
+        (error "zip %s failed (%d): %s" args ret (buffer-string))))
+    output-filename))
+
+
 (defvar gnus-email-templates-home
   (expand-file-name "~/.email-templates"))
 
