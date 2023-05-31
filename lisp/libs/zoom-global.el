@@ -1,8 +1,8 @@
 ;;; zoom-global.el ---
 
-;; Copyright (C) 2016  Ernesto Alfonso <erjoalgo@gmail.com>
+;; Copyright (C) 2016
 
-;; Author: Ernesto Alfonso <erjoalgo@gmail.com>
+;; Author: unknown
 ;; Keywords: convenience
 
 ;; This program is free software; you can redistribute it and/or
@@ -19,8 +19,8 @@
 ;; along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 ;;; Commentary:
-;; I did not produce this code but I'm unable to trace who did.
-;; Convenient increase-decrease text size for emacs
+;; I did not write this code but I'm unable to trace who did.
+;; Conveniently increase-decrease text size for emacs
 
 ;;; Code:
 
