@@ -52,6 +52,7 @@
   (setq-default text-scale-mode-amount amount)
   (global-text-scale-mode 1))
 
+;;;###autoload
 (defun global-text-scale-lower () (interactive)
        (if (not (equal major-mode 'doc-view-mode))
 	   (global-text-scale-adjust -1)
@@ -59,6 +60,7 @@
 	 )
        '(global-text-scale-adjust -1))
 
+;;;###autoload
 (defun global-text-scale-higher () (interactive)
        (if (not (equal major-mode 'doc-view-mode))
 	   (global-text-scale-adjust 1)
