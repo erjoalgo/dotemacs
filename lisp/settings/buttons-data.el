@@ -1035,7 +1035,8 @@
       ("_" (cmd-ins "_"))
       ("p" (cmd-ins
             "\\includepdf[pages=-]{"
-            (read-file-name "enter pdf: " nil nil nil (find-last-download nil t))
+            (expand-file-name
+             (read-file-name "enter pdf: " nil nil nil (find-last-download nil t)))
             "}" (nli)))
       (";" (cmd-ins "P(\\{X="
                     (ins "{}\\})")))
