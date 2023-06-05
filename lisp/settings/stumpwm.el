@@ -110,7 +110,7 @@
   '(let ((url-request-data (encode-coding-string data 'utf-8))
         (url-request-method "post"))
      (stumpwm-request path))
-  (stumpwm-request-subprocess path host data t))
+  (stumpwm-request-subprocess path host data))
 
 (defun stumpwm-browse-url (url)
   (message "browsing %s" url)
