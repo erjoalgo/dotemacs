@@ -315,9 +315,11 @@
      (html
       (let* ((url path)
              (id (yt-extract-video-id url))
-             (thumb (format "https://img.youtube.com/vi/%s/maxresdefault.jpg"
-                            id)))
+             (thumb (youtube-image-url id)))
         (format "<a href=\"%s\"><img src=\"%s\"></a>"
                 url thumb)))
      (latex (format "\\href{%s}{%s}"
                     path (or desc "video"))))))
+
+(defun youtube-image-url (video-id)
+  (format "https://img.youtube.com/vi/%s/hqdefault.jpg" video-id))
