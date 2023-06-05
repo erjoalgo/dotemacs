@@ -125,7 +125,8 @@ object."
    slime
    ;; cider
    websocket
-   autobuild))
+   autobuild
+   selcand))
 
 (require 'f)
 
