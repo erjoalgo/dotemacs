@@ -85,7 +85,7 @@
          (args `(,path
                  ,@(when data
                      (if use-stdin
-                         (list "-d" "@-")
+                         (list "-i")
                        (list "-d" data)))
                  ,@(cl-loop for (k . v) in extra-headers
                             append (list "-H" (format "%s: %s" k v))))))
@@ -110,7 +110,7 @@
   '(let ((url-request-data (encode-coding-string data 'utf-8))
         (url-request-method "post"))
      (stumpwm-request path))
-  (stumpwm-request-subprocess path host data (s-contains-p "@" data)))
+  (stumpwm-request-subprocess path host data t))
 
 (defun stumpwm-browse-url (url)
   (message "browsing %s" url)
