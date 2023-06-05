@@ -987,15 +987,16 @@
                     (ins "{}}")))
       ("[" (cmd-ins "{"
                     (ins "{}}")))
-      ("i" (cmd-ins "\\in "))
-      ("I" (cmd-ins "\\item {(idt)}{}{(nli)}"))
-      ("I" (cmd-ins "\\item {(idt)}{}{(nli)}"))
-      ("l" (cmd-ins "\\begin{align*}"
-                    (ins "{(nli)}{}{(nli)}")
-                    (insert "\\end{align*}")))
-      ("L" (cmd-ins "\\begin{tabular}{lr}"
-                    (ins "{(nli)}{}")
-                    (insert "\\end{tabular}")))
+      ("I" (cmd-ins "\\begin{" "itemize}"
+                    (nli) (ins "{}") (nli)
+                    (insert "\\end{" "itemize}")))
+      ("i" (cmd-ins "\\item {(idt)}{}{(nli)}"))
+      ("l" (cmd-ins "\\begin{" "align*}"
+                    (nli) (ins "{}") (nli)
+                    (insert "\\end{" "align*}")))
+      ("L" (cmd-ins "\\begin{" "tabular}{" "lr}"
+                    (nli) (ins "{}") (nli)
+                    (insert "\\end{" "tabular}")))
       ("_" (cmd-ins ".${}$."))
       ("x" (cmd-ins "(.x.)"))
       ("q" (cmd-ins "\\begin{numedquestion}"
@@ -1119,7 +1120,9 @@
      (but
       ("f"
        (but
-        ("a" (cmd-ins "for (const {}& {} : {}){(cbd)}"))))
+        ("a" (cmd-ins "for (const {}& {} : {}){(cbd)}"))
+        ("e" (cmd-ins "for ({} : {}){(cbd)}"))
+        (";" (cmd-ins "for ({};{};{}){(cbd)}"))))
       ("i"
        (but
         ("q"
