@@ -1197,6 +1197,7 @@
         ("g" (cmd-ins "false"))
         ("G" (cmd-ins "nullptr"))
         ("f" (cmd-ins "absl::GetFlag(FLAGS_{})"))
+        ("a" (cmd-ins "assert({});"))
         ("k"
          (but
           ("c" (cmd-ins "CHECK({})"))
