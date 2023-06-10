@@ -11,6 +11,7 @@
 	 (pdf (concat base-sans-ext ".pdf"))
 	 (compile-errors-buffer "*TEX-COMPILE-ERRORS*"))
 
+    (ispell)
     (when (get-buffer compile-errors-buffer)
       (with-current-buffer compile-errors-buffer
 	(erase-buffer)))
