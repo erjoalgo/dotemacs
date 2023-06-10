@@ -1178,7 +1178,6 @@
             (ins "#include <array>") (nli)
             (ins "#include <cmath>") (nli)
             (ins "#include <algorithm>") (nli)
-            (ins "#include <stdio>") (nli)
             (nli)
             (ins "using namespace std;") (nli)))
       ("l"
