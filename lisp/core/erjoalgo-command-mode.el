@@ -181,7 +181,6 @@
          (idx (if (zerop (length buffers))
                   (user-error "no more compilation buffers")
                 (mod (+ start offset) (length buffers)))))
-    (message "DEBUG buffers (in cmd-switch...): %s"buffers)
     (switch-to-buffer (nth idx buffers))))
 
 (defun kill-buffer--maybe-switch-to-next-compilation (orig buffer)
