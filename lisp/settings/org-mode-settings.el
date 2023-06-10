@@ -324,8 +324,25 @@
 (defun youtube-image-url (video-id)
   (format "https://img.youtube.com/vi/%s/hqdefault.jpg" video-id))
 
+(defun tex-maybe-add-command (content)
+  (save-excursion
+    (goto-char (point-min))
+    (unless
+        (re-search-forward (regexp-quote content) nil t)
+      (goto-char (point-min))
+      (re-search-forward "^[\\]begin[{]document[}]")
+      (newline-and-indent)
+      (insert content))))
+
 (defun tex-add-youtube-url (url)
   (interactive "senter youtube url: ")
+  (tex-maybe-add-command
+   "\\newcommand{\\hrefyt}[3]{
+  \\href{#1}{
+  \\includegraphics[width=\\linewidth]{#2}
+  \\qrcode{#1}#3
+  }
+}")
   (let* ((id (or (yt-extract-video-id url)
                  (error "unable to extract youtube id from url: %s" url)))
          (image-url (youtube-image-url id))
