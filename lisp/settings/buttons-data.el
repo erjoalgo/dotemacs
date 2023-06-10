@@ -545,9 +545,8 @@
         ("v" (cmd-ins "printf(\"DDEBUG {(rnd)}: {0} %s\\n\", {0});"))
         ;; + operator
         ("m" (cmd-ins "absl::StreamFormat(\"{}\"{});"))
-        ("c" (cmd-ins "absl::StrCat(\"{}\"{})"))
         ("u" (cmd-ins "absl::Substitute(\"{}\", {})"))
-        ("C" (cmd-ins ".c_str()"))
+        ("c" (cmd-ins ".c_str()"))
         ("r" (cmd-ins "printf(\"DDEBUG TRACE (" (buf) ") " (rnd)
                       " (" (rec) ")\\n\");"))
         ("." (cmd-ins ".c_str()"))
