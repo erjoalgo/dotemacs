@@ -55,6 +55,22 @@
 	  (lambda ()
 	    (add-hook 'after-save-hook 'latex-compile nil t)))
 
+(defun f-remove-extension (filename)
+  (let ((ext (f-ext filename)))
+    (if (string-blank-p ext) filename
+    (substring filename 0 (- (length filename) (1+ (length ext)))))))
+
+(defun file-discover-extension (filename)
+  (s-trim
+   (shell-command-to-string
+   (format "file --extension '%s' | cut -d: -f2 | cut -d/ -f1"
+           filename))))
+
+(defun filename-add-missing-extension (filename)
+  (cl-assert (not (f-ext filename)))
+  (let ((ext (file-discover-extension filename)))
+    (rename-file filename (format "%s.%s" filename ext))))
+
 (defun tex-include-graphics (filename)
   (buttons-template-insert
    "\\begin{" "figure}[H]"
