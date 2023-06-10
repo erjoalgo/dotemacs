@@ -124,16 +124,17 @@
 (defmacro cmd-find-most-recent-file-in-directory (name directories)
   "Define a command NAME to find the nth file in DIRECTORIES."
   (declare (indent 1))
-  `(defun ,name (&optional nth kill-only)
+  `(defun ,name (&optional nth no-kill open)
      ,(format "find the last file in %s" directories)
      (interactive "P")
      (when nth (cl-assert (> nth 0)))
      (let ((file
      (-> (mapcar #'expand-file-name ,directories)
        (most-recent-file-name-in-directories (when nth (1- nth))))))
-       (kill-new file)
-       (message "killed %s" file)
-       (unless kill-only
+       (unless no-kill
+         (kill-new file)
+         (message "killed %s" file))
+       (when open
          (open-file file))
        file)))
 
