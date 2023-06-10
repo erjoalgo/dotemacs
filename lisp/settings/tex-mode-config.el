@@ -89,4 +89,18 @@
   (insert "\\caption{") (recursive-edit) (insert "}") (newline-and-indent)
   (insert "\\end{figure}"))
 
+(defun tex-make-graphics-local ()
+  (interactive)
+  (let ((dest "./graphics"))
+    (unless (file-exists-p dest)
+      (make-directory dest))
+    (save-excursion
+      (goto-char (point-min))
+      (cl-loop while (re-search-forward "\\includegraphics[[][^]]*]{\\([^}]+\\)}")
+               as filename = (match-string 1)
+               as local = (f-join dest (f-filename filename))
+               do (message "copying %s to %s" filename local)
+               do (copy-file filename local t t t t)
+               do (replace-match local t t nil 1)))))
+
 ;;require this later in case it's not available
