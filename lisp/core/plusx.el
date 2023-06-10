@@ -34,7 +34,8 @@
     (sh-mode "#!/bin/bash -x\n\nset -euo pipefail")
     (lisp-mode)
     (perl-mode "#!/usr/bin/perl")
-    (js-mode "#!/usr/bin/env node")))
+    (js-mode "#!/usr/bin/env node")
+    (octave-mode "#!/usr/bin/octave")))
 
 (defun plusx-maybe-insert-interpreter-line ()
   "Try to insert the appropriate interpreter line in the current buffer."
