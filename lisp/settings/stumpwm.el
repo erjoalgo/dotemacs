@@ -88,7 +88,7 @@
                          (list "-i")
                        (list "-d" data)))
                  ,@(cl-loop for (k . v) in extra-headers
-                            append (list "-H" (format "%s: %s" k v))))))
+                            append (list "-H" (format "%s:%s" k v))))))
     ;; TODO display errors
     (let ((proc
            (apply #'start-process proc-name proc-name "x-service-curl" args)))
