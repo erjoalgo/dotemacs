@@ -1027,8 +1027,11 @@
                 (upcase-last)
                 (ins "_")
                 (forward-char)))
-      ("t" (cmd-ins "\\text{"
-                    (ins "{}}")))
+      ("t"
+       (but
+        ("x" (cmd-ins "\\text{"
+                      (ins "{}}")))
+        ("s" (cmd-ins "\\section{" (rec) "}" (nli)))))
       ("{" (cmd-ins "\\{"
                     (ins "{}\\}")))
       ("-" (cmd-ins "(1-p)^{(inm)}"))
