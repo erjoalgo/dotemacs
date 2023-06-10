@@ -72,15 +72,21 @@
     (rename-file filename (format "%s.%s" filename ext))))
 
 (defun tex-include-graphics (filename)
-  (buttons-template-insert
-   "\\begin{" "figure}[H]"
-   (newline-and-indent)
-   "\\includegraphics[width=\\linewidth]{"
-   filename
-   "}"
-   (newline-and-indent)
-   "\\caption{" (recursive-edit) "}" (newline)
-   "\\end{" "figure}"
-   nil))
+  (interactive)
+  (unless (f-ext filename)
+    (setq filename (filename-add-missing-extension filename)))
+  (unless (member (downcase (f-ext filename)) '("jpeg" "png" "gif"))
+    (let ((jpeg-filename (format "%s.jpeg" (f-remove-extension filename))))
+      (unless (and
+               ;; (y-or-n-p (format "convert %s into %s? " filename jpeg-filename))
+               (zerop (call-process "convert" nil t nil filename jpeg-filename)))
+        (error "failed to convert to known includegraphics extension"))
+      (setq filename jpeg-filename)))
+  (insert "\\begin{figure}[H]")
+  (newline-and-indent)
+  (insert "\\includegraphics[width=\\linewidth]{" filename "}")
+  (newline-and-indent)
+  (insert "\\caption{") (recursive-edit) (insert "}") (newline-and-indent)
+  (insert "\\end{figure}"))
 
 ;;require this later in case it's not available
