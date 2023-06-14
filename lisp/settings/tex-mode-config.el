@@ -100,11 +100,17 @@
       (make-directory dest))
     (save-excursion
       (goto-char (point-min))
-      (cl-loop while (re-search-forward "\\includegraphics[[][^]]*]{\\([^}]+\\)}")
+      (cl-loop while (re-search-forward "\\includegraphics[[][^]]*]{\\([^}]+\\)}" nil t)
                as filename = (match-string 1)
                as local = (f-join dest (f-filename filename))
-               do (message "copying %s to %s" filename local)
-               do (copy-file filename local t t t t)
-               do (replace-match local t t nil 1)))))
+               do (cond
+                   ((not (file-exists-p filename))
+                    (message "WARN: skipping non-existing file: %s" filename))
+                   ((equal filename local)
+                    (message "skipping already-coped file: %s" filename))
+                   (t
+                    (message "copying %s to %s" filename local)
+                    (copy-file filename local t t t t)
+                    (replace-match local t t nil 1)))))))
 
 ;;require this later in case it's not available
