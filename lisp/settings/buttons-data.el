@@ -1168,6 +1168,7 @@
      (but
       ("f"
        (but
+        ("i" (cmd-ins "for (int {0}=0; {0}<{}; ++{0}){(cbd)}"))
         ("a" (cmd-ins "for (const {}& {} : {}){(cbd)}"))
         ("e" (cmd-ins "for ({} : {}){(cbd)}"))
         (";" (cmd-ins "for ({};{};{}){(cbd)}"))))
