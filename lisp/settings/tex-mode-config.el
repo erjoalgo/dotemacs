@@ -33,6 +33,10 @@
        (if (= ret-code 0)
 	   (progn
 	     (message "successful compilation")
+             (let ((bcf (format "%s.bcf" ,base-sans-ext)))
+               (when (file-exists-p bcf)
+                 (message "running biber on %s" bcf)
+                 (start-process "biber" "*biber*" "biber" bcf)))
 	     (let ((win
                     (cl-loop for win in (wm-windows-list)
 	                     thereis
