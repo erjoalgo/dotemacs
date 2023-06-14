@@ -976,7 +976,54 @@
 
    (defbuttons tex-buttons programming-buttons (tex-mode-map)
      (but
-      ("m" (cmd-ins "${}$"))
+      ;; ("m" (cmd-ins "${}$"))
+      ("m"
+       (but
+        ("l"
+         (cmd-ins (insert "\\documentclass[
+  fontsize=11pt,
+  paper=a4,
+  parskip=half,
+  enlargefirstpage=on,    % More space on first page
+  fromalign=right,        % PLacement of name in letter head
+  %% fromphone=on,           % Turn on phone number of sender
+  fromrule=aftername,     % Rule after sender name in letter head
+  addrfield=on,           % Adress field for envelope with window
+  backaddress=on,         % Sender address in this window
+  subject=beforeopening,  % Placement of subject
+  locfield=narrow,        % Additional field for sender
+  foldmarks=on,           % Print foldmarks
+]{scrlttr2}
+\\usepackage[T1]{fontenc}
+\\usepackage[utf8]{inputenc}
+\\usepackage[english]{babel}
+\\usepackage{blindtext}
+
+\\setkomafont{fromname}{\\sffamily \\LARGE}
+\\setkomafont{fromaddress}{\\sffamily}%% statt \\small
+\\setkomafont{pagenumber}{\\sffamily}
+\\setkomafont{subject}{\\bfseries}
+\\setkomafont{backaddress}{\\mdseries}
+
+\\LoadLetterOption{DIN}
+\\setkomavar{fromname}{Ernesto Alfonso}
+\\setkomavar{fromaddress}{}
+\\setkomavar{backaddressseparator}{\\enspace\\textperiodcentered\\enspace}
+\\setkomavar{signature}{Ernesto J Alfonso}
+\\setkomavar{place}{}
+\\setkomavar{date}{\\today}
+\\setkomavar{enclseparator}{: }
+
+\\begin{document}
+  \\begin{letter}{Letter Title}
+    \\opening{Dear ,}
+
+    %% \\blindtext
+
+    \\closing{Sincerely,}
+  \\end{letter}
+\\end{document}
+")))))
       ("b" (cmd-ins "\\begin{"
                     (ins "{0}}{}")
                     (insert "\\end{")
