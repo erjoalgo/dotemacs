@@ -220,9 +220,12 @@
   (let ((buff-sym (gensym "buff-")))
     `(buttons-defcmd
       (let ((,buff-sym (buffer-matching ,buff-spec)))
-        (or (when ,buff-sym (switch-to-buffer ,buff-sym))
-            ,on-nonexistent
-            (error (format "no such buffer: %s" ,buff-spec)))))))
+        (unless ,buff-sym
+          ,on-nonexistent
+          (setq ,buff-sym (buffer-matching ,buff-spec)))
+        (if ,buff-sym
+            (switch-to-buffer ,buff-sym)
+          (error (format "no such buffer: %s" ,buff-spec)))))))
 
 (defun markdown-indent-code-by-4-spaces (a b)
   "Indent code in region (A, B) by 4 spaces."
