@@ -90,7 +90,8 @@
   (newline-and-indent)
   (insert "\\includegraphics[width=\\linewidth]{" filename "}")
   (newline-and-indent)
-  (insert "\\caption{") (recursive-edit) (insert "}") (newline-and-indent)
+  (insert "\\caption{") (recursive-edit) (insert "}")
+  (newline)
   (insert "\\end{figure}"))
 
 (defun tex-make-graphics-local ()
