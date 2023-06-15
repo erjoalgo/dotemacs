@@ -429,6 +429,7 @@
       ("g" 'grep-recursive)
       ("G" 'replace-regexp-dir)
       ("f" 'find-iregex)
+      ("F" 'erc)
       ("u" 'universal-argument)
       ([f2] 'call-last-kbd-macro)
       ("W" (buttons-make
