@@ -1,0 +1,20 @@
+(defun leetcode-insert-c++-main ()
+  (interactive)
+  (insert "int main (int argc, char* argv[]) {")
+  (newline-and-indent)
+  (insert "Solution sol;")
+  (newline-and-indent)
+  (let ((fn-name
+         (save-excursion
+           (goto-char (point-min))
+           (save-match-data
+             (cl-assert (re-search-forward "^public:\n +[^ ]+ +\\([^ (]+\\)"))
+             (match-string 1)))))
+    (insert "auto res = sol." fn-name "(")
+    (recursive-edit)
+    (insert ");")
+    (newline-and-indent))
+  (insert "cout << \"result: \" << res << endl;")
+  (newline-and-indent)
+  (insert "}")
+  (indent-for-tab-command))
