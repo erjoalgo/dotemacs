@@ -37,8 +37,10 @@
 
 (setq org-html-validation-link nil)
 
-(def-file-local-toggle-command org-treat-as-readme-p)
-(def-file-local-toggle-command org-autoexport-html)
+(require 'autobuild)
+
+(autobuild-defvar-file-local org-treat-as-readme-p)
+(autobuild-defvar-file-local org-autoexport-html)
 
 (defun maybe-export-to-markdown ()
   (when (and (eq major-mode 'org-mode)
@@ -120,7 +122,7 @@
   (insert (format "[[file:%s]]" filename))
   (newline-and-indent))
 
-(def-file-local-set-command org-inline-image-directory)
+(autobuild-defvar-file-local org-inline-image-directory)
 
 (defun file-modification-timestamp (filename)
   (string-to-number

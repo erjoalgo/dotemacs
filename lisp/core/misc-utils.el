@@ -49,6 +49,7 @@
 (require 'cl-lib)
 (require 's)
 (require 'f)
+(require 'autobuild)
 
 (defun whereis (program)
   "Search PATH for PROGRAM."
@@ -528,33 +529,9 @@ for customization of the printer command."
   (interactive)
   (flush-lines "^$" (point-min) (point-max)))
 
-(defmacro def-file-local-set-command (file-local-var-sym
-                                      &optional prompt-form old-value-sym)
-  "Define a command to set the file-local value of FILE-LOCAL-VAR-SYM.
 
-  If PROMPT is a string, read the variable's value via ‘read-string'.
-  Otherwise, PROMPT-FUN must be a function that accepts the
-  current value of FILE-LOCAL-VAR-SYM and returns the new value."
-
-  (let* ((fun-sym (intern (format "file-local-set-%s" file-local-var-sym)))
-         (old-value-sym (or old-value-sym (gensym "old-value-")))
-	 (prompt-form (or prompt-form
-                          `(read-string
-                            (format "Enter file-local value for %s (currently %s): "
-                                    ',file-local-var-sym
-                                    ,old-value-sym)))))
-    `(progn
-       (make-variable-buffer-local ',file-local-var-sym)
-       (message ,(format "defining %s" fun-sym))
-       (defun ,fun-sym (arg)
-         (interactive "P")
-         (let* ((curr-value (when (boundp ',file-local-var-sym)
-			      ,file-local-var-sym))
-	        (new-value ,prompt-form))
-	   (add-file-local-variable ',file-local-var-sym new-value)
-	   (setf ,file-local-var-sym new-value))))))
-
-(def-file-local-set-command js-indent-mode
+(autobuild-defvar-file-local js-indent-mode
+  nil
   (read-number "enter value for js-indent-mode: "))
 
 (defun file-local-set (sym value)
@@ -562,9 +539,9 @@ for customization of the printer command."
   (interactive "SEnter variable to set: \nXEnter value: ")
   (add-file-local-variable sym value t))
 
-(defmacro def-file-local-toggle-command (file-local-var-sym)
-  "Define a command to toggle the file-local value of FILE-LOCAL-VAR-SYM on/off."
-  `(def-file-local-set-command ,file-local-var-sym (lambda (_prompt old) (not old))))
+(defmacro def-file-local-toggle-command (var-sym)
+  "Define a command to toggle the file-local value of VAR-SYM on/off."
+  `(def-file-local-set-command ,var-sym (lambda (_prompt old) (not old))))
 
 (defun uuid ()
   "Generate a UUID."

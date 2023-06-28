@@ -1,5 +1,7 @@
+(require 'autobuild)
+
 (add-hook 'c-mode-hook (lambda () (setf comment-start "// ")))
 
-(def-file-local-toggle-command c-ofast-compilation)
+(autobuild-defvar-file-local c-ofast-compilation nil (y-or-n-p "enable -Ofast? "))
 
 (setq-default c-basic-offset 4)
