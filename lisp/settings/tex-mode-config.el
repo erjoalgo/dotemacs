@@ -43,7 +43,7 @@
                              (and
                               (string-match (regexp-quote ,base-sans-ext) (wm-window-title win))
                               (let ((case-fold-search t))
-                                (string-match-p ".*zathura.*" "zathura.Zathura"))
+                                (string-match-p ".*zathura.*" (wm-window-class win)))
                               win))))
 	       (if win
                    (wm-window-raise win)
