@@ -394,7 +394,7 @@
         ("x" (cmd-ins "when "))
         ("c" (cmd-ins "unless "))
         ("r" (cmd-ins "(return {})"))))
-      ("T" (cmd-ins "(condition-case ()"
+      ("T" (cmd-ins "(condition-case ex"
                     (nli)
                     (rec)
                     (nli)
@@ -718,27 +718,28 @@
       ("i" (cmd-ins "<iframe src=\"{}\"></iframe>"))
       ("P" (cmd-ins "<p>{}</p>"))))
 
-   (defbuttons js-buttons c-buttons (js-mode-map)
+   (defbuttons js-buttons c-buttons (js-mode-map typescript-mode-map)
      (but
       ("d" (cmd-ins "function {} ( {} ){(cbd)}"))
       ("a" (cmd-ins "(" (rec) ") => "))
       ("A" (cmd-ins "() => "))
+      ("." (cmd-ins "debugger;"))
       ("n"
        (but
         ("c" (cmd-ins "console.log(`{}`);"))
         ("e" (cmd-ins "console.error(`{}`);"))
         ("r" (cmd-ins "console.log(\"DDEBUG trace {(buf)} {(rnd)}\");"))
-        ("v" (cmd-ins "console.log(\"DDEBUG {(rnd)} value of {0}: \"+{0});"))
-        ("V" (cmd-ins "console.log(\"DDEBUG {(rnd)} value of {0}: \"+JSON.stringify({0}));"))
-        ("A" (cmd-ins "alert(\"DDEBUG {(rnd)} value of {0}: \"+{0});"))
+        ("v" (cmd-ins "console.log(\"DDEBUG {(rnd)} {(buf)} value of {0}: \"+{0});"))
+        ("V" (cmd-ins "console.log(\"DDEBUG {(rnd)} {(buf)} value of {0}: \"+JSON.stringify({0}));"))
+        ("A" (cmd-ins "alert(\"DDEBUG {(rnd)} {(buf)} value of {0}: \"+{0});"))
         ("a" (cmd-ins "alert(`{}`);"))
-        ("R" (cmd-ins "alert(\"DDEBUG TRACE {(buf)} {(rnd)}\");"))))
+        ("R" (cmd-ins "alert(\"DDEBUG TRACE {(rnd)} {(buf)}\");"))))
       ("T" (cmd-ins "try {" (nli) (rec) (nli) "} catch(err) {" (nli) (rec) (nli) "}"))
       ("f" (cmd-ins "for (var {0} = 0; {0}<{}; {0}++){(cbd)}"))
       ("F" (cmd-ins "for (var {} of {}){(cbd)}"))
       ("l" (cmd-ins ".length"))
       ("r" (cmd-ins "return {};"))
-      ("R" (cmd-ins "throw "))
+      ("R" (cmd-ins "throw new Error({});"))
       ("Z" (cmd-ins "if ( {}"
                     (insert " ){ ")
                     (ins "{} }")))
@@ -773,7 +774,6 @@
       ("0" (cmd-ins "window.onload = function(){" (nli) "};"))
       ("t"
        (but
-        ("." (cmd-ins "debugger;"))
         ("a" (cmd-ins "assert({})"))
         ("u" (cmd-ins "true"))
         ("g" (cmd-ins "false"))
@@ -970,7 +970,11 @@
           ("k" (cmd-ins "test -a "))
           ("j" (cmd-ins "test -o "))
           ("=" (cmd-ins "test {} = "))
-          ("v" (cmd-ins "command -v "))))))
+          ("v" (cmd-ins "command -v "))))
+        ("S" (cmd-ins "echo \"{}\" 1>&2" (nli)
+                      "select {} in {}; do"
+                      (nli) "break" (nli) "done"
+                      (nli)))))
       ("<" (cmd-ins " <<< "))
       ("-" (cmd-ins "--"))))
 
@@ -1169,7 +1173,7 @@
       ("f"
        (but
         ("i" (cmd-ins "for (int {0}=0; {0}<{}; ++{0}){(cbd)}"))
-        ("a" (cmd-ins "for (const {}& {} : {}){(cbd)}"))
+        ("a" (cmd-ins "for (const auto& {} : {}){(cbd)}"))
         ("e" (cmd-ins "for ({} : {}){(cbd)}"))
         (";" (cmd-ins "for ({};{};{}){(cbd)}"))))
       ("i"
@@ -1212,21 +1216,7 @@
       ("m" (but
             ("i" (cmd-ins "#include"))
             ("u" (cmd-ins "using "))))
-      ("M" (cmd-ins
-            (ins "#include <assert.h>") (nli)
-            (ins "#include <iostream>") (nli)
-            (ins "#include <map>") (nli)
-            (ins "#include <string>") (nli)
-            (ins "#include <unordered_map>") (nli)
-            (ins "#include <unordered_set>") (nli)
-            (ins "#include <set>") (nli)
-            (ins "#include <vector>") (nli)
-            (ins "#include <queue>") (nli)
-            (ins "#include <array>") (nli)
-            (ins "#include <cmath>") (nli)
-            (ins "#include <algorithm>") (nli)
-            (nli)
-            (ins "using namespace std;") (nli)))
+      ("M" #'cpp-insert-includes)
       ("l"
        (but
         ("s" (cmd-ins ".size()"))
@@ -1549,7 +1539,7 @@
        (but
         ((kbd "s-f") 'gnus-summary-mail-forward)
         ((kbd "s-r") 'gnus-article-wide-reply-with-original)
-        ((kbd "s-s") 'gnus-mime-save-all-attachments)))
+        ((kbd "s-a") 'gnus-mime-save-all-attachments)))
 
      (defbuttons gnus-summary-buttons nil (gnus-summary-mode-map)
        (but
@@ -1694,8 +1684,8 @@ server {
    (defbuttons global-buttons nil (global-map)
      (but
       ((kbd "M-c") #'autobuild-build)
-      ((kbd "s-c") #'autobuild-rebuild-last-global)
       ((kbd "M-C") #'autobuild-rebuild-last-global)
+      ((kbd "s-M-c") #'autobuild-rebuild-recent)
       ((kbd "M-q") #'sticky-window-delete-window)
       ((kbd "M-Q") #'sticky-window-toggle)
       ((kbd "M-/") 'my-comment-out)
