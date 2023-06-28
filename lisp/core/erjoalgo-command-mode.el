@@ -398,7 +398,8 @@
                   ((last-download (find-last-download nil t))
                    (dest (f-join default-directory (f-filename last-download))))
                 (rename-file last-download dest)
-                (kill-new dest))))))
+                (kill-new dest)
+                (message "mv -t %s %s" default-directory last-download))))))
       ("p" 'project-open)))
     ("x"
      (buttons-make
