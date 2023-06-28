@@ -905,12 +905,16 @@ This requires the external program `diff' to be in your `exec-path'."
 
 (emacs-init-C-source-directory)
 
-(defun debug-statements-remove--next ()
+(defun debug-statements-remove--next (&optional remove-all-prints)
   (cl-case major-mode
     (c++-mode
      (when
-         (re-search-forward
-          "\n.*\\(LOG\\|cout\\|printf\\)[^\"]+\"DDEBUG[^;]+;" nil t)
+         (or
+          (re-search-forward
+           "\n.*\\(LOG\\|cout\\|printf\\)[^\"]+\"DDEBUG[^;]+;" nil t)
+          (when remove-all-prints
+            (re-search-forward
+           "\n.*\\(LOG\\|cout\\|printf\\)[^\"]+\"[^;]+;" nil t)))
        (cons (match-beginning 0) (match-end 0))))
     ((skylark-mode python-mode)
      (when (re-search-forward "\n[ \t]*print(\"DDEBUG" nil t)
@@ -931,12 +935,12 @@ This requires the external program `diff' to be in your `exec-path'."
        (cons (match-beginning 0) (point))))
     (t (error "unsupported mode: %s" major-mode))))
 
-(defun debug-statements-remove ()
-  (interactive)
+(defun debug-statements-remove (&optional remove-all-prints)
+  (interactive "p")
   (save-excursion
     (goto-char (point-min))
     (cl-loop
-     as ab = (debug-statements-remove--next)
+     as ab = (debug-statements-remove--next remove-all-prints)
      while ab
      do (cl-destructuring-bind (a . b) ab
           (delete-region a b)
