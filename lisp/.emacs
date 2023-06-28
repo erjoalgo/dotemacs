@@ -126,7 +126,8 @@ object."
    ;; cider
    websocket
    autobuild
-   selcand))
+   selcand
+   typescript-mode))
 
 (require 'f)
 
