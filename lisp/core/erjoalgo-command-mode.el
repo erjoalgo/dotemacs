@@ -390,8 +390,7 @@
       ("j" (buff "*-jabber-roster-*"))
       ("d"
        (but
-        ("f" #'find-last-download)
-
+        ("f" (cmd (find-last-download nil nil t)))
         ("k" (cmd (find-last-download)))
         ("m" (cmd
               (let*
