@@ -392,7 +392,7 @@
        (but
         ("f" #'find-last-download)
 
-        ("k" (cmd (find-last-download nil t)))
+        ("k" (cmd (find-last-download)))
         ("m" (cmd
               (let*
                   ((last-download (find-last-download nil t))
