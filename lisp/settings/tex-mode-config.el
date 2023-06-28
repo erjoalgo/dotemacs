@@ -41,7 +41,8 @@
                     (cl-loop for win in (wm-windows-list)
 	                     thereis
                              (and
-                              (string-match (regexp-quote ,base-sans-ext) (wm-window-title win))
+                              (string-match (regexp-quote ,base-sans-ext)
+                                            (wm-window-title win))
                               (let ((case-fold-search t))
                                 (string-match-p ".*zathura.*" (wm-window-class win)))
                               win))))
