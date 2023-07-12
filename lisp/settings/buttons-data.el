@@ -915,7 +915,7 @@
                     (rec)
                     (upcase-last)
                     (ins "} in{(nli)}{}{(nli)}esac{(nli)}")))
-      ("s" (cmd-ins "{(idt)}){(nli)}{}{(nli)};;{(nli)}"))
+      ("s" (cmd-ins "{(idt)}){(nli)}{}{(nli)};;"))
       ("o" (cmd-ins "${" "OPTARG}"))
       ("4" (cmd-ins "[ {} ]"))
       ("z" (cmd-ins "if {}; then{(nli)}{}{(nli)}fi{(idt)}{(nli)}"))
