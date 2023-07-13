@@ -46,7 +46,8 @@
   (setf mvn-offline-p offline)
   (message (if offline "offline" "online")))
 
-(add-hook 'java-mode-hook 'java-imports-scan-file)
+(when (functionp 'java-imports-scan-file)
+  (add-hook 'java-mode-hook #'java-imports-scan-file))
 
 (defun java-find-class-name ()
   "Find the class name in the current java file."
