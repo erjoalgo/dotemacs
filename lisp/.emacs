@@ -37,6 +37,7 @@ object."
 (add-to-list 'load-path (expand-file-name "~/git/babel/"))
 (defvar load-patch-watcher-regexp nil)
 ;; '(push "with-editor" load-patch-watcher-regexp)
+(require 'cl-lib)
 (defun watch-load-path-changes (symbol newval operation where)
   (cl-loop with car = (car newval)
            for regexp in load-patch-watcher-regexp
