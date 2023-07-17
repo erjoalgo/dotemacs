@@ -1081,7 +1081,8 @@
        (but
         ("x" (cmd-ins "\\text{"
                       (ins "{}}")))
-        ("s" (cmd-ins "\\section{" (rec) "}" (nli)))))
+        ("s" (cmd-ins "\\section{" (rec) "}" (nli)))
+        ("c" (cmd-ins "\\clearpage" (nli)))))
       ("{" (cmd-ins "\\{"
                     (ins "{}\\}")))
       ("-" (cmd-ins "(1-p)^{(inm)}"))
