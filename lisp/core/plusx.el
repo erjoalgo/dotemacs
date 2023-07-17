@@ -35,7 +35,8 @@
     (lisp-mode)
     (perl-mode "#!/usr/bin/perl")
     (js-mode "#!/usr/bin/env node")
-    (octave-mode "#!/usr/bin/octave")))
+    (octave-mode "#!/usr/bin/octave")
+    (emacs-lisp-mode "#!/usr/local/bin/emacs --script")))
 
 (defun plusx-maybe-insert-interpreter-line ()
   "Try to insert the appropriate interpreter line in the current buffer."
