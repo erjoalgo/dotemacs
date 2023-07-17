@@ -127,16 +127,13 @@ object."
    websocket
    autobuild
    selcand
-   typescript-mode))
+   typescript-mode
+   async))
 
 (require 'f)
 
 (push (expand-file-name "~/git/autobuild/common-rules") load-path)
 (require 'autobuild-common-rules)
-
-(let ((autobuild-dev "~/git/autobuild/autobuild.el"))
-  (when (file-exists-p autobuild-dev)
-    (load autobuild-dev)))
 
 (dolist (feature
          '(f
