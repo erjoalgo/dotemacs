@@ -172,7 +172,7 @@
   (intern
    (completing-read prompt obarray nil nil (and default (symbol-name default)))))
 
-(defun file-local-variable-set-mode (mode)
+(defun file-local-set-mode (mode)
   "Add ‘mode' = MODE as a file-local variable."
   (interactive (list (read-symbol-completing "enter mode: " major-mode)))
   (unless (or (eq mode major-mode)
