@@ -65,6 +65,20 @@
                 do (newline-and-indent)))
      (insert (string-join (seq-reverse args) ", ")))))
 
+(defun leetcode-new-solution ()
+  (interactive)
+  (with-current-buffer (get-buffer-create "*leetcode-scratch*")
+    (erase-buffer)
+    (insert (read-string "enter solution code: " (x-get-clipboard)))
+    (let* ((name (leetcode-find-solution-name))
+           (directory (expand-file-name "~/git/leetcode"))
+           (filename  (f-join directory (format "%s.cc" (s-dashed-words name)))))
+      (make-directory directory t)
+      (write-file filename)
+      (newline-and-indent)
+      (switch-to-buffer (current-buffer))
+      (leetcode-insert-c++-main))))
+
 
 (defun cpp-maybe-insert-includes ()
   (interactive)
