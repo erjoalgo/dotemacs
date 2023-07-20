@@ -971,7 +971,7 @@
          (but
           ("e" (cmd-ins "test -e "))
           ("d" (cmd-ins "test -d "))
-          ("n" (cmd-ins "test -n "))
+          ("n" (cmd-ins "test -n ${" (rec) ":-}"))
           ("z" (cmd-ins "test -z "))
           ("k" (cmd-ins "test -a "))
           ("j" (cmd-ins "test -o "))
@@ -1034,24 +1034,26 @@
   \\end{letter}
 \\end{document}
 ")))))
-      ("b" (cmd-ins "\\begin{"
-                    (ins "{0}}{}")
-                    (insert "\\end{")
-                    (ins "{0}}")))
-      ("B" (cmd-ins "\\textbf{"
-                    (ins "{}}")))
-      ("[" (cmd-ins "{"
-                    (ins "{}}")))
-      ("I" (cmd-ins "\\begin{" "itemize}"
-                    (nli) (ins "{}") (nli)
-                    (insert "\\end{" "itemize}")))
+      ("b"
+       (but
+        ("i" (cmd-ins "\\begin{" "itemize}"
+                      (nli) (rec) (nli)
+                      (insert "\\end{" "itemize}")))
+        ("e" (cmd-ins "\\begin{" "enumerate}"
+                      (nli) (rec) (nli)
+                      (insert "\\end{" "enumerate}")))
+        ("t" (cmd-ins "\\begin{" "tabular}{" "lr}"
+                      (nli) (rec) (nli)
+                      (insert "\\end{" "tabular}")))
+        ("a" (cmd-ins "\\begin{" "align*}"
+                      (nli) (rec) (nli)
+                      (insert "\\end{" "align*}")))))
+      ("B" (cmd-ins (if (region-active-p)
+                        (replace-region text
+                                        (format "\\textbf{%s}" text))
+                        (insert "\\textbf{") (rec) (insert "}"))))
+      ("[" (cmd-ins "{" (ins "{}}")))
       ("i" (cmd-ins "\\item {(idt)}{}{(nli)}"))
-      ("l" (cmd-ins "\\begin{" "align*}"
-                    (nli) (ins "{}") (nli)
-                    (insert "\\end{" "align*}")))
-      ("L" (cmd-ins "\\begin{" "tabular}{" "lr}"
-                    (nli) (ins "{}") (nli)
-                    (insert "\\end{" "tabular}")))
       ("_" (cmd-ins ".${}$."))
       ("x" (cmd-ins "(.x.)"))
       ("q" (cmd-ins "\\begin{numedquestion}"
@@ -1088,7 +1090,8 @@
         ("x" (cmd-ins "\\text{"
                       (ins "{}}")))
         ("s" (cmd-ins "\\section{" (rec) "}" (nli)))
-        ("c" (cmd-ins "\\clearpage" (nli)))))
+        ("c" (cmd-ins "\\clearpage" (nli)))
+        ("S" (cmd-ins "\\subsection{" (rec) "}" (nli)))))
       ("{" (cmd-ins "\\{"
                     (ins "{}\\}")))
       ("-" (cmd-ins "(1-p)^{(inm)}"))
@@ -1104,9 +1107,9 @@
       ("E" (cmd-ins "E[{}]"))
       ("]" (cmd-ins "^"))
       ("+" (cmd-ins "+"))
-      ("v" (cmd-ins "\\begin{verbatim}"
+      ("v" (cmd-ins "\\begin{verbatim" "}"
                     (rec)
-                    (insert "\\end{verbatim}")))
+                    (insert "\\end{verbatim" "}")))
       ("7" (cmd-ins " & "))
       (";" (cmd-ins "\\;"))
       ("/" 'my-comment-out)))
