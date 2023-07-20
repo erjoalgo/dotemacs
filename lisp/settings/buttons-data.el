@@ -51,6 +51,12 @@
 
 (require 'buttons)
 
+(defmacro replace-region (text-sym &rest body)
+  `(save-excursion
+     (let ((,text-sym (buffer-substring (region-beginning) (region-end))))
+       (delete-region (region-beginning) (region-end))
+       (insert (progn ,@body)))))
+
 (buttons-macrolet
  ((inm () (when (functionp 'global-erjoalgo-command-mode)
             `(global-erjoalgo-command-mode 0)))
