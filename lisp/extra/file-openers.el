@@ -28,16 +28,16 @@
   (cl-loop for s in strings
         thereis (and s (> (length s) 0) s)))
 
-(defun open-file (fn)
+(defun open-file (filename)
   (interactive (list (dired-file-name-at-point)))
-  (setf fn (expand-file-name fn))
-  (setq fn
-        (replace-regexp-in-string "^/sudo:root@[^:]+:" "" fn))
-  (let ((program (get-file-program fn)))
+  (setf filename (expand-file-name filename))
+  (setq filename
+        (replace-regexp-in-string "^/sudo:root@[^:]+:" "" filename))
+  (let ((program (get-file-program filename)))
     (if (not program)
         (progn
-          (warn (concat "no program known for file: " fn))
-          (find-file fn))
-      (if (functionp program) (funcall program fn)
-	(progn (message "%s %s" program fn)
-               (start-process program nil program fn))))))
+          (warn (concat "no program known for file: " filename))
+          (find-file filename))
+      (if (functionp program) (funcall program filename)
+	(progn (message "%s %s" program filename)
+               (start-process program nil program filename))))))
