@@ -35,7 +35,9 @@
         (replace-regexp-in-string "^/sudo:root@[^:]+:" "" fn))
   (let ((program (get-file-program fn)))
     (if (not program)
-	(error (concat "no program known for file: " fn))
+        (progn
+          (warn (concat "no program known for file: " fn))
+          (find-file fn))
       (if (functionp program) (funcall program fn)
 	(progn (message "%s %s" program fn)
                (start-process program nil program fn))))))
