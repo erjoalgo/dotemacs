@@ -41,8 +41,8 @@ parser.add_argument(\"-o\", \"--output\",
 parser.add_argument(\"-n\", \"--no_strip_newline\",  action=\"store_true\",
                     help = \"don't strip trailing newline from stdin\")
 
-args=vars(parser.parse_args())
-globals().update(args)
+args= parser.parse_args()
+
 ")
 
 
