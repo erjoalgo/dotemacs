@@ -1,4 +1,4 @@
-#!/usr/local/bin/emacs --script
+#!/usr/bin/env -S emacs --script
 
 (require 'cl-lib)
 (require 'subr-x)
