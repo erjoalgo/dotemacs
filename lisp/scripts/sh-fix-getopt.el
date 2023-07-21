@@ -40,7 +40,10 @@
                     (sh-getopts-check t))
                 (error (push (format "%s: %s" filename ex) errors)))
            finally
-           (message "%s" (string-join errors "\n"))))
+           (progn
+             (when errors
+               (message "%s" (string-join errors "\n"))
+               (kill-emacs (length errors))))))
 
 (defun sh-getopts-check-hook ()
   (when (eq major-mode 'sh-mode)
