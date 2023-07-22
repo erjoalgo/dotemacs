@@ -129,8 +129,8 @@
      (interactive "P")
      (when nth (cl-assert (> nth 0)))
      (let ((file
-     (-> (mapcar #'expand-file-name ,directories)
-       (most-recent-file-name-in-directories (when nth (1- nth))))))
+            (-> (mapcar #'expand-file-name ,directories)
+              (most-recent-file-name-in-directories (when nth (1- nth))))))
        (unless no-kill
          (kill-new file)
          (message "killed %s" file))
