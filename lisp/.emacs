@@ -6,6 +6,8 @@
 (defun orig-expt (a b)
   (expt a b))
 
+(require 'cl-lib)
+
 (defun package-reinstall (pkg)
   "Reinstall package PKG.
 PKG should be either a symbol, the package name, or a `package-desc'
