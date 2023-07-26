@@ -113,7 +113,7 @@ object."
    go-mode
    ;; calfw
    ;; calfw-gcal
-   ;; java-imports
+   java-imports
    bbdb
    nginx-mode
    dedicated
