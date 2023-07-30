@@ -138,9 +138,9 @@
 
 (defun chromium-new-tab (url &optional unknown-arg)
   (unless browser-name
-    (error "browser-name is nil"))
-  (start-process "browse-url" nil browser-name url)
-  (message "opened %s" url))
+    (error "browser-name is not defined"))
+  (message "browsing to %s" url)
+  (start-process "browse-url" nil browser-name url))
 
 (fset 'browser-new-tab #'chromium-new-tab)
 
