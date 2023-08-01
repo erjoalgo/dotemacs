@@ -64,7 +64,14 @@
   (rnd () `(downcase (genpass-genpass 4 genpass-alnum t)))
   (buf () `(f-filename (buffer-name)))
   (nli? (&optional col) `(if (>= (current-column) (or ,col 60))
-                             (newline-and-indent))))
+                             (newline-and-indent)))
+  (html-tag (tag &optional props)
+            `(cmd-ins
+              ,(format "<%s%s>"
+                       tag
+                       (if props (format " %s" props) ""))
+              (rec)
+              ,(format "</%s>" tag))))
 
  (let-when-compile ((buttons-make-key-mapper #'buttons-modifier-add-super))
 
@@ -834,7 +841,25 @@
         ("j"
          (but
           ("s" (cmd-ins "JSON.stringify({})"))
-          ("p" (cmd-ins "JSON.parse({})"))))))))
+          ("p" (cmd-ins "JSON.parse({})"))))))
+      (","
+       (but
+        ("t"
+         (but
+          ("d" (html-tag "td"))
+          ("r" (html-tag "tr"))
+          ("o" (html-tag "ol"))
+          ("u" (html-tag "ul"))
+          ("a" (html-tag "table"))
+          ("b" (html-tag "tbody"))
+          ("h" (html-tag "thead"))))
+        ("d" (html-tag "div"))
+        ("i" (html-tag "img"))
+        ("b" (html-tag "button" "id={}"))
+        ("f"
+         (but
+          ("b" (html-tag "b"))))))
+      ("<" (cmd-ins "<{0}>" (rec) "</{0}>"))))
 
    (defbuttons go-buttons c-buttons (go-mode-map)
      (but
