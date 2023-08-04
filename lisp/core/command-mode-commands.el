@@ -398,7 +398,9 @@ Buffers other than the current buffer are preferred."
 
     (setf proc (apply 'start-process buff-name buff-name
 		   (append
-		    `(,@sudo-p "find" ,dir "-name" ".git" "-prune" "-o")
+		    `(,@sudo-p "find" ,dir
+                               "-name" "node_modules" "-prune"
+                               "-o")
 		    (when extension
 		      (list "-name" (concat "*" extension)))
 		    `("-exec" ,@sudo-p "grep" "-HinsI" "--exclude=*/node_modules/*" ,pattern "{}" ";"))))
