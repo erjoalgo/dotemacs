@@ -583,25 +583,32 @@ for customization of the printer command."
   (message "PATH:\n%s"
            (replace-regexp-in-string ":" "\n" (getenv "PATH"))))
 
+(defun read-shell-vars (sh-vars-filename)
+  "Source shell vars defined in the file SH-VARS-FILENAME.  No echo on QUIET."
+  (cl-assert (file-exists-p sh-vars-filename))
+  (cl-loop with cmd = (format "bash -c 'set -a; source %s &> /dev/null; env'"
+                              sh-vars-filename)
+           with out = (shell-command-to-string cmd)
+           with env = (s-split "\n" out t)
+           for var-val in env
+           when (string-match "^\\([^= ]+?\\)=\\(.*\\)$" var-val)
+           collect (let ((var (match-string 1 var-val))
+                         (val (match-string 2 var-val)))
+                     (unless (string-match "^\\(BASH_FUNC_\\|_\\| \\)" var)
+                       (cons var val)))))
+
 (defun source-shell-vars (sh-vars-filename &optional quiet)
   "Source shell vars defined in the file SH-VARS-FILENAME.  No echo on QUIET."
   (interactive (list
                 (read-file-name "enter shell file to source: ")))
   (cl-assert (file-exists-p sh-vars-filename))
-  (cl-loop with cmd = (format "bash -c 'set -a; source %s &> /dev/null; env'"
-                           sh-vars-filename)
-        with out = (shell-command-to-string cmd)
-        with env = (s-split "\n" out t)
-        for var-val in env
-        when (string-match "^\\([^= ]+?\\)=\\(.*\\)$" var-val)
-        do (let ((var (match-string 1 var-val))
-                 (val (match-string 2 var-val)))
-             (unless (string-match "^\\(BASH_FUNC_\\|_\\| \\)" var)
-               (unless quiet (message "setting %s to %s" var val))
-               (setenv var val)
-               (when (equal "PATH" var)
-                 (cl-loop for dir in (s-split ":" val t)
-                       do (cl-pushnew dir exec-path :test #'equal)))))))
+  (cl-loop for (var . val) in (read-shell-vars (sh-vars-filename))
+           do (progn
+                (unless quiet (message "setting %s to %s" var val))
+                (setenv var val)
+                (when (equal "PATH" var)
+                  (cl-loop for dir in (s-split ":" val t)
+                           do (cl-pushnew dir exec-path :test #'equal))))))
 
 (defun diff-buffer-with-another-file (buffer file)
   "View the differences between BUFFER and another file FILE.
