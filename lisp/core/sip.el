@@ -509,4 +509,11 @@
   (when sms-fanout-address
     (sms-fanout-client-start-timer)))
 
+(defun sip-stop ()
+  (interactive)
+  (setq buffer-list-update-hook nil)
+  (setq sms-fanout-address nil)
+  (setq websocket-callback-debug-on-error t)
+  (sms-fanout-client-stop-timer))
+
 (sip-restart)
