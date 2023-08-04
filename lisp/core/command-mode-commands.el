@@ -400,6 +400,7 @@ Buffers other than the current buffer are preferred."
 		   (append
 		    `(,@sudo-p "find" ,dir
                                "-name" "node_modules" "-prune"
+                               "-name" ".git" "-prune"
                                "-o")
 		    (when extension
 		      (list "-name" (concat "*" extension)))
