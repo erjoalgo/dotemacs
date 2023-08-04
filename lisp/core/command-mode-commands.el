@@ -401,7 +401,7 @@ Buffers other than the current buffer are preferred."
 		    `(,@sudo-p "find" ,dir "-name" ".git" "-prune" "-o")
 		    (when extension
 		      (list "-name" (concat "*" extension)))
-		    `("-exec" ,@sudo-p "grep" "-HinsI" ,pattern "{}" ";"))))
+		    `("-exec" ,@sudo-p "grep" "-HinsI" "--exclude=*/node_modules/*" ,pattern "{}" ";"))))
     (set-process-sentinel proc
 			  `(lambda (proc change)
 			     (switch-to-buffer ,buff-name)
