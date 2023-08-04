@@ -69,7 +69,7 @@
 (setq inhibit-startup-screen t)
 
 (show-paren-mode t)
-(setf show-paren-style 'expression)
+(setf show-paren-style 'parenthesis)
 (setf show-paren-delay 0)
 
 (setf enable-local-variables t)
