@@ -853,9 +853,12 @@
           ("a" (html-tag "table"))
           ("b" (html-tag "tbody"))
           ("h" (html-tag "thead"))))
-        ("d" (html-tag "div"))
-        ("i" (html-tag "img"))
+        ("v" (html-tag "div"))
+        ("d" (html-tag "td"))
+        ("i" (html-tag "input" "id={}"))
         ("b" (html-tag "button" "id={}"))
+        ("r" (html-tag "br"))
+        ("m" (html-tag "img"))
         ("f"
          (but
           ("b" (html-tag "b"))))))
