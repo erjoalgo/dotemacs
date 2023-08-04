@@ -403,7 +403,7 @@ Buffers other than the current buffer are preferred."
                                "-o")
 		    (when extension
 		      (list "-name" (concat "*" extension)))
-		    `("-exec" ,@sudo-p "grep" "-HinsI" "--exclude=*/node_modules/*" ,pattern "{}" ";"))))
+		    `("-exec" ,@sudo-p "grep" "-HinsI" ,pattern "{}" ";"))))
     (set-process-sentinel proc
 			  `(lambda (proc change)
 			     (switch-to-buffer ,buff-name)
