@@ -44,17 +44,26 @@
    as kv = (split-string var " = ")
    do (cl-destructuring-bind (k v)
           (if (cdr kv) kv (list (format "var%s" i) (car kv)))
-        (if (s-contains-p "]" v)
-            (progn
-              (when (> (length v) 10000)
-                (message "DDEBUG dk0l (length v): %s" (length v))
-                (setq v (s-replace-all '(("," . ",\n")) v)))
-              (push (format "vector %s = %s;" k
-                            (s-replace "]" "}"
-                                       (s-replace "[" "{" v)))
-                    defs)
-              (push k args))
-          (push v args)))
+        (if (not (s-contains-p "]" v))
+            (push v args)
+          (when (> (length v) 10000)
+            (setq v (s-replace-all '(("," . ",\n")) v)))
+          (let* ((body (s-replace "]" "}"
+                                 (s-replace "[" "{" v)))
+                (dim (save-match-data
+                       (string-match "^{+" body)
+                       (length (match-string 0 body))))
+                (base-type-guess (if (save-match-data (string-match "\"" body))
+                                       "string"
+                                       "int"))
+                (vector-type
+                 (apply #'concat
+                        (append
+                         (cl-loop for _ below dim
+                                  collect "vector<")
+                         (list base-type-guess (make-string dim (string-to-char ">")))))))
+            (push (format "%s %s = %s;" vector-type k body) defs)
+            (push k args))))
    finally
    (progn
      (save-excursion
