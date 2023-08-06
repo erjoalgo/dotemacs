@@ -449,7 +449,7 @@
       ("3" (buff "*eww*" (call-interactively 'eww)))
       ("q" (buff "regexp:[*]SQL.*[*]"
                  (call-interactively
-                  (selcand-select inferior-sql-mode-providers nil nil t))))
+                  (selcand-select inferior-sql-mode-providers :autoselect-if-single t))))
       ("m" (cmd (call-interactively 'sip-chat-menu))))))))
 
 (defun buffer-matching (string &optional regexp-p)
