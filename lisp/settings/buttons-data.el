@@ -1224,7 +1224,7 @@
         ("m" (cmd-ins "map<{}>" (inm)))
         ("p" (cmd-ins "pair<{}>" (inm)))
         ("v" (cmd-ins "std::vector<{}>"))
-        ("D" (cmd-ins "void"))
+        ("V" (cmd-ins "void"))
         ("s" (cmd-ins "std::string"))
         ("S" (cmd-ins "absl::string_view"))
         ("t"
@@ -1253,8 +1253,9 @@
                       "{0} << endl;"))))
       ("m" (but
             ("i" (cmd-ins "#include"))
-            ("u" (cmd-ins "using "))))
-      ("M" #'cpp-insert-includes)
+            ("u" (cmd-ins "using "))
+            ("0" #'cpp-maybe-insert-includes)
+            ("m" (cmd-ins c++-debugging-macros))))
       ("l"
        (but
         ("s" (cmd-ins ".size()"))
