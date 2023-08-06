@@ -100,3 +100,11 @@
        (ins "#include <vector>") (nli)
        (nli)
        (ins "using namespace std;") (nli)))))
+
+(defvar c++-debugging-macros nil)
+(setf c++-debugging-macros
+      (debian-file->string
+       (f-join (if load-file-name
+                   (file-name-directory load-file-name)
+                 default-directory)
+               "cpp-macro.cpp")))
