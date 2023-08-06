@@ -215,6 +215,8 @@
 (defvar inferior-sql-mode-providers nil
   "Functions that may be called to provide a *SQL* eval buffer.")
 
+(cl-pushnew #'sql-connect-maybe-autoselect inferior-sql-mode-providers)
+
 (defmacro switch-to-buff-or-else-command
     (buff-spec &optional on-nonexistent)
   (let ((buff-sym (gensym "buff-")))
