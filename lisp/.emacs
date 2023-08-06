@@ -129,7 +129,8 @@ object."
    autobuild
    selcand
    typescript-mode
-   async))
+   async
+   sqlformat))
 
 (require 'f)
 
