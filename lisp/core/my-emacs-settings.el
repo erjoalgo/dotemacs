@@ -179,5 +179,7 @@
 (advice-add 'make-auto-save-file-name :around
             #'my-shorten-auto-save-file-name)
 
+(setq auto-revert-verbose nil)
+
 (provide 'my-emacs-settings)
 ;;; emacs-settings.el ends here
