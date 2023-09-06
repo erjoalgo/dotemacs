@@ -3,6 +3,9 @@
 ;;; Emacs Startup File --- initialization for Emacs
 ;;; Code:
 
+(defun orig-expt (a b)
+  (expt a b))
+
 (defun package-reinstall (pkg)
   "Reinstall package PKG.
 PKG should be either a symbol, the package name, or a `package-desc'
