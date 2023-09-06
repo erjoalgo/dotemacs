@@ -1,3 +1,4 @@
+(require 'cl-lib)
 (require 'websocket)
 (require 's)
 
