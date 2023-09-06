@@ -480,7 +480,7 @@
         "PaleGreen1"  "PaleGreen2"  "PaleGreen3"  "PaleGreen4"))
 
 (defun sip-color-cursor-from-identity ()
-  (let* ((user (first (sip-current-identity)))
+  (let* ((user (cl-first (sip-current-identity)))
          (hash-code (sxhash-equal user))
          (index (mod hash-code (length sip-cursor-colors)))
          (color (nth index sip-cursor-colors)))
