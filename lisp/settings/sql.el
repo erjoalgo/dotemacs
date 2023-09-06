@@ -2,15 +2,14 @@
 (setq sqlformat-args '("-s2" "-g"))
 (add-hook 'sql-mode-hook 'sqlformat-on-save-mode)
 
-(eval-after-load 'sql
-  (lambda ()
-    (add-to-list 'sql-connection-alist
-                 `(pgsql-local (sql-product 'postgres)
-	                       (sql-port 5432)
-	                       (sql-server "localhost")
-	                       (sql-user "")
-	                       (sql-password "")
-	                       (sql-database "")))))
+(with-eval-after-load "sql-mode"
+  (add-to-list 'sql-connection-alist
+               `(pgsql-local (sql-product 'postgres)
+	                     (sql-port 5432)
+	                     (sql-server "localhost")
+	                     (sql-user "")
+	                     (sql-password "")
+	                     (sql-database ""))))
 
 (defun sql-connect-maybe-autoselect ()
   (interactive)
