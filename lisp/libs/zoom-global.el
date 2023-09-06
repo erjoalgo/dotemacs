@@ -54,16 +54,14 @@
 (defun global-text-scale-lower () (interactive)
        (if (not (equal major-mode 'doc-view-mode))
 	   (global-text-scale-adjust -1)
-	 (doc-view-shrink 1.125)
-	 )
+	 (doc-view-shrink 1.125))
        '(global-text-scale-adjust -1))
 
 ;;;###autoload
 (defun global-text-scale-higher () (interactive)
        (if (not (equal major-mode 'doc-view-mode))
 	   (global-text-scale-adjust 1)
-	 (doc-view-enlarge 1.125)
-	 )
+	 (doc-view-enlarge 1.125))
        '(global-text-scale-adjust 1))
 
 ;;(global-set-key (kbd "M-0") 'global-text-scale-reset)
