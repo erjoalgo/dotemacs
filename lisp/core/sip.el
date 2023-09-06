@@ -517,4 +517,4 @@
   (setq websocket-callback-debug-on-error t)
   (sms-fanout-client-stop-timer))
 
-(sip-restart)
+;; (sip-restart)
