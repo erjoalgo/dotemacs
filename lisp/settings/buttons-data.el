@@ -999,7 +999,7 @@
          (but
           ("e" (cmd-ins "test -e "))
           ("d" (cmd-ins "test -d "))
-          ("n" (cmd-ins "test -n ${" (rec) ":-}"))
+          ("n" (cmd-ins "test -n \"${" (rec) (upcase-last) ":-}\""))
           ("z" (cmd-ins "test -z "))
           ("k" (cmd-ins "test -a "))
           ("j" (cmd-ins "test -o "))
