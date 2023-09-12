@@ -604,7 +604,7 @@ for customization of the printer command."
   (interactive (list
                 (read-file-name "enter shell file to source: ")))
   (cl-assert (file-exists-p sh-vars-filename))
-  (cl-loop for (var . val) in (read-shell-vars (sh-vars-filename))
+  (cl-loop for (var . val) in (read-shell-vars sh-vars-filename)
            do (progn
                 (unless quiet (message "setting %s to %s" var val))
                 (setenv var val)
