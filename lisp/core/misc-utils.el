@@ -591,11 +591,13 @@ for customization of the printer command."
            with out = (shell-command-to-string cmd)
            with env = (s-split "\n" out t)
            for var-val in env
-           when (string-match "^\\([^= ]+?\\)=\\(.*\\)$" var-val)
-           collect (let ((var (match-string 1 var-val))
-                         (val (match-string 2 var-val)))
-                     (unless (string-match "^\\(BASH_FUNC_\\|_\\| \\)" var)
-                       (cons var val)))))
+           as entry = (when (string-match "^\\([^= ]+?\\)=\\(.*\\)$" var-val)
+                        (let ((var (match-string 1 var-val))
+                              (val (match-string 2 var-val)))
+                          (unless (string-match "^\\(BASH_FUNC_\\|_\\| \\)" var)
+                            (cons var val))))
+           when entry
+           collect entry))
 
 (defun source-shell-vars (sh-vars-filename &optional quiet)
   "Source shell vars defined in the file SH-VARS-FILENAME.  No echo on QUIET."
