@@ -992,7 +992,7 @@
         ("k" (cmd-ins "break;"))))
       ("t"
        (but
-        ("0" (cmd (insert "cd \"$( dirname \"${BASH_SOURCE[0]}\" )\"")))
+        ("0" (cmd (insert "cd \"$(realpath $(dirname \"${BASH_SOURCE[0]}\"))\"")))
         (")" (cmd (insert "SELFD=\"$(realpath $(dirname \"${BASH_SOURCE[0]}\"))\"")))
         ("u" (cmd-ins "true"))
         ("g" (cmd-ins "false"))
