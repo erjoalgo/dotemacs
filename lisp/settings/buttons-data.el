@@ -890,7 +890,7 @@
                       (f-filename buffer-file-name)
                       ", {} {(rnd)}\")"))
         ("s" (cmd-ins "fmt.Sprintf( \"{}\\n\"{} )"))
-        ("r" (cmd-ins "fmt.Errorf( \"{}\\n\"{} )" ))
+        ("e" (cmd-ins "fmt.Errorf( \"{}\\n\"{} )" ))
         ("t" (cmd-ins "fmt.Printf( \"{}\\n\"{} )"))))
       ("x" (cmd-ins "else if {}; {}{(cbd)}"))
       ("z" (cmd-ins "if {}; {}{(cbd)}"))
@@ -907,6 +907,9 @@
         ("u" (cmd-ins "true"))
         ("g" (cmd-ins "false"))
         ("G" (cmd-ins "nil"))))
+      ("i"
+       (but
+        ("s" (cmd-ins "string"))))
       ("6" (cmd-ins "%v"))
       ("^" (cmd-ins "%#v"))
       ("v" (cmd-ins "var "))
