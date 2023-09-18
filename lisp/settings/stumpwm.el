@@ -99,7 +99,6 @@
           (sit-for 1))))))
 
 
-
 (defun stumpwm-request (path &rest args)
   "Send a stumpwm request.  PATH ARGS"
   (stumpwm-request-subprocess path))
