@@ -76,7 +76,7 @@
   (let ((ext (file-discover-extension filename)))
     (rename-file filename (format "%s.%s" filename ext))))
 
-(defun tex-include-graphics (filename)
+(defun tex-include-graphics (filename &optional no-figure)
   (interactive)
   (unless (f-ext filename)
     (setq filename (filename-add-missing-extension filename)))
@@ -87,13 +87,15 @@
                (zerop (call-process "convert" nil t nil filename jpeg-filename)))
         (error "failed to convert to known includegraphics extension"))
       (setq filename jpeg-filename)))
-  (insert "\\begin{figure}[H]")
-  (newline-and-indent)
+  (unless no-figure
+    (insert "\\begin{figure}[H]")
+    (newline-and-indent))
   (insert "\\includegraphics[width=\\linewidth]{" filename "}")
   (newline-and-indent)
-  (insert "\\caption{") (recursive-edit) (insert "}")
-  (newline-and-indent)
-  (insert "\\end{figure}"))
+  (unless no-figure
+    (insert "\\caption{") (recursive-edit) (insert "}")
+    (newline-and-indent)
+    (insert "\\end{figure}")))
 
 (defun tex-make-graphics-local ()
   (interactive)
