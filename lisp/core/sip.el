@@ -325,6 +325,13 @@
       (sip-ws-log "disconnecting...")
       (websocket-close sms-fanout-client))))
 
+(defun url-parse-auth-header (url)
+  (when-let* ((parts (url-generic-parse-url url))
+              (user (url-user parts))
+              (password (url-password parts))
+              (base64 (base64-encode-string (format "%s:%s" user password))))
+    (cons "Authorization" base64)))
+
 (defun sms-fanout-connect ()
   (sms-fanout-disconnect)
   (websocket-open
@@ -348,7 +355,8 @@
                            (- (float-time) sms-last-connection-timestamp))))))
    :on-error (lambda (_websocket callback-id err)
                (sip-ws-log
-                (format "ws closed with error: %s %s" callback-id err)))))
+                (format "ws closed with error: %s %s" callback-id err)))
+   :custom-header-alist `(,(url-parse-auth-header sms-fanout-address))))
 
 (define-minor-mode sip-chat-mode
   "Sip chat minor mode"
