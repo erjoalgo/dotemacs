@@ -1003,11 +1003,7 @@
           ("e" (cmd-ins "test -e "))
           ("d" (cmd-ins "test -d "))
           ("n" (cmd-ins "test -n \"${" (rec) (upcase-last) ":-}\""))
-<<<<<<< HEAD
-          ("z" (cmd-ins "test -z "))
-=======
           ("z" (cmd-ins "test -z \"${" (rec) (upcase-last) ":-}\""))
->>>>>>> 798e032 (button updates)
           ("k" (cmd-ins "test -a "))
           ("j" (cmd-ins "test -o "))
           ("=" (cmd-ins "test {} = "))
