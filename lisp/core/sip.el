@@ -330,7 +330,7 @@
               (user (url-user parts))
               (password (url-password parts))
               (base64 (base64-encode-string (format "%s:%s" user password))))
-    (cons "Authorization" base64)))
+    (cons "Authorization" (format "Basic %s" base64))))
 
 (defun sms-fanout-connect ()
   (sms-fanout-disconnect)
