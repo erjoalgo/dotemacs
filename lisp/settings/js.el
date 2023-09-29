@@ -17,6 +17,8 @@
 
 (add-hook 'js-mode-hook 'js-autodetect-indent-level)
 
+(add-to-list 'auto-mode-alist '("\\.mjs$" . js-mode))
+
 (defun img-src-graphics-make-local ()
   (interactive)
   (let ((dest "./resources"))
