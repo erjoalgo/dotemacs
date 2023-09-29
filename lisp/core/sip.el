@@ -512,11 +512,10 @@
 
 (defun sip-restart ()
   (setq buffer-list-update-hook nil)
-  (setq sms-fanout-address (sms-fanout-read-address))
-  (setq websocket-callback-debug-on-error t)
-  (if sms-fanout-address
-      (sms-fanout-client-start-timer)
-    (warn "no sms fanout address could be parsed")))
+  (if (not (setq sms-fanout-address (sms-fanout-read-address)))
+      (warn "no sms fanout address could be parsed")
+    (setq websocket-callback-debug-on-error t)
+    (sms-fanout-client-start-timer)))
 
 (defun sip-stop ()
   (interactive)
