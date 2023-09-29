@@ -451,10 +451,10 @@
     (setq sms-fanout-client-timer nil)))
 
 (defun sms-fanout-read-address ()
-  (when-let* ((info (authinfo-get-by-app "sms-fanout"))
-              (api-key (alist-get 'password info))
-              (hostname (alist-get 'machine info)))
-    (format "wss://%s/fanout?api-key=%s" hostname api-key)))
+  (when-let* ((info (authinfo-get-by-app "smsfan"))
+              (api-key (alist-get 'api-key info))
+              (base-url (alist-get 'base-url info)))
+    (format "%s/fanout?api-key=%s" base-url api-key)))
 
 (setq sip-cursor-colors
       '(
