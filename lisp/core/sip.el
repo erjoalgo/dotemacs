@@ -524,4 +524,5 @@
   (setq websocket-callback-debug-on-error t)
   (sms-fanout-client-stop-timer))
 
+;; (sip-stop)
 ;; (sip-restart)
