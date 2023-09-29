@@ -1003,7 +1003,11 @@
           ("e" (cmd-ins "test -e "))
           ("d" (cmd-ins "test -d "))
           ("n" (cmd-ins "test -n \"${" (rec) (upcase-last) ":-}\""))
+<<<<<<< HEAD
           ("z" (cmd-ins "test -z "))
+=======
+          ("z" (cmd-ins "test -z \"${" (rec) (upcase-last) ":-}\""))
+>>>>>>> 798e032 (button updates)
           ("k" (cmd-ins "test -a "))
           ("j" (cmd-ins "test -o "))
           ("=" (cmd-ins "test {} = "))
@@ -1107,6 +1111,7 @@
                     (ins "{} \\choose {}} {(inm)}")))
       ("f" (cmd-ins (tex-include-graphics (find-last-download-or-scrot nil t))))
       ("F" (cmd-ins (tex-include-graphics (x-get-selection))))
+      ("g" (cmd-ins (tex-include-graphics (find-last-download-or-scrot nil t) t)))
       ("(" (cmd-ins "P({})"))
       ("8" (cmd-ins "P({})"))
       (")" (cmd-ins " + "))
