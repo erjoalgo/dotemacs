@@ -504,8 +504,7 @@
 
 (defun sip-restart ()
   (setq buffer-list-update-hook nil)
-  (unless sms-fanout-address
-    (setq sms-fanout-address (sms-fanout-read-address)))
+  (setq sms-fanout-address (sms-fanout-read-address))
   (setq websocket-callback-debug-on-error t)
   (when sms-fanout-address
     (sms-fanout-client-start-timer)))
