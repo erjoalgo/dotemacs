@@ -178,7 +178,7 @@
              do (message "opening %s" number)
              do (sip-chat number))))
 
-(cl-defstruct sip-message id from to message timestamp)
+(cl-defstruct sip-message id from to message date)
 
 (defmacro my-with-slots (class-name slots object &rest body)
   `(let
@@ -191,13 +191,13 @@
      ,@body))
 
 (defun sip-message-received (sip-message &optional supress-echo)
-  (my-with-slots sip-message (id from to message timestamp) sip-message
+  (my-with-slots sip-message (id from to message date) sip-message
     (if (null (sip-add-message sip-message))
         (sip-ws-log (format "skipping previously-received message with id %s" id))
       (let* ((buffer (sip-chat-buffer from to))
              (line (format "%s says: %s" from message))
              (timestamp
-              (condition-case ex (->> timestamp
+              (condition-case ex (->> date
                                    parse-time-string
                                    (apply #'encode-time)
                                    time-to-seconds)
@@ -298,15 +298,15 @@
          for i from 1
          do (sip-ws-log (format "on message %s/%s" i (length messages)))
          do
-         (alist-let message (to from message id timestamp)
-           (if (null timestamp)
-               (sip-ws-log (format "skipping message with null timestamp: %s" message))
+         (alist-let message (to from message id date)
+           (if (null date)
+               (sip-ws-log (format "skipping message with null date: %s" message))
              (condition-case err
                  (sip-message-received (make-sip-message
                                         :id id :to to
                                         :from from
                                         :message message
-                                        :timestamp timestamp)
+                                        :date date)
                                        supress-echo)
                (error
                 (sip-ws-log (format "failed to insert message %s: %s" message err)))))))))
