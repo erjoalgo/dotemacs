@@ -759,7 +759,7 @@
       ("v"
        (but
         ("a" (cmd-ins "var {(inm)}"))
-        ("o" (cmd-ins "const {(inm)}"))
+        ("c" (cmd-ins "const {(inm)}"))
         ("l" (cmd-ins "let {(inm)}"))
         ("4" (cmd-ins "${" (rec) "}"))))
       ("V" (cmd-ins "?{}: {}"))
