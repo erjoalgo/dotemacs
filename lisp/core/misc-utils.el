@@ -543,6 +543,10 @@ for customization of the printer command."
   "Define a command to toggle the file-local value of VAR-SYM on/off."
   `(def-file-local-set-command ,var-sym (lambda (_prompt old) (not old))))
 
+(defun kill-new-and-echo (str)
+  (kill-new str)
+  (message "killed: %s" str))
+
 (defun uuid ()
   "Generate a UUID."
   (interactive (list t))
