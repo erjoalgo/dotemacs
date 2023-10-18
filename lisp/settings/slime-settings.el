@@ -1,5 +1,7 @@
 (setq inferior-lisp-program "sbcl")
 
+(add-to-list 'load-path "~/quicklisp/dists/quicklisp/software/slime-v2.28/")
+
 (with-eval-after-load "slime"
   (setq slime-contribs '(slime-fancy))
   (require 'slime-autoloads)
