@@ -331,8 +331,11 @@
 (defun sip-select-did ()
   (selcand-select (sip-list-dids) :prompt "select did: "))
 
-(defun sip-chat-mass (numbers message)
-  (interactive "senter newline-separated phone numbers: \nsenter sms message: ")
+(defun sip-chat-batch (numbers message did)
+  (interactive (list
+                (read-string "enter newline-separated phone numbers: ")
+                (read-string "senter sms message: ")
+                (sip-select-did)))
   (cl-loop for number in (split-string numbers "\n" t)
            if (sip-message-exists-p number message did)
            do (message "skipping previously-sent message to %s" number)
