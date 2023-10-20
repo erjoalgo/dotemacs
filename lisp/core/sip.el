@@ -157,11 +157,11 @@
   (let ((url-request-method "POST")
         (url-request-data
          (json-encode `((from . ,from) (to . ,to) (message . ,message)))))
-      (let ((resp (voipms-service-request "/sms")))
-        (if (save-match-data
-              (string-match "status.*success" resp))
-            resp
-          (error "non-success sms-send response: %s" resp)))))
+    (let ((resp (voipms-service-request "/sms")))
+      (if (save-match-data
+            (string-match "status.*success" resp))
+          resp
+        (error "non-success sms-send response: %s" resp)))))
 
 (defun sms-send-linphonecsh (from to message)
   (let* ((current-identity (sip-current-identity))
@@ -275,34 +275,34 @@
 
 (defun sip-message-received (sip-message &optional supress-echo)
   (my-with-slots sip-message (id from to message date) sip-message
-    (if (null (sip-add-message sip-message))
-        (sip-ws-log (format "skipping previously-received message with id %s" id))
-      (let* ((buffer (sip-chat-buffer from to))
-             (line (format "%s says: %s" from message))
-             (timestamp
-              (condition-case ex (->> date
-                                   parse-time-string
-                                   (apply #'encode-time)
-                                   time-to-seconds)
-                (error
-                 (sip-ws-log (format "failed to parse timestamp: %s" ex))))))
-        (with-current-buffer buffer
-          (sip-chat-mode t)
-          (setq was-at-bottom (eq (point-max) (point)))
-          (save-excursion
-            (goto-char (point-max))
-            (goto-char (line-beginning-position))
-            (open-line 1)
-            (insert
-             (format-time-string "%d %b %I:%M%p (%a)" (seconds-to-time timestamp)))
-            (insert line)
-            (setq-local sip-from-phone-number from)
-            (setq-local sip-max-timestamp (max timestamp (or sip-max-timestamp 0))))
-          (when was-at-bottom
-            (goto-char (point-max))))
-        (unless supress-echo
-          (message "%s" line))
-        (setq sip-last-message-buffer buffer)))))
+                 (if (null (sip-add-message sip-message))
+                     (sip-ws-log (format "skipping previously-received message with id %s" id))
+                   (let* ((buffer (sip-chat-buffer from to))
+                          (line (format "%s says: %s" from message))
+                          (timestamp
+                           (condition-case ex (->> date
+                                                   parse-time-string
+                                                   (apply #'encode-time)
+                                                   time-to-seconds)
+                             (error
+                              (sip-ws-log (format "failed to parse timestamp: %s" ex))))))
+                     (with-current-buffer buffer
+                       (sip-chat-mode t)
+                       (setq was-at-bottom (eq (point-max) (point)))
+                       (save-excursion
+                         (goto-char (point-max))
+                         (goto-char (line-beginning-position))
+                         (open-line 1)
+                         (insert
+                          (format-time-string "%d %b %I:%M%p (%a)" (seconds-to-time timestamp)))
+                         (insert line)
+                         (setq-local sip-from-phone-number from)
+                         (setq-local sip-max-timestamp (max timestamp (or sip-max-timestamp 0))))
+                       (when was-at-bottom
+                         (goto-char (point-max))))
+                     (unless supress-echo
+                       (message "%s" line))
+                     (setq sip-last-message-buffer buffer)))))
 
 (defun sip-clean-phone-number (number)
   (replace-regexp-in-string "[^0-9]" "" number))
@@ -445,28 +445,28 @@
         custom-headers)
     (when auth-header-opt
       (push auth-header-opt custom-headers))
-  (websocket-open
-   sms-fanout-address
-   :on-open (lambda (_websocket)
-              (sip-ws-log "ws connected")
-              (setq sms-fanout-client-last-pong-received (float-time)
-                    sms-last-connection-timestamp (float-time)))
-   :on-message (lambda (_websocket frame)
-                 (setq sms-fanout-client-last-pong-received (float-time))
-                 (let* ((text (websocket-frame-text frame))
-                        (json (json-parse (or text (error "text is nil")))))
-                   (sip-ws-log (format "received: %s" text))
-                   (sms-fanout-on-message json)))
-   :on-close (lambda (_websocket)
-               (sip-ws-log
-                (if (null sms-last-connection-timestamp)
-                    "on-close: ws was never opened"
-                  (format "ws closed after %s seconds"
-                          (floor
-                           (- (float-time) sms-last-connection-timestamp))))))
-   :on-error (lambda (_websocket callback-id err)
-               (sip-ws-log
-                (format "ws closed with error: %s %s" callback-id err)))
+    (websocket-open
+     sms-fanout-address
+     :on-open (lambda (_websocket)
+                (sip-ws-log "ws connected")
+                (setq sms-fanout-client-last-pong-received (float-time)
+                      sms-last-connection-timestamp (float-time)))
+     :on-message (lambda (_websocket frame)
+                   (setq sms-fanout-client-last-pong-received (float-time))
+                   (let* ((text (websocket-frame-text frame))
+                          (json (json-parse (or text (error "text is nil")))))
+                     (sip-ws-log (format "received: %s" text))
+                     (sms-fanout-on-message json)))
+     :on-close (lambda (_websocket)
+                 (sip-ws-log
+                  (if (null sms-last-connection-timestamp)
+                      "on-close: ws was never opened"
+                    (format "ws closed after %s seconds"
+                            (floor
+                             (- (float-time) sms-last-connection-timestamp))))))
+     :on-error (lambda (_websocket callback-id err)
+                 (sip-ws-log
+                  (format "ws closed with error: %s %s" callback-id err)))
      :custom-header-alist custom-headers)))
 
 (define-minor-mode sip-chat-mode
