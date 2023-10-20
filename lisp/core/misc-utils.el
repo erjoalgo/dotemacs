@@ -445,20 +445,20 @@
 (defun kill-buffers-matching-regexp (regex)
   "Kill buffers whose names match REGEX."
   (interactive "sEnter regex to kill buffers: ")
-  (let* ((regex (format ".*%s.*" regex))
-	 (buffers (remove-if-not
-		   (lambda (buff) (string-match regex (buffer-name buff)))
-		   (buffer-list)))
-	 (kill-func
-	  (lambda (buff)
-	    (let* ((proc (get-buffer-process buff)))
-	      (when proc
-		(message "killing %s" (process-name proc))
-		(interrupt-process proc)
-		(kill-process proc)))
-	    (message "killing buffer: %s " (buffer-name buff))
-	    (kill-buffer buff))))
-    (mapc kill-func buffers)))
+  (cl-loop with count = 0
+           for buffer in (buffer-list)
+           when (string-match regex (buffer-name buffer))
+           do
+           (let* ((proc (get-buffer-process buffer)))
+             (message "DDEBUG bi7w buff: %s" buffer)
+	     (when proc
+	       (message "killing %s" (process-name proc))
+	       (interrupt-process proc)
+	       (kill-process proc))
+             (message "killing buffer: %s " (buffer-name buffer))
+             (kill-buffer buffer)
+             (cl-incf count))
+           finally (message "killed %s buffers" count)))
 
 (defun lpr-buffer-no-confirm ()
   ;; /usr/local/share/emacs/25.2/lisp/lpr.el.gz
