@@ -1,14 +1,13 @@
 (require 'cl-lib)
 
-(defun slime-sbcl (arg)
+(defun slime-sbcl (force-start)
   "Start an sbcl repl via slime or switch to an existing repl buffer."
   (interactive "P")
   (require 'slime)
   (let* ((slime-sbcl-buffer-name "*slime-repl sbcl")
 	 (slime-sbcl-buffer
 	  (find-buffer-by-prefix slime-sbcl-buffer-name)))
-
-    (if (and (null arg) slime-sbcl-buffer)
+    (if (and (null force-start) slime-sbcl-buffer)
 	(switch-to-buffer slime-sbcl-buffer)
       ;;(add-hook 'slime-connected-hook 'load-compiler-hook)
       (slime))))
