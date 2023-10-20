@@ -40,6 +40,7 @@
 (defvar sip-buffer-fmt "#sip-sms-%s")
 
 (defvar-local sip-from-phone-number nil)
+(defvar-local sip-did nil)
 (defvar-local sip-max-timestamp nil)
 
 (defvar linphone-profile-id nil)
@@ -158,8 +159,9 @@
     (sip-send-chat-line)
     (sit-for 1)))
 
-(defun sip-chat-buffer (other-number &optional self-number)
+(defun sip-chat-buffer (other-number self-number)
   (cl-assert (not (s-blank? other-number)))
+  (cl-assert self-number)
   (let* ((other-number-clean (sip-phone-number-clean other-number))
          (buffer-name (format sip-buffer-fmt
                               (concat other-number-clean
@@ -168,7 +170,8 @@
          (buffer (get-buffer-create buffer-name)))
     (with-current-buffer buffer
       (sip-chat-mode)
-      (setq sip-from-phone-number other-number-clean)
+      (setq-local sip-from-phone-number other-number-clean)
+      (setq-local sip-did self-number)
       (sip-chat-maybe-autosend-message))
     buffer))
 
@@ -227,15 +230,16 @@
 (defun sip-clean-phone-number (number)
   (replace-regexp-in-string "[^0-9]" "" number))
 
-(defun sip-chat (number &optional message)
+(defun sip-chat (number message &optional did)
   (interactive "senter phone number: \nsenter message: ")
   (let* ((number-clean (sip-clean-phone-number number))
-         (buffer (sip-chat-buffer number-clean)))
+         (did (or did (sip-select-did)))
+         (buffer (sip-chat-buffer number-clean did)))
     (switch-to-buffer buffer)
     (sip-chat-maybe-autosend-message)))
 
-(defun sip-message-exists-p (number message)
-  (with-current-buffer (sip-chat-buffer number)
+(defun sip-message-exists-p (number message did)
+  (with-current-buffer (sip-chat-buffer number did)
     (save-excursion
       (goto-char (point-min))
       (search-forward message))))
@@ -243,10 +247,10 @@
 (defun sip-chat-mass (numbers message)
   (interactive "senter newline-separated phone numbers: \nsenter sms message: ")
   (cl-loop for number in (split-string numbers "\n" t)
-           if (sip-message-exists-p number message)
+           if (sip-message-exists-p number message did)
            do (message "skipping previously-sent message to %s" number)
            else do (progn
-                     (sip-chat number message)
+                     (sip-chat number message did)
                      (sit-for 1))))
 
 (defun sip-goto-last-message-buffer ()
@@ -428,12 +432,13 @@
      as line = (with-current-buffer buffer
                  (sip-chat-last-message))
      as phone-number = (buffer-local-value 'sip-from-phone-number buffer)
+     as did = (buffer-local-value 'sip-did buffer)
      when line
      do (let ((map (make-sparse-keymap)))
           (define-key map (kbd "RET") `(lambda () (interactive)
                                          (if (buffer-live-p ,buffer)
                                              (switch-to-buffer ,buffer)
-                                           (sip-chat ,phone-number))))
+                                           (sip-chat ,phone-number ,did))))
           (insert (s-replace "\n" "\\n" line))
           (put-text-property (line-beginning-position)
                              (line-end-position) 'keymap map)
