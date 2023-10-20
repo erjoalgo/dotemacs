@@ -424,12 +424,20 @@
       (sip-ws-log "disconnecting...")
       (websocket-close sms-fanout-client))))
 
-(defun url-parse-auth-header (url)
+(defun url-parse-auth-from-url (url)
   (when-let* ((parts (url-generic-parse-url url))
               (user (url-user parts))
-              (password (url-password parts))
-              (base64 (base64-encode-string (format "%s:%s" user password))))
-    (cons "Authorization" (format "Basic %s" base64))))
+              (password (url-password parts)))
+    (when (and user password)
+      (cons user password))))
+
+(defun url-auth-to-header (url)
+  (let ((auth (url-parse-auth-from-url url)))
+    (when auth
+      (cl-destructuring-bind (user . password) auth
+        (let ((base64 (base64-encode-string (format "%s:%s" user password))))
+          (cons "Authorization" (format "Basic %s" base64)))))))
+
 
 (defun sms-fanout-connect ()
   (sms-fanout-disconnect)
