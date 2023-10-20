@@ -60,7 +60,6 @@
       (apply #'call-process "env" nil (current-buffer) nil env-args)
       (buffer-string))))
 
-
 (defun sip-current-identity ()
   (save-match-data
     (let* ((output (linphonecsh "generic" "proxy show default"))
@@ -86,7 +85,6 @@
          (number-clean (sip-phone-number-clean number))
          (sip-address (format "sip:%s@%s" number-clean sip-host)))
     sip-address))
-
 
 (defun sip-add-message (sip-message)
   (let* ((id (sip-message-id sip-message))
