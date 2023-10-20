@@ -165,11 +165,11 @@
 
 (defun sms-send-linphonecsh (from to message)
   (let* ((current-identity (sip-current-identity))
-        (message (buffer-substring
-                  (line-beginning-position)
-                  (line-end-position)))
-        (sip-address (sip-phone-number-to-address sip-from-phone-number
-                                                  (cl-second current-identity))))
+         (sip-address
+          (sip-phone-number-to-address
+           from
+           (cl-second current-identity))))
+    (cl-assert current-identity)
     (unless (or (null sip-last-known-identity)
                 (equal current-identity sip-last-known-identity)
                 (y-or-n-p (format "use new sip identity: %s? "
