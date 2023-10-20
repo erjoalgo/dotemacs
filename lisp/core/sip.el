@@ -380,6 +380,8 @@
 
 (defun sms-fanout-on-message (json)
   (cl-assert json)
+  (unless (listp json)
+    (error "non-json argument: %s" json))
   (alist-let json (status message-type)
     (cl-assert message-type)
     (cl-assert status)
