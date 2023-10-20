@@ -460,6 +460,10 @@
              (cl-incf count))
            finally (message "killed %s buffers" count)))
 
+(defun kill-buffers-with-prefix (prefix)
+  (interactive (list (read-buffer "select buffer prefix: ")))
+  (kill-buffers-matching-regexp (format "^%s.*" (regexp-quote prefix))))
+
 (defun lpr-buffer-no-confirm ()
   ;; /usr/local/share/emacs/25.2/lisp/lpr.el.gz
   "Print buffer contents without pagination or page headers.
