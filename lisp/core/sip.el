@@ -32,7 +32,10 @@
   (with-temp-buffer
     (insert json)
     (goto-char (point-min))
-    (json-read)))
+    (prog1
+        (json-read)
+      (unless (s-blank? (buffer-substring (point) (point-max)))
+        (error "entire text did not parse as json: %s" json)))))
 
 (defvar sip-buffer-fmt "#sip-sms-%s")
 
