@@ -1,6 +1,7 @@
 (require 'cl-lib)
 (require 'websocket)
 (require 's)
+(require 'selcand)
 
 (defvar sms-fanout-address nil)
 (defvar sms-fanout-client nil)
@@ -94,10 +95,75 @@
       (puthash id-numeric sip-message sip-messages)
       t)))
 
-(defun sip-send-chat-line ()
-  (interactive)
-  (cl-assert (bound-and-true-p sip-from-phone-number))
-  (goto-char (point-max))
+(defun url-retrieve-with-auth (user password &rest r)
+  (let ()
+    (apply #'url-retrieve r)))
+
+(defun voipms-service-request (path)
+  (let*
+      ((parts (url-generic-parse-url (sms-fanout-read-address)))
+       (user (url-user parts))
+       (password (url-password parts))
+       (hostname (url-host parts))
+       (port (url-port parts))
+       (port-opt (if (equal port 0) "" (format ":%s" port)))
+       (wss-scheme (url-type parts))
+       (http-scheme (cond
+                     ((equal "wss" wss-scheme) "https")
+                     ((equal "ws" wss-scheme) "http")
+                     ((member wss-scheme '("http" "https")) wss-scheme)
+                     (t (error "unknown scheme: %s" wss-scheme))))
+       (url (format "%s://%s%s%s" http-scheme hostname port-opt path)))
+    (let ((url-request-extra-headers
+           (cons
+            `("Authorization" .
+              ,(concat "Basic "
+                       (base64-encode-string
+                        (format "%s:%s" user password))))
+            url-request-extra-headers)))
+      (url-retrieve-synchronously-curl url))))
+
+(defun url-retrieve-synchronously-curl (url)
+  (let* ((buffer (format "*curl-%s" (uuid)))
+         (args (list
+                "curl" "-sL" "--fail-with-body"
+                (format "-X%s" (or url-request-method
+                                   (if url-request-data "POST" "GET")))
+                url))
+         proc)
+    (cl-loop for (k . v) in url-request-extra-headers
+             do (push-last (format "-H%s:%s" k v) args))
+    (when url-request-data (push-last "-d@-" args))
+    (setq proc (apply #'start-process buffer buffer args))
+    (set-process-sentinel proc
+                          (lambda (proc status)
+                            (message "process sentinel: %s %s" proc status)))
+    (when url-request-data
+      (process-send-string proc url-request-data))
+    (while (process-live-p proc)
+      (process-send-eof proc)
+      (sit-for 1))
+    (let ((resp (with-current-buffer buffer
+                  (buffer-string))))
+      (if (zerop (process-exit-status proc))
+          (prog1
+              resp
+            (kill-buffer buffer))
+        (progn
+          (switch-to-buffer-other-window buffer)
+          (error "non-zero curl exit: %s %s" (process-exit-status proc) resp))))))
+
+(defun sms-send (from to message)
+  (let ((url-request-method "POST")
+        (url-request-data
+         (json-encode `((from . ,from) (to . ,to) (message . ,message)))))
+      (let ((resp (voipms-service-request "/sms")))
+        (if (save-match-data
+              (string-match "status.*success" resp))
+            resp
+          (error "non-success sms-send response: %s" resp)))))
+
+(defun sms-send-linphonecsh (from to message)
   (let* ((current-identity (sip-current-identity))
         (message (buffer-substring
                   (line-beginning-position)
@@ -110,7 +176,20 @@
                                   (s-join "@" current-identity))))
       (error "identity change not acknowledged"))
     (setq sip-last-known-identity current-identity)
-    (linphonecsh "generic" (format "chat %s %s" sip-address message))
+    (linphonecsh "generic" (format "chat %s %s" sip-address message))))
+
+(defun sip-send-chat-line ()
+  (interactive)
+  (cl-assert (bound-and-true-p sip-from-phone-number))
+  (cl-assert (bound-and-true-p sip-did))
+  (goto-char (point-max))
+  (let* ((message (buffer-substring
+                   (line-beginning-position)
+                   (line-end-position)))
+         (to sip-from-phone-number)
+         (from sip-did)
+         (resp (sms-send from to message)))
+    (message "resp: %s" resp)
     (goto-char (line-beginning-position))
     (insert "        YOU say: ")
     ;; maybe add a newline
@@ -241,6 +320,16 @@
     (save-excursion
       (goto-char (point-min))
       (search-forward message))))
+
+(defun sip-list-dids ()
+  (let* ((url-request-data nil)
+         (url-request-method "GET")
+         (resp (voipms-service-request "/dids"))
+         (json (json-parse-string resp :object-type 'alist)))
+    (mapcar (apply-partially #'alist-get 'did) json)))
+
+(defun sip-select-did ()
+  (selcand-select (sip-list-dids) :prompt "select did: "))
 
 (defun sip-chat-mass (numbers message)
   (interactive "senter newline-separated phone numbers: \nsenter sms message: ")
