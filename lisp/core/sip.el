@@ -625,4 +625,5 @@
   (sms-fanout-client-stop-timer))
 
 ;; (sip-stop)
-;; (sip-restart)
+(when (sms-fanout-read-address)
+  (sip-restart))
