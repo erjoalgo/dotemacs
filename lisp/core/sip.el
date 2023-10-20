@@ -468,6 +468,7 @@
 (define-minor-mode sip-chat-mode
   "Sip chat minor mode"
   :lighter " sip-chat-mode"
+  :keymap
   (let ((kmap (make-sparse-keymap)))
     (define-key kmap (kbd "RET") #'sip-send-chat-line)
     (define-key kmap (kbd "s-i") #'sip-chat-send-automated-message)
