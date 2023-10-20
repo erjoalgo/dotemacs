@@ -10,6 +10,7 @@
     (if (and (null force-start) slime-sbcl-buffer)
 	(switch-to-buffer slime-sbcl-buffer)
       ;;(add-hook 'slime-connected-hook 'load-compiler-hook)
+      (setq slime-auto-package nil)
       (slime))))
 
 (defvar *stumpwm-swank-port* 4005)
@@ -28,12 +29,10 @@
       ;;doesn't work since slime-connect does async stuff
       ;;dynamic binding won't reach slime-stumpwm-connection-hook
       (let ((slime-stumpwm-connection-p t))
-	(add-hook 'slime-editing-mode-hook
-		  'slime-stumpwm-connection-hook)
+        ;; TODO avoid use of global variable
+        (setq slime-auto-package "STUMPWM")
 	(slime-connect "localhost" *stumpwm-swank-port*)))))
 
-(defun slime-stumpwm-connection-hook ()
-  "Function run upon connecting to slime.")
 
 (defun stumpwm-visible-window-pids ()
   "List parent process pids of all currently-visible stumpwm windows."
@@ -153,13 +152,17 @@
 
 (advice-add #'gui-select-text :after #'gui-select-text--stumpwm)
 
-(stumpwm-message (format "connected to emacs on %s" system-name) 'green)
+(defvar slime-auto-package nil
+  "If non-nil, switch to the given package upon connecting to the inferior lisp.")
 
-(defun slime-connected-hook-switch-to-stumpwm-package ()
-  (condition-case err
-      (slime-repl-set-package "STUMPWM")
-    (error
-     (message "failed to set package to stumpwm: %s" err))))
+(defun slime-connected-hook-switch-to-auto-package ()
+  (when slime-auto-package
+    (condition-case err
+        (slime-repl-set-package slime-auto-package)
+      (error
+       (message "failed to set package to %s %s" sbcl-auto-set-package err)))))
 
 (add-hook #'slime-editing-mode-hook
-          #'slime-connected-hook-switch-to-stumpwm-package)
+          #'slime-connected-hook-switch-to-auto-package)
+
+(stumpwm-message (format "connected to emacs on %s" system-name) 'green)
