@@ -473,15 +473,6 @@
     (define-key kmap (kbd "RET") #'sip-send-chat-line)
     (define-key kmap (kbd "s-i") #'sip-chat-send-automated-message)
     kmap)
-  (let ((real-message #'message))
-  (cl-letf (
-            ;; '(real-message #'message)
-            ((symbol-function #'message)
-             (lambda (fmt &rest args)
-               (if (equal fmt "Truncate long lines %s")
-                   '(funcall real-message "DEBUG kx5a TRACE")
-                 '(funcall real-message fmt args)))))
-    (toggle-truncate-lines nil)))
   (visual-line-mode t))
 
 (autobuild-define-rule sip-chat-send (sip-chat-mode)
