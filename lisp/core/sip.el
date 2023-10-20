@@ -441,6 +441,10 @@
 
 (defun sms-fanout-connect ()
   (sms-fanout-disconnect)
+  (let ((auth-header-opt (url-auth-to-header sms-fanout-address))
+        custom-headers)
+    (when auth-header-opt
+      (push auth-header-opt custom-headers))
   (websocket-open
    sms-fanout-address
    :on-open (lambda (_websocket)
@@ -463,7 +467,7 @@
    :on-error (lambda (_websocket callback-id err)
                (sip-ws-log
                 (format "ws closed with error: %s %s" callback-id err)))
-   :custom-header-alist `(,(url-parse-auth-header sms-fanout-address))))
+     :custom-header-alist custom-headers)))
 
 (define-minor-mode sip-chat-mode
   "Sip chat minor mode"
