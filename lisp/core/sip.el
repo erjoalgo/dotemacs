@@ -307,8 +307,8 @@
 (defun sip-clean-phone-number (number)
   (replace-regexp-in-string "[^0-9]" "" number))
 
-(defun sip-chat (number message &optional did)
-  (interactive "senter phone number: \nsenter message: ")
+(defun sip-chat (number &optional did)
+  (interactive "senter phone number: ")
   (let* ((number-clean (sip-clean-phone-number number))
          (did (or did (sip-select-did)))
          (buffer (sip-chat-buffer number-clean did)))
