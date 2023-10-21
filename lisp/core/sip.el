@@ -115,12 +115,10 @@
                      (t (error "unknown scheme: %s" wss-scheme))))
        (url (format "%s://%s%s%s" http-scheme hostname port-opt path)))
     (let ((url-request-extra-headers
-           (cons
-            `("Authorization" .
+           `(("Authorization" .
               ,(concat "Basic "
                        (base64-encode-string
-                        (format "%s:%s" user password))))
-            url-request-extra-headers)))
+                        (format "%s:%s" user password)))))))
       (url-retrieve-synchronously-curl url))))
 
 (defun url-retrieve-synchronously-curl (url)
