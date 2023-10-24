@@ -324,7 +324,7 @@
 		     (call-interactively ',fun)
 		     (unless was-modified (save-buffer))
 		     (unless was-open (kill-buffer buffer)))))))
-  (lexical-let ((fun fun))
+  (let ((fun fun))
     (cl-loop with front = (list top)
 	  with new-front = nil
 	  while front do
