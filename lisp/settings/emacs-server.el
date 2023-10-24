@@ -1,7 +1,9 @@
 (defun server-init  ()
   (require 'server)
-  (setq server-name (or (getenv "DESKTOP_GROUP_NUMBER")
-                        server-name))
+  (setq server-name
+        (format "%s.%s"
+                (or (getenv "DESKTOP_GROUP_NUMBER") server-name)
+                (random 1000)))
   (server-force-delete server-name)
   (server-start)
   (cl-assert (server-running-p server-name)))
