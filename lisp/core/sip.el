@@ -129,9 +129,9 @@
                                    (if url-request-data "POST" "GET")))
                 url))
          proc)
+    (when url-request-data (push-last "-d@-" args))
     (cl-loop for (k . v) in url-request-extra-headers
              do (push-last (format "-H%s:%s" k v) args))
-    (when url-request-data (push-last "-d@-" args))
     (setq proc (apply #'start-process buffer buffer args))
     (set-process-sentinel proc
                           (lambda (proc status)
