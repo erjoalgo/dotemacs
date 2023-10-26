@@ -132,6 +132,8 @@
     (when url-request-data (push-last "-d@-" args))
     (cl-loop for (k . v) in url-request-extra-headers
              do (push-last (format "-H%s:%s" k v) args))
+    (message "%s" (string-join args " "))
+    (message "POST data: %s" url-request-data)
     (setq proc (apply #'start-process buffer buffer args))
     (set-process-sentinel proc
                           (lambda (proc status)
