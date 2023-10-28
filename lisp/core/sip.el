@@ -326,7 +326,8 @@
   (let* ((url-request-data nil)
          (url-request-method "GET")
          (resp (voipms-service-request "/dids"))
-         (json (json-parse-string resp :object-type 'alist)))
+         (json-object-type 'alist)
+         (json (json-parse-whole-string resp)))
     (mapcar (apply-partially #'alist-get 'did) json)))
 
 (defun sip-select-did ()
