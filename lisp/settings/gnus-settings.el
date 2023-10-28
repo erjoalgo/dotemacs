@@ -187,22 +187,12 @@
   (gnus-summary-save-parts ".*" dir nil )
   (find-file dir))
 
-(defadvice gnus-group-select-group
-    ;;there must be a better way
-    (around select-unread-email-advice activate)
-  '(ad-set-arg 0 t)
-  ad-do-it
-  (gnus-summary-sort-by-most-recent-date))
-
-(defadvice gnus-summary-insert-new-articles
-    ;;there must be a better way
-    (after sort-by-date-after-refresh activate)
-  (gnus-summary-sort-by-most-recent-date))
-
-(defadvice gnus-group-read-group
-    ;;there must be a better way!
-    (after sort-by-date-after-nnir activate)
-  (gnus-summary-sort-by-most-recent-date))
+(cl-loop for fn in
+         (list
+          #'gnus-group-select-group
+          #'gnus-summary-insert-new-articles
+          #'gnus-group-read-group)
+         do (advice-add fn :after #'gnus-summary-sort-by-most-recent-date))
 
 (defvar gmail-app-specific-url
   "https://security.google.com/settings/security/apppasswords?pli=1")
