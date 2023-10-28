@@ -141,9 +141,12 @@
                             (message "process sentinel: %s %s" proc status)))
     (when url-request-data
       (process-send-string proc url-request-data))
-    (while (process-live-p proc)
-      (process-send-eof proc)
-      (sit-for 1))
+    (cl-loop
+     for i below 30
+     while (process-live-p proc)
+     do (progn (process-send-eof proc)
+               (message "waiting for process to die... %s" buffer)
+               (sit-for 1)))
     (let ((resp (with-current-buffer buffer
                   (buffer-string))))
       (if (zerop (process-exit-status proc))
