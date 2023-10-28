@@ -30,7 +30,7 @@
              "last pong received %ss ago, max is %ss ago"
              last-pong-ago-secs max-allowed-last-pong-ago-secs))))))
 
-(defun json-parse (json)
+(defun json-parse-whole-string (json)
   (with-temp-buffer
     (insert json)
     (goto-char (point-min))
@@ -455,7 +455,8 @@
      :on-message (lambda (_websocket frame)
                    (setq sms-fanout-client-last-pong-received (float-time))
                    (let* ((text (websocket-frame-text frame))
-                          (json (json-parse (or text (error "text is nil")))))
+                          (json (json-parse-whole-string
+                                 (or text (error "text is nil")))))
                      (sip-ws-log (format "received: %s" text))
                      (sms-fanout-on-message json)))
      :on-close (lambda (_websocket)
