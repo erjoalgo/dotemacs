@@ -233,7 +233,8 @@
 	  "machine imap.gmail.com login %s password %s port 993
 machine smtp.gmail.com login %s password %s port 587"
 	  email pass
-	  email pass) nil
+	  email pass)
+         nil
 	 authinfo-fn)))))
 
 (setq gnutls-min-prime-bits 2048)
