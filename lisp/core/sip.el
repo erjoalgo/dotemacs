@@ -2,6 +2,7 @@
 (require 'websocket)
 (require 's)
 (require 'selcand)
+(require 'json)
 
 (defvar sms-fanout-address nil)
 (defvar sms-fanout-client nil)
