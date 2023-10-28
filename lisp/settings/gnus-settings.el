@@ -85,9 +85,7 @@
       (gnus-group-read-group 1000 t inbox)
       (unless (byte-code-function-p (symbol-function 'gnus))
         (y-or-n-p
-         "'you should byte-compile-gnus' warning is slowing down gnus"))
-      ;;(gnus-summary-sort-by-most-recent-date)
-      )))
+         "'you should byte-compile-gnus' warning is slowing down gnus")))))
 
 
 (defun gnus-filter-groups (pred)
