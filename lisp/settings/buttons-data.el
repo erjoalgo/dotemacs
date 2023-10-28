@@ -522,6 +522,7 @@
          (but
           ("t" (cmd-ins "(list {})"))
           ("g" (cmd-ins "(.size {})"))))))
+      ("T" (cmd-ins "(try" (nli) (rec) (nli) "(catch Exception ex " (rec) "))" (nli)))
       ("5"
        (but
         ("s" (cmd-ins "%s"))
