@@ -48,7 +48,8 @@
 	(insert (pp `(setf sent-group-name ,sent-group-name)))
         (emacs-lisp-mode)
 	(add-file-local-variable 'mode 'emacs-lisp))
-      (message "wrote to %s" dot-gnus))))
+      (message "wrote to %s" dot-gnus)
+      dot-gnus)))
 
 (defun gen-dot-gnus-gmail-account (gmail-address)
   (interactive "senter gmail address: ")
