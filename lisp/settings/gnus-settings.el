@@ -187,12 +187,15 @@
   (gnus-summary-save-parts ".*" dir nil )
   (find-file dir))
 
+(defun gnus--advice-sort-by-most-recent-date (&rest args)
+  (gnus-summary-sort-by-most-recent-date))
+
 (cl-loop for fn in
          (list
           #'gnus-group-select-group
           #'gnus-summary-insert-new-articles
           #'gnus-group-read-group)
-         do (advice-add fn :after #'gnus-summary-sort-by-most-recent-date))
+         do (advice-add fn :after #'gnus--advice-sort-by-most-recent-date))
 
 (defvar gmail-app-specific-url
   "https://security.google.com/settings/security/apppasswords?pli=1")
