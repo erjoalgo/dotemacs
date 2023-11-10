@@ -27,6 +27,7 @@
 (def-open-file-program "vlc" ("mov" "mkv" "aac"))
 (def-open-file-program "celluloid" ("mp4"))
 (def-open-file-program "xournal" ("xoj"))
+(def-open-file-program :self ("AppImage"))
 
 
 (defvar open-exe
@@ -39,7 +40,10 @@
       (when ext
         (setq ext (downcase ext))
         (cl-loop for (program . exts) in *file-programs* thereis
-                 (and (member ext exts) program))))))
+                 (when (member ext (mapcar #'downcase exts))
+                   (if (eq :self program)
+                       fn
+                     program)))))))
 
 (defun coalesce (&rest strings)
   (cl-loop for s in strings
