@@ -35,7 +35,10 @@
   (cl-loop for filename in command-line-args-left
            with errors = nil
            do (condition-case ex
-                  (with-current-buffer (find-file-noselect filename)
+                  (with-current-buffer
+                      (let ((sh-make-vars-local nil)
+                            (inhibit-message t))
+                        (find-file-noselect filename t))
                     (sh-getopts-check t))
                 (error (push (format "%s: %s" filename ex) errors)))
            finally
