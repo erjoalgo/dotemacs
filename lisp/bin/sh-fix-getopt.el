@@ -26,7 +26,6 @@
                 (push opt missing))))
         (when missing
           (when auto-fix
-            (message "DDEBUG vqf1 TRACE")
             (goto-char (1- spec-end))
             (insert (string-join missing ""))
             (save-buffer))
