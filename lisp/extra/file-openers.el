@@ -28,6 +28,11 @@
 (def-open-file-program "celluloid" ("mp4"))
 (def-open-file-program "xournal" ("xoj"))
 (def-open-file-program :self ("AppImage"))
+(defvar *creality-print-exe* nil)
+(setq *creality-print-exe*
+      (car (file-expand-wildcards "~/Downloads/Creality_Print*AppImage")))
+(def-open-file-program "cura" ("stl" "3mf"))
+(def-open-file-program "blender" ("blend"))
 
 
 (defvar open-exe
