@@ -393,15 +393,31 @@
       ("j" (buff "*-jabber-roster-*"))
       ("d"
        (but
-        ("f" (cmd (find-last-download-or-scrot nil nil t)))
-        ("k" (cmd (find-last-download-or-scrot)))
+        ("f" (cmd (doc "find and open the last download")
+                  (find-last-download-or-scrot nil nil t)))
+        ("k" (cmd (doc "kill (copy) the last download") (find-last-download-or-scrot)))
         ("m" (cmd
+              (doc "move the last download to the current directory")
               (let*
                   ((last-download (find-last-download nil t))
                    (dest (f-join default-directory (f-filename last-download))))
                 (rename-file last-download dest)
                 (kill-new dest)
-                (message "mv -t %s %s" default-directory last-download))))))
+                (message "mv -t %s %s" default-directory last-download))))
+        ("z" (cmd
+              (doc "unzip the last download into the current directory")
+              (when-let* ((fname (find-last-download nil t))
+                          (ext (f-ext fname))
+                          (is-zip (equal "zip" (downcase ext)))
+                          (dir (f-join "~/Downloads/" (f-base fname))))
+                (make-directory dir)
+                (let ((default-directory dir))
+                  (call-process "unzip" nil (get-buffer-create "*unzip*") nil
+                                fname "-d" dir))
+                (find-file dir))))
+        ("w" (cmd (doc "open ~/Downloads")
+                  (find-file "~/Downloads")
+                  (revert-buffer)))))
       ("p" 'project-open)))
     ("x"
      (buttons-make
