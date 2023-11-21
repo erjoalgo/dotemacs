@@ -38,28 +38,33 @@
 (defvar open-exe
   (s-trim (shell-command-to-string "which open")))
 
-(defun get-file-program (fn)
+(defun get-file-programs (fn)
   (if (equal system-type 'darwin)
       open-exe
     (let ((ext (file-name-extension fn)))
       (when ext
         (setq ext (downcase ext))
-        (cl-loop for (program . exts) in *file-programs* thereis
-                 (when (member ext (mapcar #'downcase exts))
-                   (if (eq :self program)
-                       fn
-                     program)))))))
+        (cl-loop for (program . exts) in *file-programs*
+                 when (member ext (mapcar #'downcase exts))
+                 collect
+                 (if (eq :self program)
+                     fn
+                   program))))))
 
 (defun coalesce (&rest strings)
   (cl-loop for s in strings
         thereis (and s (> (length s) 0) s)))
 
-(defun open-file (filename)
+(defun open-file (filename &optional no-prompt)
   (interactive (list (dired-file-name-at-point)))
   (setf filename (expand-file-name filename))
   (setq filename
         (replace-regexp-in-string "^/sudo:root@[^:]+:" "" filename))
-  (let ((program (get-file-program filename)))
+  (let* ((programs (get-file-programs filename))
+         (program (if (or (null (cdr programs)) no-prompt)
+                      (car programs)
+                    (selcand-select programs
+                                    :prompt (format "select program to open %s: " filename)))))
     (if (not program)
         (progn
           (message (concat "no program known for file: " filename))
