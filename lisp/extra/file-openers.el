@@ -32,7 +32,7 @@
 (setq *creality-print-exe*
       (car (file-expand-wildcards "~/Downloads/Creality_Print*AppImage")))
 (def-open-file-program "cura" ("stl" "3mf"))
-(def-open-file-program "blender" ("blend"))
+(def-open-file-program "blender" ("blend" "stl"))
 
 
 (defvar open-exe
