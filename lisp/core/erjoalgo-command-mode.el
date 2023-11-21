@@ -386,6 +386,7 @@
       ("w" (file "~/.stumpwmrc.d/lisp/.stumpwmrc"))
       ("f" (file "~/git/dotemacs/lisp/extra/file-openers.el"))
       ("n" (file "~/.stumpwmrc.d/bin"))
+      ("N" (file "~/.stumpwmrc.d/installs"))
       ("W" (buff "*Warnings*"))
       ("o" (file "~/private-data/org/master.org"))
       ("T" (cmd (org-todo-list org-match)))
