@@ -189,6 +189,7 @@
               ("s" (cmd-ins "@staticmethod"))
               ("c" (cmd-ins "@classmethod"))))
         ("w" (cmd-ins "await "))))
+      ("<" (cmd-ins "if __name__ == \"__main__\":{(nli)}"))
       ("." (cmd-ins "if __name__ == \"__main__\":{(nli)}"))
       ("=" (cmd-ins " == "))
       ("j" (cmd-ins " or {(inm)}"))
