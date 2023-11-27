@@ -173,6 +173,7 @@
       ("0" (cmd-ins python-argparse-template))
       ("t"
        (but
+        ("r" (cmd-ins "raise Exception({})"))
         ("a" (cmd-ins "assert "))
         ("u" (cmd-ins "True"))
         ("g" (cmd-ins "False"))
@@ -206,7 +207,6 @@
       ("]" (cmd-ins ".format({})"))
       ("N" (cmd (remove-trailing-whitespace (point-min) (point-max))
                 (ins "a=[{}]{(nli)}print(getattr(Solution(), dir(Solution)[-1])(*a))")))
-      ("E" (cmd-ins "raise Exception({})"))
       ("b"
        (but
         ("c" (cmd-ins "continue"))
