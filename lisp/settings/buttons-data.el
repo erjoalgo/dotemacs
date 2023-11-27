@@ -1013,7 +1013,8 @@
         ("S" (cmd-ins "echo \"{}\" 1>&2" (nli)
                       "select {} in {}; do"
                       (nli) "break" (nli) "done"
-                      (nli)))))
+                      (nli)))
+        ("y" (cmd-ins "sudo apt-get install -y "))))
       ("<" (cmd-ins " <<< "))
       ("-" (cmd-ins "--"))))
 
