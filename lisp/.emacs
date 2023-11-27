@@ -133,7 +133,8 @@ object."
    selcand
    typescript-mode
    async
-   sqlformat))
+   sqlformat
+   dockerfile-mode))
 
 (require 'f)
 
