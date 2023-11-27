@@ -1759,7 +1759,10 @@ server {
       (but
        ;; ("[" 'markdown-insert-link)
        ("[" (cmd-ins "[" (rec) "](" (rec) ")"))
-       ("`" (cmd-ins "`" (rec) "`"))))))
+       ("`" (cmd-ins "`" (rec) "`"))))
+
+   (defbuttons dockerfile-buttons bash-buttons (dockerfile-mode-map)
+      (but))))
 
 (message "buttons loaded")
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
