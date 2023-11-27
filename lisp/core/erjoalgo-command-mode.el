@@ -368,6 +368,7 @@
       ("c" (lambda (arg) (interactive "P")
              (switch-to-nth-most-recent-buffer "^[*]compilation[*]" arg)))
       ("r" (buff "*Backtrace*"))
+      ("R" (file "~/.config/redshift.conf"))
       ("b" (file "~/.bashrc"))
       ("a" (file "~/.bash_aliases"))
       ("A" (file "~/.bash-fns/.my-bash-fns"))
