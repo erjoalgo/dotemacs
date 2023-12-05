@@ -1088,7 +1088,7 @@
                                         (format "\\textbf{%s}" text))
                         (insert "\\textbf{") (rec) (insert "}"))))
       ("[" (cmd-ins "{" (ins "{}}")))
-      ("i" (cmd-ins "\\item {(idt)}{}{(nli)}"))
+      ("i" (cmd-ins "\\item {(idt)}"))
       ("_" (cmd-ins ".${}$."))
       ("x" (cmd-ins "(.x.)"))
       ("q" (cmd-ins "\\begin{numedquestion}"
