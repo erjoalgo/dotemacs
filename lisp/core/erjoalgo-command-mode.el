@@ -448,7 +448,7 @@
         ("e" #'toggle-debug-on-error)
         ("q" #'toggle-debug-on-quit)))
       ("g" 'grep-recursive)
-      ("G" 'replace-regexp-dir)
+      ("G" #'replace-regexp-recursively)
       ("f" 'find-iregex)
       ("F" 'erc)
       ("u" 'universal-argument)
