@@ -118,3 +118,30 @@
                     (replace-match local t t nil 1)))))))
 
 ;;require this later in case it's not available
+(defun tex-maybe-add-command (content)
+  (save-excursion
+    (goto-char (point-min))
+    (unless
+        (re-search-forward (regexp-quote content) nil t)
+      (goto-char (point-min))
+      (re-search-forward "^[\\]begin[{]document[}]")
+      (newline-and-indent)
+      (insert content))))
+
+(defun tex-add-youtube-url (url)
+  (interactive "senter youtube url: ")
+  (tex-maybe-add-command
+   "\\newcommand{\\hrefyt}[3]{
+  \\href{#1}{
+  \\includegraphics[width=\\linewidth]{#2}
+  \\qrcode{#1}#3
+  }
+}")
+  (let* ((id (or (yt-extract-video-id url)
+                 (error "unable to extract youtube id from url: %s" url)))
+         (image-url (youtube-image-url id))
+         (filename (expand-file-name (format "~/Downloads/%s.jpeg" id)))
+         (title (s-trim-right (shell-command-to-string (format "webpage-title.sh '%s'" url)))))
+    (message "downloading youtube thumbnail from url: %s" image-url)
+    (url-copy-file image-url filename t)
+    (insert (format "\\hrefyt{%s}{%s}{%s}" url filename title))))
