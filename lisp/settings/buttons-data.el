@@ -885,13 +885,13 @@
        (but
         ("v" (cmd-ins "fmt.Printf(\"DDEBUG "
                       (f-filename buffer-file-name)
-                      ", "
+                      " {(rnd)}, "
                       (ins "{0}: %+v\\n\","
                            (nli?)
                            "{0})")))
         ("r" (cmd-ins "fmt.Println(\"DDEBUG TRACE "
                       (f-filename buffer-file-name)
-                      ", {} {(rnd)}\")"))
+                      " {(rnd)}, {}\")"))
         ("s" (cmd-ins "fmt.Sprintf(\"{}\\n\"{})"))
         ("e" (cmd-ins "fmt.Errorf(\"{}\\n\"{})" ))
         ("t" (cmd-ins "fmt.Printf(\"{}\\n\"{})"))))
