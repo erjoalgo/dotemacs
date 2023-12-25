@@ -995,5 +995,13 @@ This requires the external program `diff' to be in your `exec-path'."
    :speed 160
    :gap 2))
 
+(defun carriage-return-remove ()
+  (interactive)
+  (save-excursion
+    (goto-char (point-min))
+    (save-match-data
+      (while (re-search-forward "" nil t)
+        (replace-match "")))))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; misc-utils.el ends here
