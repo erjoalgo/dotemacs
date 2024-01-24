@@ -243,15 +243,18 @@ Buffers other than the current buffer are preferred."
   (interactive "P")
   "proxy to either slime, cider, or emacs lisp's eval-defun"
   (cond
-   ((and (boundp 'slime-mode) slime-mode)
+   ((and (boundp 'slime-mode)
+         (eq major-mode 'lisp-mode))
     (let ((slime-load-failed-fasl 'always))
       (call-interactively 'slime-eval-defun)))
 
-   ((and (boundp 'cider-mode) cider-mode)
+   ((and (boundp 'cider-mode)
+         (eq major-mode 'cider-mode))
     (call-interactively 'cider-eval-defun-at-point))
 
    ;;emacs lisp
-   (t (eval-defun arg))))
+   ((eq major-mode 'emacs-lisp-mode) (eval-defun arg))
+   (t (error "unknown lisp mode!"))))
 
 (defun revert-buffer-no-confirm ()
   "Revert buffer without confirmation."
