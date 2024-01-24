@@ -110,6 +110,7 @@ object."
              (safe-funcall (package-install package)))))
 
 (package-initialize)
+;; (setq package-install-upgrade-built-in t)
 (ensure-packages-exist
  '(company
    legalese
