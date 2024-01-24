@@ -253,10 +253,6 @@
         ("m" (cmd-ins "(defmacro {} ({}){(nli)}{})"))
         ("e" (cmd-ins "(defmethod {} ({}){(nli)}{})"))
         ("s" (cmd-ins "(cl-defstruct {}{(nli)}{})"))
-        ("b"
-         (but
-          ("d" (cmd-ins "(cl-destructuring-bind ({}){})"))
-          ("m" (cmd-ins "(cl-multiple-value-bind ({}){})"))))
         ("t" (cmd-ins "(ert-deftest test-{} (){(nli)}{})"))
         ("T" (cmd-ins
               "(cl-letf (((symbol-function #'{})" (nli)
