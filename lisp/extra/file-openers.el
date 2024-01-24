@@ -24,6 +24,7 @@
 (def-open-file-program #'find-file ("txt" "html"))
 (def-open-file-program "gimp" ("xcf"))
 (def-open-file-program "mpg321" ("mp3"))
+(def-open-file-program "audacity" ("mp3" "ogg"))
 (def-open-file-program "vlc" ("mov" "mkv" "aac"))
 (def-open-file-program "celluloid" ("mp4"))
 (def-open-file-program "xournal" ("xoj"))
