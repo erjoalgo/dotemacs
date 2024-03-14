@@ -21,7 +21,7 @@
 (defun open-html-file (filename)
   (browser-new-tab (format "file://%s" filename)))
 (def-open-file-program #'open-html-file ("html"))
-(def-open-file-program #'find-file ("txt"))
+(def-open-file-program #'find-file ("txt" "html"))
 (def-open-file-program "gimp" ("xcf"))
 (def-open-file-program "mpg321" ("mp3"))
 (def-open-file-program "vlc" ("mov" "mkv" "aac"))
