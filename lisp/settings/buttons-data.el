@@ -1654,7 +1654,11 @@ server {
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     }
-}"))))))
+}"))))
+      ("n"
+       (but
+        ("t" (cmd-ins "add_header X-trace-{(rnd)} \"{}\";" (nli)))
+        ("r" (cmd-ins "add_header X-trace-{(rnd)} \"trace\";" (nli)))))))
 
    (defbuttons sql-buttons programming-buttons
      (sql-interactive-mode-map sql-mode-map)

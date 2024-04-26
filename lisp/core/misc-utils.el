@@ -953,6 +953,9 @@ This requires the external program `diff' to be in your `exec-path'."
     ((js-mode)
      (when (re-search-forward "^[[:space:]]*console.log(\"DDEBUG[^;]+;\n" nil t)
        (cons (match-beginning 0) (point))))
+    ((nginx-mode)
+     (when (re-search-forward "^[[:space:]]*add_header X-trace-.* \".*\";\n" nil t)
+       (cons (match-beginning 0) (point))))
     (t (error "unsupported mode: %s" major-mode))))
 
 (defun debug-statements-remove (&optional remove-all-prints)
