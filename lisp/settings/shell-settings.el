@@ -5,8 +5,11 @@
         SOMEARG=${OPTARG}
         ;;
     h)
-        less $0
+        less \"$0\"
         exit 0
+        ;;
+    *)
+        echo \"unrecognized flag: ${OPT}\" && exit ${LINENO}
         ;;
     esac
 done
