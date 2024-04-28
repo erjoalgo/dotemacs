@@ -738,6 +738,7 @@
       ("n"
        (but
         ("c" (cmd-ins "console.log(`{}`);"))
+        ("w" (cmd-ins "console.warn(`{}`);"))
         ("e" (cmd-ins "console.error(`{}`);"))
         ("r" (cmd-ins "console.log(\"DDEBUG trace {(buf)} {(rnd)}\");"))
         ("v" (cmd-ins "console.log(\"DDEBUG {(rnd)} {(buf)} value of {0}: \"+{0});"))
