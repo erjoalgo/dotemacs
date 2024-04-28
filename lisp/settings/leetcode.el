@@ -15,7 +15,7 @@
       (leetcode-test-case-to-c++ text)
       (ins ");") (nli)
       (ins "cout << \"result: \" << res << endl;") (nli)
-      (ins "for (const int resi : res) {") (nli)
+      (ins "for (const auto resi : res) {") (nli)
       (ins "cout << \"result: \" << resi << endl;") (nli)
       (ins "}")  (indent-for-tab-command) (nli)
       (ins "}") (indent-for-tab-command) (nli))))
