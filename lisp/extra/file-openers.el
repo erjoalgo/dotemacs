@@ -27,7 +27,7 @@
 (def-open-file-program "audacity" ("mp3" "ogg"))
 (def-open-file-program "vlc" ("mov" "mkv" "aac"))
 (def-open-file-program "celluloid" ("mp4"))
-(def-open-file-program "xournal" ("xoj"))
+(def-open-file-program "xournal" ("xoj" "pdf"))
 (def-open-file-program :self ("AppImage"))
 (defvar *creality-print-exe* nil)
 (setq *creality-print-exe*
