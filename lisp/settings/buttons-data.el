@@ -1745,7 +1745,6 @@ server {
       ((kbd "C-s") #'isearch-forward-regexp)
       ((kbd "C-r") 'isearch-backward-regexp-fast)
       ((kbd "s-TAB") #'completion-at-point)
-      ((kbd "s-m") #'stumpwm-search-engine-search)
       ("."
        (but
         ("f" 'xref-find-definitions)
