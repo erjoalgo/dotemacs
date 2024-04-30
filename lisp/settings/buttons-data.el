@@ -634,7 +634,10 @@
                       (insert "*/"))
                   (progn (ins "/*")
                          (rec)
-                         (ins "*/")))))))
+                         (ins "*/")))))
+      ("m"
+       (but
+        ("i" (cmd-ins "#include"))))))
 
    (defbuttons java-buttons c-buttons (java-mode-map)
      (but
@@ -1257,7 +1260,6 @@
         ("v" (cmd-ins "cout << \"DDEBUG {(rnd)} {0}: \" << " (nli)
                       "{0} << endl;"))))
       ("m" (but
-            ("i" (cmd-ins "#include"))
             ("u" (cmd-ins "using "))
             ("0" #'cpp-maybe-insert-includes)
             ("m" (cmd-ins c++-debugging-macros))))
