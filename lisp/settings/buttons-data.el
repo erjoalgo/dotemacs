@@ -753,7 +753,7 @@
         ("`" (cmd-ins "`" (rec) "`"))))
       ("T" (cmd-ins "try {" (nli) (rec) (nli) "} catch(err) {" (nli) (rec) (nli) "}"))
       ("f" (cmd-ins "for (var {0} = 0; {0}<{}; {0}++){(cbd)}"))
-      ("F" (cmd-ins "for (var {} of {}){(cbd)}"))
+      ("F" (cmd-ins "for (const {} of {}){(cbd)}"))
       ("l" (cmd-ins ".length"))
       ("r" (cmd-ins "return {};"))
       ("R" (cmd-ins "throw new Error({});"))
