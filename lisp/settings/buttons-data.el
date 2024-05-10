@@ -750,6 +750,7 @@
         ("a" (cmd-ins "alert(`{}`);"))
         ("R" (cmd-ins "alert(\"DDEBUG TRACE {(rnd)} {(buf)}\");"))
         ("4" (cmd-ins "${" (rec) "}"))
+        ("[" (cmd-ins "${" (rec) "}"))
         ("`" (cmd-ins "`" (rec) "`"))))
       ("T" (cmd-ins "try {" (nli) (rec) (nli) "} catch(err) {" (nli) (rec) (nli) "}"))
       ("f" (cmd-ins "for (var {0} = 0; {0}<{}; {0}++){(cbd)}"))
