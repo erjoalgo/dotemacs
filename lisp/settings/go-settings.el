@@ -13,7 +13,7 @@
 
       (if (not (file-exists-p goimports-path))
 	  (warn (concat "WARNING: goimports not found "
-		"(go get golang.org/x/tools/cmd/goimports)"))
+                        "go install golang.org/x/tools/cmd/goimports@latest"))
 	(setf gofmt-command goimports-path)
 	(add-hook 'before-save-hook #'gofmt-before-save)))))
 
