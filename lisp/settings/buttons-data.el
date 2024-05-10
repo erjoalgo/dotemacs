@@ -889,7 +889,7 @@
         ("v" (cmd-ins "fmt.Printf(\"DDEBUG "
                       (f-filename buffer-file-name)
                       " {(rnd)}, "
-                      (ins "{0}: %+v\\n\","
+                      (ins "{0}: %+v\\n\", "
                            (nli?)
                            "{0})")))
         ("r" (cmd-ins "fmt.Println(\"DDEBUG TRACE "
