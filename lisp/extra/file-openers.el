@@ -65,11 +65,12 @@
          (program (if (or (null (cdr programs)) no-prompt)
                       (car programs)
                     (selcand-select programs
-                                    :prompt (format "select program to open %s: " filename)))))
+                                    :prompt (format "select program to open %s: " filename))))
+         (buff (get-buffer-create (format "*%s*" program))))
     (if (not program)
         (progn
           (message (concat "no program known for file: " filename))
           (find-file filename))
       (if (functionp program) (funcall program filename)
 	(progn (message "%s %s" program filename)
-               (start-process program nil program filename))))))
+               (start-process program buff program filename))))))
