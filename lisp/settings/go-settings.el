@@ -6,11 +6,6 @@
 	   (f-join GOPATH "src/github.com/golang/lint/misc/emacs"))
 	  (goimports-path (f-join GOPATH "bin/goimports")))
 
-      (if (not (file-exists-p go-lint-path))
-	  (warn (concat "WARNING: go or go lint not installed"
-			   "(go get github.com/golang/lint)"))
-	(add-to-list 'load-path go-lint-path))
-
       (if (not (file-exists-p goimports-path))
 	  (warn (concat "WARNING: goimports not found "
                         "go install golang.org/x/tools/cmd/goimports@latest"))
