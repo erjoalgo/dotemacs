@@ -156,7 +156,7 @@
   "If non-nil, switch to the given package upon connecting to the inferior lisp.")
 
 (defun slime-connected-hook-switch-to-auto-package ()
-  (when slime-auto-package
+  '(when slime-auto-package
     (condition-case err
         (slime-repl-set-package slime-auto-package)
       (error
