@@ -976,7 +976,11 @@
                       (ins "\\{0}: {0}\"" (nli?))))
         ("r" (cmd-ins "echo \"DDEBUG TRACE "
                       (f-filename buffer-file-name)
-                      " {(rnd)}\""))))
+                      " {(rnd)}\""))
+        ("s" (cmd-ins "echo \"{}\" 1>&2" (nli)
+                      "select {} in {}; do"
+                      (nli) "break" (nli) "done"
+                      (nli)))))
       ("d" (cmd-ins "function {}{(cbd)}"))
       ("l" (cmd-ins "exit ${" "LINENO}"))
       ("L" (cmd-ins "echo \"{}"
@@ -1014,10 +1018,6 @@
           ("j" (cmd-ins "test -o "))
           ("=" (cmd-ins "test {} = "))
           ("v" (cmd-ins "command -v "))))
-        ("S" (cmd-ins "echo \"{}\" 1>&2" (nli)
-                      "select {} in {}; do"
-                      (nli) "break" (nli) "done"
-                      (nli)))
         ("y" (cmd-ins "sudo apt-get install -y "))))
       ("<" (cmd-ins " <<< "))
       ("-" (cmd-ins "--"))))
