@@ -364,7 +364,6 @@
                       (nli?)
                       "{0})"))))
       ("\\" (cmd-ins "\\\\({}\\\\)"))
-      ("s" (cmd (call-interactively 'insert-emacs-sym)))
       ("j" (cmd-ins "(or {})"))
       ("k" (cmd-ins "(and {})"))
       ("1" (cmd-ins "(not {})"))
