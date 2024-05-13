@@ -140,7 +140,11 @@
   (let* ((id (or (yt-extract-video-id url)
                  (error "unable to extract youtube id from url: %s" url)))
          (image-url (youtube-image-url id))
-         (filename (expand-file-name (format "~/Downloads/%s.jpeg" id)))
+         (directory (or
+                     (cl-loop for dir in '("./graphics" (expand-file-name "~/Downloads"))
+                             thereis (when (file-exists-p dir) dir))
+                     (error "no suitable downloads directory found")))
+         (filename (format "%s/%s.jpeg" directory id))
          (title (s-trim-right (shell-command-to-string (format "webpage-title.sh '%s'" url)))))
     (message "downloading youtube thumbnail from url: %s" image-url)
     (url-copy-file image-url filename t)
