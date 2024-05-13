@@ -146,6 +146,7 @@
                      (error "no suitable downloads directory found")))
          (filename (format "%s/%s.jpeg" directory id))
          (title (s-trim-right (shell-command-to-string (format "webpage-title.sh '%s'" url)))))
+    (setq title (s-replace " - Youtube" "" title))
     (message "downloading youtube thumbnail from url: %s" image-url)
     (url-copy-file image-url filename t)
     (insert (format "\\hrefyt{%s}{%s}{%s}" url filename title))))
