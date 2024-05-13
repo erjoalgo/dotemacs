@@ -1017,7 +1017,12 @@
           ("j" (cmd-ins "test -o "))
           ("=" (cmd-ins "test {} = "))
           ("v" (cmd-ins "command -v "))))
-        ("y" (cmd-ins "sudo apt-get install -y "))))
+        ("S" (cmd-ins "echo \"{}\" 1>&2" (nli)
+                      "select {} in {}; do"
+                      (nli) "break" (nli) "done"
+                      (nli)))
+        ("y" (cmd-ins "sudo apt-get install -y "))
+        ("a" (cmd-ins "alias " (inm)))))
       ("<" (cmd-ins " <<< "))
       ("-" (cmd-ins "--"))))
 
