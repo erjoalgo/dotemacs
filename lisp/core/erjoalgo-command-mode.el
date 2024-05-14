@@ -427,7 +427,7 @@
       ("p"  (buff "*Python*" (call-interactively 'run-python)))
       ("P" 'message-current-buffer-process)
       ("i" 'ielm)
-      ("I" 'load-dark-theme-toggle)
+      ("I" 'redshift-dark-theme-toggle)
       ("c" 'autobuild-rebuild-recent)
       ("C" 'kill-current-buffer-filename)
       ("e" 'my-eval-defun)
@@ -608,19 +608,7 @@
 				:width normal))))
   (face-spec-set 'region '((t :background "#666" :foreground "#ffffff"))))
 
-(defun load-dark-theme-toggle ()
-  "Toggle dark background theme."
-  (interactive)
-  (let ((dark-theme 'wombat))
-    (if (custom-theme-enabled-p dark-theme)
-	(progn
-	  (disable-theme dark-theme)
-	  (setf *erjoalgo-command-mode-color-on* "dark green"
-		*erjoalgo-command-mode-color-off* "dark gray"))
-      (progn
-	(load-theme dark-theme)
-	  (setf *erjoalgo-command-mode-color-on* "light green"
-		*erjoalgo-command-mode-color-off* "light gray")))))
+
 
 ;;automatically disable erjoalgo-command-mode when entering minibuffer
 ;;on minibuffer-exit, enable it if it was originally on
