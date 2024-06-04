@@ -1,14 +1,14 @@
 (defun redshift-period ()
-  (let* ((string (shell-command-to-string "redshift -p"))
+  (let* ((output (shell-command-to-string "redshift -p"))
          (period (progn
                    (cl-assert
                     (string-match "Period: \\(.*\\)" output)
-                    t "unrecognized redshift output: %s" string)
-                   (match-string 1 string))))
+                    t "unrecognized redshift output: %s" output)
+                   (match-string 1 output))))
     (if (s-match "Daytime\\|Transition\\|Night" period)
         (intern (downcase period))
       (error "unrecognized redshift period `%s' from output: %s"
-             period string))))
+             period output))))
 
 (defvar dark-mode-theme 'wombat)
 
