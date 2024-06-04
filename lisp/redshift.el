@@ -2,7 +2,8 @@
   (let* ((string (shell-command-to-string "redshift -p"))
          (period (progn
                    (cl-assert
-                    (string-match "Period: \\(.*\\)" string))
+                    (string-match "Period: \\(.*\\)" output)
+                    t "unrecognized redshift output: %s" string)
                    (match-string 1 string))))
     (if (s-match "Daytime\\|Transition\\|Night" period)
         (intern (downcase period))
