@@ -385,6 +385,8 @@
       ("L" (buff "regexp:[*]sldb sbcl.*[*]"))
       ("v" (file "~/.stumpwmrc.d/keynavs/.keynavrc"))
       ("w" (file "~/.stumpwmrc.d/lisp/.stumpwmrc"))
+      ("g" (file (file-truename "~/git")))
+      ("3" (file (file-truename "~/git/3d")))
       ("f" (file "~/git/dotemacs/lisp/extra/file-openers.el"))
       ("n" (file "~/.stumpwmrc.d/bin"))
       ("N" (file "~/.stumpwmrc.d/installs"))
