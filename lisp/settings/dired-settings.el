@@ -7,13 +7,13 @@
 
 
 (defun dired-recursive-du ()(interactive)
-	      (let ((dired-dir dired-directory)
-		    (du-buffer "dired-rec-du"))
-		(shell-command (format "du -ah --max-depth 1 %s | sort -h" dired-dir) du-buffer du-buffer )
-		(set-buffer du-buffer )
-		(replace-string dired-dir "" nil (point-min) (point-max))
-		(temp-buffer-window-show du-buffer)
-		(goto-char (point-max))))
+       (let ((dired-dir dired-directory)
+	     (du-buffer "dired-rec-du"))
+	 (shell-command (format "du -ah --max-depth 1 %s | sort -h" dired-dir) du-buffer du-buffer )
+	 (set-buffer du-buffer )
+	 (replace-string dired-dir "" nil (point-min) (point-max))
+	 (temp-buffer-window-show du-buffer)
+	 (goto-char (point-max))))
 
 (setf dired-tmp-char 31)
 (setf dired-mark-char 42)
@@ -42,10 +42,10 @@
 (defun dired-kill-marked-filenames ()
   (interactive)
   (->> (dired-remember-marks (point-min) (point-max))
-    (mapcar (lambda (item)
-              (f-filename (car item))))
-    (s-join ", ")
-    (kill-new)))
+       (mapcar (lambda (item)
+                 (f-filename (car item))))
+       (s-join ", ")
+       (kill-new)))
 
 (defun dired-tagger-move ()
   (interactive)
@@ -53,24 +53,24 @@
   (let* ((arr (make-vector 256 nil)))
 
     (cl-loop for (file . mark) in (dired-remember-marks (point-min) (point-max))
-          do (cl-assert mark)
-          if (eq mark dired-mark-char) do
-          (error "remove the standard mark from all files first: %s"
-                 file)
-          else do
-          (push file (aref arr mark)))
+             do (cl-assert mark)
+             if (eq mark dired-mark-char) do
+             (error "remove the standard mark from all files first: %s"
+                    file)
+             else do
+             (push file (aref arr mark)))
 
     (cl-loop for files across arr
-          for mark from 0
-          if files do
-          (progn (message "mark: %s: %s" mark files)
-                 '(let ((dest
-                         (find-file ))))
-                 (message "files '%s' are: %s"
-                          (char-to-string mark)
-                          (s-join "\n" files))
-                 (dired-change-marks mark dired-mark-char)
-                 (dired-do-rename)))))
+             for mark from 0
+             if files do
+             (progn (message "mark: %s: %s" mark files)
+                    '(let ((dest
+                            (find-file ))))
+                    (message "files '%s' are: %s"
+                             (char-to-string mark)
+                             (s-join "\n" files))
+                    (dired-change-marks mark dired-mark-char)
+                    (dired-do-rename)))))
 
 (setq image-dired-show-all-from-dir-max-files 2000)
 
