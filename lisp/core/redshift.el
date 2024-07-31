@@ -21,7 +21,7 @@
 	  *erjoalgo-command-mode-color-off* "light gray")))
 
 (defun redshift-unload-dark-theme ()
-  (when (custom-theme-enabled-p dark-theme)
+  (when (custom-theme-enabled-p dark-mode-theme)
     (message "unloading dark theme")
     (disable-theme dark-mode-theme)
     (setf *erjoalgo-command-mode-color-on* "dark green"
