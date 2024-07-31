@@ -74,7 +74,7 @@
 
 (defun coalesce (&rest strings)
   (cl-loop for s in strings
-        thereis (and s (> (length s) 0) s)))
+           thereis (and s (> (length s) 0) s)))
 
 (defun open-file (filename &optional no-prompt)
   (interactive (list (dired-file-name-at-point)))
