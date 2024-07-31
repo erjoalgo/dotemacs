@@ -75,3 +75,15 @@
 (setq image-dired-show-all-from-dir-max-files 2000)
 
 (setq dired-create-destination-dirs 'always)
+
+(defun dired-sort-toggle--keep-cursor-position (oldfun &rest r)
+  (let ((old-line-number (line-number-at-pos)))
+    (prog1
+        (apply oldfun r)
+      (goto-char (point-min))
+      (next-line old-line-number))))
+
+
+(advice-add #'dired-sort-toggle
+            :around
+            #'dired-sort-toggle--keep-cursor-position)

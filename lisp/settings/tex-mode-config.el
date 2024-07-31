@@ -114,7 +114,9 @@
                     (message "skipping already-coped file: %s" filename))
                    (t
                     (message "copying %s to %s" filename local)
+                    (condition-case ex
                     (copy-file filename local t t t t)
+                      (error (warn "cp error: %s" ex)))
                     (replace-match local t t nil 1)))))))
 
 ;;require this later in case it's not available
