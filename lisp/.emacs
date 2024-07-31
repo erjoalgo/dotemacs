@@ -137,13 +137,7 @@ object."
    typescript-mode
    async
    sqlformat
-   dockerfile-mode
-   elisp-autofmt))
-
-;; (use-package
-;;  elisp-autofmt
-;;  :commands (elisp-autofmt-mode elisp-autofmt-buffer)
-;;  :hook (emacs-lisp-mode . elisp-autofmt-mode))
+   dockerfile-mode))
 
 (require 'f)
 
