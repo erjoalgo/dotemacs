@@ -36,6 +36,25 @@
 (def-open-file-program "blender" ("blend" "blend1" "stl"))
 
 
+(defun open-crdownload (filename)
+  (interactive)
+  (cl-assert (equal (f-ext filename) "crdownload"))
+  (let ((sans-ext (replace-regexp-in-string
+                   ".crdownload" "" filename)))
+    (cond
+     ((file-exists-p sans-ext)
+      (message "file finished downloading: %s" sans-ext)
+      (open-file sans-ext))
+     ((file-exists-p filename)
+      (message "waiting for file to finish downloading: %s"
+               (shell-command-to-string
+                (format "du -h '%s'" filename)))
+      (run-at-time 5 nil (apply-partially #'open-crdownload filename)))
+     (t
+      (warn "crdownload file does not exist: %s" filename)))))
+
+(def-open-file-program #'open-crdownload ("crdownload"))
+
 (defvar open-exe
   (s-trim (shell-command-to-string "which open")))
 
