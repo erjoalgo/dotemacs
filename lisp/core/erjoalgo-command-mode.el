@@ -263,6 +263,34 @@
             (message "cmd: %s" (process-command proc))
           (message "buffer has no process: %s" buffer))))))
 
+(defun unzip-last-download (&optional rm)
+  "unzip the last download into the current directory"
+  (when-let* ((fname (find-last-download nil t))
+              (ext (f-ext fname))
+              (is-zip (equal "zip" (downcase ext)))
+              (dir (f-join default-directory (f-base fname))))
+    (cl-assert is-zip)
+    (make-directory dir)
+    (let ((default-directory dir)
+          (buffer "*unzip*"))
+      (unless (zerop
+               (call-process "unzip" nil (get-buffer-create buffer) nil
+                    fname "-d" dir))
+        (error "unzip error: %s" (buffer-string buffer)))
+      (delete-file fname))
+    (find-file dir)))
+
+(defun last-download-import-3d ()
+  (interactive)
+  "handle the last downloaded file as a 3d print import"
+  (let ((3d-imports-dir (expand-file-name "~/git/3d/imports/"))
+        (last-download (find-last-download nil t)))
+    (if (equal "zip" (f-ext last-download))
+        (let ((default-directory 3d-imports-dir))
+          (unzip-last-download t))
+      (progn (rename-file last-download 3d-imports-dir)
+             (open-file (f-join 3d-imports-dir (f-filename last-download)))))))
+
 (buttons-macrolet
  ((dir (dir) `(read-file-name "select file: " ,dir))
   (buff (buff-spec &optional on-nonexistent)
@@ -409,16 +437,10 @@
                 (kill-new dest)
                 (message "mv -t %s %s" default-directory last-download))))
         ("z" (cmd
-              (doc "unzip the last download into the current directory")
-              (when-let* ((fname (find-last-download nil t))
-                          (ext (f-ext fname))
-                          (is-zip (equal "zip" (downcase ext)))
-                          (dir (f-join "~/Downloads/" (f-base fname))))
-                (make-directory dir)
-                (let ((default-directory dir))
-                  (call-process "unzip" nil (get-buffer-create "*unzip*") nil
-                                fname "-d" dir))
-                (find-file dir))))
+              (doc "unzip last download into the ~/Downloads directory")
+              (let ((default-directory (expand-file-name "~/Downloads")))
+               (unzip-last-download))))
+        ("3" #'last-download-import-3d)
         ("w" (cmd (doc "open ~/Downloads")
                   (find-file "~/Downloads")
                   (revert-buffer)))))
