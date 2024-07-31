@@ -115,7 +115,7 @@
                    (t
                     (message "copying %s to %s" filename local)
                     (condition-case ex
-                    (copy-file filename local t t t t)
+                        (copy-file filename local t t t t)
                       (error (warn "cp error: %s" ex)))
                     (replace-match local t t nil 1)))))))
 
