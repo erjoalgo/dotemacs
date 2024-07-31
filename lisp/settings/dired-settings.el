@@ -73,3 +73,5 @@
                  (dired-do-rename)))))
 
 (setq image-dired-show-all-from-dir-max-files 2000)
+
+(setq dired-create-destination-dirs 'always)
