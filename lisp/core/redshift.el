@@ -1,5 +1,6 @@
 (defun redshift-period ()
-  (let* ((output (shell-command-to-string "redshift -p"))
+  (let* ((default-directory (expand-file-name "~"))
+         (output (shell-command-to-string "redshift -p"))
          (period (progn
                    (cl-assert
                     (string-match "Period: \\(.*\\)" output)
