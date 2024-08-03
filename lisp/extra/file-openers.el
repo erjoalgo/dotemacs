@@ -11,6 +11,7 @@
      (push (cons ,opener ',exts) *file-programs*)))
 
 (defvar *file-programs* nil "Alist of (PROGRAM . EXTENSIONS) pairs")
+(setq *file-programs* nil)
 
 (def-open-file-program "zathura" ("pdf"))
 (def-open-file-program "libreoffice" ("doc" "ppt" "odt" "docx"  "pptx" "xls" "ods"))
