@@ -453,7 +453,7 @@
     (websocket-open
      sms-fanout-address
      :on-open (lambda (_websocket)
-                (sip-ws-log "ws connected")
+                (sip-ws-log (format "ws connected to %s" sms-fanout-address))
                 (setq sms-fanout-client-last-pong-received (float-time)
                       sms-last-connection-timestamp (float-time)))
      :on-message (lambda (_websocket frame)
