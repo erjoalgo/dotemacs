@@ -134,7 +134,14 @@
 (defun most-recent-file-name (files &optional nth)
   ;; TODO optimize
   (nth (or nth 0)
-       (sort-by files #'file-modification-timestamp :descending t)))
+       (sort-by files
+                (lambda (fname)
+                  (let ((attrs (file-attributes fname)))
+                    (max
+                     (file-modification-timestamp fname)
+                     (time-convert (file-attribute-access-time attrs) 'integer)
+                     (time-convert (file-attribute-status-change-time attrs) 'integer))))
+                :descending t)))
 
 (defvar auto-scrots-dirs
   (list
