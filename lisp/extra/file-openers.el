@@ -36,7 +36,7 @@
 (def-open-file-program "cura" ("stl" "3mf"))
 (def-open-file-program "blender" ("blend" "blend1"))
 (def-open-file-program "fstl" ("stl"))
-(def-open-file-program "openscad" ("scad"))
+(def-open-file-program "~/Downloads/OpenSCAD-2024.08.05.ai20224-x86_64.AppImage" ("scad"))
 
 (defun open-crdownload (filename)
   (interactive)
