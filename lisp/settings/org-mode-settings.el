@@ -151,17 +151,17 @@
 
 (defun directory-files-exclude-dots (top)
   (cl-remove-if (lambda (filename) (member filename '("." "..")))
-	     (directory-files top)))
+	        (directory-files top)))
 
 
 (defun list-directories-flatten (top-dirs)
   (cl-loop for top in top-dirs nconc
-	(cl-loop for basename in (directory-files-exclude-dots top)
-	      collect (f-join top basename))))
+	   (cl-loop for basename in (directory-files-exclude-dots top)
+	            collect (f-join top basename))))
 
 (defun most-recent-file-name-in-directories (top-dirs &optional nth)
   (-> (list-directories-flatten top-dirs)
-    (most-recent-file-name nth)))
+      (most-recent-file-name nth)))
 
 (defun last-scrot-filename ()
   (most-recent-file-name-in-directories auto-scrots-dirs))
@@ -193,13 +193,13 @@
   (save-excursion
     (goto-char a)
     (cl-loop with offset = 0
-          with len = (or arg 1)
-          while (re-search-forward "^\\(.\\)?" (+ b offset) t)
-          as new-char = (if (equal (match-string 1) "*") "*" " ")
-          as rep = (concat (match-string 0)
-                           (make-string len (string-to-char new-char)))
-          do (replace-match rep nil t)
-          do (cl-incf offset len))))
+             with len = (or arg 1)
+             while (re-search-forward "^\\(.\\)?" (+ b offset) t)
+             as new-char = (if (equal (match-string 1) "*") "*" " ")
+             as rep = (concat (match-string 0)
+                              (make-string len (string-to-char new-char)))
+             do (replace-match rep nil t)
+             do (cl-incf offset len))))
 
 
 (defun my-org-shift-left (arg a b)
@@ -280,9 +280,9 @@
          (text
           (concat "#+BEGIN_SRC " mode "\n"
                   (->>
-                   (concat code
-                           "\n" "#+END_SRC")
-                   (replace-regexp-in-string "^" leading-ws)))))
+                    (concat code
+                            "\n" "#+END_SRC")
+                    (replace-regexp-in-string "^" leading-ws)))))
     (insert text)))
 
 (defun org-sanitize-filename (filename)
