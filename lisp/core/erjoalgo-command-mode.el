@@ -40,8 +40,8 @@
 (defvar open-interpreter-map (make-sparse-keymap))
 
 (define-minor-mode erjoalgo-command-mode
-    "command mode"
-    :init-value 0 :lighter "-CM" :keymap erjoalgo-command-mode-map)
+  "command mode"
+  :init-value 0 :lighter "-CM" :keymap erjoalgo-command-mode-map)
 
 (define-globalized-minor-mode global-erjoalgo-command-mode
   erjoalgo-command-mode erjoalgo-command-mode)
@@ -130,7 +130,7 @@
      (when nth (cl-assert (> nth 0)))
      (let ((file
             (-> (mapcar #'expand-file-name ,directories)
-              (most-recent-file-name-in-directories (when nth (1- nth))))))
+                (most-recent-file-name-in-directories (when nth (1- nth))))))
        (unless no-kill
          (kill-new file)
          (message "killed %s" file))
@@ -162,7 +162,7 @@
            (cl-remove-if-not (lambda (buffer)
                                (and
                                 (if-let ((buffer-name (buffer-name buffer)))
-                                   (string-match buffer-regexp buffer-name))
+                                    (string-match buffer-regexp buffer-name))
                                 (or (null compilation-contents-regexp-filter)
                                     (s-blank? compilation-contents-regexp-filter)
                                     (save-match-data
@@ -275,7 +275,7 @@
           (buffer "*unzip*"))
       (unless (zerop
                (call-process "unzip" nil (get-buffer-create buffer) nil
-                    fname "-d" dir))
+                             fname "-d" dir))
         (error "unzip error: %s" (buffer-string buffer)))
       (delete-file fname))
     (find-file dir)))
@@ -292,208 +292,208 @@
              (open-file (f-join 3d-imports-dir (f-filename last-download)))))))
 
 (buttons-macrolet
- ((dir (dir) `(read-file-name "select file: " ,dir))
-  (buff (buff-spec &optional on-nonexistent)
-        `(switch-to-buff-or-else-command
-          ,buff-spec ,on-nonexistent))
-  (file (file) `(cmd (find-file ,file))))
- (defbuttons
-   erjoalgo-command-mode-buttons
-   nil
-   (erjoalgo-command-mode-map)
-   (buttons-make
-    ("1" 'scroll-up-keep-cursor);;originally M-v
-    ("2" 'scroll-down-keep-cursor);;originally C-v
-    ("n" 'next-line);;originally C-n
-    ("N" 'copy-line-down);; copy full line down
-    ((kbd "M-n") 'erjoalgo-command-mode-meta-pn);; move line down
-    ((kbd "M-p") 'erjoalgo-command-mode-meta-pn);; move line up
-    ("p" 'previous-line);;originally C-p
-    ("P" 'copy-line-up);; copy full line up
-    ("a" 'beginning-of-line);;originally C-a
-    ("a" 'my-move-beginning-of-line);;originally C-a
-    ("e" 'move-end-of-line);;originally C-e
-    ("k" 'kill-line);;originally C-k
-    ("K" 'my-kill-whole-line);; kill entire current line
-    ("j" (cmd (dotimes (_ (or current-prefix-arg 1))
-                (newline-and-indent))));;originally C-j
-    ("o" 'open-line);;originally C-o
-    ("v" 'yank-or-pop);;originally C-y (make it like windows Ctrl+v)
-    ("." 'end-of-buffer);;originally M->
-    ("," 'beginning-of-buffer);;originally M-<
-    ("f" 'forward-char);;originally C-f
-    ("b" 'backward-char);;originally C-b
-    ("/" 'undo);;originally C-/
-    ((kbd "M-f") 'forward-sexp);;originally C-M-f
-    ((kbd "M-b") 'backward-sexp);;originally C-M-b
-    ((kbd "M-k") 'kill-sexp);;originally C-M-k
-    ((kbd "M-DEL") 'backward-kill-sexp);;originally ESC C-backspace
-    ("r" 'set-mark-command);;originally C-SPC
-    ("w" 'kill-ring-save);;originally M-w
-    ;; incrementally kill backward-sexp. incrementally displays what is being killed
-    ("W" 'kill-surrounding-sexp)
-    ((kbd "M-w") 'kill-region);;originally C-w
-    ((kbd "M-1") #'sticky-window-delete-other-windows);;originally C-x 1
-    ((kbd "M-2") 'my-split-window-below);;originally C-x 2
-    ((kbd "M-3") 'my-split-window-right);;originally C-x 3
-    ((kbd "M-q") #'sticky-window-delete-window);;originally C-x 0
-    ([f2] 'other-window);;originally C-x o
-    ((kbd "<S-f2>") (cmd (other-window -1)));;originally C-x o
-    ("c" 'cycle-buffer);; cycle buffers
-    ("C" 'duplicate-current-buffer);; open current buffer in split-window-below
-    ("z" (cmd (kill-buffer (current-buffer))));;originally C-x k
-    ("Z" 'new-buffer-focus)
-    ("q" 'bury-buffer);; move current buffer to end of the list
-    ("3" 'find-file-or-url-at-point);;originally C-x f
-    ("4" 'switch-to-buffer);;originally C-x b
-    ("5" (buttons-make
-          ("g" (cmd (dir "~/git")))
-          ("l" (cmd (dir "~/private-data/leet/")))
-          ("G" (cmd
-                (find-file "~/git/google-utils")))))
-    ("6" (cmd (dir org-top-dir)))
-    ("s" 'save-buffer);;originally C-x s
-    ("l" 'recenter-top-bottom);;originally C-l
-    ("d" 'delete-char);;originally C-d
-    ((kbd "M-d") 'kill-word);;originally M-d
-    ("D" 'my-forward-delete);;like kill-word, but sexp, and no kill.
-    ;; type "yes RET" for those annoying prompts. the key is s-SPC (super space)
-    ("-" 'global-text-scale-lower);; increase text size
-    ("=" 'global-text-scale-higher);; decrease text size
-    ("g" 'goto-line)
-    ("	" 'my-tab-command)
-    ("9" "(");; insert "("
-    ("0" ")");; insert ")"
-    ("" 'universal-argument)
-    ("u" 'universal-argument)
-    ("'" "\"");; insert double-quote
-    ("i" 'one-char-insert-mode)
-    ("h" (lambda (arg) (interactive "P")
-           "with prefix arg, keep erjoalgo-command-mode while on help-command map
+    ((dir (dir) `(read-file-name "select file: " ,dir))
+     (buff (buff-spec &optional on-nonexistent)
+           `(switch-to-buff-or-else-command
+             ,buff-spec ,on-nonexistent))
+     (file (file) `(cmd (find-file ,file))))
+  (defbuttons
+      erjoalgo-command-mode-buttons
+      nil
+      (erjoalgo-command-mode-map)
+    (buttons-make
+     ("1" 'scroll-up-keep-cursor);;originally M-v
+     ("2" 'scroll-down-keep-cursor);;originally C-v
+     ("n" 'next-line);;originally C-n
+     ("N" 'copy-line-down);; copy full line down
+     ((kbd "M-n") 'erjoalgo-command-mode-meta-pn);; move line down
+     ((kbd "M-p") 'erjoalgo-command-mode-meta-pn);; move line up
+     ("p" 'previous-line);;originally C-p
+     ("P" 'copy-line-up);; copy full line up
+     ("a" 'beginning-of-line);;originally C-a
+     ("a" 'my-move-beginning-of-line);;originally C-a
+     ("e" 'move-end-of-line);;originally C-e
+     ("k" 'kill-line);;originally C-k
+     ("K" 'my-kill-whole-line);; kill entire current line
+     ("j" (cmd (dotimes (_ (or current-prefix-arg 1))
+                 (newline-and-indent))));;originally C-j
+     ("o" 'open-line);;originally C-o
+     ("v" 'yank-or-pop);;originally C-y (make it like windows Ctrl+v)
+     ("." 'end-of-buffer);;originally M->
+     ("," 'beginning-of-buffer);;originally M-<
+     ("f" 'forward-char);;originally C-f
+     ("b" 'backward-char);;originally C-b
+     ("/" 'undo);;originally C-/
+     ((kbd "M-f") 'forward-sexp);;originally C-M-f
+     ((kbd "M-b") 'backward-sexp);;originally C-M-b
+     ((kbd "M-k") 'kill-sexp);;originally C-M-k
+     ((kbd "M-DEL") 'backward-kill-sexp);;originally ESC C-backspace
+     ("r" 'set-mark-command);;originally C-SPC
+     ("w" 'kill-ring-save);;originally M-w
+     ;; incrementally kill backward-sexp. incrementally displays what is being killed
+     ("W" 'kill-surrounding-sexp)
+     ((kbd "M-w") 'kill-region);;originally C-w
+     ((kbd "M-1") #'sticky-window-delete-other-windows);;originally C-x 1
+     ((kbd "M-2") 'my-split-window-below);;originally C-x 2
+     ((kbd "M-3") 'my-split-window-right);;originally C-x 3
+     ((kbd "M-q") #'sticky-window-delete-window);;originally C-x 0
+     ([f2] 'other-window);;originally C-x o
+     ((kbd "<S-f2>") (cmd (other-window -1)));;originally C-x o
+     ("c" 'cycle-buffer);; cycle buffers
+     ("C" 'duplicate-current-buffer);; open current buffer in split-window-below
+     ("z" (cmd (kill-buffer (current-buffer))));;originally C-x k
+     ("Z" 'new-buffer-focus)
+     ("q" 'bury-buffer);; move current buffer to end of the list
+     ("3" 'find-file-or-url-at-point);;originally C-x f
+     ("4" 'switch-to-buffer);;originally C-x b
+     ("5" (buttons-make
+           ("g" (cmd (dir "~/git")))
+           ("l" (cmd (dir "~/private-data/leet/")))
+           ("G" (cmd
+                 (find-file "~/git/google-utils")))))
+     ("6" (cmd (dir org-top-dir)))
+     ("s" 'save-buffer);;originally C-x s
+     ("l" 'recenter-top-bottom);;originally C-l
+     ("d" 'delete-char);;originally C-d
+     ((kbd "M-d") 'kill-word);;originally M-d
+     ("D" 'my-forward-delete);;like kill-word, but sexp, and no kill.
+     ;; type "yes RET" for those annoying prompts. the key is s-SPC (super space)
+     ("-" 'global-text-scale-lower);; increase text size
+     ("=" 'global-text-scale-higher);; decrease text size
+     ("g" 'goto-line)
+     ("	" 'my-tab-command)
+     ("9" "(");; insert "("
+     ("0" ")");; insert ")"
+     ("" 'universal-argument)
+     ("u" 'universal-argument)
+     ("'" "\"");; insert double-quote
+     ("i" 'one-char-insert-mode)
+     ("h" (lambda (arg) (interactive "P")
+            "with prefix arg, keep erjoalgo-command-mode while on help-command map
 	  ie for inspecting erjoalgo-command-mode bindings
 	  ie u h k g
 	  g runs the command goto-line, which is an interactive compiled Lisp..."
-           (set-transient-map 'help-command)
-           (unless (or arg
-                       global-erjoalgo-command-mode)
-             (global-erjoalgo-command-mode 0))))
-    ;; ([f1] nil);; f1 toggle command mode
-    ([f1] 'global-erjoalgo-command-mode-toggle);; f1 toggle command mode
-    ([f13] 'global-erjoalgo-command-mode-toggle);; f13 toggle command mode
-    ([s-f11] 'global-erjoalgo-command-mode-toggle);; f1 toggle command mode
-    ([ë] 'global-erjoalgo-command-mode-toggle);; f1 toggle command mode
-    ("y" 'stumpwm-search-engine-search-clipboard)
-    ("Y" 'stumpwm-search-engine-search)
-    ("J" (lambda (arg)
-           (interactive "P")
-           (cl-loop for _ below (or arg 1)
-                    do (join-line '(4)))))
-    ((kbd "s->") 'markdown-indent-code-by-4-spaces)
-    ("m"
-     (buttons-make
-      ("e" (file (file-truename "~/.emacs")))
-      ("C" (buff "regexp:[*]ansi-term[*].*" (ansi-term "/bin/bash")))
-      ("c" (lambda (arg) (interactive "P")
-             (switch-to-nth-most-recent-buffer "^[*]compilation[*]" arg)))
-      ("r" (buff "*Backtrace*"))
-      ("R" (file "~/.config/redshift.conf"))
-      ("b" (file "~/.bashrc"))
-      ("a" (file "~/.bash_aliases"))
-      ("A" (file "~/.bash-fns/.my-bash-fns"))
-      ("m" (buff "*Messages*"))
-      ("s" (buff "*Org Agenda*" (org-todo-list)))
-      ("S" (buff "*Org Agenda*"))
-      ("t" (file (f-join emacs-top "settings" "buttons-data.el")))
-      ((kbd "s-t") (file (f-join emacs-top "core" "erjoalgo-command-mode.el")))
-      ((kbd "s-c") (file (f-join emacs-top "core" "autobuild.el")))
-      ((kbd "s-C") (file (f-join emacs-top "core" "autobuild-examples.el")))
-      ("M" (file (concat "/var/mail/" (getenv "USER"))))
-      ("x" (file (concat  "~/.stumpwmrc.d/inits/.xmodmap/")))
-      ("l" (buff "regexp:[*]inferior-lisp[*]"))
-      ("L" (buff "regexp:[*]sldb sbcl.*[*]"))
-      ("v" (file "~/.stumpwmrc.d/keynavs/.keynavrc"))
-      ("w" (file "~/.stumpwmrc.d/lisp/.stumpwmrc"))
-      ("g" (file (file-truename "~/git")))
-      ("3" (file (file-truename "~/git/3d")))
-      ("f" (file "~/git/dotemacs/lisp/extra/file-openers.el"))
-      ("n" (file "~/.stumpwmrc.d/bin"))
-      ("N" (file "~/.stumpwmrc.d/installs"))
-      ("W" (buff "*Warnings*"))
-      ("o" (file "~/private-data/org/master.org"))
-      ("T" (cmd (org-todo-list org-match)))
-      ("O" nil)
-      ("j" (buff "*-jabber-roster-*"))
-      ("d"
-       (but
-        ("f" (cmd (doc "find and open the last download")
-                  (find-last-download-or-scrot nil nil t)))
-        ("k" (cmd (doc "kill (copy) the last download") (find-last-download-or-scrot)))
-        ("m" (cmd
-              (doc "move the last download to the current directory")
-              (let*
-                  ((last-download (find-last-download nil t))
-                   (dest (f-join default-directory (f-filename last-download))))
-                (rename-file last-download dest)
-                (kill-new dest)
-                (message "mv -t %s %s" default-directory last-download))))
-        ("z" (cmd
-              (doc "unzip last download into the ~/Downloads directory")
-              (let ((default-directory (expand-file-name "~/Downloads")))
-               (unzip-last-download))))
-        ("3" #'last-download-import-3d)
-        ("w" (cmd (doc "open ~/Downloads")
-                  (find-file "~/Downloads")
-                  (revert-buffer)))))
-      ("p" 'project-open)))
-    ("x"
-     (buttons-make
-      ("s" (lambda (arg)(interactive "P")(eshell arg)))
-      ("p"  (buff "*Python*" (call-interactively 'run-python)))
-      ("P" 'message-current-buffer-process)
-      ("i" 'ielm)
-      ("I" 'redshift-dark-theme-toggle)
-      ("c" 'autobuild-rebuild-recent)
-      ("C" 'kill-current-buffer-filename)
-      ("e" 'my-eval-defun)
-      ("E" (cmd (eval-defun t)))
-      ("x" 'execute-extended-command)
-      ("X" 'sudo-buffer)
-      (";" 'eval-expression)
-      ("M" 'man)
-      ("a" 'async-shell-command)
-      ("v" 'revert-buffer-no-confirm)
-      ("n" 'find-new-buffer)
-      ("D" (cmd
-            (require 'edebug)
-            (eval-defun t);;instrument first
-            (edebug-set-breakpoint nil)))
-      ("d"
-       (but
-        ("e" #'toggle-debug-on-error)
-        ("q" #'toggle-debug-on-quit)))
-      ("g" 'grep-recursive)
-      ("G" #'replace-regexp-recursively)
-      ("f" 'find-iregex)
-      ("F" 'erc)
-      ("u" 'universal-argument)
-      ([f2] 'call-last-kbd-macro)
-      ("W" (buttons-make
-            ("1" 'slime-sbcl)
-            ("2" 'slime-stumpwm)
-            ("3" 'cider-buffer-or-jack-in)))
-      ("w" (switch-to-buff-or-else-command
-            "regexp:[*]slime-repl sbcl\\|[*]cider-repl"))
-      ("r" 'replace-regexp)
-      ("R" 'query-replace-regexp)
-      ("A" (cmd (next-async-shell-command-buffer)))
-      ("o" 'gnus-goto-inbox)
-      ("0" 'open-google-calendar)
-      ("b" (buff "*Inferior Octave*" (inferior-octave t)))
-      ("3" (buff "*eww*" (call-interactively 'eww)))
-      ("q" (buff "regexp:[*]SQL.*[*]"
-                 (call-interactively
-                  (selcand-select inferior-sql-mode-providers :autoselect-if-single t))))
-      ("m" (cmd (call-interactively 'sip-chat-menu))))))))
+            (set-transient-map 'help-command)
+            (unless (or arg
+                        global-erjoalgo-command-mode)
+              (global-erjoalgo-command-mode 0))))
+     ;; ([f1] nil);; f1 toggle command mode
+     ([f1] 'global-erjoalgo-command-mode-toggle);; f1 toggle command mode
+     ([f13] 'global-erjoalgo-command-mode-toggle);; f13 toggle command mode
+     ([s-f11] 'global-erjoalgo-command-mode-toggle);; f1 toggle command mode
+     ([ë] 'global-erjoalgo-command-mode-toggle);; f1 toggle command mode
+     ("y" 'stumpwm-search-engine-search-clipboard)
+     ("Y" 'stumpwm-search-engine-search)
+     ("J" (lambda (arg)
+            (interactive "P")
+            (cl-loop for _ below (or arg 1)
+                     do (join-line '(4)))))
+     ((kbd "s->") 'markdown-indent-code-by-4-spaces)
+     ("m"
+      (buttons-make
+       ("e" (file (file-truename "~/.emacs")))
+       ("C" (buff "regexp:[*]ansi-term[*].*" (ansi-term "/bin/bash")))
+       ("c" (lambda (arg) (interactive "P")
+              (switch-to-nth-most-recent-buffer "^[*]compilation[*]" arg)))
+       ("r" (buff "*Backtrace*"))
+       ("R" (file "~/.config/redshift.conf"))
+       ("b" (file "~/.bashrc"))
+       ("a" (file "~/.bash_aliases"))
+       ("A" (file "~/.bash-fns/.my-bash-fns"))
+       ("m" (buff "*Messages*"))
+       ("s" (buff "*Org Agenda*" (org-todo-list)))
+       ("S" (buff "*Org Agenda*"))
+       ("t" (file (f-join emacs-top "settings" "buttons-data.el")))
+       ((kbd "s-t") (file (f-join emacs-top "core" "erjoalgo-command-mode.el")))
+       ((kbd "s-c") (file (f-join emacs-top "core" "autobuild.el")))
+       ((kbd "s-C") (file (f-join emacs-top "core" "autobuild-examples.el")))
+       ("M" (file (concat "/var/mail/" (getenv "USER"))))
+       ("x" (file (concat  "~/.stumpwmrc.d/inits/.xmodmap/")))
+       ("l" (buff "regexp:[*]inferior-lisp[*]"))
+       ("L" (buff "regexp:[*]sldb sbcl.*[*]"))
+       ("v" (file "~/.stumpwmrc.d/keynavs/.keynavrc"))
+       ("w" (file "~/.stumpwmrc.d/lisp/.stumpwmrc"))
+       ("g" (file (file-truename "~/git")))
+       ("3" (file (file-truename "~/git/3d")))
+       ("f" (file "~/git/dotemacs/lisp/extra/file-openers.el"))
+       ("n" (file "~/.stumpwmrc.d/bin"))
+       ("N" (file "~/.stumpwmrc.d/installs"))
+       ("W" (buff "*Warnings*"))
+       ("o" (file "~/private-data/org/master.org"))
+       ("T" (cmd (org-todo-list org-match)))
+       ("O" nil)
+       ("j" (buff "*-jabber-roster-*"))
+       ("d"
+        (but
+         ("f" (cmd (doc "find and open the last download")
+                   (find-last-download-or-scrot nil nil t)))
+         ("k" (cmd (doc "kill (copy) the last download") (find-last-download-or-scrot)))
+         ("m" (cmd
+               (doc "move the last download to the current directory")
+               (let*
+                   ((last-download (find-last-download nil t))
+                    (dest (f-join default-directory (f-filename last-download))))
+                 (rename-file last-download dest)
+                 (kill-new dest)
+                 (message "mv -t %s %s" default-directory last-download))))
+         ("z" (cmd
+               (doc "unzip last download into the ~/Downloads directory")
+               (let ((default-directory (expand-file-name "~/Downloads")))
+                 (unzip-last-download))))
+         ("3" #'last-download-import-3d)
+         ("w" (cmd (doc "open ~/Downloads")
+                   (find-file "~/Downloads")
+                   (revert-buffer)))))
+       ("p" 'project-open)))
+     ("x"
+      (buttons-make
+       ("s" (lambda (arg)(interactive "P")(eshell arg)))
+       ("p"  (buff "*Python*" (call-interactively 'run-python)))
+       ("P" 'message-current-buffer-process)
+       ("i" 'ielm)
+       ("I" 'redshift-dark-theme-toggle)
+       ("c" 'autobuild-rebuild-recent)
+       ("C" 'kill-current-buffer-filename)
+       ("e" 'my-eval-defun)
+       ("E" (cmd (eval-defun t)))
+       ("x" 'execute-extended-command)
+       ("X" 'sudo-buffer)
+       (";" 'eval-expression)
+       ("M" 'man)
+       ("a" 'async-shell-command)
+       ("v" 'revert-buffer-no-confirm)
+       ("n" 'find-new-buffer)
+       ("D" (cmd
+             (require 'edebug)
+             (eval-defun t);;instrument first
+             (edebug-set-breakpoint nil)))
+       ("d"
+        (but
+         ("e" #'toggle-debug-on-error)
+         ("q" #'toggle-debug-on-quit)))
+       ("g" 'grep-recursive)
+       ("G" #'replace-regexp-recursively)
+       ("f" 'find-iregex)
+       ("F" 'erc)
+       ("u" 'universal-argument)
+       ([f2] 'call-last-kbd-macro)
+       ("W" (buttons-make
+             ("1" 'slime-sbcl)
+             ("2" 'slime-stumpwm)
+             ("3" 'cider-buffer-or-jack-in)))
+       ("w" (switch-to-buff-or-else-command
+             "regexp:[*]slime-repl sbcl\\|[*]cider-repl"))
+       ("r" 'replace-regexp)
+       ("R" 'query-replace-regexp)
+       ("A" (cmd (next-async-shell-command-buffer)))
+       ("o" 'gnus-goto-inbox)
+       ("0" 'open-google-calendar)
+       ("b" (buff "*Inferior Octave*" (inferior-octave t)))
+       ("3" (buff "*eww*" (call-interactively 'eww)))
+       ("q" (buff "regexp:[*]SQL.*[*]"
+                  (call-interactively
+                   (selcand-select inferior-sql-mode-providers :autoselect-if-single t))))
+       ("m" (cmd (call-interactively 'sip-chat-menu))))))))
 
 (defun buffer-matching (string &optional regexp-p)
   "Find buffers matching STRING, interpreted as a regexp when REGEXP-P."
@@ -504,13 +504,13 @@
 
     (if (not regexp-p) (get-buffer string)
       (cl-loop with matching
-            for buff in (buffer-list)
-            as name = (buffer-name buff)
-            if (string-match string name)
-            collect name into matching
-            finally
-            (return (let ((sorted (sort matching #'string-lessp)))
-                      (car sorted)))))))
+               for buff in (buffer-list)
+               as name = (buffer-name buff)
+               if (string-match string name)
+               collect name into matching
+               finally
+               (return (let ((sorted (sort matching #'string-lessp)))
+                         (car sorted)))))))
 
 (defun force-mode-first (mode-symbol &optional kmap)
   "Try to ensure that my keybindings have priority over the newly-loaded MODE-SYMBOL.
@@ -520,8 +520,8 @@
   (cl-loop
    with kmap = (or kmap
                    (let ((kmap-sym (->> mode-symbol
-                                     (format "%s-map")
-                                     intern)))
+                                        (format "%s-map")
+                                        intern)))
                      (cl-assert (boundp kmap-sym))
                      (symbol-value kmap-sym)))
    with entry = (cons mode-symbol kmap)
@@ -543,48 +543,48 @@
 
 (add-hook 'after-load-functions
 	  #'(lambda (_something)
-	     (force-mode-first 'erjoalgo-command-mode)))
+	      (force-mode-first 'erjoalgo-command-mode)))
 
 (buttons-macrolet
- ()
- ;; suppress warning about overriding target keymap
- (define-key global-map [f1] nil)
- (define-key global-map [f2] nil)
- (define-key global-map [f13] nil)
- (defbuttons command-mode-global-buttons
-   nil
-   (global-map)
-   (but
-    ([f1] 'global-erjoalgo-command-mode-toggle)
-    ([f13] 'global-erjoalgo-command-mode-toggle)
-    ((kbd "<s-f11>") 'global-erjoalgo-command-mode-toggle)
-    ((kbd "ë") 'global-erjoalgo-command-mode-toggle)
-    ([f2] 'other-window)
-    ((kbd "<s-f12>") (lambda () (interactive)
-                                  (save-buffer)
-                                  (erjoalgo-command-mode 1)))
-    ([M-f1] 'goto-last-change)
-    ([f4] 'keyboard-escape-quit)
-    ((kbd "s-`") 'exit-recursive-edit)
-    ((kbd "s-~") 'buttons-abort-cmd)
-    ((kbd "s-SPC") (cmd (ins ", ")))
-    ((kbd "<C-f11>") 'eval-buffer)
-    ((kbd "M-SPC") (lambda (arg) (interactive "P")
-                     (upcase-last (not arg)) (insert " ")))
-    ((kbd "<backtab>") 'my-indent)))
+    ()
+  ;; suppress warning about overriding target keymap
+  (define-key global-map [f1] nil)
+  (define-key global-map [f2] nil)
+  (define-key global-map [f13] nil)
+  (defbuttons command-mode-global-buttons
+      nil
+      (global-map)
+    (but
+     ([f1] 'global-erjoalgo-command-mode-toggle)
+     ([f13] 'global-erjoalgo-command-mode-toggle)
+     ((kbd "<s-f11>") 'global-erjoalgo-command-mode-toggle)
+     ((kbd "ë") 'global-erjoalgo-command-mode-toggle)
+     ([f2] 'other-window)
+     ((kbd "<s-f12>") (lambda () (interactive)
+                        (save-buffer)
+                        (erjoalgo-command-mode 1)))
+     ([M-f1] 'goto-last-change)
+     ([f4] 'keyboard-escape-quit)
+     ((kbd "s-`") 'exit-recursive-edit)
+     ((kbd "s-~") 'buttons-abort-cmd)
+     ((kbd "s-SPC") (cmd (ins ", ")))
+     ((kbd "<C-f11>") 'eval-buffer)
+     ((kbd "M-SPC") (lambda (arg) (interactive "P")
+                      (upcase-last (not arg)) (insert " ")))
+     ((kbd "<backtab>") 'my-indent)))
 
- (defbuttons help-buttons nil
-   (help-map)
-   (but
-    ;;find source for function-at-point
-    ("y" 'find-function)
-    ("Y" 'find-symbol)
-    ;;apropos
-    ("A" 'apropos-variable)
-    ;; disable annoying tutorial
-    ((kbd "t") nil)
-    ;; disable accidentally entering h h
-    ((kbd "h") nil))))
+  (defbuttons help-buttons nil
+              (help-map)
+    (but
+     ;;find source for function-at-point
+     ("y" 'find-function)
+     ("Y" 'find-symbol)
+     ;;apropos
+     ("A" 'apropos-variable)
+     ;; disable annoying tutorial
+     ((kbd "t") nil)
+     ;; disable accidentally entering h h
+     ((kbd "h") nil))))
 
 (defun apropos-mode-hook-auto-switch-windows (&rest args)
   (if-let ((apropos-win
