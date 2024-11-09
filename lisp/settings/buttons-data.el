@@ -509,7 +509,8 @@
        ("e" (cmd-ins "(def {})"))
        ("t"
         (but
-         ("r" #'cider-restart)
+         ("R" #'cider-restart)
+         ("r"  (cmd-ins "(throw (Exception. \"{}\""))
          ("u" (cmd-ins "true"))
          ("g" (cmd-ins "false"))
          ("G" (cmd-ins "nil"))
