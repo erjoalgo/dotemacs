@@ -30,12 +30,12 @@
 (defvar *scroll-amount* nil )
 (setq *scroll-amount* 8)
 (defun scroll-down-keep-cursor (arg)
-   ;; Scroll the text one line down while keeping the cursor
+  ;; Scroll the text one line down while keeping the cursor
   (interactive "P")
   (scroll-down-command (- (* *scroll-amount* (or arg 1)))))
 
 (defun scroll-up-keep-cursor (arg)
-   ;; Scroll the text one line up while keeping the cursor
+  ;; Scroll the text one line up while keeping the cursor
   (interactive "P")
   (scroll-up-command (- (* *scroll-amount* (or arg 1)))))
 (setq scroll-error-top-bottom t)
@@ -59,7 +59,7 @@
 (defun duplicate-current-buffer (&optional vertical-p)
   (interactive "P")
   (with-split-preference vertical-p
-   (switch-to-buffer-other-window (current-buffer))))
+                         (switch-to-buffer-other-window (current-buffer))))
 
 (defun yank-or-pop ()
   (interactive)
@@ -82,7 +82,7 @@
   "move to the beginning of line, then past the prompt if possible."
   (beginning-of-line)
   (when (looking-at regexp)
-      (forward-char (length (match-string 0)))))
+    (forward-char (length (match-string 0)))))
 
 (defun my-move-beginning-of-line ()
   ;;TODO use mode-hook-initialized variables
@@ -112,16 +112,16 @@
 	      (back-to-indentation))))))
 
 (defun copy-line-up (arg) (interactive "P")
-  (move-line-up-mine nil t arg))
+       (move-line-up-mine nil t arg))
 
 (defun copy-line-down (arg) (interactive "P")
-  (move-line-up-mine 1 t arg))
+       (move-line-up-mine 1 t arg))
 
 (defun move-line-down (arg) (interactive "P")
-  (move-line-up-mine 1 nil arg))
+       (move-line-up-mine 1 nil arg))
 
 (defun move-line-up (arg) (interactive "P")
-  (move-line-up-mine nil nil arg))
+       (move-line-up-mine nil nil arg))
 
 (defun move-line-up-mine (&optional down copy n)
   (interactive (list nil nil current-prefix-arg))
@@ -138,9 +138,9 @@
       (if down
 	  (if (progn (end-of-line)
 		     (equal (point-max) (point)))
-		(progn (open-line 1)
-		       (forward-char))
-	      (forward-line))
+	      (progn (open-line 1)
+		     (forward-char))
+	    (forward-line))
 	(unless copy (forward-line -1)))
       (goto-char (line-beginning-position))
 					;(if copy (insert line))
@@ -152,14 +152,14 @@
   (interactive "P")
   (setq kill-surrounding-cum-count
 	(1+ (if (eq last-command 'kill-surrounding-sexp)
-	     kill-surrounding-cum-count 0)))
+	        kill-surrounding-cum-count 0)))
   (save-excursion
     (let* ((n (+ (or arg 1) -1 kill-surrounding-cum-count))
 	   (at-beginning-of-sexp (at-beginning-of-sexp))
 	   (killed (buffer-substring
 		    (progn (backward-sexp
 			    (- n (if at-beginning-of-sexp 1 0)))
-			    (point))
+			   (point))
 		    (progn (forward-sexp n) (point)))))
       (message "killed: %s" killed)
       (kill-new killed)
@@ -173,17 +173,17 @@
 (defun at-beginning-of-sexp ()
   (condition-case ex
       (save-excursion (= (point)
-		     (progn (forward-sexp 1)
-			    (backward-sexp 1)
-			    (point))))
-      ('error nil )))
+		         (progn (forward-sexp 1)
+			        (backward-sexp 1)
+			        (point))))
+    ('error nil )))
 
 
 (defun then-cycle-window (fun) (interactive)
-	 `(lambda () (interactive)
-	    (funcall ',fun)
-	    (other-window 1)
-	    (cycle-buffer nil)))
+       `(lambda () (interactive)
+	  (funcall ',fun)
+	  (other-window 1)
+	  (cycle-buffer nil)))
 
 (fset 'my-split-window-below (then-cycle-window 'split-window-below))
 (fset 'my-split-window-right (then-cycle-window 'split-window-right))
@@ -286,9 +286,9 @@ Buffers other than the current buffer are preferred."
 	(erase-buffer)))
 
     (let* ((args
-           (list "find" directory "-iregex" (format ".*%s.*" regex)))
-          (proc
-	   (apply #'start-process buff-name buff-name args)))
+            (list "find" directory "-iregex" (format ".*%s.*" regex)))
+           (proc
+	    (apply #'start-process buff-name buff-name args)))
       (set-process-sentinel
        proc
        `(lambda (proc change)
@@ -296,7 +296,7 @@ Buffers other than the current buffer are preferred."
 	  (setf default-directory ,directory)
 	  (buffer-relativize-path-names ,directory)
 	  (progn (goto-char (point-max))
-		   (insert "DONE"))
+		 (insert "DONE"))
 	  (beginning-of-buffer))))))
 
 
@@ -368,9 +368,9 @@ Buffers other than the current buffer are preferred."
                   (symbol-name search)
                 (prin1-to-string search)))))
 	 (default (string-remove-properties
-                    (or (region)
-                        symbol-at-point
-                        ""))))
+                   (or (region)
+                       symbol-at-point
+                       ""))))
     (read-string
      (format prompt (clipboard))
      default
@@ -400,14 +400,14 @@ Buffers other than the current buffer are preferred."
     (setf default-directory dir)
 
     (setf proc (apply 'start-process buff-name buff-name
-		   (append
-		    `(,@sudo-p "find" ,dir
-                               "-name" "node_modules" "-prune"
-                               "-name" ".git" "-prune"
-                               "-o")
-		    (when extension
-		      (list "-name" (concat "*" extension)))
-		    `("-exec" ,@sudo-p "grep" "-HinsI" ,pattern "{}" ";"))))
+		      (append
+		       `(,@sudo-p "find" ,dir
+                                  "-name" "node_modules" "-prune"
+                                  "-name" ".git" "-prune"
+                                  "-o")
+		       (when extension
+		         (list "-name" (concat "*" extension)))
+		       `("-exec" ,@sudo-p "grep" "-HinsI" ,pattern "{}" ";"))))
     (set-process-sentinel proc
 			  `(lambda (proc change)
 			     (switch-to-buffer ,buff-name)
@@ -415,11 +415,11 @@ Buffers other than the current buffer are preferred."
 			     (buffer-relativize-path-names ,dir)
                              (buffer-add-space-before-line-number)
 			     (progn (goto-char (point-max))
-				      (insert "DONE"))
+				    (insert "DONE"))
 			     (beginning-of-buffer)))
     '(start-process buff-name buff-name
 		    "grep" "-RHins" pattern dir)
-    ;(set (make-local-variable 'window-point-insertion-type) t)
+                                        ;(set (make-local-variable 'window-point-insertion-type) t)
     ))
 
 (defun kill-current-buffer-filename ()(interactive)
@@ -429,8 +429,8 @@ Buffers other than the current buffer are preferred."
 	       (if (eq major-mode 'dired-mode)
 		   (expand-file-name
 		    (or (dired-file-name-at-point)
-		       default-directory))
-		   (buffer-file-name (current-buffer))))))
+		        default-directory))
+		 (buffer-file-name (current-buffer))))))
 
 	 (kill-new fn)
 	 (message "killed: %s" fn)
@@ -461,13 +461,13 @@ Buffers other than the current buffer are preferred."
 (defun cycle-buffer (same-name-filter)
   (interactive "P")
   (let ((buf-list (cl-remove-if (lambda (buf)
-                               ;; (or (equal buf (current-buffer))
-                                   (if same-name-filter
-                                       (not (equal (buffer-name-no-qualifier)
-                                                   (buffer-name-no-qualifier buf)))
-                                     (-> (buffer-name buf)
-                                         (member cycle-buffer-exclude))))
-                             (buffer-list)))
+                                  ;; (or (equal buf (current-buffer))
+                                  (if same-name-filter
+                                      (not (equal (buffer-name-no-qualifier)
+                                                  (buffer-name-no-qualifier buf)))
+                                    (-> (buffer-name buf)
+                                        (member cycle-buffer-exclude))))
+                                (buffer-list)))
         (nth-mod (lambda (n list) (nth (mod n (length list)) list)))
         ;; (direction (if arg -1 1))
         (direction 1))
@@ -480,8 +480,8 @@ Buffers other than the current buffer are preferred."
       (progn
         (setq cycle-buffer-index
               (cl-loop for i from 0
-                    for buff in (buffer-list)
-                    thereis (and (eq (current-buffer) buff) i)))
+                       for buff in (buffer-list)
+                       thereis (and (eq (current-buffer) buff) i)))
         (switch-to-buffer nil)))))
 
 (defun uri-encode (search-terms)
@@ -496,7 +496,7 @@ Buffers other than the current buffer are preferred."
 
 (defun completing-read-alist (prompt alist)
   (cdr (assoc (completing-read prompt (mapcar 'car alist)
-                   nil t (caar alist)))))
+                               nil t (caar alist)))))
 
 (provide 'command-mode-commands)
 ;;; command-mode-commands.el ends here
