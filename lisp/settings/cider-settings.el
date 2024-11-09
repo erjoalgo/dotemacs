@@ -11,8 +11,8 @@
 (defvar clojure-known-namespaces nil)
 
 (defun cider-add-to-know-namespaces ()
-    (when-let ((ns (clojure-current-namespace)))
-      (cl-pushnew ns clojure-known-namespaces  :test #'equal)))
+  (when-let ((ns (clojure-current-namespace)))
+    (cl-pushnew ns clojure-known-namespaces  :test #'equal)))
 
 (add-hook 'clojure-mode-hook #'cider-add-to-know-namespaces)
 
@@ -24,8 +24,8 @@
              (ns-form (format "(ns %s)" ns)))
     (if (eq major-mode 'cider-repl-mode)
         (progn (insert ns-form)
-             (cider-repl-return))
-        (cider-interactive-eval ns-form))))
+               (cider-repl-return))
+      (cider-interactive-eval ns-form))))
 
 (add-hook 'cider-connected-hook #'cider-maybe-switch-to-current-ns)
 (add-hook 'cider-repl-mode #'cider-maybe-switch-to-current-ns)
