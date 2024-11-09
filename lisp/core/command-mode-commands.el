@@ -249,7 +249,7 @@ Buffers other than the current buffer are preferred."
       (call-interactively 'slime-eval-defun)))
 
    ((and (boundp 'cider-mode)
-         (eq major-mode 'cider-mode))
+         (member major-mode '(cider-mode clojure-mode)))
     (call-interactively 'cider-eval-defun-at-point))
 
    ;;emacs lisp
