@@ -31,8 +31,10 @@
 (def-open-file-program "xournal" ("xoj" "pdf"))
 (def-open-file-program :self ("AppImage"))
 (defvar *creality-print-exe* nil)
-(setq *creality-print-exe*
-      (car (file-expand-wildcards "~/Downloads/Creality_Print*AppImage")))
+(when
+    (setq *creality-print-exe*
+          (car (file-expand-wildcards "~/Downloads/Creality_Print*AppImage")))
+  (def-open-file-program *creality-print-exe* ("stl")))
 (def-open-file-program "cura" ("stl" "3mf"))
 (def-open-file-program "blender" ("blend" "blend1"))
 (def-open-file-program "fstl" ("stl"))
