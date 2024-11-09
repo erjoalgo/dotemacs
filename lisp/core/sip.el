@@ -13,6 +13,7 @@
 (defvar sip-last-known-identity nil)
 (defvar sip-inhibit-echo-linphone-command nil)
 (defvar sip-messages (make-hash-table))
+(defvar sip-quiet-p t)
 
 (defun sms-fanout-disconnected-p (&optional client)
   (cond
@@ -395,7 +396,8 @@
       (error "Non-Zero status from server: %s" text))
      ((s-starts-with-p "push-messages/" message-type)
       (let ((messages (alist-get 'body json))
-            (supress-echo (equal message-type "push-messages/old")))
+            (supress-echo (or (equal message-type "push-messages/old")
+                              sip-quiet-p)))
         (sip-ws-log (format "received %s messages" (length messages)))
         (cl-loop
          for message across messages
