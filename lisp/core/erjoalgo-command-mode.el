@@ -121,22 +121,25 @@
   (file-name-directory (file-truename user-init-file))
   "Find the LISP src directory.")
 
+(defun find-most-recent-file (directories &optional nth no-kill open)
+  "Find the last modified file in DIRECTORIES"
+  (when nth (cl-assert (> nth 0)))
+  (let ((file
+         (-> (mapcar #'expand-file-name directories)
+             (most-recent-file-name-in-directories (when nth (1- nth))))))
+    (unless no-kill
+      (kill-new file)
+      (message "killed %s" file))
+    (when open
+      (open-file file))
+    file))
+
 (defmacro cmd-find-most-recent-file-in-directory (name directories)
   "Define a command NAME to find the nth file in DIRECTORIES."
   (declare (indent 1))
   `(defun ,name (&optional nth no-kill open)
      ,(format "find the last file in %s" directories)
-     (interactive "P")
-     (when nth (cl-assert (> nth 0)))
-     (let ((file
-            (-> (mapcar #'expand-file-name ,directories)
-                (most-recent-file-name-in-directories (when nth (1- nth))))))
-       (unless no-kill
-         (kill-new file)
-         (message "killed %s" file))
-       (when open
-         (open-file file))
-       file)))
+     (find-most-recent-file ,directories nth no-kill open)))
 
 (cmd-find-most-recent-file-in-directory find-last-download '("~/Downloads"))
 (cmd-find-most-recent-file-in-directory find-last-download-or-scrot
