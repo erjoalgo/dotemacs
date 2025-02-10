@@ -26,10 +26,10 @@ object."
 ;;; BEGIN debugging "require cl" issues
 (defun edebug-on-require-cl (feature &rest r)
   '(when (equal 'with-editor feature)
-    (message "DDEBUG ml0v (locate-library \"with-editor\"): %s"
+     (message "DDEBUG ml0v (locate-library \"with-editor\"): %s"
               (locate-library "with-editor"))
-    (require 'edebug)
-    (edebug)))
+     (require 'edebug)
+     (edebug)))
 (advice-add 'require :after #'edebug-on-require-cl)
 (defvar messages-to-debug nil)
 (push "Package cl is deprecated" messages-to-debug)
@@ -165,10 +165,10 @@ object."
    (require feature)))
 
 (cl-loop with top = (f-join emacs-top "libs")
-      for lib-dir in (directory-files top)
-      as fn = (f-join top lib-dir)
-      if (file-directory-p fn)  do
-      (add-to-list 'load-path fn))
+         for lib-dir in (directory-files top)
+         as fn = (f-join top lib-dir)
+         if (file-directory-p fn)  do
+         (add-to-list 'load-path fn))
 
 (defun current-time-ms ()
   "Return the current time in MS."
@@ -187,38 +187,38 @@ object."
 (defun load-rec (top-dir)
   "Load *.el files under TOP-DIR recursively."
   (cl-loop for file in (directory-files top-dir)
-        as filename-abs = (f-join top-dir file)
-        when (and (not (member file '("." "..")))
-                  (file-directory-p filename-abs))
-        do (cl-pushnew filename-abs load-path))
+           as filename-abs = (f-join top-dir file)
+           when (and (not (member file '("." "..")))
+                     (file-directory-p filename-abs))
+           do (cl-pushnew filename-abs load-path))
 
   (cl-loop for file in (directory-files top-dir)
-        as filename-abs = (f-join top-dir file)
-        if (file-directory-p filename-abs) append
-        (unless (member file '("." ".."))
-          (load-rec filename-abs))
-        else when (and (file-regular-p filename-abs)
-                       (equal "el" (f-ext filename-abs))
-                       (not (equal file dir-locals-file)))
-        collect
-        (with-elapsed-time ms
-                           (safe-funcall (load filename-abs))
-                           (cons ms filename-abs))))
+           as filename-abs = (f-join top-dir file)
+           if (file-directory-p filename-abs) append
+           (unless (member file '("." ".."))
+             (load-rec filename-abs))
+           else when (and (file-regular-p filename-abs)
+                          (equal "el" (f-ext filename-abs))
+                          (not (equal file dir-locals-file)))
+           collect
+           (with-elapsed-time ms
+                              (safe-funcall (load filename-abs))
+                              (cons ms filename-abs))))
 
 (let ((default-directory emacs-top))
   (let ((load-times
          (cl-loop for dir in (list
-                           "vars"
-                           "core" "private" "settings" "extra"
-                           "experimental"
-                           "extra-dirs"
-                           "~/private-data/emacs-lisp"
-                           "~/private-data-one-way/emacs-lisp")
-               when (file-exists-p dir)
-               append (load-rec (expand-file-name dir)))))
+                              "vars"
+                              "core" "private" "settings" "extra"
+                              "experimental"
+                              "extra-dirs"
+                              "~/private-data/emacs-lisp"
+                              "~/private-data-one-way/emacs-lisp")
+                  when (file-exists-p dir)
+                  append (load-rec (expand-file-name dir)))))
     (sort load-times (lambda (a b) (< (car a) (car b))))
     (cl-loop for (ms . file) in load-times
-          do (message "%dms to load %s" ms file))))
+             do (message "%dms to load %s" ms file))))
 
 ;; debug byte-compile errors. from https://emacs.stackexchange.com/a/39217/2846
 ;; (defun dont-delay-compile-warnings (fun type &rest args)
