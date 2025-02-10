@@ -56,24 +56,24 @@
                     '(1959 1960 1961 1962))))
     (cl-assert (or url-request-data (not (equal url-request-method "post"))))
     (cl-loop for port in ports
-          as url = (format "http://%s:%s%s" host port path)
-          do (with-elapsed-time
-              elapsed-ms
-              (url-retrieve
-               url
-               (lambda (status url)
-                 (when (and status
-                            (not (s-contains-p "connection-failed"
-                                               (prin1-to-string status))))
-                   (message "ERROR in stumpwm x-service request: %s %s %s"
-                            url status (buffer-string))))
-               (list url)
-               t)
-              (message "%sms for %s %s"
-                       elapsed-ms
-                       (or (bound-and-true-p url-request-method)
-                           "GET")
-                       url)))))
+             as url = (format "http://%s:%s%s" host port path)
+             do (with-elapsed-time
+                 elapsed-ms
+                 (url-retrieve
+                  url
+                  (lambda (status url)
+                    (when (and status
+                               (not (s-contains-p "connection-failed"
+                                                  (prin1-to-string status))))
+                      (message "ERROR in stumpwm x-service request: %s %s %s"
+                               url status (buffer-string))))
+                  (list url)
+                  t)
+                 (message "%sms for %s %s"
+                          elapsed-ms
+                          (or (bound-and-true-p url-request-method)
+                              "GET")
+                          url)))))
 
 (defun stumpwm-request-subprocess (path &optional extra-headers data use-stdin)
   "Send a stumpwm request via a subprocess.  PATH HOST PORTS"
@@ -105,7 +105,7 @@
   (cl-assert data)
   ;; use the x-service-curl client instead
   '(let ((url-request-data (encode-coding-string data 'utf-8))
-        (url-request-method "post"))
+         (url-request-method "post"))
      (stumpwm-request path))
   (stumpwm-request-subprocess path host data))
 
@@ -133,10 +133,10 @@
   (interactive
    (list
     (or (bound-and-true-p search-engine-query)
-    (if (region-active-p)
-        (buffer-substring (region-beginning) (region-end))
-      (read-string "enter search query: "
-                   (or (car kill-ring) (x-get-clipboard)))))
+        (if (region-active-p)
+            (buffer-substring (region-beginning) (region-end))
+          (read-string "enter search query: "
+                       (or (car kill-ring) (x-get-clipboard)))))
     (read-char "enter search engine letter: ")))
   (let ((url-request-extra-headers
          `(("ENGINE-LETTER" . ,(char-to-string engine-letter)))))
@@ -179,10 +179,10 @@
 
 (defun slime-connected-hook-switch-to-auto-package ()
   '(when slime-auto-package
-    (condition-case err
-        (slime-repl-set-package slime-auto-package)
-      (error
-       (message "failed to set package to %s %s" sbcl-auto-set-package err)))))
+     (condition-case err
+         (slime-repl-set-package slime-auto-package)
+       (error
+        (message "failed to set package to %s %s" sbcl-auto-set-package err)))))
 
 (add-hook #'slime-editing-mode-hook
           #'slime-connected-hook-switch-to-auto-package)
