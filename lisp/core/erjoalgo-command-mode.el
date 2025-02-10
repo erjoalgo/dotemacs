@@ -134,6 +134,27 @@
       (open-file file))
     file))
 
+(defun run-process (cmd)
+  (let* ((name (car cmd))
+         (buffer (generate-new-buffer name))
+         (stderr (generate-new-buffer (concat name "-stderr")))
+         (proc
+          ;; (apply #'start-process name buffer name (cdr cmd))
+          (make-process
+           :name name
+           :buffer buffer
+           :stderr stderr
+           :command cmd
+           :sentinel 'ignore)))
+    (set-process-sentinel (get-buffer-process stderr) #'ignore)
+    (while (process-live-p proc)
+      (sit-for .5))
+    (cons
+     (with-current-buffer buffer
+       (buffer-string))
+     (with-current-buffer stderr
+       (buffer-string)))))
+
 (defmacro cmd-find-most-recent-file-in-directory (name directories)
   "Define a command NAME to find the nth file in DIRECTORIES."
   (declare (indent 1))
