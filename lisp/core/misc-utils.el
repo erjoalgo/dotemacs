@@ -57,9 +57,9 @@
    (list (read-shell-command "enter program: ")))
   (let ((dirs
 	 (cl-loop for dir in (split-string (getenv "PATH") ":" t)
-	       if (and (file-exists-p dir)
-		       (member program (directory-files dir)))
-	       collect (f-join dir program))))
+	          if (and (file-exists-p dir)
+		          (member program (directory-files dir)))
+	          collect (f-join dir program))))
 
     (when (called-interactively-p 'interactively)
       (message "%s" dirs))
@@ -96,20 +96,20 @@
   "Make DEST point to the absolute path of SOURCE."
   (interactive
    (let* ((initial
-          (if (and (eq major-mode 'dired-mode)
-		   (funcall 'dired-file-name-at-point))
-	      (f-filename
-	       (funcall 'dired-file-name-at-point))
-            (buffer-file-name)))
-         (source (read-file-name "Enter soft link source: " nil initial t initial))
-         (dest (read-file-name "Enter soft link dest: ")))
+           (if (and (eq major-mode 'dired-mode)
+		    (funcall 'dired-file-name-at-point))
+	       (f-filename
+	        (funcall 'dired-file-name-at-point))
+             (buffer-file-name)))
+          (source (read-file-name "Enter soft link source: " nil initial t initial))
+          (dest (read-file-name "Enter soft link dest: ")))
      (list dest source)))
 
   (->
-      (call-process "ln" nil "*lnabs*" nil
-                    "-sf"
-                    (expand-file-name source)
-                    (expand-file-name dest))
+    (call-process "ln" nil "*lnabs*" nil
+                  "-sf"
+                  (expand-file-name source)
+                  (expand-file-name dest))
     zerop
     assert))
 
@@ -194,37 +194,37 @@
   "The buffer being examined by a ‘check-unsaved-buffers' recursive edit.")
 
 (setq check-unsaved-buffers-skip-buffers-regexp-list
-  '("^[[:space:]]*[*].*[*]$"
-    "^[ ]*[*]mm[*]-[0-9]+"
-    "^[ ][*]nnimap"
-    "^[ ][*]nnimap"
-    "^ ?[*].*"
-    "^irc.freenode.net:.*"
-    "^#sip.*"))
+      '("^[[:space:]]*[*].*[*]$"
+        "^[ ]*[*]mm[*]-[0-9]+"
+        "^[ ][*]nnimap"
+        "^[ ][*]nnimap"
+        "^ ?[*].*"
+        "^irc.freenode.net:.*"
+        "^#sip.*"))
 
 (defun check-unsaved-buffers ()
   "Check buffers with changes not persisted in the filesystem."
   (interactive)
   (cl-loop as next-buff =
-	(cl-loop for buff in (buffer-list)
-	      thereis (and
-		       (not (get-buffer-process buff))
-                       (or (not (buffer-file-name buff))
-			   (buffer-modified-p buff))
-                       (not (member (buffer-local-value 'major-mode buff) '(dired-mode)))
-                       (not
-                        (cl-loop for re in
-                              check-unsaved-buffers-skip-buffers-regexp-list
-                              thereis (string-match  re (buffer-name buff))))
-		       buff))
-	while next-buff do
-	(progn (switch-to-buffer next-buff)
-	       (message "unsaved changes in: %s... close or save, then exit rec-edit"
-			(buffer-name next-buff))
-	       (let ((erjoalgo-command-mode-keep-state t))
-                 (setf check-unsaved-buffers-current-buffer next-buff)
-                 (recursive-edit)))
-	finally (message "done checking buffers"))
+	   (cl-loop for buff in (buffer-list)
+	            thereis (and
+		             (not (get-buffer-process buff))
+                             (or (not (buffer-file-name buff))
+			         (buffer-modified-p buff))
+                             (not (member (buffer-local-value 'major-mode buff) '(dired-mode)))
+                             (not
+                              (cl-loop for re in
+                                       check-unsaved-buffers-skip-buffers-regexp-list
+                                       thereis (string-match  re (buffer-name buff))))
+		             buff))
+	   while next-buff do
+	   (progn (switch-to-buffer next-buff)
+	          (message "unsaved changes in: %s... close or save, then exit rec-edit"
+			   (buffer-name next-buff))
+	          (let ((erjoalgo-command-mode-keep-state t))
+                    (setf check-unsaved-buffers-current-buffer next-buff)
+                    (recursive-edit)))
+	   finally (message "done checking buffers"))
   t)
 (add-hook 'kill-emacs-query-functions 'check-unsaved-buffers)
 
@@ -238,10 +238,10 @@
 (defadvice kill-buffer (around check-unsaved-buffers-auto-move-to-next-buffer activate)
   "When in a CHECK-UNSAVED-BUFFERS recurisve-edit, exit it to move on to the next buffer."
   '(message "on check-unsaved-buffers-auto-move-to-next-buffer: (equal %s %s) => %s. %s"
-	   (current-buffer)
-	   check-unsaved-buffers-current-buffer
-	   (equal (current-buffer) check-unsaved-buffers-current-buffer)
-	   this-command)
+	    (current-buffer)
+	    check-unsaved-buffers-current-buffer
+	    (equal (current-buffer) check-unsaved-buffers-current-buffer)
+	    this-command)
   (let ((is-unsaved-buffer (and check-unsaved-buffers-current-buffer
 				(equal (current-buffer) check-unsaved-buffers-current-buffer))))
     ad-do-it
@@ -252,14 +252,14 @@
 (defun diff-sexps (sexp-a sexp-b)
   "Signal an error where SEXP-A, SEXP-B differ."
   (cl-loop for a in sexp-a
-	for b in sexp-b
-	do
-	(if (not (eq (atom a) (atom b)))
-	    (error "Mismatch: %s %s" a b)
-	  (if (not (atom a))
-	      (diff-sexps a b)
-	    (unless (equal a b)
-	      (error "Mismatch: %s %s" a b)))))
+	   for b in sexp-b
+	   do
+	   (if (not (eq (atom a) (atom b)))
+	       (error "Mismatch: %s %s" a b)
+	     (if (not (atom a))
+	         (diff-sexps a b)
+	       (unless (equal a b)
+	         (error "Mismatch: %s %s" a b)))))
   (or (not (and (consp sexp-a) (consp sexp-b)))
       (= (length sexp-a) (length sexp-b))))
 
@@ -279,8 +279,8 @@
                             when (not (keymapp curr))
                             do (let ((sym (keymap-symbol (list kmap))))
                                  (cl-return (cons
-                                          (mapcar #'keymap-symbol (mapcar #'list cum))
-                                          curr))))
+                                             (mapcar #'keymap-symbol (mapcar #'list cum))
+                                             curr))))
                    when binding
                    collect binding))
 	 (kmap-to-key-alist kmaps-filtered))
@@ -326,21 +326,21 @@
 		     (unless was-open (kill-buffer buffer)))))))
   (let ((fun fun))
     (cl-loop with front = (list top)
-	  with new-front = nil
-	  while front do
-	  (cl-loop while front
-		as dir = (pop front)
-		as files = (progn (cl-assert (f-dir? dir))
-				  (directory-files dir))
-		do (cl-loop for base in files
-			 as fn = (f-join dir base)
-			 do (if (f-dir? fn)
-				(unless (member base '(".." "."))
-				  (push fn new-front))
-			      (unless (auto-save-file-name-p base)
-				(funcall fun fn)))))
-	  do (setf front new-front
-		   new-front nil))))
+	     with new-front = nil
+	     while front do
+	     (cl-loop while front
+		      as dir = (pop front)
+		      as files = (progn (cl-assert (f-dir? dir))
+				        (directory-files dir))
+		      do (cl-loop for base in files
+			          as fn = (f-join dir base)
+			          do (if (f-dir? fn)
+				         (unless (member base '(".." "."))
+				           (push fn new-front))
+			               (unless (auto-save-file-name-p base)
+				         (funcall fun fn)))))
+	     do (setf front new-front
+		      new-front nil))))
 
 (defmacro with-temporary-current-file (filename &rest body)
   "Temporarily open existing file FILENAME and evaluate BODY there."
@@ -408,14 +408,14 @@
           (let ((local-count 0)
                 ;; support relative symlinks
                 (default-directory (f-dirname filename)))
-          (with-temporary-current-file
-           filename
-           (cl-incf count
-                    (setq local-count
-                          (regexp-replace-current-buffer from to pause)))
-           (when (buffer-modified-p)
-             (save-buffer)))
-          (message "%s occurrences replaced in %s" count filename)))))
+            (with-temporary-current-file
+             filename
+             (cl-incf count
+                      (setq local-count
+                            (regexp-replace-current-buffer from to pause)))
+             (when (buffer-modified-p)
+               (save-buffer)))
+            (message "%s occurrences replaced in %s" count filename)))))
     (message "%d occurrences replaced in directory"
              count)))
 
@@ -483,8 +483,8 @@ for customization of the printer command."
 	       (_ (message "text is %s" text))
 	       (replacement (save-match-data
 			      (cl-loop for (regexp replacement) in text-replacement-alist
-				    thereis (when (string-match regexp text)
-					      replacement)))))
+				       thereis (when (string-match regexp text)
+					         replacement)))))
           (replace-match replacement))))))
 
 (defun multi-regexp-replace-sequential (text-replacement-alist
@@ -492,9 +492,9 @@ for customization of the printer command."
   "Replace each (FROM TO) pair in TEXT-REPLACEMENT-ALIST sequentially on region A, B."
   (unless (and a b) (setf a (point-min) b (point-max)))
   (cl-loop for (regexp replacement) in text-replacement-alist
-	do (progn (goto-char a)
-		  (while (re-search-forward regexp b t)
-		    (replace-match replacement)))))
+	   do (progn (goto-char a)
+		     (while (re-search-forward regexp b t)
+		       (replace-match replacement)))))
 
 (defun url-decode (a b)
   "URL-decode the region A, B."
@@ -535,8 +535,8 @@ for customization of the printer command."
 
 
 (autobuild-defvar-file-local js-indent-mode
-  nil
-  (read-number "enter value for js-indent-mode: "))
+                             nil
+                             (read-number "enter value for js-indent-mode: "))
 
 (defun file-local-set (sym value)
   "Set SYM to VALUE persistently using a file-local variable."
@@ -566,8 +566,8 @@ for customization of the printer command."
   "Switch to the next 'new buffer'."
   (interactive)
   (switch-to-buffer (cl-loop for buff in (buffer-list)
-			  thereis
-			  (and (s-starts-with-p "new-buffer" (buffer-name buff)) buff))))
+			     thereis
+			     (and (s-starts-with-p "new-buffer" (buffer-name buff)) buff))))
 
 (defun perf-test (source-buff)
   "Try to use primitive statistical profiling to identify a hotspot.
@@ -709,8 +709,8 @@ This requires the external program `diff' to be in your `exec-path'."
 	(newline (or separator-char (string-to-char "\n")))
 	(string-indexof (lambda (string char start)
 			  (cl-loop for i from start below (length string)
-				thereis (when (eq char (aref string i))
-					  i)))))
+				   thereis (when (eq char (aref string i))
+					     i)))))
     (set cum-string-sym "")
     `(lambda (proc string)
        (setf string (concat ,cum-string-sym string))
@@ -736,32 +736,32 @@ This requires the external program `diff' to be in your `exec-path'."
    (cl-labels ((read-region-lines-interactively (region-name)
                                                 (message "select region %s, then exit recedit: "
                                                          region-name)
-                                             (recursive-edit)
-                                             (->>
-                                              (buffer-substring
-                                               (region-beginning)
-                                               (region-end))
-                                              (s-split "\n"))))
+                                                (recursive-edit)
+                                                (->>
+                                                  (buffer-substring
+                                                   (region-beginning)
+                                                   (region-end))
+                                                  (s-split "\n"))))
      (list (read-region-lines-interactively "A")
            (read-region-lines-interactively "B"))))
   (let ((buffname "*A B region diff*"))
     (with-help-window buffname
       (with-current-buffer buffname
         (cl-loop for (msg lines) on
-              (list
-               "common lines" (intersection a b :test #'equal)
-               "unique to A" (set-difference a b :test #'equal)
-               "unique to B" (set-difference b a :test #'equal))
-              by #'cddr
-              do
-              (progn (princ msg)
-                     (add-text-properties (line-beginning-position)
-                                          (line-end-position)
-                                          '(face bold))
-                     (princ "\n")
-                     (princ (s-join "\n" (or lines "")))
-                     (princ "\n")
-                     (princ "\n")))))))
+                 (list
+                  "common lines" (intersection a b :test #'equal)
+                  "unique to A" (set-difference a b :test #'equal)
+                  "unique to B" (set-difference b a :test #'equal))
+                 by #'cddr
+                 do
+                 (progn (princ msg)
+                        (add-text-properties (line-beginning-position)
+                                             (line-end-position)
+                                             '(face bold))
+                        (princ "\n")
+                        (princ (s-join "\n" (or lines "")))
+                        (princ "\n")
+                        (princ "\n")))))))
 
 (defun package-install-after-refresh ()
   (interactive)
@@ -792,7 +792,7 @@ This requires the external program `diff' to be in your `exec-path'."
   `(let ,(cl-loop for var in vars
                   for num from 0
                   unless (eq '_ var)
-                 collect `(,var (match-string ,num)))
+                  collect `(,var (match-string ,num)))
      ,@body))
 
 (defun git-merge ()
@@ -887,7 +887,7 @@ This requires the external program `diff' to be in your `exec-path'."
     (cond
      ((not proc) (message "buffer has no process"))
      ((not (process-live-p proc))
-           (message "buffer has no live process"))
+      (message "buffer has no live process"))
      (t (message "%s" (process-id proc))))))
 
 (defvar emacs-all-sources-dir
@@ -934,7 +934,7 @@ This requires the external program `diff' to be in your `exec-path'."
            "\n.*\\(LOG\\|cout\\|printf\\)[^\"]+\"DDEBUG[^;]+;" nil t)
           (when remove-all-prints
             (re-search-forward
-           "\n.*\\(LOG\\|cout\\|printf\\)[^\"]+\"[^;]+;" nil t)))
+             "\n.*\\(LOG\\|cout\\|printf\\)[^\"]+\"[^;]+;" nil t)))
        (cons (match-beginning 0) (match-end 0))))
     ((skylark-mode python-mode)
      (when (re-search-forward "\n[ \t]*print(\"DDEBUG" nil t)
