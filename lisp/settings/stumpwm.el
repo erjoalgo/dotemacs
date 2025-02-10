@@ -150,6 +150,28 @@
            (car kill-ring))))
     (call-interactively #'stumpwm-search-engine-search)))
 
+(defun stumpwm-url-launcher-put (url alias)
+  (let ((url-request-extra-headers
+         `(("ALIAS" . ,alias)
+           ("URL" . ,url))))
+    (stumpwm-request-post "/url-launcher-put" "")))
+
+(defun stumpwm-url-launcher-put-local-file (filename alias)
+  (interactive
+   (let*
+       ((filename (cond
+                   ((eq major-mode 'dired-mode)
+                    (expand-file-name
+		     (or (dired-file-name-at-point)
+		         default-directory)))
+                   (t (buffer-filename (current-buffer)))))
+        (_ (cl-assert filename))
+        (alias (read-string (format "enter alias for file %s: " filename))))
+     (list filename alias)))
+  (stumpwm-url-launcher-put
+   (format "file://%s" filename)
+   alias))
+
 (advice-add #'gui-select-text :after #'gui-select-text--stumpwm)
 
 (defvar slime-auto-package nil
