@@ -131,14 +131,18 @@
 
 (defalias 'sort-by #'sort-key)
 
+(defun file-timestamps (fname)
+  (let ((attrs (file-attributes fname)))
+    `(
+      (modification . ,(file-modification-timestamp fname))
+      ;; (access . ,(time-convert (file-attribute-access-time attrs) 'integer))
+      (change-time . ,(time-convert
+                       (file-attribute-status-change-time attrs) 'integer)))))
+
 (defun sort-files-by-time (files)
   (sort-by files
            (lambda (fname)
-             (let ((attrs (file-attributes fname)))
-               (max
-                (file-modification-timestamp fname)
-                (time-convert (file-attribute-access-time attrs) 'integer)
-                (time-convert (file-attribute-status-change-time attrs) 'integer))))
+             (apply #'max (mapcar #'cdr (file-timestamps fname))))
            :descending t))
 
 (defun most-recent-file-name (files &optional nth)
