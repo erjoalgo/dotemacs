@@ -439,6 +439,7 @@
             (cl-loop for _ below (or arg 1)
                      do (join-line '(4)))))
      ((kbd "s->") 'markdown-indent-code-by-4-spaces)
+     ((kbd "s-L") #'stumpwm-url-launcher-put-local-file)
      ("m"
       (buttons-make
        ("e" (file (file-truename "~/.emacs")))
