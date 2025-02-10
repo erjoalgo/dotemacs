@@ -121,7 +121,7 @@
   (file-name-directory (file-truename user-init-file))
   "Find the LISP src directory.")
 
-(defun find-most-recent-file (directories &optional nth no-kill open)
+(defun find-most-recent-file-native (directories &optional nth no-kill open)
   "Find the last modified file in DIRECTORIES"
   (when nth (cl-assert (> nth 0)))
   (let ((file
@@ -155,12 +155,37 @@
      (with-current-buffer stderr
        (buffer-string)))))
 
+(defun find-most-recent-file (directories &optional ext)
+  (let ((cmd
+         (append
+          '("find-last-modified-file-fast.sh")
+          (cl-loop for dir in directories
+                   nconc `("-d" ,(expand-file-name dir)))
+          (when ext (list "-e" ext))))
+        )
+    (cl-destructuring-bind (stdout . stderr) (run-process cmd)
+      (let ((lines (split-string stdout "\n")))
+        (car lines)))))
+
+(defun open-most-recent-file (directories &optional nth no-kill open)
+  "Find the last modified file in DIRECTORIES"
+  (when nth (cl-assert (> nth 0)))
+  (cl-assert (null nth))
+  (let ((file
+         (find-most-recent-file directories)))
+    (unless no-kill
+      (kill-new file)
+      (message "killed %s" file))
+    (when open
+      (open-file file))
+    file))
+
 (defmacro cmd-find-most-recent-file-in-directory (name directories)
   "Define a command NAME to find the nth file in DIRECTORIES."
   (declare (indent 1))
   `(defun ,name (&optional nth no-kill open)
      ,(format "find the last file in %s" directories)
-     (find-most-recent-file ,directories nth no-kill open)))
+     (open-most-recent-file ,directories nth no-kill open)))
 
 (cmd-find-most-recent-file-in-directory find-last-download '("~/Downloads"))
 
