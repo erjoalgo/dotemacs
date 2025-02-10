@@ -1,3 +1,5 @@
+#!/usr/bin/emacs --script
+
 (require 'cl-lib)
 
 (add-to-list 'load-path
