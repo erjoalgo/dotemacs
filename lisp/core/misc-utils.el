@@ -1003,5 +1003,9 @@ This requires the external program `diff' to be in your `exec-path'."
       (while (re-search-forward "" nil t)
         (replace-match "")))))
 
+(defun lpr-print (filename)
+  (start-process "*lpr-print.sh*" "*lpr-print.sh*"
+                 "lpr-print.sh" "-d" filename))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; misc-utils.el ends here
