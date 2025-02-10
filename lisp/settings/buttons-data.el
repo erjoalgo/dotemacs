@@ -812,17 +812,18 @@
          ("x" (cmd
                (ins
                 "
+    var url = `{}`;
     var xhr = new XMLHttpRequest();
-    xhr.open('GET{0}', {1}, true);
+    xhr.open('GET{0}', url, true);
     xhr.setRequestHeader('Content-type', 'application/json');
     xhr.onreadystatechange = function() {
         if(xhr.readyState == 4){
             if ( xhr.status != 200) {
-                var err = \"{0} \"+{1}+\" failed: \"+xhr.status;
+                var err = `{0} ${" "url} failed: ${" "xhr.status}`;
                 console.log(err);
                 alert(err);
             }else{
-                var {} = JSON.parse(xhr.responseText);
+                var resp = JSON.parse(xhr.responseText);
                 {}
             }
         }
