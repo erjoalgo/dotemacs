@@ -1,5 +1,11 @@
 (require 'cl-lib)
 
+(add-to-list 'load-path
+             "~/git/dotemacs/lisp/libs/")
+
+(require 'f)
+(require 's)
+
 (defmacro def-open-file-program (opener exts)
   "Specify that file extensions in EXTS should be opened by OPENER.
 
@@ -84,21 +90,36 @@
   (cl-loop for s in strings
            thereis (and s (> (length s) 0) s)))
 
-(defun open-file (filename &optional no-prompt)
+(cl-defun open-file (filename &key no-prompt pipe)
   (interactive (list (dired-file-name-at-point)))
   (setf filename (expand-file-name filename))
   (setq filename
         (replace-regexp-in-string "^/sudo:root@[^:]+:" "" filename))
   (let* ((programs (get-file-programs filename))
          (program (if (or (null (cdr programs)) no-prompt)
-                      (car programs)
+                      (car (last programs))
                     (selcand-select programs
                                     :prompt (format "select program to open %s: " filename))))
-         (buff (get-buffer-create (format "*%s*" program))))
+         (buff (if pipe t
+                 (get-buffer-create (format "*%s*" program)))))
     (if (not program)
         (progn
           (message (concat "no program known for file: " filename))
-          (find-file filename))
+          (if (file-exists-p filename)
+              (find-file filename)
+            (error "no such file: %s" filename)))
       (if (functionp program) (funcall program filename)
 	(progn (message "%s %s" program filename)
                (start-process program buff program filename))))))
+
+(defun maybe-strip-prefix (prefix string)
+  (if (s-starts-with? prefix string)
+      (substring string (length prefix))
+    string))
+
+(when argv
+  (let* ((filename (maybe-strip-prefix "file://" (car argv)))
+         (proc (open-file filename :no-prompt t)))
+    (while (process-live-p proc)
+      (sit-for 1))
+    (kill-emacs (process-exit-status proc))))
