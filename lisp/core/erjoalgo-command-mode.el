@@ -180,17 +180,17 @@
       (open-file file))
     file))
 
-(defmacro cmd-find-most-recent-file-in-directory (name directories)
+(defmacro cmd-open-most-recent-file-in-directory (name directories)
   "Define a command NAME to find the nth file in DIRECTORIES."
   (declare (indent 1))
   `(defun ,name (&optional nth no-kill open)
      ,(format "find the last file in %s" directories)
      (open-most-recent-file ,directories nth no-kill open)))
 
-(cmd-find-most-recent-file-in-directory find-last-download '("~/Downloads"))
+(cmd-open-most-recent-file-in-directory find-last-download '("~/Downloads"))
 
-(cmd-find-most-recent-file-in-directory find-last-download-or-scrot
-  '("~/Downloads" "~/pictures/auto-scrots" "~/git/3d/"))
+(cmd-open-most-recent-file-in-directory find-last-download-or-scrot
+                                        '("~/Downloads" "~/pictures/auto-scrots" "~/git/3d/"))
 
 (defalias #'sort-by #'sort-key)
 
