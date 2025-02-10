@@ -77,11 +77,13 @@
 (setq dired-create-destination-dirs 'always)
 
 (defun dired-sort-toggle--keep-cursor-position (oldfun &rest r)
-  (let ((old-line-number (line-number-at-pos)))
+  (let ((old-line-number (line-number-at-pos))
+        (old-column-number (- (point) (line-beginning-position))))
     (prog1
         (apply oldfun r)
       (goto-char (point-min))
-      (next-line old-line-number))))
+      (next-line old-line-number)
+      (forward-char old-column-number))))
 
 
 (advice-add #'dired-sort-toggle
