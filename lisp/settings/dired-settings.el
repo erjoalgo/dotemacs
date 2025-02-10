@@ -86,6 +86,6 @@
       (forward-char old-column-number))))
 
 
-(advice-add #'dired-sort-toggle
+(advice-add #'dired-sort-toggle-or-edit
             :around
             #'dired-sort-toggle--keep-cursor-position)
