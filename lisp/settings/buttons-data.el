@@ -492,7 +492,12 @@
         (but
          ("t" (cmd-ins "(printf \"{}\\n\"{})"))
          ("r" (cmd-ins "(log/info \"DDEBUG " (rnd) " TRACE" "\")"))
-         ("v" (cmd-ins "(log/infof \"DDEBUG " (rnd) " {0}: %s\"" (nli?) " {0})"))))
+         ("v" (cmd-ins "(log/infof \"DDEBUG " (rnd) " {0}: %s\"" (nli?) " {0})"))
+         ("l"
+          (but
+           ("i" (cmd-ins "(log/infof \"" (rec) "\")"))
+           ("e" (cmd-ins "(log/errorf \"" (rec) "\")"))
+           ("w" (cmd-ins "(log/warnf \"" (rec) "\")"))))))
        (";" (cmd-ins ": "))
        ("[" (cmd-ins "{"
                      (ins "{}}")))
@@ -734,7 +739,7 @@
 
     (defbuttons js-buttons c-buttons (js-mode-map typescript-mode-map)
       (but
-       ("d" (cmd-ins "function {} ( {} ){(cbd)}"))
+       ("d" (cmd-ins "function {} ({}){(cbd)}"))
        ("a" (cmd-ins "(" (rec) ") => "))
        ("A" (cmd-ins "() => "))
        ("." (cmd-ins "debugger;"))
