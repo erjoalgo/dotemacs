@@ -40,7 +40,7 @@
 (when
     (setq *creality-print-exe*
           (car (file-expand-wildcards "~/Downloads/Creality_Print*AppImage")))
-  (def-open-file-program *creality-print-exe* ("stl")))
+  (def-open-file-program *creality-print-exe* ("stl" "3mf")))
 
 (defvar *cura-exe* nil)
 (when (setq *cura-exe*
