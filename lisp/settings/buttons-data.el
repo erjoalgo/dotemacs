@@ -1553,6 +1553,8 @@
         (but
          ("q" 'dired-up-directory)
          ((kbd "s-f") 'open-file)
+         ((kbd "s-p") (cmd (lpr-print (expand-file-name
+                                       (dired-file-name-at-point)))))
          ((kbd "s-d") 'dired-recursive-du)
          ;; from image mode
          ((kbd "s-v") 'compress-video)
