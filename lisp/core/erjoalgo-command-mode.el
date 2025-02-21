@@ -190,7 +190,7 @@
 (cmd-open-most-recent-file-in-directory find-last-download '("~/Downloads"))
 
 (cmd-open-most-recent-file-in-directory find-last-download-or-scrot
-                                        '("~/Downloads" "~/pictures/auto-scrots" "~/git/3d/"))
+  '("~/Downloads" "~/pictures/auto-scrots" "~/git/3d/"))
 
 (defalias #'sort-by #'sort-key)
 
