@@ -86,6 +86,12 @@
     ;; TODO display errors
     (let ((proc
            (apply #'start-process proc-name proc-name "x-service-curl" args)))
+      (set-process-sentinel proc
+                            `(lambda (proc change)
+                               (when (s-starts-with-p "exited abnormally" change)
+                                 (warn "x-service failed: %s %s"
+                                       change
+                                       (with-current-buffer ,proc-name (buffer-string))))))
       (when (and data use-stdin)
         (process-send-string proc data)
         (process-send-eof proc)))))
