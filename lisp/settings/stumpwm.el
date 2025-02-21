@@ -75,26 +75,26 @@
                               "GET")
                           url)))))
 
-(defun stumpwm-request-subprocess (path &optional extra-headers data use-stdin)
-  "Send a stumpwm request via a subprocess.  PATH HOST PORTS"
+(defun x-service-curl (path headers &optional data use-stdin)
   (let* ((proc-name "*x-service-request*")
-         (extra-headers (or extra-headers url-request-extra-headers))
-         (data (or data url-request-data))
          (args `(,path
                  ,@(when data
-                     (if use-stdin
-                         (list "-i")
+                     (if use-stdin (list "-i")
                        (list "-d" data)))
-                 ,@(cl-loop for (k . v) in extra-headers
+                 ,@(cl-loop for (k . v) in headers
                             append (list "-H" (format "%s:%s" k v))))))
     ;; TODO display errors
     (let ((proc
            (apply #'start-process proc-name proc-name "x-service-curl" args)))
       (when (and data use-stdin)
         (process-send-string proc data)
-        (while (process-live-p proc)
-          (process-send-eof proc)
-          (sit-for 1))))))
+        (process-send-eof proc)))))
+
+(defun stumpwm-request-subprocess (path &optional extra-headers data use-stdin)
+  "Send a stumpwm request via a subprocess.  PATH HOST PORTS"
+  (let* ((extra-headers (or extra-headers url-request-extra-headers))
+         (data (or data url-request-data)))
+    (x-service-curl path extra-headers data use-stdin)))
 
 
 (defun stumpwm-request (path &rest args)
