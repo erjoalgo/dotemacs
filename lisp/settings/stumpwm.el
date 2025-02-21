@@ -178,6 +178,9 @@
    (format "file://%s" filename)
    alias))
 
+(defun stumpwm-raise (regexp)
+  (x-service-curl "/raise-window" `(("REGEXP" . regexp))))
+
 (advice-add #'gui-select-text :after #'gui-select-text--stumpwm)
 
 (defvar slime-auto-package nil
