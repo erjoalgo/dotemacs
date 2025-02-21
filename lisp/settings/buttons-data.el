@@ -1781,7 +1781,19 @@ server {
        ("`" (cmd-ins "`" (rec) "`"))))
 
     (defbuttons dockerfile-buttons bash-buttons (dockerfile-mode-map)
-      (but))))
+      (but))
+
+    (defbuttons scad-buttons programming-buttons (scad-mode-map)
+      (but
+       ("g"
+        (but
+         ("d" (cmd-ins "difference() {" (nli) (rec) (nli) "}"))
+         ("c" (cmd-ins "cube([" (rec)  "], center = " (rec) ");"))
+         ("y" (cmd-ins "cylinder(r=" (rec)  ", h=" (rec) ");"))
+         ("t" (cmd-ins "translate([" (rec)  "]) "))
+         ("r" (cmd-ins "rotate([" (rec)  "]) "))
+         ))))
+    ))
 
 (message "buttons loaded")
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
