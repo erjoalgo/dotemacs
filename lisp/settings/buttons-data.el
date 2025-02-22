@@ -1785,13 +1785,17 @@ server {
 
     (defbuttons scad-buttons programming-buttons (scad-mode-map)
       (but
+       ("d" (cmd-ins "module " (rec) "(" (rec) ") {" (nli) (rec) (nli) "}"))
        ("g"
         (but
          ("d" (cmd-ins "difference() {" (nli) (rec) (nli) "}"))
+         ("i" (cmd-ins "intersection() {" (nli) (rec) (nli) "}"))
          ("c" (cmd-ins "cube([" (rec)  "], center = " (rec) ");"))
          ("y" (cmd-ins "cylinder(r=" (rec)  ", h=" (rec) ");"))
          ("t" (cmd-ins "translate([" (rec)  "]) "))
          ("r" (cmd-ins "rotate([" (rec)  "]) "))
+         ("s" (cmd-ins "scale([" (rec)  "]) "))
+         ("p" (cmd-ins "sphere(d=" (rec)  ");"))
          ))))
     ))
 
