@@ -77,16 +77,18 @@
 
 (defun x-service-curl (path headers &optional data use-stdin)
   (let* ((proc-name "*x-service-request*")
-         (args `(,path
+         (args `("x-service-curl"
+                 ,path
                  ,@(when data
                      (if use-stdin (list "-i")
                        (list "-d" data)))
                  ,@(cl-loop for (k . v) in headers
                             append (list "-H" (format "%s:%s" k v)))))
          (old-max-point (with-current-buffer (get-buffer-create "*x-service-request*")
+                          (insert (format "running: %s" (string-join args " ")))
                           (point-max))))
     (let ((proc
-           (apply #'start-process proc-name proc-name "x-service-curl" args)))
+           (apply #'start-process proc-name proc-name args)))
       (set-process-sentinel proc
                             `(lambda (proc change)
                                (when (s-starts-with-p "exited abnormally" change)
