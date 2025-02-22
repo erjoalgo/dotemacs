@@ -1,3 +1,8 @@
+(defun scad-fix-comment-start ()
+  (setf comment-start "//"))
+
+(add-hook 'scad-mode-hook #'scad-fix-comment-start)
+
 (defvar-local compilation-sentinel nil
   "If bound on a specific compilation buffer, this function is invoked with
    the same arguments as those to ``COMPILATION-FINISH-FUNCTIONS''.")
