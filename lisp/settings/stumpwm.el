@@ -82,8 +82,9 @@
                      (if use-stdin (list "-i")
                        (list "-d" data)))
                  ,@(cl-loop for (k . v) in headers
-                            append (list "-H" (format "%s:%s" k v))))))
-    ;; TODO display errors
+                            append (list "-H" (format "%s:%s" k v)))))
+         (old-max-point (with-current-buffer (get-buffer-create "*x-service-request*")
+                          (point-max))))
     (let ((proc
            (apply #'start-process proc-name proc-name "x-service-curl" args)))
       (set-process-sentinel proc
@@ -91,7 +92,8 @@
                                (when (s-starts-with-p "exited abnormally" change)
                                  (warn "x-service failed: %s %s"
                                        change
-                                       (with-current-buffer ,proc-name (buffer-string))))))
+                                       (with-current-buffer ,proc-name
+                                         (buffer-substring ,old-max-point (point-max)))))))
       (when (and data use-stdin)
         (process-send-string proc data)
         (process-send-eof proc)))))
