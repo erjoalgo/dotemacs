@@ -13,6 +13,7 @@
 
 (defun sql-connect-maybe-autoselect ()
   (interactive)
+  (when (bound-and-true-p sql-connection-alist)
   (if (eq (length sql-connection-alist) 1)
       (let* ((conn (car sql-connection-alist))
              (pass (car (alist-get 'sql-password conn)))
@@ -22,4 +23,4 @@
         (when (and pass (eq product 'postgres))
           (setenv "PGPASSWORD" pass))
         (sql-connect name))
-    (call-interactively #'sql-connect)))
+      (call-interactively #'sql-connect))))
