@@ -1786,17 +1786,30 @@ server {
     (defbuttons scad-buttons programming-buttons (scad-mode-map)
       (but
        ("d" (cmd-ins "module " (rec) "(" (rec) ") {" (nli) (rec) (nli) "}"))
+       ("f" (cmd-ins "for( i = [1:{}] ) {" (nli) (rec) (nli) "}"))
+       ("n"
+        (but
+         ("v" (cmd-ins "echo(str(\"DDEBUG {(rnd)} "
+                       (f-filename buffer-file-name)
+                       " VALUE OF "
+                       (ins "{0}: \", {0}));" (nli?))))
+         ("r" (cmd-ins "echo(\"DDEBUG TRACE: {(buf)} {(rnd)}\");"))
+         ))
        ("g"
         (but
          ("d" (cmd-ins "difference() {" (nli) (rec) (nli) "}"))
          ("i" (cmd-ins "intersection() {" (nli) (rec) (nli) "}"))
-         ("c" (cmd-ins "cube([" (rec)  "], center = " (rec) ");"))
+         ("c" (cmd-ins "cube([" (rec)  "]" ");"))
          ("y" (cmd-ins "cylinder(r=" (rec)  ", h=" (rec) ");"))
          ("t" (cmd-ins "translate([" (rec)  "]) "))
          ("r" (cmd-ins "rotate([" (rec)  "]) "))
+         ("R" (cmd-ins "rotate_extrude(angle={})"))
          ("s" (cmd-ins "scale([" (rec)  "]) "))
          ("p" (cmd-ins "sphere(d=" (rec)  ");"))
-         ))))
+         ("u" (cmd-ins "union() {" (nli) (rec) (nli) "}"))
+         ("2"
+          (but
+           ("c" (cmd-ins "circle(r=" (rec) ");"))))))))
     ))
 
 (message "buttons loaded")
