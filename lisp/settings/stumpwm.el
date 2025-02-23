@@ -87,6 +87,7 @@
                             append (list "-H" (format "%s:%s" k v)))))
          (old-max-point (with-current-buffer (get-buffer-create "*x-service-request*")
                           (insert (format "running: %s" (string-join args " ")))
+                          (newline)
                           (point-max))))
     (let ((proc
            (apply #'start-process proc-name proc-name args)))
