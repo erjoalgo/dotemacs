@@ -75,7 +75,8 @@
                               "GET")
                           url)))))
 
-(defun x-service-curl (path headers &optional data use-stdin)
+(cl-defun x-service-curl (path headers &key data use-stdin
+                               on-error)
   (let* ((proc-name "*x-service-request*")
          (args `("x-service-curl"
                  ,path
@@ -90,12 +91,15 @@
     (let ((proc
            (apply #'start-process proc-name proc-name args)))
       (set-process-sentinel proc
-                            `(lambda (proc change)
-                               (when (s-starts-with-p "exited abnormally" change)
-                                 (warn "x-service failed: %s %s"
-                                       change
-                                       (with-current-buffer ,proc-name
-                                         (buffer-substring ,old-max-point (point-max)))))))
+                            (apply-partially
+                             `(lambda (on-error proc change)
+                                (when (s-starts-with-p "exited abnormally" change)
+                                  (let ((output (with-current-buffer ,proc-name
+                                                  (buffer-substring ,old-max-point (point-max)))))
+                                    (if (not on-error)
+                                        (warn "x-service failed: %s %s" change output)
+                                      (funcall on-error output)))))
+                             on-error))
       (when (and data use-stdin)
         (process-send-string proc data)
         (process-send-eof proc)))))
@@ -104,7 +108,7 @@
   "Send a stumpwm request via a subprocess.  PATH HOST PORTS"
   (let* ((extra-headers (or extra-headers url-request-extra-headers))
          (data (or data url-request-data)))
-    (x-service-curl path extra-headers data use-stdin)))
+    (x-service-curl path extra-headers :data data :use-stdin use-stdin)))
 
 
 (defun stumpwm-request (path &rest args)
@@ -182,8 +186,9 @@
    (format "file://%s" filename)
    alias))
 
-(defun stumpwm-raise (regexp)
-  (x-service-curl "/raise-window" `(("REGEXP" . regexp))))
+(cl-defun stumpwm-raise (regexp &key on-error)
+  (x-service-curl "/raise-window" `(("REGEXP" . ,regexp))
+                  :on-error on-error))
 
 (advice-add #'gui-select-text :after #'gui-select-text--stumpwm)
 
