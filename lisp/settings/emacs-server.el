@@ -22,9 +22,9 @@
 (defun server-give-up-daemon ()
   "pass daemon to another emacs process"
   (let ((cands (->>
-                (s-split "\n" (shell-command-to-string "pidof emacs") t)
-                (mapcar 'string-to-number)
-                (cl-remove-if (lambda (pid) (= (emacs-pid) pid))))))
+                 (s-split "\n" (shell-command-to-string "pidof emacs") t)
+                 (mapcar 'string-to-number)
+                 (cl-remove-if (lambda (pid) (= (emacs-pid) pid))))))
     (when cands
       (shell-command (format "kill -USR1 %d" (car cands))))))
 
