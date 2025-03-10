@@ -154,6 +154,7 @@
        ("m" (cmd-ins "import "))
        ("n"
         (but
+         ("2" (cmd-ins "f\"" (rec) "\""))
          ("t" (cmd-ins "print({}){(nli)}"))
          ("r" (cmd-ins "print(\"DDEBUG TRACE: {(buf)} {(rnd)} {}\")"))
          ("v" (cmd-ins "print(\"DDEBUG {(buf)} {(rnd)}: value of {0}: {" "}\".format({0}))"))
@@ -1785,8 +1786,12 @@ server {
 
     (defbuttons scad-buttons programming-buttons (scad-mode-map)
       (but
-       ("d" (cmd-ins "module " (rec) "(" (rec) ") {" (nli) (rec) (nli) "}"))
+       ("d"
+        (but
+         ("m" (cmd-ins "module " (rec) "(" (rec) ") {" (nli) (rec) (nli) "}"))
+         ("f" (cmd-ins "function " (rec) "(" (rec) ") = " (nli)))))
        ("f" (cmd-ins "for( i = [1:{}] ) {" (nli) (rec) (nli) "}"))
+       ("l" (cmd-ins "let ( " (rec) ")" (nli)))
        ("n"
         (but
          ("v" (cmd-ins "echo(str(\"DDEBUG {(rnd)} "
@@ -1795,6 +1800,11 @@ server {
                        (ins "{0}: \", {0}));" (nli?))))
          ("r" (cmd-ins "echo(\"DDEBUG TRACE: {(buf)} {(rnd)}\");"))
          ))
+       ("t"
+        (but
+         ("a" (cmd-ins "assert(" (rec) ");"))
+         ("u" (cmd-ins "true"))
+         ("g" (cmd-ins "false"))))
        ("g"
         (but
          ("d" (cmd-ins "difference() {" (nli) (rec) (nli) "}"))
@@ -1804,13 +1814,17 @@ server {
          ("t" (cmd-ins "translate([" (rec)  "]) "))
          ("r" (cmd-ins "rotate([" (rec)  "]) "))
          ("R" (cmd-ins "rotate_extrude(angle={})"))
-         ("s" (cmd-ins "scale([" (rec)  "]) "))
-         ("p" (cmd-ins "sphere(d=" (rec)  ");"))
+         ("l" (cmd-ins "scale([" (rec)  "]) "))
+         ("s" (cmd-ins "sphere(d=" (rec)  ");"))
          ("u" (cmd-ins "union() {" (nli) (rec) (nli) "}"))
+         ("h" (cmd-ins "hull() {" (nli) (rec) (nli) "}"))
+         ("p" (cmd-ins "polyhedron(points=[" (rec)  "]",
+                       (nli) "faces=[" (rec)  "]" ");"))
+         ("m" (cmd-ins "minkowski()" (cbd)))
          ("2"
           (but
-           ("c" (cmd-ins "circle(r=" (rec) ");"))))))))
-    ))
+           ("c" (cmd-ins "circle(r=" (rec) ");"))
+           ("s" (cmd-ins "square([" (rec) "], center=" (rec) ")"))))))))))
 
 (message "buttons loaded")
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
