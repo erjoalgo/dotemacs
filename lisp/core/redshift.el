@@ -20,7 +20,8 @@
     (message "loading dark theme")
     (load-theme dark-mode-theme)
     (setf *erjoalgo-command-mode-color-on* "light green"
-	  *erjoalgo-command-mode-color-off* "light gray")))
+	  *erjoalgo-command-mode-color-off* "light gray")
+    (set-cursor-color "#ffffff")))
 
 (defun redshift-unload-dark-theme ()
   (when (custom-theme-enabled-p dark-mode-theme)
@@ -28,7 +29,8 @@
     (disable-theme dark-mode-theme)
     (setf *erjoalgo-command-mode-color-on* "dark green"
 	  *erjoalgo-command-mode-color-off* "dark gray")
-    (setq redshift-last-manual-dark-mode-override (float-time))))
+    (setq redshift-last-manual-dark-mode-override (float-time))
+    (set-cursor-color "#000000")))
 
 (defun redshift-dark-theme-toggle ()
   "Toggle dark background theme."
