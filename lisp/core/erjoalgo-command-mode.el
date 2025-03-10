@@ -313,37 +313,54 @@
             (message "cmd: %s" (process-command proc))
           (message "buffer has no process: %s" buffer))))))
 
-(defun unzip-last-download (&optional filename rm)
+(defun unarchive-last-download (&optional filename rm)
   "unzip the last download into the current directory"
-  (when-let* ((fname (or filename (find-last-download nil t)))
-              (ext (f-ext fname))
-              (is-zip (equal "zip" (downcase ext)))
-              (dir (f-join default-directory (f-base fname))))
-    (cl-assert is-zip)
-    (make-directory dir)
-    (let ((default-directory dir)
-          (buffer "*unzip*"))
+  (let* ((fname (or filename (find-last-download nil t)))
+         command
+         dest-dir)
+    (let ((case-fold-search t))
+      (cond
+       ((string-match "\\(.*\\)[.]zip$" fname)
+        (setq dest-dir (f-join default-directory
+                               (f-base fname)))
+        (setq command `("unzip" ,fname)))
+       ((string-match ".*?\\([^/]+\\)[.]tar.gz$" fname)
+        (setq dest-dir (f-join default-directory
+                               (match-string 1 fname)))
+        (setq command `("tar" "axvf" ,fname)))
+       (t
+        (error "unrecognized archive format: %s" fname))))
+    (cl-assert command)
+    (cl-assert dest-dir)
+    (make-directory dest-dir)
+    (let ((default-directory dest-dir)
+          (buffer "*extract-archive*"))
       (unless (zerop
-               (call-process "unzip" nil (get-buffer-create buffer) nil
-                             fname "-d" dir))
-        (error "unzip error: %s" (buffer-string buffer)))
+               (apply #'call-process (car command)
+                      nil (get-buffer-create buffer) nil
+                      (cdr command)))
+        (error "error extracting archive: %s"
+               (with-current-buffer buffer
+                 (buffer-string))))
       (delete-file fname))
-    (find-file dir)))
+    (find-file dest-dir)))
 
 (defun import-3d (filename)
-  (interactive (let ((last (find-last-download nil t)))
-                 (list (read-file-name
-                        "enter the 3d printing file to import: "
-                        nil
-                        nil
-                        nil
-                        last))))
+  (interactive
+   (let* ((last (find-last-download nil t))
+          (choice (read-file-name
+                   "enter the 3d printing file to import: "
+                   nil
+                   nil
+                   nil
+                   last)))
+     (list (expand-file-name choice))))
   "handle the last downloaded file as a 3d print import"
   (let ((3d-imports-dir (expand-file-name "~/git/3d/imports/"))
         (filename (or filename (find-last-download nil t))))
     (if (equal "zip" (f-ext filename))
         (let ((default-directory 3d-imports-dir))
-          (unzip-last-download filename t))
+          (unarchive-last-download filename t))
       (progn (rename-file filename 3d-imports-dir)
              (open-file (f-join 3d-imports-dir (f-filename filename)))))))
 
@@ -494,9 +511,9 @@
                  (kill-new dest)
                  (message "mv -t %s %s" default-directory last-download))))
          ("z" (cmd
-               (doc "unzip last download into the ~/Downloads directory")
+               (doc "unarchive last download into the ~/Downloads directory")
                (let ((default-directory (expand-file-name "~/Downloads")))
-                 (unzip-last-download))))
+                 (unarchive-last-download))))
          ("3" #'import-3d)
          ("w" (cmd (doc "open ~/Downloads")
                    (find-file "~/Downloads")
