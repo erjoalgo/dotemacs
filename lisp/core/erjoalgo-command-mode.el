@@ -683,8 +683,8 @@
   (cl-loop
    for i from 1 to 9 do
    (define-key kmap (kbd (format "<s-f%d>" i))
-     `(lambda () (interactive)
-        (setf prefix-arg ,i)))
+               `(lambda () (interactive)
+                  (setf prefix-arg ,i)))
    finally (return kmap))
   (buttons-define-keymap-onto-keymap kmap erjoalgo-command-mode-map)
   (buttons-define-keymap-onto-keymap kmap global-map))
