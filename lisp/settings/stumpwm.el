@@ -82,7 +82,7 @@
                  ,path
                  ,@(when data
                      (if use-stdin (list "-i")
-                       (list "-d" data)))
+                       (list (format "-d=%s" data))))
                  ,@(cl-loop for (k . v) in headers
                             append (list "-H" (format "%s:%s" k v)))))
          (old-max-point (with-current-buffer (get-buffer-create "*x-service-request*")
