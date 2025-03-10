@@ -29,3 +29,11 @@
       (shell-command (format "kill -USR1 %d" (car cands))))))
 
 (add-hook 'kill-emacs-hook 'server-give-up-daemon)
+
+
+(defun sig-usr2-reset-debug-on-quit ()
+  ;; (interactive)
+  "Reset debug-on-quit to OFF after a USR2 signal."
+  (setq debug-on-quit nil))
+
+(define-key special-event-map [sigusr2] 'sig-usr2-reset-debug-on-quit)
