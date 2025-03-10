@@ -32,7 +32,7 @@ object."
      (edebug)))
 (advice-add 'require :after #'edebug-on-require-cl)
 (defvar messages-to-debug nil)
-(push "Package cl is deprecated" messages-to-debug)
+;; (push "Package cl is deprecated" messages-to-debug)
 (defun debug-on-message (oldfun fmt &rest r)
   "Around advice to trigger edebug on specific messages."
   (when (member (apply oldfun fmt r) messages-to-debug)
