@@ -314,8 +314,12 @@
           (message "buffer has no process: %s" buffer))))))
 
 (defun unarchive-last-download (&optional filename rm)
+  (unarchive (find-last-download nil t)))
+
+(defun unarchive (filename &optional rm)
+  (interactive "fselect archive file: ")
   "unzip the last download into the current directory"
-  (let* ((fname (or filename (find-last-download nil t)))
+  (let* ((fname (expand-file-name filename))
          command
          dest-dir)
     (let ((case-fold-search t))
