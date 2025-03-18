@@ -140,8 +140,10 @@
        ("1" (cmd-ins "not "))
        ("d"
         (but
+         ("m" (cmd-ins "def main():" (nli)))
          ("f" (cmd-ins "def {}({(inm)}{}):{(nli)}"))
-         ("i" (cmd-ins "def __init__(self):{(nli)}"))))
+         ("i" (cmd-ins "def __init__(self):{(nli)}"))
+         ("_" (cmd-ins "if __name__ == \"__main__\":" (nli)))))
        ("a" (cmd-ins "lambda {}: {(inm)}"))
        ("2" (cmd-ins "\"{}\""))
        ("@" (cmd-ins "'{}'"))
@@ -155,6 +157,7 @@
        ("n"
         (but
          ("2" (cmd-ins "f\"" (rec) "\""))
+         ("f" (cmd-ins "{" (rec) "}"))
          ("t" (cmd-ins "print({}){(nli)}"))
          ("r" (cmd-ins "print(\"DDEBUG TRACE: {(buf)} {(rnd)} {}\")"))
          ("v" (cmd-ins "print(\"DDEBUG {(buf)} {(rnd)}: value of {0}: {" "}\".format({0}))"))
@@ -190,8 +193,6 @@
                ("s" (cmd-ins "@staticmethod"))
                ("c" (cmd-ins "@classmethod"))))
          ("w" (cmd-ins "await "))))
-       ("<" (cmd-ins "if __name__ == \"__main__\":{(nli)}"))
-       ("." (cmd-ins "if __name__ == \"__main__\":{(nli)}"))
        ("=" (cmd-ins " == "))
        ("j" (cmd-ins " or {(inm)}"))
        ("k" (cmd-ins " and {(inm)}"))
@@ -1791,6 +1792,7 @@ server {
          ("m" (cmd-ins "module " (rec) "(" (rec) ") {" (nli) (rec) (nli) "}"))
          ("f" (cmd-ins "function " (rec) "(" (rec) ") = " (nli)))))
        ("f" (cmd-ins "for( i = [1:{}] ) {" (nli) (rec) (nli) "}"))
+       ("F" (cmd-ins "for( {} = [{}] ) {" (nli) (rec) (nli) "}"))
        ("l" (cmd-ins "let ( " (rec) ")" (nli)))
        ("n"
         (but
@@ -1804,7 +1806,8 @@ server {
         (but
          ("a" (cmd-ins "assert(" (rec) ");"))
          ("u" (cmd-ins "true"))
-         ("g" (cmd-ins "false"))))
+         ("g" (cmd-ins "false"))
+         ("m" (cmd-ins "use <" (rec) ">"))))
        ("g"
         (but
          ("d" (cmd-ins "difference() {" (nli) (rec) (nli) "}"))
