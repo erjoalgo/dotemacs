@@ -757,7 +757,7 @@
          ("a" (cmd-ins "alert(`{}`);"))
          ("R" (cmd-ins "alert(\"DDEBUG TRACE {(rnd)} {(buf)}\");"))
          ("4" (cmd-ins "${" (rec) "}"))
-         ("[" (cmd-ins "${" (rec) "}"))
+         ("f" (cmd-ins "${" (rec) "}"))
          ("`" (cmd-ins "`" (rec) "`"))))
        ("T" (cmd-ins "try {" (nli) (rec) (nli) "} catch(err) {" (nli) (rec) (nli) "}"))
        ("f" (cmd-ins "for (var {0} = 0; {0}<{}; {0}++){(cbd)}"))
@@ -1671,7 +1671,13 @@ server {
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     }
-}"))))
+}"))
+         ("a" (cmd-ins "allow all;"))
+         ("p" (cmd-ins "set $upstream http://" (rec) ";"
+                       (nli) "proxy_pass $upstream;"))
+         ("v" (cmd-ins
+               "auth_basic           \"Protected\";" (nli)
+               "auth_basic_user_file /etc/nginx/auth/private;"))))
        ("n"
         (but
          ("t" (cmd-ins "add_header X-trace-{(rnd)} \"{}\";" (nli)))
