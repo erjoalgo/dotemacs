@@ -1007,5 +1007,19 @@ This requires the external program `diff' to be in your `exec-path'."
   (start-process "*lpr-print.sh*" "*lpr-print.sh*"
                  "lpr-print.sh" "-d" filename))
 
+(defun explore-themes ()
+  (interactive)
+  (cl-loop for theme in (custom-available-themes)
+           do (message "theme is %s" theme)
+           do (condition-case ex
+                  (progn
+                    (load-theme theme t)
+                    (read-char
+                     (format
+                      (concat"loaded theme %s. press any char to continue, "
+                             "or quit to stay on the current theme...")
+                      theme)))
+                (error (message "failed to load theme %s: %s" theme ex)))))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; misc-utils.el ends here
