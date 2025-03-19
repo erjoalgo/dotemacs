@@ -1672,10 +1672,12 @@ server {
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     }
 }"))
-         ("a" (cmd-ins "allow all;"))
+         ("a" (cmd-ins "allow " (rec) ";"))
+         ("d" (cmd-ins "deny all;"))
+         ("A" (cmd-ins "allow all;"))
          ("p" (cmd-ins "set $upstream http://" (rec) ";"
                        (nli) "proxy_pass $upstream;"))
-         ("v" (cmd-ins
+         ("b" (cmd-ins
                "auth_basic           \"Protected\";" (nli)
                "auth_basic_user_file /etc/nginx/auth/private;"))))
        ("n"
