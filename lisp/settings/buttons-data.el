@@ -143,7 +143,7 @@
          ("m" (cmd-ins "def main():" (nli)))
          ("f" (cmd-ins "def {}({(inm)}{}):{(nli)}"))
          ("i" (cmd-ins "def __init__(self):{(nli)}"))
-         ("_" (cmd-ins "if __name__ == \"__main__\":" (nli)))))
+         ("SPC" (cmd-ins "if __name__ == \"__main__\":" (nli) "main()"))))
        ("a" (cmd-ins "lambda {}: {(inm)}"))
        ("2" (cmd-ins "\"{}\""))
        ("@" (cmd-ins "'{}'"))
