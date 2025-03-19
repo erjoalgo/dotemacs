@@ -161,8 +161,7 @@
           '("find-last-modified-file-fast.sh")
           (cl-loop for dir in directories
                    nconc `("-d" ,(expand-file-name dir)))
-          (when ext (list "-e" ext))))
-        )
+          (when ext (list "-e" ext)))))
     (cl-destructuring-bind (stdout . stderr) (run-process cmd)
       (let ((lines (split-string stdout "\n")))
         (car lines)))))
@@ -683,8 +682,8 @@
   (cl-loop
    for i from 1 to 9 do
    (define-key kmap (kbd (format "<s-f%d>" i))
-               `(lambda () (interactive)
-                  (setf prefix-arg ,i)))
+     `(lambda () (interactive)
+        (setf prefix-arg ,i)))
    finally (return kmap))
   (buttons-define-keymap-onto-keymap kmap erjoalgo-command-mode-map)
   (buttons-define-keymap-onto-keymap kmap global-map))
