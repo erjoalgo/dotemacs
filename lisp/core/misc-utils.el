@@ -1007,19 +1007,27 @@ This requires the external program `diff' to be in your `exec-path'."
   (start-process "*lpr-print.sh*" "*lpr-print.sh*"
                  "lpr-print.sh" "-d" filename))
 
+(defvar denylisted-themes '(blue-eshell beige-diff))
+
 (defun explore-themes ()
   (interactive)
   (cl-loop for theme in (custom-available-themes)
-           do (message "theme is %s" theme)
-           do (condition-case ex
-                  (progn
-                    (load-theme theme t)
-                    (read-char
-                     (format
-                      (concat"loaded theme %s. press any char to continue, "
-                             "or quit to stay on the current theme...")
-                      theme)))
-                (error (message "failed to load theme %s: %s" theme ex)))))
+           if (member theme denylisted-themes)
+           do (message "skipping denylisted-theme %s" theme)
+           else
+           do
+           (progn
+             (message "theme is %s" theme)
+             (condition-case ex
+                 (progn
+                   (load-theme theme t)
+                   (read-char
+                    (format
+                     (concat"loaded theme %s. press any char to continue, "
+                            "or quit to stay on the current theme...")
+                     theme))
+                   (unload-theme theme))
+               (error (message "failed to load theme %s: %s" theme ex))))))
 
 (defun gen-random-port ()
   (interactive)
