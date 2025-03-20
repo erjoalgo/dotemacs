@@ -1,11 +1,6 @@
 (defun redshift-period ()
   (let* ((default-directory (expand-file-name "~"))
-         (output (shell-command-to-string "redshift -p"))
-         (period (progn
-                   (cl-assert
-                    (string-match "Period: \\(.*\\)" output)
-                    t "unrecognized redshift output: %s" output)
-                   (match-string 1 output))))
+         (period (s-trim (shell-command-to-string "redshift-period.sh"))))
     (if (s-match "Daytime\\|Transition\\|Night" period)
         (intern (downcase period))
       (error "unrecognized redshift period `%s' from output: %s"
