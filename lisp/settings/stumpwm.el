@@ -171,21 +171,24 @@
            ("URL" . ,url))))
     (stumpwm-request-post "/url-launcher-put" "")))
 
-(defun stumpwm-url-launcher-put-local-file (filename alias)
+(defun stumpwm-url-launcher-put-local-file (url alias)
   (interactive
    (let*
-       ((filename (cond
+       ((url
+         (if current-prefix-arg
+             (read-string "enter URL value: ")
+           (let ((filename
+                  (cond
                    ((eq major-mode 'dired-mode)
                     (expand-file-name
-		     (or (dired-file-name-at-point)
+	             (or (dired-file-name-at-point)
 		         default-directory)))
-                   (t (buffer-filename (current-buffer)))))
-        (_ (cl-assert filename))
-        (alias (read-string (format "enter alias for file %s: " filename))))
-     (list filename alias)))
-  (stumpwm-url-launcher-put
-   (format "file://%s" filename)
-   alias))
+                   (t (buffer-file-name (current-buffer))))))
+             (format "file://%s" filename))))
+        (_ (cl-assert url))
+        (alias (read-string (format "enter alias for file %s: " url))))
+     (list url alias)))
+  (stumpwm-url-launcher-put url alias))
 
 (cl-defun stumpwm-raise (regexp &key on-error)
   (x-service-curl "/raise-window" `(("REGEXP" . ,regexp))
