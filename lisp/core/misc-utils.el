@@ -1021,5 +1021,12 @@ This requires the external program `diff' to be in your `exec-path'."
                       theme)))
                 (error (message "failed to load theme %s: %s" theme ex)))))
 
+(defun gen-random-port ()
+  (interactive)
+  (let ((port (shell-command-to-string "gen-random-port.py")))
+    (kill-new port)
+    (message "%s" port)
+    port))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; misc-utils.el ends here
