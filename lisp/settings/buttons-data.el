@@ -541,7 +541,8 @@
        ("f"
         (but
          ("f" (cmd-ins "for ( int {0} = 0; {0} < {}; {0}++ ){(cbd)}"))
-         ("F" (cmd-ins "for ( int {0} = {}; {0} >= 0; {0}-- ){(cbd)}"))))
+         ("F" (cmd-ins "for ( int {0} = {}; {0} >= 0; {0}-- ){(cbd)}"))
+         ("SPC" (cmd-ins "for ( {}; {}; {} ){(cbd)}"))))
        ("w" (cmd-ins "while ({}){(cbd)}"))
        ("W" (cmd-ins "switch ({(rec)}) {(cbd)}"))
        ("E" (cmd-ins "case {}:"))
@@ -561,9 +562,8 @@
          ("t" (cmd-ins (ins "printf(\"{}\\n\"{});")))
          ("s" (cmd-ins "scanf( \"{}\"{} );"))
          ("v" (cmd-ins "printf(\"DDEBUG {(rnd)}: {0} %s\\n\", {0});"))
+         ("V" (cmd-ins "printf(\"DDEBUG {(rnd)}: {0} %d\\n\", {0});"))
          ;; + operator
-         ("m" (cmd-ins "absl::StreamFormat(\"{}\"{});"))
-         ("u" (cmd-ins "absl::Substitute(\"{}\", {})"))
          ("r" (cmd-ins "printf(\"DDEBUG TRACE (" (buf) ") " (rnd)
                        " (" (rec) ")\\n\");"))
          ("_" (cmd-ins ".c_str()"))
@@ -1790,6 +1790,15 @@ server {
 
     (defbuttons dockerfile-buttons bash-buttons (dockerfile-mode-map)
       (but))
+
+    (defbuttons perl-buttons programming-buttons (perl-mode-map)
+      (but
+       ("n"
+        (but
+         ("t" (cmd-ins "print " (rec) ". \"\\n\"; " (nli)))
+         ("r" (cmd-ins "print \"DDEBUG TRACE: {(buf)} {(rnd)}\\n\";"))
+         ("v" (cmd-ins
+               "print \"DDEBUG {(buf)} {(rnd)}: value of {0}: \" . {0} . \"\\n\";"))))))
 
     (defbuttons scad-buttons programming-buttons (scad-mode-map)
       (but
