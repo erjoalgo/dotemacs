@@ -6,6 +6,7 @@
       (error "unrecognized redshift period `%s' from output: %s"
              period output))))
 
+(defvar light-mode-theme 'aalto-light)
 (defvar dark-mode-theme 'wombat)
 (defvar redshift-last-manual-dark-mode-override nil)
 
@@ -13,7 +14,8 @@
 (defun redshift-load-dark-theme ()
   (unless (custom-theme-enabled-p dark-mode-theme)
     (message "loading dark theme")
-    (load-theme dark-mode-theme)
+    (disable-theme light-mode-theme)
+    (load-theme dark-mode-theme t)
     (setf *erjoalgo-command-mode-color-on* "light green"
 	  *erjoalgo-command-mode-color-off* "light gray")
     (set-cursor-color "#ffffff")))
@@ -22,6 +24,7 @@
   (when (custom-theme-enabled-p dark-mode-theme)
     (message "unloading dark theme")
     (disable-theme dark-mode-theme)
+    (load-theme light-mode-theme t)
     (setf *erjoalgo-command-mode-color-on* "dark green"
 	  *erjoalgo-command-mode-color-off* "dark gray")
     (setq redshift-last-manual-dark-mode-override (float-time))
