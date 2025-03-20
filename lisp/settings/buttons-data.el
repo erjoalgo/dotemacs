@@ -1674,7 +1674,9 @@ server {
 }"))
          ("a" (cmd-ins "allow " (rec) ";"))
          ("d" (cmd-ins "deny all;"))
-         ("A" (cmd-ins "allow all;"))
+         ("A" (cmd-ins "allow all;" (nli)
+                       "auth_basic           \"Protected\";" (nli)
+                       "auth_basic_user_file /etc/nginx/auth/private;"))
          ("p" (cmd-ins "set $upstream http://" (rec) ";"
                        (nli) "proxy_pass $upstream;"))
          ("b" (cmd-ins
