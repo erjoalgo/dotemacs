@@ -3,8 +3,7 @@
          (period (s-trim (shell-command-to-string "redshift-period.sh"))))
     (if (s-match "Daytime\\|Transition\\|Night" period)
         (intern (downcase period))
-      (error "unrecognized redshift period `%s' from output: %s"
-             period output))))
+      (error "could not determine redshift period: %s" period))))
 
 (defvar light-mode-theme 'aalto-light)
 (defvar dark-mode-theme 'wombat)
