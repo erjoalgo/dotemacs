@@ -24,7 +24,8 @@
 (def-open-file-program "zathura" ("pdf"))
 (def-open-file-program "libreoffice" ("doc" "ppt" "odt" "docx"  "pptx" "xls" "ods"))
 (def-open-file-program "evince" ("ps" "eps"))
-(def-open-file-program "x-www-browser-local-file.sh" ("png" "pgm" "tif" "jpg" "jpeg" "gif" "pnm" "svg" "ico" "webp"))
+(def-open-file-program "qimgv"
+  ("png" "pgm" "tif" "jpg" "jpeg" "gif" "pnm" "svg" "ico" "webp"))
 (def-open-file-program "aplay" ("wav"))
 (def-open-file-program "timidity" ("midi" "mid"))
 (defun open-html-file (filename)
