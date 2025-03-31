@@ -158,7 +158,19 @@
           (switch-to-buffer-other-window buffer)
           (error "non-zero curl exit: %s %s" (process-exit-status proc) resp))))))
 
+(defun string-to-batches (message batch-size)
+  (cl-loop while (not (string-empty-p message))
+           as i = (min batch-size (length message))
+           collect (substring message 0 i)
+           do (setq message (substring message i))))
+
+(defun sms-send-batch (from to message)
+  (cl-loop for batch in (string-to-batches message 160)
+           collect (sms-send from to batch)))
+
 (defun sms-send (from to message)
+  (message "sending message of length %s from %s to %s. message: %s"
+           (length message) from to message)
   (let ((url-request-method "POST")
         (url-request-data
          (json-encode `((from . ,from) (to . ,to) (message . ,message)))))
@@ -193,7 +205,7 @@
                    (line-end-position)))
          (to sip-from-phone-number)
          (from sip-did)
-         (resp (sms-send from to message)))
+         (resp (sms-send-batch from to message)))
     (message "resp: %s" resp)
     (goto-char (line-beginning-position))
     (insert "        YOU say: ")
