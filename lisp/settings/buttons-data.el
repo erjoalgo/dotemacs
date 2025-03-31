@@ -57,6 +57,10 @@
        (delete-region (region-beginning) (region-end))
        (insert (progn ,@body)))))
 
+(defun last-identifier (&optional identifier-regexp)
+  (let ((identifier-regexp (or identifier-regexp "[a-zA-Z0-9_]+")))
+    (when (looking-back identifier-regexp nil t) (match-string 0))))
+
 (buttons-macrolet
     ((inm () (when (functionp 'global-erjoalgo-command-mode)
                `(global-erjoalgo-command-mode 0)))
@@ -157,11 +161,14 @@
        ("n"
         (but
          ("2" (cmd-ins "f\"" (rec) "\""))
+         ("@" (cmd-ins "f\"\"\"" (rec) "\"\"\""))
          ("f" (cmd-ins "{" (rec) "}"))
          ("t" (cmd-ins "print({}){(nli)}"))
          ("r" (cmd-ins "print(\"DDEBUG TRACE: {(buf)} {(rnd)} {}\")"))
          ("v" (cmd-ins "print(\"DDEBUG {(buf)} {(rnd)}: value of {0}: {" "}\".format({0}))"))
          ("[" (cmd-ins "{" (rec) "}"))
+         ("e" (cmd-ins (let ((ident (last-identifier)))
+                         (insert "={" ident "}, "))))
          ("l"
           (but
            ("i" (cmd-ins "logging.info(\"" (rec) "\"" (rec) ")"))
@@ -181,6 +188,11 @@
          ("a" (cmd-ins "assert "))
          ("u" (cmd-ins "True"))
          ("g" (cmd-ins "False"))
+         ("m"
+          (but
+           ("n" (cmd-ins "import numpy as np"))
+           ("p" (cmd-ins "import matplotlib.pyplot as plt"))
+           ("m" (cmd-ins "import math"))))
          ("G" (cmd-ins "None"))
          ("P" (cmd-ins
                (end-of-line)
@@ -192,7 +204,15 @@
          ("2" (but
                ("s" (cmd-ins "@staticmethod"))
                ("c" (cmd-ins "@classmethod"))))
-         ("w" (cmd-ins "await "))))
+         ("w" (cmd-ins "await "))
+         ("n"
+          (but
+           ("a" (cmd-ins "np.array(" (rec) ")"))
+           ("p" (cmd-ins
+                 "
+plt.scatter(x, y, s=40, c=colors)
+plt.show()
+"))))))
        ("=" (cmd-ins " == "))
        ("j" (cmd-ins " or {(inm)}"))
        ("k" (cmd-ins " and {(inm)}"))
@@ -446,6 +466,7 @@
                "(format t \"DDEBUG {(buf)} {(rnd)}: value of {0}: ~A~%\" {0})"))
          ("m"
           (but
+           ("a" (cmd-ins "(message-wrapped \"" (rec) "\"" (rec) ")"))
            ("i" (cmd-ins "(vom:info \"{}~%\"{})"))
            ("d" (cmd-ins "(vom:debug \"{}~%\"{})"))
            ("w" (cmd-ins "(vom:warn \"{}~%\"){}"))
