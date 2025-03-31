@@ -210,3 +210,7 @@
           #'slime-connected-hook-switch-to-auto-package)
 
 (stumpwm-message (format "connected to emacs on %s" system-name) 'green)
+
+(defmacro defcommand (name args interactive-args &rest body)
+  "Declare the proper indentation for stumpwm's defcommand."
+  (declare (indent 3)))
