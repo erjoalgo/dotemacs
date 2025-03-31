@@ -1036,5 +1036,19 @@ This requires the external program `diff' to be in your `exec-path'."
     (message "%s" port)
     port))
 
+(defun compilation-switch-to-live ()
+  (interactive)
+  (cl-loop
+   for buff in (buffer-list)
+   as proc = (get-buffer-process buff)
+   when (and proc (process-live-p proc))
+   collect buff into live
+   finally
+   (let ((buff
+          (selcand-select
+           live
+           :prompt "select buffer with live process to switch to: ")))
+     (switch-to-buffer buff))))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; misc-utils.el ends here
