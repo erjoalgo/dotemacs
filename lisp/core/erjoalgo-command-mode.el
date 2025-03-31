@@ -458,6 +458,7 @@
      ([f13] 'global-erjoalgo-command-mode-toggle);; f13 toggle command mode
      ([s-f11] 'global-erjoalgo-command-mode-toggle);; f1 toggle command mode
      ([ë] 'global-erjoalgo-command-mode-toggle);; f1 toggle command mode
+     ((kbd "H-SPC") 'global-erjoalgo-command-mode-toggle);; f1 toggle command mode
      ("y" 'stumpwm-search-engine-search-clipboard)
      ("Y" 'stumpwm-search-engine-search)
      ("J" (lambda (arg)
@@ -636,6 +637,7 @@
      ([f13] 'global-erjoalgo-command-mode-toggle)
      ((kbd "<s-f11>") 'global-erjoalgo-command-mode-toggle)
      ((kbd "ë") 'global-erjoalgo-command-mode-toggle)
+     ((kbd "H-SPC") 'global-erjoalgo-command-mode-toggle)
      ([f2] 'other-window)
      ((kbd "<s-f12>") (lambda () (interactive)
                         (save-buffer)
