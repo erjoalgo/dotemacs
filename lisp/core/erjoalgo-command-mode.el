@@ -46,8 +46,8 @@
 (define-globalized-minor-mode global-erjoalgo-command-mode
   erjoalgo-command-mode erjoalgo-command-mode)
 
-(defvar *erjoalgo-command-mode-color-on* "dark green")
-(defvar *erjoalgo-command-mode-color-off* "dark gray")
+(defvar *erjoalgo-command-mode-color-on* "red")
+(defvar *erjoalgo-command-mode-color-off* "black")
 
 (defun erjoalgo-command-mode-hook-add-color ()
   "Add a visual indicator of current mode."
