@@ -43,7 +43,7 @@
 (when
     (setq *creality-print-exe*
           (car (file-expand-wildcards "~/bin/Creality_Print*AppImage")))
-  (def-open-file-program *creality-print-exe* ("stl" "3mf")))
+  (def-open-file-program *creality-print-exe* ("stl" "3mf" "obj")))
 
 (defvar *cura-exe* nil)
 (when (setq *cura-latest-exe*
@@ -51,8 +51,8 @@
              (car
               (file-expand-wildcards "~/bin/UltiMaker-Cura*AppImage"))
              "cura"))
-  (def-open-file-program *cura-latest-exe* ("stl" "3mf")))
-(def-open-file-program "cura" ("stl" "3mf"))
+  (def-open-file-program *cura-latest-exe* ("stl" "3mf" "obj")))
+(def-open-file-program "cura" ("stl" "3mf" "obj"))
 (def-open-file-program "blender" ("blend" "blend1"))
 (def-open-file-program "fstl" ("stl"))
 (def-open-file-program "openscad.sh" ("scad"))
