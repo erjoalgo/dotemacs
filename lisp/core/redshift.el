@@ -6,33 +6,43 @@
       (error "could not determine redshift period: %s" period))))
 
 (defvar light-mode-theme 'aalto-light)
-(defvar dark-mode-theme 'wombat)
+(setf dark-mode-theme '(renegade wombat))
 (defvar redshift-last-manual-dark-mode-override nil)
 
 
+(defvar redshift-dark-mode-enabled nil)
+
+(defun redshift-dark-mode-enabled-p ()
+  redshift-dark-mode-enabled)
+
 (defun redshift-load-dark-theme ()
-  (unless (custom-theme-enabled-p dark-mode-theme)
+  (unless (redshift-dark-mode-enabled-p)
     (message "loading dark theme")
     (disable-theme light-mode-theme)
-    (load-theme dark-mode-theme t)
+    (cl-loop for theme in dark-mode-theme
+             do (load-theme theme t))
     (setf *erjoalgo-command-mode-color-on* "light green"
 	  *erjoalgo-command-mode-color-off* "light gray")
-    (set-cursor-color "#ffffff")))
+    (set-cursor-color "#ffffff")
+    (setq redshift-dark-mode-enabled t)))
 
 (defun redshift-unload-dark-theme ()
-  (when (custom-theme-enabled-p dark-mode-theme)
+  (when (redshift-dark-mode-enabled-p)
     (message "unloading dark theme")
-    (disable-theme dark-mode-theme)
+    (cl-loop for theme in dark-mode-theme
+             do (message "unloading %s" theme)
+             do (disable-theme dark-mode-theme))
     (load-theme light-mode-theme t)
     (setf *erjoalgo-command-mode-color-on* "dark green"
 	  *erjoalgo-command-mode-color-off* "dark gray")
     (setq redshift-last-manual-dark-mode-override (float-time))
-    (set-cursor-color "#000000")))
+    (set-cursor-color "#000000")
+    (setq redshift-dark-mode-enabled nil)))
 
 (defun redshift-dark-theme-toggle ()
   "Toggle dark background theme."
   (interactive)
-  (if (custom-theme-enabled-p dark-mode-theme)
+  (if (redshift-dark-mode-enabled-p)
       (redshift-unload-dark-theme)
     (redshift-load-dark-theme)))
 
