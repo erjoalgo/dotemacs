@@ -105,7 +105,8 @@
          (program (if (or (null (cdr programs)) no-prompt)
                       (car (last programs))
                     (selcand-select programs
-                                    :prompt (format "select program to open %s: " filename))))
+                                    :prompt (format "select program to open %s: " filename)
+                                    :stringify-fn #'f-filename)))
          (buff (if pipe t
                  (get-buffer-create (format "*%s*" program)))))
     (if (not program)
