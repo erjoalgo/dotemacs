@@ -1011,7 +1011,9 @@ This requires the external program `diff' to be in your `exec-path'."
 
 (defun explore-themes ()
   (interactive)
-  (cl-loop for theme in (custom-available-themes)
+  (cl-loop with done = nil
+           for theme in (custom-available-themes)
+           while (not done)
            if (member theme denylisted-themes)
            do (message "skipping denylisted-theme %s" theme)
            else
@@ -1021,12 +1023,11 @@ This requires the external program `diff' to be in your `exec-path'."
              (condition-case ex
                  (progn
                    (load-theme theme t)
-                   (read-char
-                    (format
-                     (concat"loaded theme %s. press any char to continue, "
-                            "or quit to stay on the current theme...")
-                     theme))
-                   (unload-theme theme))
+                   (if (y-or-n-p (format "keep theme '%s'?" theme))
+                       (progn
+                         (setq done t)
+                         (return nil))
+                     (unload-theme theme)))
                (error (message "failed to load theme %s: %s" theme ex))))))
 
 (defun gen-random-port ()
