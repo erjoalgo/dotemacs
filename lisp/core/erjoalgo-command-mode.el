@@ -313,7 +313,7 @@
           (message "buffer has no process: %s" buffer))))))
 
 (defun unarchive-last-download (&optional filename rm)
-  (unarchive (find-last-download nil t)))
+  (unarchive (or filename (find-last-download nil t)) rm))
 
 (defun unarchive (filename &optional rm)
   (interactive "fselect archive file: ")
