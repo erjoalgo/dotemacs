@@ -1009,7 +1009,8 @@ plt.show()
          ("s" (cmd-ins "echo \"{}\" 1>&2" (nli)
                        "select {} in {}; do"
                        (nli) "break" (nli) "done"
-                       (nli)))))
+                       (nli)))
+         ("i" (cmd-ins "IFS=$'\n'"))))
        ("d" (cmd-ins "function {}{(cbd)}"))
        ("l" (cmd-ins "exit ${" "LINENO}"))
        ("L" (cmd-ins "echo \"{}"

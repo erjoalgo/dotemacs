@@ -51,7 +51,9 @@
              (car
               (file-expand-wildcards "~/bin/UltiMaker-Cura*AppImage"))
              "cura"))
-  (def-open-file-program *cura-latest-exe* ("stl" "3mf" "obj")))
+  (def-open-file-program (list *cura-latest-exe* "-platformtheme" "gtk3")
+    ;; work around this bug: https://github.com/Ultimaker/Cura/issues/16815
+    ("stl" "3mf" "obj")))
 (def-open-file-program "cura" ("stl" "3mf" "obj"))
 (def-open-file-program "blender" ("blend" "blend1"))
 (def-open-file-program "fstl" ("stl"))
@@ -106,7 +108,9 @@
                       (car (last programs))
                     (selcand-select programs
                                     :prompt (format "select program to open %s: " filename)
-                                    :stringify-fn #'f-filename)))
+                                    :stringify-fn
+                                    (lambda (program)
+                                      (f-filename (if (listp program) (car program) program))))))
          (buff (if pipe t
                  (get-buffer-create (format "*%s*" program)))))
     (if (not program)
@@ -117,7 +121,12 @@
             (error "no such file: %s" filename)))
       (if (functionp program) (funcall program filename)
 	(progn (message "%s %s" program filename)
-               (start-process program buff program filename))))))
+               (let* ((cmd
+                       (append
+                        (if (atom program) (list program) program)
+                        (list filename)))
+                      (exe (car cmd)))
+                 (apply #'start-process exe buff exe (cdr cmd))))))))
 
 (defun maybe-strip-prefix (prefix string)
   (if (s-starts-with? prefix string)
