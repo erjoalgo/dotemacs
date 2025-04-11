@@ -266,6 +266,7 @@
       (sip-chat-mode)
       (setq-local sip-from-phone-number other-number-clean)
       (setq-local sip-did self-number)
+      (setq-local sip-buffer-local-message-ids nil)
       (sip-chat-maybe-autosend-message))
     buffer))
 
@@ -292,10 +293,13 @@
 
 (defun sip-message-received (sip-message &optional supress-echo)
   (my-with-slots sip-message (id from to message date) sip-message
-                 (if (null (sip-add-message sip-message))
+                 (let ((buffer (sip-chat-buffer from to)))
+                   (if (and (null (sip-add-message sip-message))
+                            (member id (buffer-local-value
+                                        'sip-buffer-local-message-ids
+                                        buffer)))
                      (sip-ws-log (format "skipping previously-received message with id %s" id))
-                   (let* ((buffer (sip-chat-buffer from to))
-                          (line (format "%s says: %s" from message))
+                     (let* ((line (format "%s says: %s" from message))
                           (timestamp
                            (condition-case ex (->> date
                                                    parse-time-string
@@ -316,10 +320,11 @@
                          (setq-local sip-from-phone-number from)
                          (setq-local sip-max-timestamp (max timestamp (or sip-max-timestamp 0))))
                        (when was-at-bottom
-                         (goto-char (point-max))))
+                           (goto-char (point-max)))
+                         (push sip-buffer-local-message-ids id))
                      (unless supress-echo
                        (message "%s" line))
-                     (setq sip-last-message-buffer buffer)))))
+                       (setq sip-last-message-buffer buffer))))))
 
 (defun sip-clean-phone-number (number)
   (replace-regexp-in-string "[^0-9]" "" number))
@@ -530,11 +535,16 @@
     (progn (sip-ws-log (format "no message found on buffer %s" buffer))
            nil)))
 
+(defun sip-chat-buffers-list-recreate ()
+  (cl-loop for sip-message being the hash-values of sip-messages
+           do (sip-message-received sip-message t)))
+
 (defun sip-chat-menu ()
   (interactive)
   (switch-to-buffer (get-buffer-create "*sip-chat-menu*"))
   (read-only-mode 0)
   (erase-buffer)
+  (sip-chat-buffers-list-recreate)
   (save-match-data
     (cl-loop
      for buffer in (sort-by
