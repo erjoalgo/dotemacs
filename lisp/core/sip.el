@@ -298,32 +298,32 @@
                             (member id (buffer-local-value
                                         'sip-buffer-local-message-ids
                                         buffer)))
-                     (sip-ws-log (format "skipping previously-received message with id %s" id))
+                       (sip-ws-log (format "skipping previously-received message with id %s" id))
                      (let* ((line (format "%s says: %s" from message))
-                          (timestamp
-                           (condition-case ex (->> date
-                                                   parse-time-string
-                                                   (apply #'encode-time)
-                                                   time-to-seconds)
-                             (error
-                              (sip-ws-log (format "failed to parse timestamp: %s" ex))))))
-                     (with-current-buffer buffer
-                       (sip-chat-mode t)
-                       (setq was-at-bottom (eq (point-max) (point)))
-                       (save-excursion
-                         (goto-char (point-max))
-                         (goto-char (line-beginning-position))
-                         (open-line 1)
-                         (insert
-                          (format-time-string "%d %b %I:%M%p (%a)" (seconds-to-time timestamp)))
-                         (insert line)
-                         (setq-local sip-from-phone-number from)
-                         (setq-local sip-max-timestamp (max timestamp (or sip-max-timestamp 0))))
-                       (when was-at-bottom
+                            (timestamp
+                             (condition-case ex (->> date
+                                                     parse-time-string
+                                                     (apply #'encode-time)
+                                                     time-to-seconds)
+                               (error
+                                (sip-ws-log (format "failed to parse timestamp: %s" ex))))))
+                       (with-current-buffer buffer
+                         (sip-chat-mode t)
+                         (setq was-at-bottom (eq (point-max) (point)))
+                         (save-excursion
+                           (goto-char (point-max))
+                           (goto-char (line-beginning-position))
+                           (open-line 1)
+                           (insert
+                            (format-time-string "%d %b %I:%M%p (%a)" (seconds-to-time timestamp)))
+                           (insert line)
+                           (setq-local sip-from-phone-number from)
+                           (setq-local sip-max-timestamp (max timestamp (or sip-max-timestamp 0))))
+                         (when was-at-bottom
                            (goto-char (point-max)))
                          (push sip-buffer-local-message-ids id))
-                     (unless supress-echo
-                       (message "%s" line))
+                       (unless supress-echo
+                         (message "%s" line))
                        (setq sip-last-message-buffer buffer))))))
 
 (defun sip-clean-phone-number (number)
