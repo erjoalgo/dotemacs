@@ -253,14 +253,20 @@
     (sip-send-chat-line)
     (sit-for 1)))
 
+(defun sip-chat-buffer-name (other-number self-number)
+  (cl-assert (not (s-blank? other-number)))
+  (cl-assert self-number)
+  (let* ((other-number-clean (sip-phone-number-clean other-number)))
+    (format sip-buffer-fmt
+            (concat other-number-clean
+                    (when self-number
+                      (concat "-to-" self-number))))))
+
 (defun sip-chat-buffer (other-number self-number)
   (cl-assert (not (s-blank? other-number)))
   (cl-assert self-number)
   (let* ((other-number-clean (sip-phone-number-clean other-number))
-         (buffer-name (format sip-buffer-fmt
-                              (concat other-number-clean
-                                      (when self-number
-                                        (concat "-to-" self-number)))))
+         (buffer-name (sip-chat-buffer-name other-number self-number))
          (buffer (get-buffer-create buffer-name)))
     (with-current-buffer buffer
       (sip-chat-mode)
