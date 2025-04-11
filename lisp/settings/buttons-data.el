@@ -151,6 +151,8 @@
        ("a" (cmd-ins "lambda {}: {(inm)}"))
        ("2" (cmd-ins "\"{}\""))
        ("@" (cmd-ins "'{}'"))
+       ((kbd "M-s-2") (cmd-ins "f\"{}\""))
+       ((kbd "M-s-f") (cmd-ins "{" (rec) "}"))
        ("q"
         (but
          ("x" (cmd-ins "xrange({})"))))
@@ -191,6 +193,7 @@
          ("m"
           (but
            ("n" (cmd-ins "import numpy as np"))
+           ("c" (cmd-ins "import collections"))
            ("p" (cmd-ins "import matplotlib.pyplot as plt"))
            ("m" (cmd-ins "import math"))))
          ("G" (cmd-ins "None"))
@@ -207,7 +210,7 @@
          ("w" (cmd-ins "await "))
          ("n"
           (but
-           ("a" (cmd-ins "np.array(" (rec) ")"))
+           ("a" (cmd-ins "np.array(" (rec) ").astype(np.float64)"))
            ("p" (cmd-ins
                  "
 plt.scatter(x, y, s=40, c=colors)
