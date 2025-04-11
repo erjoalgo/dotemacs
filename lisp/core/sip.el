@@ -269,6 +269,9 @@
       (sip-chat-maybe-autosend-message))
     buffer))
 
+(defun sip-chat-buffer-exists (other-number self-number)
+  (get-buffer (sip-chat-buffer-name other-number self-number)))
+
 (defun sip-chat-all-region ()
   (interactive)
   (let ((numbers (cl-remove-if
