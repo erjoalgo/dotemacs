@@ -5,8 +5,25 @@
         (intern (downcase period))
       (error "could not determine redshift period: %s" period))))
 
-(defvar light-mode-theme 'aalto-light)
-(setf dark-mode-theme '(renegade wombat))
+(defun first-available-theme-group (groups)
+  (cl-loop with available-themes = (custom-available-themes)
+           for group in groups
+           thereis
+           (when (seq-every-p
+                  (lambda (theme) (member theme available-themes))
+                  group)
+             group)))
+
+(defun dark-mode-theme ()
+  (first-available-theme-group
+   '((renegade wombat)
+     (wombat))))
+
+(defun light-mode-theme  ()
+  (first-available-theme-group
+   '((aalto-light)
+     (adwaita))))
+
 (defvar redshift-last-manual-dark-mode-override nil)
 
 
@@ -18,21 +35,27 @@
 (defun redshift-load-dark-theme ()
   (unless (redshift-dark-mode-enabled-p)
     (message "loading dark theme")
-    (disable-theme light-mode-theme)
-    (cl-loop for theme in dark-mode-theme
-             do (load-theme theme t))
+    (unload-theme-group (light-mode-theme))
+    (load-theme-group (dark-mode-theme))
     (setf *erjoalgo-command-mode-color-on* "light green"
 	  *erjoalgo-command-mode-color-off* "light gray")
     (set-cursor-color "#ffffff")
     (setq redshift-dark-mode-enabled t)))
 
+(defun load-theme-group (group)
+  (cl-loop for theme in group
+           do (message "unloading %s" theme)
+           do (disable-theme theme)))
+
+(defun unload-theme-group (group)
+  (cl-loop for theme in group
+           do (load-theme theme t)))
+
 (defun redshift-unload-dark-theme ()
   (when (redshift-dark-mode-enabled-p)
     (message "unloading dark theme")
-    (cl-loop for theme in dark-mode-theme
-             do (message "unloading %s" theme)
-             do (disable-theme dark-mode-theme))
-    (load-theme light-mode-theme t)
+    (unload-theme-group (dark-mode-theme))
+    (load-theme-group (light-mode-theme))
     (setf *erjoalgo-command-mode-color-on* "dark green"
 	  *erjoalgo-command-mode-color-off* "dark gray")
     (setq redshift-last-manual-dark-mode-override (float-time))
