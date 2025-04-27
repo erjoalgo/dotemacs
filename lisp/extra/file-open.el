@@ -48,9 +48,10 @@
 (defvar *cura-exe* nil)
 (when (setq *cura-latest-exe*
             (expand-file-name
-             (car
-              (file-expand-wildcards "~/bin/UltiMaker-Cura*AppImage"))
-             "cura"))
+             (or
+              (car
+               (file-expand-wildcards "~/bin/UltiMaker-Cura*AppImage"))
+              "cura")))
   (def-open-file-program (list *cura-latest-exe* "-platformtheme" "gtk3")
     ;; work around this bug: https://github.com/Ultimaker/Cura/issues/16815
     ("stl" "3mf" "obj")))
