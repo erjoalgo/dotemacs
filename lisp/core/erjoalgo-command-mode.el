@@ -270,7 +270,7 @@
     (buff-spec &optional on-nonexistent)
   (let ((buff-sym (gensym "buff-")))
     `(buttons-defcmd
-      (let ((,buff-sym (buffer-matching ,buff-spec)))
+      (let ((,buff-sym (buffer-matching ,buff-spec nil t)))
         (unless ,buff-sym
           ,on-nonexistent
           (setq ,buff-sym (buffer-matching ,buff-spec)))
@@ -573,7 +573,7 @@
                    (selcand-select inferior-sql-mode-providers :autoselect-if-single t))))
        ("m" (cmd (call-interactively 'sip-chat-menu))))))))
 
-(defun buffer-matching (string &optional regexp-p)
+(defun buffer-matching (string &optional regexp-p exclude-current)
   "Find buffers matching STRING, interpreted as a regexp when REGEXP-P."
   (let ((prefix "regexp:"))
     (when (s-starts-with-p prefix string)
@@ -584,7 +584,9 @@
       (cl-loop with matching
                for buff in (buffer-list)
                as name = (buffer-name buff)
-               if (string-match string name)
+               if (and (string-match string name)
+                       (or (not exclude-current)
+                           (not (equal (current-buffer) buff))))
                collect name into matching
                finally
                (return (let ((sorted (sort matching #'string-lessp)))
