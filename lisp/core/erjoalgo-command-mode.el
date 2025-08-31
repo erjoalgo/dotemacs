@@ -387,6 +387,25 @@
       (progn (rename-file filename 3d-imports-dir)
              (open-file (f-join 3d-imports-dir (f-filename filename)))))))
 
+(defun move-download-here (&optional prompt-filename)
+  (interactive)
+  (let*
+      ((last-download (find-last-download nil t))
+       (_ (cl-assert (not (string-empty-p last-download))))
+       (dest (if prompt-filename
+                 (read-file-name
+                  (format "enter new filename for %s: " last-download)
+                  default-directory
+                  nil
+                  nil
+                  (f-filename last-download))
+               (f-join default-directory
+                       default-directory
+                       (f-filename last-download)))))
+    (rename-file last-download dest)
+    (kill-new dest)
+    (message "mv -t %s %s" default-directory last-download)))
+
 (buttons-macrolet
     ((dir (dir) `(read-file-name "select file: " ,dir))
      (buff (buff-spec &optional on-nonexistent)
@@ -528,12 +547,10 @@
          ("k" (cmd (doc "kill (copy) the last download") (find-last-download-or-scrot)))
          ("m" (cmd
                (doc "move the last download to the current directory")
-               (let*
-                   ((last-download (find-last-download nil t))
-                    (dest (f-join default-directory (f-filename last-download))))
-                 (rename-file last-download dest)
-                 (kill-new dest)
-                 (message "mv -t %s %s" default-directory last-download))))
+               (move-download-here)))
+         ("M" (cmd
+               (doc "move the last download to the current directory")
+               (move-download-here t)))
          ("z" (cmd
                (doc "unarchive last download into the ~/Downloads directory")
                (let ((default-directory (expand-file-name "~/Downloads")))
