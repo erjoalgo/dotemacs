@@ -59,6 +59,8 @@
 (def-open-file-program "blender" ("blend" "blend1"))
 (def-open-file-program "fstl" ("stl"))
 (def-open-file-program "openscad.sh" ("scad"))
+(def-open-file-program "freecad" ("step"))
+(def-open-file-program "f3d" ("f3d"))
 
 (defun open-crdownload (filename)
   (interactive)
