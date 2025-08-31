@@ -90,9 +90,16 @@
 
 (defun org-insert-inline-image (caption filename width)
   (interactive
-   (let* ((filename (let ((cand (last-scrot-filename)
-                                ;; (gui-get-selection 'CLIPBOARD)
-                                )
+   (let* ((filename (let ((cand
+                           (if (region-active-p)
+                               (prog1
+                                   (buffer-substring
+                                    (region-beginning)
+                                    (region-end))
+                                 (delete-region
+                                  (region-beginning)
+                                  (region-end)))
+                             (last-scrot-filename)))
                           default-dir initial)
                       (when (and cand (file-exists-p cand))
                         ;;TODO
