@@ -349,10 +349,20 @@
          (resp (voipms-service-request "/dids"))
          (json-object-type 'alist)
          (json (json-parse-whole-string resp)))
-    (mapcar (apply-partially #'alist-get 'did) json)))
+    json))
 
 (defun sip-select-did ()
-  (selcand-select (sip-list-dids) :prompt "select did: "))
+  (let* ((json (sip-list-dids))
+         (selection
+          (selcand-select
+           json
+           :prompt "select did: "
+           :stringify-fn
+           (lambda (did) (format "%s (%s)"
+                                 (alist-get 'did did)
+                                 (alist-get 'note did))))))
+    (alist-get 'did selection)))
+
 
 (defun sip-chat-batch (numbers message did)
   (interactive (list
