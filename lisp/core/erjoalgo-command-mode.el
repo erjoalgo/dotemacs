@@ -156,23 +156,36 @@
      (with-current-buffer stderr
        (buffer-string)))))
 
-(defun find-most-recent-file (directories &optional ext)
-  (let ((cmd
-         (append
-          '("find-last-modified-file-fast.sh")
-          (cl-loop for dir in directories
-                   nconc `("-d" ,(expand-file-name dir)))
-          (when ext (list "-e" ext)))))
+(defun find-most-recent-file (directories &optional ext cmin exclude-regexp)
+  (let* ((cmd
+          (append
+           '("find-last-modified-file-fast.sh")
+           (cl-loop for dir in directories
+                    nconc `("-d" ,(expand-file-name dir)))
+           (when ext (list "-e" ext))
+           (when cmin (list "-c" (number-to-string cmin)))))
+         (cmd-line (string-join cmd " ")))
     (cl-destructuring-bind (stdout . stderr) (run-process cmd)
-      (let ((lines (split-string stdout "\n")))
-        (car lines)))))
+      (let* ((lines (split-string stdout "\n" t))
+             (excluded-lines (if exclude-regexp
+                                 (cl-remove-if
+                                  (lambda (filename) (save-match-data
+                                                       (string-match exclude-regexp filename)))
+                                  lines)
+                               lines))
+             (hi-cmin 10000))
+        (cond
+         (excluded-lines (car excluded-lines))
+         ((or (null cmin) (< cmin hi-cmin))
+          (find-most-recent-file directories ext hi-cmin))
+         (t (error "no file found using command: %s" cmd-line)))))))
 
-(defun open-most-recent-file (directories &optional nth no-kill open)
+(defun open-most-recent-file (directories &optional nth no-kill open exclude-regexp)
   "Find the last modified file in DIRECTORIES"
   (when nth (cl-assert (> nth 0)))
   (cl-assert (null nth))
   (let ((file
-         (find-most-recent-file directories)))
+         (find-most-recent-file directories nil nil exclude-regexp)))
     (unless no-kill
       (kill-new file)
       (message "killed %s" file))
@@ -180,12 +193,12 @@
       (open-file file))
     file))
 
-(defmacro cmd-open-most-recent-file-in-directory (name directories)
+(defmacro cmd-open-most-recent-file-in-directory (name directories &optional exclude-regexp)
   "Define a command NAME to find the nth file in DIRECTORIES."
   (declare (indent 1))
   `(defun ,name (&optional nth no-kill open)
      ,(format "find the last file in %s" directories)
-     (open-most-recent-file ,directories nth no-kill open)))
+     (open-most-recent-file ,directories nth no-kill open ,exclude-regexp)))
 
 (cmd-open-most-recent-file-in-directory find-last-download '("~/Downloads"))
 
