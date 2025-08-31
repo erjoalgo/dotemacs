@@ -533,7 +533,7 @@
        ("w" (file "~/.stumpwmrc.d/lisp/.stumpwmrc"))
        ("g" (file (file-truename "~/git")))
        ("3" (file (file-truename "~/git/3d")))
-       ("f" (file "~/git/dotemacs/lisp/extra/file-open.el"))
+       ("F" (file "~/git/dotemacs/lisp/extra/file-open.el"))
        ("n" (file "~/.stumpwmrc.d/bin"))
        ("N" (file "~/.stumpwmrc.d/installs"))
        ("W" (buff "*Warnings*"))
