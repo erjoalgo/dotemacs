@@ -135,10 +135,9 @@
     file))
 
 (defun run-process (cmd)
-  (let* ((name (car cmd))
-         (name-stars (format "*%s*" name))
-         (buffer (generate-new-buffer name-stars))
-         (stderr (generate-new-buffer (concat name-stars "-stderr")))
+  (let* ((name (format "*%s*" (car cmd)))
+         (buffer (generate-new-buffer name))
+         (stderr (generate-new-buffer (concat name "-stderr")))
          (proc
           ;; (apply #'start-process name buffer name (cdr cmd))
           (make-process
