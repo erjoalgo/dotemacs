@@ -165,6 +165,7 @@
            (when ext (list "-e" ext))
            (when cmin (list "-c" (number-to-string cmin)))))
          (cmd-line (string-join cmd " ")))
+    (message "DDEBUG fasb %s" cmd-line)
     (cl-destructuring-bind (stdout . stderr) (run-process cmd)
       (let* ((lines (split-string stdout "\n" t))
              (excluded-lines (if exclude-regexp
