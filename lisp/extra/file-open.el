@@ -113,7 +113,9 @@
                                     :prompt (format "select program to open %s: " filename)
                                     :stringify-fn
                                     (lambda (program)
-                                      (f-filename (if (listp program) (car program) program))))))
+                                      (if (stringp program)
+                                          (f-filename program)
+                                        (prin1-to-string program))))))
          (buff (if pipe t
                  (get-buffer-create (format "*%s*" program)))))
     (if (not program)
