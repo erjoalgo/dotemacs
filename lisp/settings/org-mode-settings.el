@@ -178,7 +178,7 @@
       (most-recent-file-name nth)))
 
 (defun last-scrot-filename ()
-  (most-recent-file-name-in-directories auto-scrots-dirs))
+  (find-most-recent-file auto-scrots-dirs))
 
 (defun org-insert-last-scrot (&optional caption)
   "also move last scrot to current directory"
