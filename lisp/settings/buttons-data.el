@@ -144,7 +144,8 @@
        ("1" (cmd-ins "not "))
        ("d"
         (but
-         ("m" (cmd-ins "def main():" (nli)))
+         ("m" (cmd-ins "def main():" (nli) (rec) (newline) (newline)
+                       "if __name__ == \"__main__\":" (nli) "main()"))
          ("f" (cmd-ins "def {}({(inm)}{}):{(nli)}"))
          ("i" (cmd-ins "def __init__(self):{(nli)}"))
          ("SPC" (cmd-ins "if __name__ == \"__main__\":" (nli) "main()"))))
@@ -153,6 +154,7 @@
        ("@" (cmd-ins "'{}'"))
        ((kbd "M-s-2") (cmd-ins "f\"{}\""))
        ((kbd "M-s-f") (cmd-ins "{" (rec) "}"))
+       ((kbd "M-s-t") (cmd-ins "print({}){(nli)}"))
        ("q"
         (but
          ("x" (cmd-ins "xrange({})"))))
@@ -160,6 +162,9 @@
                      (cmt)
                      (ins "{(nli)}")))
        ("m" (cmd-ins "import "))
+       ((kbd "M-s-e")
+        (cmd-ins (let ((ident (last-identifier)))
+                   (insert "={" ident "}, "))))
        ("n"
         (but
          ("2" (cmd-ins "f\"" (rec) "\""))
@@ -169,8 +174,9 @@
          ("r" (cmd-ins "print(\"DDEBUG TRACE: {(buf)} {(rnd)} {}\")"))
          ("v" (cmd-ins "print(\"DDEBUG {(buf)} {(rnd)}: value of {0}: {" "}\".format({0}))"))
          ("[" (cmd-ins "{" (rec) "}"))
-         ("e" (cmd-ins (let ((ident (last-identifier)))
-                         (insert "={" ident "}, "))))
+         ((kbd "M-s-e")
+          (cmd-ins (let ((ident (last-identifier)))
+                     (insert "={" ident "}, "))))
          ("l"
           (but
            ("i" (cmd-ins "logging.info(\"" (rec) "\"" (rec) ")"))
@@ -186,16 +192,31 @@
        ("0" (cmd-ins python-argparse-template))
        ("t"
         (but
+         ("c" (cmd-ins "collections.Counter({})"))
          ("r" (cmd-ins "raise Exception({})"))
          ("a" (cmd-ins "assert "))
          ("u" (cmd-ins "True"))
          ("g" (cmd-ins "False"))
+         ("h" (cmd-ins "help({})"))
+         ("q" (cmd-ins "math.sqrt({})"))
          ("m"
           (but
            ("n" (cmd-ins "import numpy as np"))
+           ("s" (cmd-ins "import scipy" (nli)
+                         "from scipy import stats"))
            ("c" (cmd-ins "import collections"))
-           ("p" (cmd-ins "import matplotlib.pyplot as plt"))
-           ("m" (cmd-ins "import math"))))
+           ("t" (cmd-ins "from collections import namedtuple"))
+           ("p"
+            (but
+             ("m" (cmd-ins "import matplotlib.pyplot as plt"))
+             ("p" (cmd-ins
+                   "x=np.linspace(0, 1)" (nli)
+                   "y=2*x" (nli)
+                   "plt.scatter(x, y, s=40, c='blue')" (nli)
+                   "plt.show()" (nli)
+                   ))))
+           ("h" (cmd-ins "import math"))
+           ("r" (cmd-ins "import random"))))
          ("G" (cmd-ins "None"))
          ("P" (cmd-ins
                (end-of-line)
