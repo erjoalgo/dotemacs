@@ -514,9 +514,10 @@
               (switch-to-nth-most-recent-buffer "^[*]compilation[*]" arg)))
        ("r" (buff "*Backtrace*"))
        ("R" (file "~/.config/redshift.conf"))
-       ("b" (file "~/.bashrc"))
-       ("a" (file "~/.bash_aliases"))
-       ("A" (file "~/.bash-fns/.my-bash-fns"))
+       ("b" (but
+             ("r" (file "~/.bashrc"))
+             ("a" (file "~/.bash_aliases"))
+             ("f" (file "~/.bash-fns/.my-bash-fns"))))
        ("m" (buff "*Messages*"))
        ("s" (buff "*Org Agenda*" (org-todo-list)))
        ("S" (buff "*Org Agenda*"))
