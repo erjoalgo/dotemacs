@@ -232,6 +232,8 @@
          ("n"
           (but
            ("a" (cmd-ins "np.array(" (rec) ").astype(np.float64)"))
+           ("z" (cmd-ins "np.zeros(" (rec) ").astype(np.float64)"))
+           ("i" (cmd-ins "NEGINF = float(\"-inf\")"))
            ("p" (cmd-ins
                  "
 plt.scatter(x, y, s=40, c=colors)
@@ -281,7 +283,6 @@ plt.show()
        ("r" (cmd (cmt "restart")
                  (pdb-restart)))
        ("c" (cmd (gud-cont nil)))
-       ("d" (cmd (cmt "n")))
        ("x" (cmd (gud-break nil)))
        ("z" (cmd (gud-remove nil)))
        ("b" (cmd (cmt "b")))
@@ -790,6 +791,7 @@ plt.show()
        ("a" (cmd-ins "(" (rec) ") => "))
        ("A" (cmd-ins "() => "))
        ("." (cmd-ins "debugger;"))
+       ((kbd "M-s-f") (cmd-ins "${" (rec) "}"))
        ("n"
         (but
          ("c" (cmd-ins "console.log(`{}`);"))
@@ -1883,6 +1885,7 @@ server {
          ("r" (cmd-ins "rotate([" (rec)  "]) "))
          ("R" (cmd-ins "rotate_extrude(angle={})"))
          ("l" (cmd-ins "scale([" (rec)  "]) "))
+         ("L" (cmd-ins "linear_extrude()"))
          ("s" (cmd-ins "sphere(d=" (rec)  ");"))
          ("u" (cmd-ins "union() {" (nli) (rec) (nli) "}"))
          ("h" (cmd-ins "hull() {" (nli) (rec) (nli) "}"))
