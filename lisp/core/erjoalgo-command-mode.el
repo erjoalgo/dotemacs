@@ -200,10 +200,15 @@
      ,(format "find the last file in %s" directories)
      (open-most-recent-file ,directories nth no-kill open ,exclude-regexp)))
 
-(cmd-open-most-recent-file-in-directory find-last-download '("~/Downloads"))
+(setq hidden-files-regexp "^\\(.*/\\)?[.][^/]+$")
+
+(cmd-open-most-recent-file-in-directory find-last-download
+  '("~/Downloads" "~/pictures/auto-scrots" "~/git/3d/" "~/uploads/")
+  hidden-files-regexp)
 
 (cmd-open-most-recent-file-in-directory find-last-download-or-scrot
-  '("~/Downloads" "~/pictures/auto-scrots" "~/git/3d/"))
+  '("~/Downloads" "~/pictures/auto-scrots" "~/git/3d/" "~/uploads/")
+  hidden-files-regexp)
 
 (defalias #'sort-by #'sort-key)
 
