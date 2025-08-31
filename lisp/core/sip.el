@@ -574,7 +574,9 @@
           (define-key map (kbd "RET") `(lambda () (interactive)
                                          (if (buffer-live-p ,buffer)
                                              (switch-to-buffer ,buffer)
-                                           (sip-chat ,phone-number ,did))))
+                                           (progn
+                                             (sip-chat ,phone-number ,did)
+                                             (sip-chat-buffers-list-recreate)))))
           (insert (s-replace "\n" "\\n" line))
           (put-text-property (line-beginning-position)
                              (line-end-position) 'keymap map)
