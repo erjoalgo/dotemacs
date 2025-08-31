@@ -61,6 +61,16 @@
 		     :sent-group-name "[Gmail]/Sent Mail"
 		     :if-file-exists 'overwrite))
 
+(defun gen-dot-gnus-hotmail-account (email)
+  (interactive "senter gmail address: ")
+  (gnus-gen-dot-gnus email
+		     :smtp '("smtp-mail.outlook.com" . 587)
+		     :imap '("outlook.office365.com" . 993)
+		     :dot-gnus (format "~/.gnus-%s" email)
+		     :inbox-group-name "INBOX"
+		     :sent-group-name "[Hotmail]/Sent Mail"
+		     :if-file-exists 'overwrite))
+
 ;; Local Variables:
 ;; mode: emacs-lisp
 ;; End:
