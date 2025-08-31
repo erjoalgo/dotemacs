@@ -15,6 +15,8 @@
 (defvar sip-messages (make-hash-table))
 (defvar sip-quiet-p t)
 
+(defvar-local sip-buffer-local-message-ids nil)
+
 (defun sms-fanout-disconnected-p (&optional client)
   (cond
    ((not (setq client (or client sms-fanout-client)))
@@ -295,9 +297,7 @@
   (my-with-slots sip-message (id from to message date) sip-message
                  (let ((buffer (sip-chat-buffer from to)))
                    (if (and (null (sip-add-message sip-message))
-                            (member id (buffer-local-value
-                                        'sip-buffer-local-message-ids
-                                        buffer)))
+                            (member id sip-buffer-local-message-ids))
                        (sip-ws-log (format "skipping previously-received message with id %s" id))
                      (let* ((line (format "%s says: %s" from message))
                             (timestamp
