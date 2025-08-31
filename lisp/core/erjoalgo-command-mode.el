@@ -559,7 +559,9 @@
          ("3" #'import-3d)
          ("w" (cmd (doc "open ~/Downloads")
                    (find-file "~/Downloads")
-                   (revert-buffer)))))
+                   (revert-buffer)))
+         ("d" (cmd (doc "find and open the last download directory")
+                   (find-file (f-dirname (find-last-download-or-scrot)))))))
        ("p" 'project-open)))
      ("x"
       (buttons-make
