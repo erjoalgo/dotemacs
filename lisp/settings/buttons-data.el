@@ -199,6 +199,7 @@
          ("g" (cmd-ins "False"))
          ("h" (cmd-ins "help({})"))
          ("q" (cmd-ins "math.sqrt({})"))
+         ("l" (cmd-ins "math.log({})"))
          ("m"
           (but
            ("n" (cmd-ins "import numpy as np"))
