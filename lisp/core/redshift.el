@@ -16,13 +16,13 @@
 
 (defun dark-mode-theme ()
   (first-available-theme-group
-   '((renegade wombat)
-     (wombat))))
+   '((aalto-light)
+     (adwaita))))
 
 (defun light-mode-theme  ()
   (first-available-theme-group
-   '((aalto-light)
-     (adwaita))))
+   '((renegade wombat)
+     (wombat))))
 
 (defvar redshift-last-manual-dark-mode-override nil)
 
