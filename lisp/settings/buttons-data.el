@@ -144,7 +144,7 @@
        ("1" (cmd-ins "not "))
        ("d"
         (but
-         ("m" (cmd-ins "def main():" (nli) (rec) (newline) (newline)
+         ("m" (cmd-ins "def main():" (nli) "pass" (newline) (newline)
                        "if __name__ == \"__main__\":" (nli) "main()"))
          ("f" (cmd-ins "def {}({(inm)}{}):{(nli)}"))
          ("i" (cmd-ins "def __init__(self):{(nli)}"))
@@ -203,16 +203,20 @@
          ("m"
           (but
            ("n" (cmd-ins "import numpy as np"))
-           ("s" (cmd-ins "import scipy" (nli)
-                         "from scipy import stats"))
+           ("s" (cmd-ins
+                 "import math" (nli)
+                 "import numpy as np" (nli)
+                 "import scipy" (nli)
+                 (nli)
+                 "from scipy import stats" (nli)))
            ("c" (cmd-ins "import collections"))
            ("t" (cmd-ins "from collections import namedtuple"))
            ("p"
             (but
              ("m" (cmd-ins "import matplotlib.pyplot as plt"))
              ("p" (cmd-ins
-                   "x=np.linspace(0, 1)" (nli)
-                   "y=2*x" (nli)
+                   "x = np.linspace(0, 1)" (nli)
+                   "y = 2*x" (nli)
                    "plt.scatter(x, y, s=40, c='blue')" (nli)
                    "plt.show()" (nli)
                    ))))
@@ -234,6 +238,11 @@
           (but
            ("a" (cmd-ins "np.array(" (rec) ").astype(np.float64)"))
            ("z" (cmd-ins "np.zeros(" (rec) ").astype(np.float64)"))
+           ("m" (cmd-ins "np.mean(" (rec) ")"))
+           ("M" (cmd-ins "np.matmul(" (rec) ")"))
+           ("v" (cmd-ins "np.var(" (rec) ")"))
+           ("l" (cmd-ins "np.log(" (rec) ")"))
+           ("e" (cmd-ins "np.exp(" (rec) ")"))
            ("i" (cmd-ins "NEGINF = float(\"-inf\")"))
            ("p" (cmd-ins
                  "
