@@ -116,13 +116,17 @@
   "Send a stumpwm request.  PATH ARGS"
   (stumpwm-request-subprocess path))
 
+(defvar arg-list-limit 131068)
+
 (defun stumpwm-request-post (path data &optional host ports)
   (cl-assert data)
   ;; use the x-service-curl client instead
   '(let ((url-request-data (encode-coding-string data 'utf-8))
          (url-request-method "post"))
      (stumpwm-request path))
-  (stumpwm-request-subprocess path host data))
+  (let ((use-stdin (and data (> (length data) arg-list-limit))))
+    (stumpwm-request-subprocess
+     path host data use-stdin)))
 
 (defun stumpwm-browse-url (url)
   (message "browsing %s" url)
