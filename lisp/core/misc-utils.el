@@ -588,6 +588,12 @@ for customization of the printer command."
   (setenv "PATH" (concat (getenv "PATH") ":" dir))
   (push dir exec-path))
 
+(defun path-prepend-directory (dir)
+  "Append DIR to the PATH."
+  (interactive "Denter directory: ")
+  (setenv "PATH" (concat dir ":" (getenv "PATH")))
+  (setq exec-path (cons dir exec-path)))
+
 (defun path-ls ()
   "Display the current PATH."
   (interactive)
