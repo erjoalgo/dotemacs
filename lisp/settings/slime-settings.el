@@ -26,7 +26,7 @@
 (defmacro slime-eval-async-and-message (form)
   "slime-eval-async-and-message FORM."
   `(slime-eval-async ,form
-    (lambda (result) (message "%s" result))))
+     (lambda (result) (message "%s" result))))
 
 (defun slime-unexport-all-symbols (package)
   "Unexport all symbols in PACKAGE."
@@ -100,5 +100,5 @@
 (defun slime-link-swank-to-asdf-link-farm ()
   (let* ((slime-elc (symbol-file 'slime))
          (swank-asd-filename (f-join (f-dirname slime-elc) "swank.asd")))
-  (asdf-link-system swank-asd-filename)
-  (asdf-system-installed-p "swank")))
+    (asdf-link-system swank-asd-filename)
+    (asdf-system-installed-p "swank")))
