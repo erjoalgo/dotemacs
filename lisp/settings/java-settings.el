@@ -12,10 +12,10 @@
   (save-excursion
     (goto-char (point-min))
     (cl-loop as
-	  match = (search-forward-regexp "^[ \t]+" nil t nil)
-	  while match
-	  collect (match-string 0)
-	  do (goto-char (match-end 0)))))
+	     match = (search-forward-regexp "^[ \t]+" nil t nil)
+	     while match
+	     collect (match-string 0)
+	     do (goto-char (match-end 0)))))
 
 (defun buffer-spaces-or-tabs-p ()
   (interactive)
@@ -66,8 +66,8 @@
                        (equal "/*" (match-string 0))
                        ;; skip to the end of the comment. do err if not found,
                        ;; since we expect comment to close
-                              (re-search-forward "[*]/" nil nil)
-                       (setq class-name (match-string 4)))
+                       (re-search-forward "[*]/" nil nil)
+                     (setq class-name (match-string 4)))
                 finally (cl-return class-name))
        (warn "no java class name found")))))
 
@@ -131,7 +131,7 @@ q: Don't fix\n" func file))
 (require 'autobuild)
 
 (autobuild-defvar-file-local mvn-extra-args
-  "enter additional mvn args: ")
+                             "enter additional mvn args: ")
 
 (defmacro def-region-regexp-cmd (name regexp replacement &optional body)
   (let* ((a-sym (gensym "a"))
@@ -146,11 +146,11 @@ q: Don't fix\n" func file))
           (if (null body)
               replace-form
             (cl-loop for elt in body collect
-                  (if (eq elt replacement-placeholder-sym)
-                      replace-form elt)))))
-  `(defun ,name (,a-sym ,b-sym)
-     (interactive "r")
-     ,new-body)))
+                     (if (eq elt replacement-placeholder-sym)
+                         replace-form elt)))))
+    `(defun ,name (,a-sym ,b-sym)
+       (interactive "r")
+       ,new-body)))
 
 (def-region-regexp-cmd underscore-to-camel-case
   "[-_]\\([a-z]\\)"
