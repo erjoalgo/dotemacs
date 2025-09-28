@@ -37,7 +37,7 @@
 	     (message "successful compilation")
              (let ((bcf (format "%s.bcf" ,base-sans-ext)))
                (when (file-exists-p bcf)
-                 (message "running biber on %s" bcf)
+                  (message "file %s exists, running biber..." bcf)
                  (start-process "biber" "*biber*" "biber" bcf)))
               (when latex-compile-switch-wm-window
 	     (let ((win
