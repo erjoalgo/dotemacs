@@ -137,8 +137,7 @@ object."
    typescript-mode
    async
    sqlformat
-   dockerfile-mode
-   gradle-mode))
+   dockerfile-mode))
 
 (require 'f)
 
