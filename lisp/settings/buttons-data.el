@@ -1198,15 +1198,22 @@ plt.show()
                  (forward-char)))
        ("t"
         (but
+         ("f" (cmd-ins "\\frac {" (rec) "} {" (rec) "} "))
+         ("l" (cmd-ins "\\log "))
+         ("q" (cmd-ins "\\sqrt "))
          ("x" (cmd-ins "\\text{"
                        (ins "{}}")))
          ("s" (cmd-ins "\\section{" (rec) "}" (nli)))
          ("c" (cmd-ins "\\clearpage" (nli)))
-         ("S" (cmd-ins "\\subsection{" (rec) "}" (nli)))))
+         ("S" (cmd-ins "\\subsection{" (rec) "}" (nli)))
+         ("v" (cmd-ins "\\begin{verbatim" "}"
+                       (rec)
+                       (insert "\\end{verbatim" "}")))))
        ("{" (cmd-ins "\\{"
                      (ins "{}\\}")))
        ("-" (cmd-ins "(1-p)^{(inm)}"))
-       ("_" (cmd-ins "_"))
+       ("_" (cmd-ins "_{" (rec) "}"))
+       ("^" (cmd-ins "^{" (rec) "}"))
        ("p" (cmd-ins
              "\\includepdf[pages=-]{"
              (expand-file-name
@@ -1218,12 +1225,14 @@ plt.show()
        ("E" (cmd-ins "E[{}]"))
        ("]" (cmd-ins "^"))
        ("+" (cmd-ins "+"))
-       ("v" (cmd-ins "\\begin{verbatim" "}"
-                     (rec)
-                     (insert "\\end{verbatim" "}")))
-       ("7" (cmd-ins " & "))
+       ("7" (cmd-ins " &= "))
        (";" (cmd-ins "\\;"))
-       ("/" 'my-comment-out)))
+       ("/" 'my-comment-out)
+       ("v"
+        (but
+         ("l" (cmd-ins "\\lambda"))
+         ("b" (cmd-ins "\\beta"))
+         ("a" (cmd-ins "\\alpha"))))))
 
     (defbuttons matlab-buttons python-buttons (matlab-mode-map)
       (but
