@@ -57,7 +57,7 @@
       (goto-char (point-min))
       (or
        (cl-loop with class-name-or-comment-regexp =
-                "/[*]\\|^\\(\\(public\\|static\\|final\\)[ \t\n]+\\)*\\(class\\|interface\\)[ \t\n]+\\([^ \t\n]+\\)[^{]*{"
+                "/[*]\\|^\\(\\(public\\|static\\|final\\|abstract\\)[ \t\n]+\\)*\\(class\\|interface\\)[ \t\n]+\\([^ \t\n]+\\)[^{]*{"
                 with class-name = nil
                 as has-match-p =
                 (re-search-forward class-name-or-comment-regexp nil t)
