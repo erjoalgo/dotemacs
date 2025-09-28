@@ -19,7 +19,7 @@
 	(erase-buffer)))
 
     (call-process "pdflatex" nil compile-errors-buffer nil
-			      "-halt-on-error" tex)
+		  "-halt-on-error" tex)
 
     (async-start
      ;; What to do in the child process
@@ -32,30 +32,30 @@
 
      ;; What to do when it finishes
      `(lambda (ret-code)
-       (if (= ret-code 0)
-	   (progn
-	     (message "successful compilation")
-             (let ((bcf (format "%s.bcf" ,base-sans-ext)))
-               (when (file-exists-p bcf)
+        (if (= ret-code 0)
+	    (progn
+	      (message "successful compilation")
+              (let ((bcf (format "%s.bcf" ,base-sans-ext)))
+                (when (file-exists-p bcf)
                   (message "file %s exists, running biber..." bcf)
-                 (start-process "biber" "*biber*" "biber" bcf)))
+                  (start-process "biber" "*biber*" "biber" bcf)))
               (when latex-compile-switch-wm-window
-	     (let ((win
-                    (cl-loop for win in (wm-windows-list)
-	                     thereis
-                             (and
-                              (string-match (regexp-quote ,base-sans-ext)
-                                            (wm-window-title win))
-                              (let ((case-fold-search t))
-                                (string-match-p ".*zathura.*" (wm-window-class win)))
-                              win))))
-	       (if win
-                   (wm-window-raise win)
+	        (let ((win
+                       (cl-loop for win in (wm-windows-list)
+	                        thereis
+                                (and
+                                 (string-match (regexp-quote ,base-sans-ext)
+                                               (wm-window-title win))
+                                 (let ((case-fold-search t))
+                                   (string-match-p ".*zathura.*" (wm-window-class win)))
+                                 win))))
+	          (if win
+                      (wm-window-raise win)
 	            (start-process "view-pdf" "view-pdf" "zathura" ,pdf)))))
-         (save-excursion
-	   (switch-to-buffer-other-window ,compile-errors-buffer)
-	   (goto-char (point-max))
-	   (other-window -1)))))))
+          (save-excursion
+	    (switch-to-buffer-other-window ,compile-errors-buffer)
+	    (goto-char (point-max))
+	    (other-window -1)))))))
 
 
 
@@ -66,13 +66,13 @@
 (defun f-remove-extension (filename)
   (let ((ext (f-ext filename)))
     (if (string-blank-p ext) filename
-    (substring filename 0 (- (length filename) (1+ (length ext)))))))
+      (substring filename 0 (- (length filename) (1+ (length ext)))))))
 
 (defun file-discover-extension (filename)
   (s-trim
    (shell-command-to-string
-   (format "file --extension '%s' | cut -d: -f2 | cut -d/ -f1"
-           filename))))
+    (format "file --extension '%s' | cut -d: -f2 | cut -d/ -f1"
+            filename))))
 
 (defun filename-add-missing-extension (filename)
   (cl-assert (not (f-ext filename)))
@@ -147,7 +147,7 @@
          (image-url (youtube-image-url id))
          (directory (or
                      (cl-loop for dir in '("./graphics" (expand-file-name "~/Downloads"))
-                             thereis (when (file-exists-p dir) dir))
+                              thereis (when (file-exists-p dir) dir))
                      (error "no suitable downloads directory found")))
          (filename (format "%s/%s.jpeg" directory id))
          (title (s-trim-right (shell-command-to-string (format "webpage-title.sh '%s'" url)))))
