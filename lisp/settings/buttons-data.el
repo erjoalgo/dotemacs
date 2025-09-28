@@ -208,7 +208,8 @@
                  "import numpy as np" (nli)
                  "import scipy" (nli)
                  (nli)
-                 "from scipy import stats" (nli)))
+                 "from scipy import stats" (nli)
+                 "import matplotlib.pyplot as plt"))
            ("c" (cmd-ins "import collections"))
            ("t" (cmd-ins "from collections import namedtuple"))
            ("p"
