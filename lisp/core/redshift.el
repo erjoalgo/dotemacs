@@ -39,7 +39,7 @@
     (load-theme-group (dark-mode-theme))
     (setf *erjoalgo-command-mode-color-on* "light green"
 	  *erjoalgo-command-mode-color-off* "light gray")
-    (set-cursor-color "#000000")
+    (set-cursor-color "#ffffff") ;; white cursor for dark theme
     (setq redshift-dark-mode-enabled t)))
 
 (defun load-theme-group (group)
@@ -59,7 +59,7 @@
     (setf *erjoalgo-command-mode-color-on* "dark green"
 	  *erjoalgo-command-mode-color-off* "dark gray")
     (setq redshift-last-manual-dark-mode-override (float-time))
-    (set-cursor-color "#ffffff")
+    (set-cursor-color "#000000") ;; black cursor for light theme
     (setq redshift-dark-mode-enabled nil)))
 
 (defun redshift-dark-theme-toggle ()
