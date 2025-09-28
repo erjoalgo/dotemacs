@@ -560,7 +560,8 @@
                    (revert-buffer)))
          ("d" (cmd (doc "find and open the last download directory")
                    (find-file (f-dirname (find-last-download-or-scrot)))))))
-       ("p" 'project-open)))
+       ("p" 'project-open)
+       ("k" (file "/usr/include/X11/keysymdef.h"))))
      ("x"
       (buttons-make
        ("s" (lambda (arg)(interactive "P")(eshell arg)))
