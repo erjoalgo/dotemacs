@@ -4,6 +4,8 @@
   (error (warn "wm-windows not available: %s" ex)))
 
 
+(defvar-local latex-compile-switch-wm-window t)
+
 (defun latex-compile ()
   (interactive)
   (let* ((tex (buffer-file-name (current-buffer)))
@@ -37,6 +39,7 @@
                (when (file-exists-p bcf)
                  (message "running biber on %s" bcf)
                  (start-process "biber" "*biber*" "biber" bcf)))
+              (when latex-compile-switch-wm-window
 	     (let ((win
                     (cl-loop for win in (wm-windows-list)
 	                     thereis
@@ -48,7 +51,7 @@
                               win))))
 	       (if win
                    (wm-window-raise win)
-	         (start-process "view-pdf" "view-pdf" "zathura" ,pdf))))
+	            (start-process "view-pdf" "view-pdf" "zathura" ,pdf)))))
          (save-excursion
 	   (switch-to-buffer-other-window ,compile-errors-buffer)
 	   (goto-char (point-max))
