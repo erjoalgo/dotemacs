@@ -46,22 +46,22 @@
 (defmacro genpass-def-char-bags (&rest name-spec-pairs)
   "Convenience macro defines a series of named character bags NAME-SPEC-PAIRS."
   (let (syms)
-  `(progn
-     ,@(cl-loop for (name spec) in name-spec-pairs
-                as sym = (intern (concat "genpass-" (symbol-name name)))
-                collect `(defvar ,sym nil)
-                collect `(setq ,sym (genpass-ranges-to-bag ,spec))
-                do (push sym syms))
-     (setf genpass-bag-syms ',syms))))
+    `(progn
+       ,@(cl-loop for (name spec) in name-spec-pairs
+                  as sym = (intern (concat "genpass-" (symbol-name name)))
+                  collect `(defvar ,sym nil)
+                  collect `(setq ,sym (genpass-ranges-to-bag ,spec))
+                  do (push sym syms))
+       (setf genpass-bag-syms ',syms))))
 
 (genpass-def-char-bags
-  (alpha-lower "az")
-  (alpha-upper "AZ")
-  (alpha "azAZ")
-  (num "09")
-  (alnum "azAZ09")
-  (special-chars "!/:@")
-  (all "azAZ09!/:@"))
+ (alpha-lower "az")
+ (alpha-upper "AZ")
+ (alpha "azAZ")
+ (num "09")
+ (alnum "azAZ09")
+ (special-chars "!/:@")
+ (all "azAZ09!/:@"))
 
 (defvar genpass-default-len 13)
 
