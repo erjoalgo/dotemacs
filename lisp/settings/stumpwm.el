@@ -227,3 +227,14 @@
 (defmacro defcommand (name args interactive-args &rest body)
   "Declare the proper indentation for stumpwm's defcommand."
   (declare (indent 3)))
+
+
+(defun stumpwm-desktop-group-number ()
+  "Send a message notification TEXT to stumpwm COLOR HOST PORTS."
+  (let* ((output (x-service-curl
+                  "/desktop-group-number"
+                  :headers `(("STUMPWM-WIN-PID" . ,(emacs-pid)))
+                  :sync t))
+         (number (string-to-number (string-trim output))))
+    number))
+
