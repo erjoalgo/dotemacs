@@ -240,11 +240,14 @@
            ("a" (cmd-ins "np.array(" (rec) ").astype(np.float64)"))
            ("z" (cmd-ins "np.zeros(" (rec) ").astype(np.float64)"))
            ("m" (cmd-ins "np.mean(" (rec) ")"))
-           ("M" (cmd-ins "np.matmul(" (rec) ")"))
+           ("t" (cmd-ins "np.matmul(" (rec) ")"))
+           ("d" (cmd-ins "np.identity(" (rec) ")"))
+           ("D" (cmd-ins "np.diag(" (rec) ")"))
+           ("i" (cmd-ins "np.linalg.inv(" (rec) ")"))
            ("v" (cmd-ins "np.var(" (rec) ")"))
            ("l" (cmd-ins "np.log(" (rec) ")"))
            ("e" (cmd-ins "np.exp(" (rec) ")"))
-           ("i" (cmd-ins "NEGINF = float(\"-inf\")"))
+           ("n" (cmd-ins "NEGINF = float(\"-inf\")"))
            ("p" (cmd-ins
                  "
 plt.scatter(x, y, s=40, c=colors)
@@ -363,8 +366,7 @@ plt.show()
           (but
            ("t" (cmd-ins "(list {})"))
            ("g" (cmd-ins "(length {})"))))
-         ("1" (cmd-ins "(not {})"))
-         ("!" (cmd-ins "(null {})"))
+         ("1" (cmd-ins "(null {})"))
          ("m"
           (but
            ("x" (cmd-ins "(" "macroexpand-1 " "'{}){(nli)}"))))
@@ -708,7 +710,7 @@ plt.show()
        ("n"
         (but
          ("t" (cmd-ins "System.out.printf(\"{}\\n\"{} );{(nli)}"))
-         ("r" (cmd-ins "System.out.printf(\"DDEBUG TRACE: {(buf)} {(rnd)}\\n\");"))
+         ("r" (cmd-ins "System.out.printf(\"DDEBUG TRACE: {(buf)} {(rnd)} {}\\n\");"))
          ("v" (cmd-ins "System.out.printf(" (nli)
                        "\"DDEBUG {(buf)} {(rnd)}: value of {0}: %s\\n\","
                        (nli)
@@ -742,14 +744,23 @@ plt.show()
         (but
          ("i" (cmd-ins "int {(inm)}"))
          ("I" (cmd-ins "Integer {(inm)}"))
-         ("s" (cmd-ins "String "))))
+         ("s" (cmd-ins "String "))
+         ("b" (cmd-ins "boolean "))
+         ("l" (cmd-ins "List<" (rec) ">"))
+         ("p" (cmd-ins "private "))
+         ("P" (cmd-ins "public "))))
        ("$" (cmd-ins "new {}"
                      (insert "[]{")
                      (ins "{}}")))
        ("-" (cmd-ins " -> "))
        ("m" (cmd-ins "import {};"))
        ("m" 'java-imports-add-import-dwim)
-       ("t" (cmd-ins "try {(cbd)}catch ({}){(cbd)}"))))
+       ("t"
+        (but
+         ("y" (cmd-ins "try {(cbd)}catch ({}){(cbd)}"))
+         ("u" (cmd-ins "true"))
+         ("g" (cmd-ins "false"))
+         ("G" (cmd-ins "null"))))))
 
     (defbuttons xml-buttons programming-buttons (nxml-mode-map)
       (but
@@ -1157,7 +1168,10 @@ plt.show()
                        (insert "\\end{" "tabular}")))
          ("a" (cmd-ins "\\begin{" "align*}"
                        (nli) (rec) (nli)
-                       (insert "\\end{" "align*}")))))
+                       (insert "\\end{" "align*}")))
+         ("f" (cmd-ins "\\begin{" "form}" (nli)
+                       (rec) (nli)
+                       (insert "\\end{" "form}")))))
        ("B" (cmd-ins (if (region-active-p)
                          (replace-region text
                                          (format "\\textbf{%s}" text))
@@ -1200,6 +1214,7 @@ plt.show()
         (but
          ("f" (cmd-ins "\\frac {" (rec) "} {" (rec) "} "))
          ("l" (cmd-ins "\\log "))
+         ("b" (cmd-ins "\\textbf{" (rec) "}"))
          ("q" (cmd-ins "\\sqrt "))
          ("x" (cmd-ins "\\text{"
                        (ins "{}}")))
@@ -1208,7 +1223,14 @@ plt.show()
          ("S" (cmd-ins "\\subsection{" (rec) "}" (nli)))
          ("v" (cmd-ins "\\begin{verbatim" "}"
                        (rec)
-                       (insert "\\end{verbatim" "}")))))
+                       (insert "\\end{verbatim" "}")))
+         ("i"
+          (but
+           ("t" (cmd-ins "\\TextField[width=\\linewidth]{" (rec) "}"))
+           ("c" (cmd-ins "\\CheckBox[name=" (genpass-genpass) "]{" (rec) "}"))
+           ("y" (cmd-ins "\\CheckBox[name=" (genpass-genpass) "]{"
+                         "Yes} \\CheckBox[name="
+                         (genpass-genpass) "]{" "No}"))))))
        ("{" (cmd-ins "\\{"
                      (ins "{}\\}")))
        ("-" (cmd-ins "(1-p)^{(inm)}"))
@@ -1915,7 +1937,11 @@ server {
          ("2"
           (but
            ("c" (cmd-ins "circle(r=" (rec) ");"))
-           ("s" (cmd-ins "square([" (rec) "], center=" (rec) ")"))))))))))
+           ("s" (cmd-ins "square([" (rec) "], center=" (rec) ")"))))))))
+
+
+    (defbuttons comint-buttons programming-buttons (comint-mode-map)
+      (but))))
 
 (message "buttons loaded")
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
