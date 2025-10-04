@@ -1,9 +1,29 @@
+(defun stumpwm-message-safe (message)
+  (condition-case ex
+      (stumpwm-message message)
+    (error (warn "failed to message stumpwm: %s" ex))))
+
 (defun server-init  ()
   (require 'server)
-  (setq server-name
-        (format "%s.%s"
-                (or (getenv "DESKTOP_GROUP_NUMBER") server-name)
-                (random 1000)))
+  (when server-name
+    (server-force-delete server-name))
+  (let ((old-name server-name)
+        (group-number
+         (condition-case ex
+             (stumpwm-desktop-group-number)
+           (error
+            (warn "failed to get currrent desktop number from stumpwm")
+            nil))))
+    (setq server-name
+          (format "%s.%s"
+                  (or
+                   group-number
+                   (getenv "DESKTOP_GROUP_NUMBER")
+                   server-name)
+                  (random 1000)))
+    (message "new group number: %s, old server name: %s, new server name: %s"
+             group-number old-name server-name))
+  (stumpwm-message-safe (format "new emacs server-name is %s" server-name))
   (server-force-delete server-name)
   (server-start)
   (cl-assert (server-running-p server-name)))
@@ -14,8 +34,10 @@
   "start or restart the server on USR1"
   (interactive)
   (message "got sigusr1! at %s" (format-time-string "%H:%M:%S"))
+  (stumpwm-message-safe
+   (format "server-name got sigusr1: %s" server-name))
   (server-force-delete)
-  (server-start))
+  (server-init))
 
 (define-key special-event-map [sigusr1] 'sig-usr1)
 
