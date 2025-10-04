@@ -75,7 +75,8 @@
                               "GET")
                           url)))))
 
-(cl-defun x-service-curl (path &key headers data use-stdin on-error)
+(cl-defun x-service-curl (path &key headers data use-stdin on-error
+                               sync)
   (let* ((proc-name "*x-service-request*")
          (args `("x-service-curl"
                  ,path
@@ -89,20 +90,28 @@
                           (newline)
                           (point-max))))
     (let ((proc
-           (apply #'start-process proc-name proc-name args)))
+           (apply #'start-process proc-name proc-name args))
+          (result-sym (gensym "stumpwm-result-")))
       (set-process-sentinel proc
                             (apply-partially
-                             `(lambda (on-error proc change)
-                                (when (s-starts-with-p "exited abnormally" change)
-                                  (let ((output (with-current-buffer ,proc-name
-                                                  (buffer-substring ,old-max-point (point-max)))))
+                             `(lambda (on-error result-sym proc change)
+                                (let ((output (with-current-buffer ,proc-name
+                                                (buffer-substring ,old-max-point (point-max)))))
+                                  (set result-sym output)
+                                  (when (s-starts-with-p "exited abnormally" change)
                                     (if (not on-error)
                                         (warn "x-service failed: %s %s" change output)
                                       (funcall on-error output)))))
-                             on-error))
+                             on-error result-sym))
       (when (and data use-stdin)
         (process-send-string proc data)
-        (process-send-eof proc)))))
+        (process-send-eof proc))
+      (when sync
+        (cl-loop while (or (process-live-p proc)
+                           (null (symbol-value result-sym)))
+                 do (sit-for 1)
+                 finally (return (symbol-value result-sym)))))))
+
 
 (defun stumpwm-request-subprocess (path &optional extra-headers data use-stdin)
   "Send a stumpwm request via a subprocess.  PATH HOST PORTS"
