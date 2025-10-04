@@ -75,8 +75,7 @@
                               "GET")
                           url)))))
 
-(cl-defun x-service-curl (path headers &key data use-stdin
-                               on-error)
+(cl-defun x-service-curl (path &key headers data use-stdin on-error)
   (let* ((proc-name "*x-service-request*")
          (args `("x-service-curl"
                  ,path
@@ -109,7 +108,7 @@
   "Send a stumpwm request via a subprocess.  PATH HOST PORTS"
   (let* ((extra-headers (or extra-headers url-request-extra-headers))
          (data (or data url-request-data)))
-    (x-service-curl path extra-headers :data data :use-stdin use-stdin)))
+    (x-service-curl path :headers extra-headers :data data :use-stdin use-stdin)))
 
 
 (defun stumpwm-request (path &rest args)
@@ -195,7 +194,8 @@
   (stumpwm-url-launcher-put url alias))
 
 (cl-defun stumpwm-raise (regexp &key on-error)
-  (x-service-curl "/raise-window" `(("REGEXP" . ,regexp))
+  (x-service-curl "/raise-window"
+                  :headers `(("REGEXP" . ,regexp))
                   :on-error on-error))
 
 (advice-add #'gui-select-text :after #'gui-select-text--stumpwm)
