@@ -29,11 +29,11 @@
                as local = (f-join dest base)
                do (progn
                     (if (file-exists-p local)
-                      (message "skipping already downloaded file: %s" local)
-                    (call-process
-                     "curl"
-                     nil
-                     (get-buffer-create "*img-src-graphics-make-local*")
-                     t
-                     url "-Lo" local))
+                        (message "skipping already downloaded file: %s" local)
+                      (call-process
+                       "curl"
+                       nil
+                       (get-buffer-create "*img-src-graphics-make-local*")
+                       t
+                       url "-Lo" local))
                     (replace-match local t t nil 1))))))
