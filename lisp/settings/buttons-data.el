@@ -193,6 +193,7 @@
        ("0" (cmd-ins python-argparse-template))
        ("t"
         (but
+         ("i" (cmd-ins "with {} as {}:" (nli)))
          ("c" (cmd-ins "collections.Counter({})"))
          ("r" (cmd-ins "raise Exception({})"))
          ("a" (cmd-ins "assert "))
@@ -204,24 +205,30 @@
          ("m"
           (but
            ("n" (cmd-ins "import numpy as np"))
+           ("x" (cmd-ins "import networkx as nx"))
            ("s" (cmd-ins
                  "import math" (nli)
                  "import numpy as np" (nli)
                  "import scipy" (nli)
                  (nli)
                  "from scipy import stats" (nli)
-                 "import matplotlib.pyplot as plt"))
+                 "import matplotlib.pyplot as plt" (nli)
+                 "import matplotlib.ticker as ticker"))
            ("c" (cmd-ins "import collections"))
+           ("k" (cmd-ins "import sklearn"))
            ("t" (cmd-ins "from collections import namedtuple"))
            ("p"
             (but
              ("m" (cmd-ins "import matplotlib.pyplot as plt"))
              ("p" (cmd-ins
-                   "x = np.linspace(0, 1)" (nli)
-                   "y = 2*x" (nli)
-                   "plt.scatter(x, y, s=40, c='blue')" (nli)
-                   "plt.show()" (nli)
-                   ))))
+                   "fig, ax = plt.subplots(3)" (nli)
+                   "ax[0].scatter(X, Y, s=5, c='blue', label=\"label\")" (nli)
+                   "ax[0].set_title(\"title\")" (nli)
+                   "ax[0].set_xlabel(\"x\")" (nli)
+                   "ax[0].set_ylabel(\"y\")" (nli)
+                   "ax[0].legend()" (nli)
+                   "plt.show()" (nli)))
+             ("a" (cmd-ins "import pandas as pd"))))
            ("h" (cmd-ins "import math"))
            ("r" (cmd-ins "import random"))))
          ("G" (cmd-ins "None"))
@@ -451,6 +458,7 @@ plt.show()
          ("f" (cmd-ins "for " (idt)))
          ("A" (cmd-ins "{(spc?)}across "))
          ("t" (cmd-ins "with {} = "))
+
          ("T" (cmd-ins "{(spc?)}thereis"))
          ("b" (cmd-ins "{(spc?)}below "))
          ("w" (cmd-ins "while " (idt)))
@@ -528,6 +536,8 @@ plt.show()
          ("c" (cmd-ins "(handler-case" (nli) (rec) (nli) "(error (err) {}))"))))
        ((kbd "M-.") 'slime-next-note)
        ((kbd "M-,") 'slime-previous-note)
+       ("T"
+        (cmd-ins "(handler-case" (nli) (rec) (nli) "(error (err) {}))"))
        ("."
         (but
          ("f" #'slime-edit-definition)
@@ -547,12 +557,15 @@ plt.show()
       (but
        ("\\" (cmd-ins "\\n"))
        ("l" (cmd-ins "(let [{}]{(nli)}{}){(nli)}"))
+       ("X" (cmd-ins "(when-let [{}]{(nli)}{}){(nli)}"))
        ("d"
         (but
-         ("f" (cmd-ins "(defn {} [{}]{(nli)}{}){(nli)}"))))
+         ("f" (cmd-ins "(defn {} [{}]{(nli)}{}){(nli)}"))
+         ("e" (cmd-ins "(def {})"))))
        ("n"
         (but
          ("t" (cmd-ins "(printf \"{}\\n\"{})"))
+         ("f" (cmd-ins "(format \"{}\"{})"))
          ("r" (cmd-ins "(log/info \"DDEBUG " (rnd) " TRACE" "\")"))
          ("v" (cmd-ins "(log/infof \"DDEBUG " (rnd) " {0}: %s\"" (nli?) " {0})"))
          ("l"
@@ -585,7 +598,7 @@ plt.show()
          ("l"
           (but
            ("t" (cmd-ins "(list {})"))
-           ("g" (cmd-ins "(.size {})"))))))
+           ("s" (cmd-ins "(.size {})"))))))
        ("T" (cmd-ins "(try" (nli) (rec) (nli) "(catch Exception ex " (rec) "))" (nli)))
        ("5"
         (but
@@ -756,9 +769,9 @@ plt.show()
        ("-" (cmd-ins " -> "))
        ("m" (cmd-ins "import {};"))
        ("m" 'java-imports-add-import-dwim)
+       ("T" (cmd-ins "try {(cbd)} catch ({}){(cbd)}"))
        ("t"
         (but
-         ("y" (cmd-ins "try {(cbd)}catch ({}){(cbd)}"))
          ("u" (cmd-ins "true"))
          ("g" (cmd-ins "false"))
          ("G" (cmd-ins "null"))))))
@@ -880,7 +893,8 @@ plt.show()
          ("W" (cmd-ins "await waitFor(" (nli) "() => " (rec) ")"))
          ("Y" (cmd-ins "try{(cbd)} catch(err){(cbd)}"))
          ("e" (cmd-ins "new Error({})"))
-         ("a" (cmd-ins "Array.from({})"))
+         ("a" (cmd-ins "console.assert({});"))
+         ("A" (cmd-ins "Array.from({})"))
          ("x" (cmd
                (ins
                 "
@@ -1111,6 +1125,11 @@ plt.show()
        ;; ("m" (cmd-ins "${}$"))
        ("m"
         (but
+         ("b"
+          (but
+           ("e" (cmd-ins "\\mathbb{" "E}[" (rec) "]"))
+           ("c" (cmd-ins "\\mathrm{" "Cov}(" (rec) ")"))
+           ("v" (cmd-ins "\\mathrm{" "Var}(" (rec) ")"))))
          ("l"
           (cmd-ins (insert "\\documentclass[
   fontsize=11pt,
@@ -1172,11 +1191,21 @@ plt.show()
                        (insert "\\end{" "align*}")))
          ("f" (cmd-ins "\\begin{" "form}" (nli)
                        (rec) (nli)
-                       (insert "\\end{" "form}")))))
+                       (insert "\\end{" "form}")))
+         ("a" (cmd-ins "$\\begin{" "array}{" "l l l}" (nli)
+                       (rec) (nli)
+                       (insert "\\end{" "array}$")))
+         ("v" (cmd-ins "\\begin{verbatim" "}"
+                       (rec)
+                       (insert "\\end{verbatim" "}")))))
        ("B" (cmd-ins (if (region-active-p)
                          (replace-region text
                                          (format "\\textbf{%s}" text))
                        (insert "\\textbf{") (rec) (insert "}"))))
+       ("I" (cmd-ins (if (region-active-p)
+                         (replace-region text
+                                         (format "\\textit{%s}" text))
+                       (insert "\\textit{") (rec) (insert "}"))))
        ("[" (cmd-ins "{" (ins "{}}")))
        ("i" (cmd-ins "\\item {(idt)}"))
        ("_" (cmd-ins ".${}$."))
@@ -1202,6 +1231,9 @@ plt.show()
        ("f" (cmd-ins (tex-include-graphics (find-last-download-or-scrot nil t))))
        ("F" (cmd-ins (tex-include-graphics (x-get-selection))))
        ("g" (cmd-ins (tex-include-graphics (find-last-download-or-scrot nil t) t)))
+       ("G" (cmd-ins "\\includegraphics[width=\\linewidth]{"
+                     (read-file-name "select image: ")
+                     "}"))
        ("(" (cmd-ins "P({})"))
        ("8" (cmd-ins "P({})"))
        (")" (cmd-ins " + "))
@@ -1222,9 +1254,6 @@ plt.show()
          ("s" (cmd-ins "\\section{" (rec) "}" (nli)))
          ("c" (cmd-ins "\\clearpage" (nli)))
          ("S" (cmd-ins "\\subsection{" (rec) "}" (nli)))
-         ("v" (cmd-ins "\\begin{verbatim" "}"
-                       (rec)
-                       (insert "\\end{verbatim" "}")))
          ("i"
           (but
            ("t" (cmd-ins "\\TextField[width=\\linewidth]{" (rec) "}"))
@@ -1255,7 +1284,12 @@ plt.show()
         (but
          ("l" (cmd-ins "\\lambda"))
          ("b" (cmd-ins "\\beta"))
-         ("a" (cmd-ins "\\alpha"))))))
+         ("a" (cmd-ins "\\alpha"))
+         ("t" (cmd-ins "\\theta"))
+         ("g" (cmd-ins "\\gamma"))
+         ("p" (cmd-ins "\\phi"))
+         ("s" (cmd-ins "\\sigma"))
+         ("i" (cmd-ins "\\infty"))))))
 
     (defbuttons matlab-buttons python-buttons (matlab-mode-map)
       (but
@@ -1834,6 +1868,8 @@ server {
          ("v" (cmd-ins "CREATE OR REPLACE VIEW {} " (nli)
                        "OPTIONS(privilege_model = 'INVOKER_RIGHTS'{})"
                        " AS (" (nli) "{}" ")" (nli)))))
+       ("-" (cmd-ins "->'{(rec)}'"))
+       ("-" (cmd-ins "->>'{(rec)}'"))
        ("i"
         (but
          ("s" (cmd-ins "IS "))))))
