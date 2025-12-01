@@ -2,7 +2,8 @@
   (indent-region (point-min) (point-max)))
 
 (setq autoindent-modes-list
-      '(emacs-lisp-mode lisp-mode clojure-mode)
+      '(emacs-lisp-mode lisp-mode clojure-mode
+                        js-mode))
 ;; "Modes on which to auto-indent after save.")
 
 (defun autoindent-save-hook ()
