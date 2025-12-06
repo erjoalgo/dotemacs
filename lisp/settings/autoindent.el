@@ -3,7 +3,7 @@
 
 (setq autoindent-modes-list
       '(emacs-lisp-mode lisp-mode clojure-mode
-                        js-mode))
+                        js-mode html-mode mhtml-mode))
 ;; "Modes on which to auto-indent after save.")
 
 (defun autoindent-save-hook ()
