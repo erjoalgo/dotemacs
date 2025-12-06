@@ -546,12 +546,17 @@ plt.show()
     (defbuttons css-mode-buttons programming-buttons (css-mode-map)
       (buttons-make
        ((kbd "M-/")
-        (buttons-defcmd (save-excursion
-                          (back-to-indentation)
-                          ;; (beginning-of-line)
-                          (insert "/* ")
-                          (end-of-line)
-                          (insert "*/ "))))))
+        (buttons-defcmd
+         (save-excursion
+           (back-to-indentation)
+           (if (looking-at "/[*]")
+               (save-match-data
+                 (message "DDEBUG f8rj TRACE")
+                 (when (re-search-forward "/[*] \\(.*\\)[*]/" (line-end-position) t)
+                   (replace-match (match-string 1))))
+             (progn (insert "/* ")
+                    (end-of-line)
+                    (insert "*/ "))))))))
 
     (defbuttons clojure-buttons cl-buttons (clojure-mode-map cider-repl-mode-map)
       (but
@@ -828,6 +833,7 @@ plt.show()
        ("A" (cmd-ins "() => "))
        ("." (cmd-ins "debugger;"))
        ((kbd "M-s-f") (cmd-ins "${" (rec) "}"))
+       ("2" (cmd-ins "`{}`"))
        ("n"
         (but
          ("c" (cmd-ins "console.log(`{}`);"))
