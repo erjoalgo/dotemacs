@@ -472,8 +472,8 @@
      ((kbd "M-d") 'kill-word);;originally M-d
      ("D" 'my-forward-delete);;like kill-word, but sexp, and no kill.
      ;; type "yes RET" for those annoying prompts. the key is s-SPC (super space)
-     ("-" 'global-text-scale-lower);; increase text size
-     ("=" 'global-text-scale-higher);; decrease text size
+     ("-" 'my-global-text-scale-lower);; increase text size
+     ("=" 'my-global-text-scale-higher);; decrease text size
      ("g" 'goto-line)
      ("	" 'my-tab-command)
      ("9" "(");; insert "("

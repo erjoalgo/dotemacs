@@ -149,7 +149,7 @@ object."
            goto-last-change
            quick-yes
            cl-lib
-           zoom-global
+           my-zoom-global
            isearch-fast-reverse
            my-emacs-settings
            plusx
@@ -263,7 +263,7 @@ to \"^python-\"."
   (require 'loadhist)
   (file-dependents (feature-file 'cl)))
 
-(global-text-scale-adjust 5)
+(my-global-text-scale-adjust 5)
 
 ;; (define-key key-translation-map [?\C-h] [?\C-?])
 ;; (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
