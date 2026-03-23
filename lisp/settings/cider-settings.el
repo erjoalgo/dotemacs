@@ -5,7 +5,7 @@
   (when (eq major-mode 'clojure-mode)
     (save-excursion
       (goto-char (point-min))
-      (when (re-search-forward "^(ns \\(.*\\)")
+      (when (re-search-forward "^(ns \\(.*\\)" nil t)
         (match-string 1)))))
 
 (defvar clojure-known-namespaces nil)
