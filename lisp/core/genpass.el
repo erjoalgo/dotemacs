@@ -63,7 +63,7 @@
  (special-chars "!/:@")
  (all "azAZ09!/:@"))
 
-(defvar genpass-default-len 13)
+(setq genpass-default-len 20)
 
 (defun genpass-set-clipboard (text)
   "Set the clipboard to the string TEXT."
@@ -78,7 +78,7 @@
                        (completing-read "select character bag: "
                                         (mapcar #'symbol-name genpass-bag-syms)
                                         nil t "genpass-alnum")))))
-  (unless n (setq n 13))
+  (unless n (setq n 20))
   (unless bag (setq bag genpass-alnum))
   (cl-loop with str = (make-string n 0)
 	   for i below n do
