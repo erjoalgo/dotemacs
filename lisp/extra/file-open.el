@@ -25,7 +25,7 @@
 (def-open-file-program "libreoffice" ("doc" "ppt" "odt" "docx"  "pptx" "xls" "ods"))
 (def-open-file-program "evince" ("ps" "eps"))
 (def-open-file-program "qimgv"
-  ("png" "pgm" "tif" "jpg" "jpeg" "gif" "pnm" "svg" "ico" "webp" "heic" "avif"))
+                       ("png" "pgm" "tif" "jpg" "jpeg" "gif" "pnm" "svg" "ico" "webp" "heic" "avif"))
 (def-open-file-program "aplay" ("wav"))
 (def-open-file-program "timidity" ("midi" "mid"))
 (defun open-html-file (filename)
@@ -54,8 +54,8 @@
                (file-expand-wildcards "~/bin/UltiMaker-Cura*AppImage"))
               "cura")))
   (def-open-file-program (list *cura-latest-exe* "-platformtheme" "gtk3")
-    ;; work around this bug: https://github.com/Ultimaker/Cura/issues/16815
-    ("stl" "3mf" "obj")))
+                         ;; work around this bug: https://github.com/Ultimaker/Cura/issues/16815
+                         ("stl" "3mf" "obj")))
 (def-open-file-program "cura" ("stl" "3mf" "obj"))
 (def-open-file-program "blender" ("blend" "blend1"))
 (def-open-file-program "fstl" ("stl"))

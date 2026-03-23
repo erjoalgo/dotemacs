@@ -26,7 +26,7 @@
 (defmacro slime-eval-async-and-message (form)
   "slime-eval-async-and-message FORM."
   `(slime-eval-async ,form
-     (lambda (result) (message "%s" result))))
+                     (lambda (result) (message "%s" result))))
 
 (defun slime-unexport-all-symbols (package)
   "Unexport all symbols in PACKAGE."

@@ -1,5 +1,5 @@
 ;; adapted from https://masteringemacs.org/article/compiling-running-scripts-emacs
-;(add-hook 'python-mode-hook 'python--add-debug-highlight)
+                                        ;(add-hook 'python-mode-hook 'python--add-debug-highlight)
 
 (defvar python--pdb-breakpoint-string "import pdb; pdb.set_trace() ## DEBUG ##"
   "Python breakpoint string used by `python-insert-breakpoint'")
@@ -23,9 +23,9 @@ if breakpoints are present in `python-mode' files"
 (defun my-python-indentation ()
   ;;taken from the internet
   (setq tab-width 4
-      python-indent-offset (if (bound-and-true-p google-emacs-version) 2 4)
-      indent-tabs-mode nil
-      py-smart-indentation nil))
+        python-indent-offset (if (bound-and-true-p google-emacs-version) 2 4)
+        indent-tabs-mode nil
+        py-smart-indentation nil))
 
 (add-hook 'python-mode-hook 'my-python-indentation)
 
@@ -133,9 +133,9 @@ args= parser.parse_args()
                thereis (and
                         (string-match
                          ;; Unused variable 'borg_service' [unused-variable]
-                          ".*[[]\\([a-z-]+\\)]\\(  [[0-9]+ times]\\)?"
-                          line)
-                         (match-string 1 line))))))
+                         ".*[[]\\([a-z-]+\\)]\\(  [[0-9]+ times]\\)?"
+                         line)
+                        (match-string 1 line))))))
 
 (defun python-dir-on-expression (&optional a b help-p)
   "Surround python expression (A, B) with dir(...)."
