@@ -167,6 +167,8 @@ args= parser.parse_args()
         "pylint %s | sed 's/^[A-Z]: *\\([0-9]*\\),/%s:\\1: /g'"
         basename basename)))))
 
+(add-hook 'python-mode-hook 'python-set-custom-check-command)
+
 (setq python-shell-interpreter "python3")
 
 (defun python-auto-def-init ()
