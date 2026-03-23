@@ -230,7 +230,9 @@
                    "plt.show()" (nli)))
              ("a" (cmd-ins "import pandas as pd"))))
            ("h" (cmd-ins "import math"))
-           ("r" (cmd-ins "import random"))))
+           ("r" (cmd-ins "import random" (nli)
+                         "import re"))
+           ("o" (cmd-ins "import os"))))
          ("G" (cmd-ins "None"))
          ("P" (cmd-ins
                (end-of-line)
@@ -532,7 +534,7 @@ plt.show()
        (":" (cmd-ins "::"))
        ("h"
         (but
-         ("D" (cmd-ins "(declaim (optimize (debug 3) (speed 0)))"))
+         ("o" (cmd-ins "(declaim (optimize (debug 3) (speed 0)))"))
          ("c" (cmd-ins "(handler-case" (nli) (rec) (nli) "(error (err) {}))"))))
        ((kbd "M-.") 'slime-next-note)
        ((kbd "M-,") 'slime-previous-note)
@@ -571,6 +573,7 @@ plt.show()
         (but
          ("t" (cmd-ins "(printf \"{}\\n\"{})"))
          ("f" (cmd-ins "(format \"{}\"{})"))
+         ("g" (cmd-ins "(format \"{}\"{})"))
          ("r" (cmd-ins "(log/info \"DDEBUG " (rnd) " TRACE" "\")"))
          ("v" (cmd-ins "(log/infof \"DDEBUG " (rnd) " {0}: %s\"" (nli?) " {0})"))
          ("l"
@@ -592,10 +595,11 @@ plt.show()
        ("{" (cmd-ins "{:keys [{}]" (nli) "{}}}"))
        ("a" (cmd-ins "(fn [{}]{(nli)}{})"))
        ("e" (cmd-ins "(def {})"))
+       ("R"  (cmd-ins "(throw (Exception. \"{}\"))"))
        ("t"
         (but
          ("R" #'cider-restart)
-         ("r"  (cmd-ins "(throw (Exception. \"{}\""))
+         ("r"  (cmd-ins "(throw (Exception. \"{}\"))"))
          ("u" (cmd-ins "true"))
          ("g" (cmd-ins "false"))
          ("G" (cmd-ins "nil"))
@@ -653,7 +657,7 @@ plt.show()
        ("t"
         (but
          ("u" (cmd-ins "true"))
-         ("U" (cmd-ins "false"))))
+         ("g" (cmd-ins "false"))))
        ("G" (cmd-ins "NULL"))
        ("j" (cmd-ins " || "))
        ("k" (cmd-ins " && "))
@@ -804,14 +808,20 @@ plt.show()
     (defbuttons html-buttons xml-buttons (html-mode-map)
       (but
        ("0" (cmd-ins
-             "<!DOCTYPE html>
+             "
+<!DOCTYPE html>
 <html>
   <head>
     <meta charset=\"UTF-8\">
     <title>{}</title>
+    <style>
+{}
+    </style>
   </head>
   <body>
+    <script>
 {}
+    </script>
   </body>
 </html>
 "))
@@ -1956,6 +1966,7 @@ server {
          ))
        ("t"
         (but
+         ("q" (cmd-ins "sqrt({})"))
          ("a" (cmd-ins "assert(" (rec) ");"))
          ("u" (cmd-ins "true"))
          ("g" (cmd-ins "false"))
@@ -1980,7 +1991,12 @@ server {
          ("2"
           (but
            ("c" (cmd-ins "circle(r=" (rec) ");"))
-           ("s" (cmd-ins "square([" (rec) "], center=" (rec) ")"))))))))
+           ("s" (cmd-ins "square([" (rec) "], center=" (rec) ")"))))))
+       ("0" (cmd-ins "module main() {
+    {}
+}
+
+main();"))))
 
 
     (defbuttons comint-buttons programming-buttons (comint-mode-map)
