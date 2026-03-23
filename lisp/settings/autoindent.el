@@ -16,6 +16,8 @@
 (add-hook 'before-save-hook #'autoindent-save-hook)
 
 
+(add-hook 'sql-mode-hook 'sqlformat-on-save-mode)
+
 ;; (define-minor-mode indent-on-save-mode
 ;;   "Mode to auto-indent on save"
 ;;   :init-value 0
