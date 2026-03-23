@@ -100,7 +100,8 @@
                                   (set result-sym output)
                                   (when (s-starts-with-p "exited abnormally" change)
                                     (if (not on-error)
-                                        (warn "x-service failed: %s %s" change output)
+                                        (warn "x-service failed for request %s: %s %s"
+                                              path change output)
                                       (funcall on-error output)))))
                              on-error result-sym))
       (when (and data use-stdin)
