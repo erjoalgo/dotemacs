@@ -355,7 +355,9 @@
   (let* ((json (sip-list-dids))
          (selection
           (selcand-select
-           json
+           (if (vectorp json)
+               (cl-loop for entry across json collect entry)
+             json)
            :prompt "select did: "
            :stringify-fn
            (lambda (did) (format "%s (%s)"
