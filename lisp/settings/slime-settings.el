@@ -2,17 +2,17 @@
 
 (add-to-list 'load-path "~/quicklisp/dists/quicklisp/software/slime-v2.32/")
 
+(defun find-buffer-by-prefix (prefix)
+  (cl-loop for buff in (buffer-list)
+	   thereis (and (s-starts-with-p
+			 prefix
+			 (buffer-name buff))
+			buff)))
+
 (with-eval-after-load "slime"
   (setq slime-contribs '(slime-fancy))
   (require 'slime-autoloads)
   (add-hook 'lisp-mode-hook 'slime-mode)
-
-  (defun find-buffer-by-prefix (prefix)
-    (cl-loop for buff in (buffer-list)
-	     thereis (and (s-starts-with-p
-			   prefix
-			   (buffer-name buff))
-			  buff)))
 
 
   (add-hook 'sldb-hook 'visual-line-mode)
