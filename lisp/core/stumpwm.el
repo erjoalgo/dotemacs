@@ -237,7 +237,7 @@
   (declare (indent 3)))
 
 
-(defun stumpwm-desktop-group-number ()
+(defun stumpwm-desktop-group-number-helper ()
   "Send a message notification TEXT to stumpwm COLOR HOST PORTS."
   (let* ((output (x-service-curl
                   "/desktop-group-number"
@@ -246,3 +246,12 @@
          (number (string-to-number (string-trim output))))
     number))
 
+(defun stumpwm-desktop-group-number ()
+  (or (condition-case ex
+          (stumpwm-desktop-group-number-helper)
+        (error
+         (warn "x-service request for group number failed: %s"
+               ex)
+         nil))
+      (getenv "DESKTOP_GROUP_NUMBER")
+      (error "desktop group number not found")))
