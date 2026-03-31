@@ -1,3 +1,8 @@
+(defvar notes-dir nil)
+
+(setq notes-dir
+      "/afs/asus.erjoalgo.com/public/git/edx-notes/")
+
 (defun stats-add-note (scrot-filename note-title notes-directory)
   (interactive
    (let* (
@@ -8,7 +13,7 @@
           (note-title (read-string (format
                                     "enter name for note (%s): "
                                     scrot-filename)))
-          (notes-directory (expand-file-name "~/git/18.6501x/notes/")))
+          (notes-directory notes-dir))
      (list scrot-filename note-title notes-directory)))
 
   (let* ((ext (f-ext scrot-filename))
