@@ -91,7 +91,9 @@
                           (point-max))))
     (let ((proc
            (apply #'start-process proc-name proc-name args))
-          (result-sym (gensym "stumpwm-result-")))
+          (result-sym (gensym "stumpwm-result-"))
+          (result-was-error-sym (gensym "stumpwm-result-was-error")))
+      (set result-was-error-sym nil)
       (set-process-sentinel proc
                             (apply-partially
                              `(lambda (on-error result-sym proc change)
@@ -99,19 +101,24 @@
                                                 (buffer-substring ,old-max-point (point-max)))))
                                   (set result-sym output)
                                   (when (s-starts-with-p "exited abnormally" change)
-                                    (if (not on-error)
-                                        (warn "x-service failed for request %s: %s %s"
-                                              ,path change output)
-                                      (funcall on-error output)))))
+                                    (set result-was-error-sym t)
+                                    (unless ,sync
+                                      (if (not on-error)
+                                          (warn "x-service failed for request %s: %s %s"
+                                                ,path change output)
+                                        (funcall on-error output))))))
                              on-error result-sym))
       (when (and data use-stdin)
         (process-send-string proc data)
         (process-send-eof proc))
       (when sync
+        (cl-assert (null on-error) "on-error only allowed in async calls")
         (cl-loop while (or (process-live-p proc)
                            (null (symbol-value result-sym)))
                  do (sit-for 1)
-                 finally (return (symbol-value result-sym)))))))
+                 finally (if (symbol-value result-was-error-sym)
+                             (error (symbol-value result-sym))
+                           (cl-return (symbol-value result-sym))))))))
 
 
 (defun stumpwm-request-subprocess (path &optional extra-headers data use-stdin)
