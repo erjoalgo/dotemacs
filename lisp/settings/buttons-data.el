@@ -1970,7 +1970,10 @@ server {
          ("a" (cmd-ins "assert(" (rec) ");"))
          ("u" (cmd-ins "true"))
          ("g" (cmd-ins "false"))
-         ("m" (cmd-ins "use <" (rec) ">"))))
+         ("m" (cmd-ins "use <" (rec) ">"))
+         ("0" (cmd-ins "e = 0.01;" (nli)
+                       "$fn = 100;" (nli)
+                       (nli)))))
        ("g"
         (but
          ("d" (cmd-ins "difference() {" (nli) (rec) (nli) "}"))
