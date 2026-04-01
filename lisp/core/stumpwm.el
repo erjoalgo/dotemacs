@@ -96,7 +96,7 @@
       (set result-was-error-sym nil)
       (set-process-sentinel proc
                             (apply-partially
-                             `(lambda (on-error result-sym proc change)
+                             `(lambda (on-error result-sym result-was-error-sym proc change)
                                 (let ((output (with-current-buffer ,proc-name
                                                 (buffer-substring ,old-max-point (point-max)))))
                                   (set result-sym output)
@@ -107,7 +107,7 @@
                                           (warn "x-service failed for request %s: %s %s"
                                                 ,path change output)
                                         (funcall on-error output))))))
-                             on-error result-sym))
+                             on-error result-sym result-was-error-sym))
       (when (and data use-stdin)
         (process-send-string proc data)
         (process-send-eof proc))
