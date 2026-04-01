@@ -1972,8 +1972,8 @@ server {
          ("g" (cmd-ins "false"))
          ("m" (cmd-ins "use <" (rec) ">"))
          ("0" (cmd-ins "e = 0.01;" (nli)
-                       "$fn = 100;" (nli)
-                       (nli)))))
+                       "$fn = 300;" (nli)
+                       "INCH = 25.4;"))))
        ("g"
         (but
          ("d" (cmd-ins "difference() {" (nli) (rec) (nli) "}"))
