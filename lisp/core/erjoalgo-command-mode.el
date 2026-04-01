@@ -406,11 +406,9 @@
     (message "mv -t %s %s" default-directory last-download)))
 
 (buttons-macrolet
-    ((dir (dir) `(read-file-name "select file: " ,dir))
-     (buff (buff-spec &optional on-nonexistent)
+    ((buff (buff-spec &optional on-nonexistent)
            `(switch-to-buff-or-else-command
-             ,buff-spec ,on-nonexistent))
-     (file (file) `(cmd (find-file ,file))))
+             ,buff-spec ,on-nonexistent)))
   (defbuttons
       erjoalgo-command-mode-buttons
       nil
