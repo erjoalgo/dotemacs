@@ -513,6 +513,8 @@
               (switch-to-nth-most-recent-buffer "^[*]compilation[*]" arg)))
        ("r" (buff "*Backtrace*"))
        ("R" (file "~/.config/redshift.conf"))
+       ("a" (ignore-errors (defs-m-a)))
+       ("8" (ignore-errors (defs-m-8)))
        ("b" (but
              ("r" (file "~/.bashrc"))
              ("a" (file "~/.bash_aliases"))
