@@ -1999,7 +1999,10 @@ server {
     {}
 }
 
-main();"))))
+main();"))
+       ("z" (cmd-ins "if ({}){(cbd)}"))
+       ("x" (cmd-ins " else if ({}){(cbd)}"))
+       ("c" (cmd-ins " else {(cbd)}"))))
 
 
     (defbuttons comint-buttons programming-buttons (comint-mode-map)
