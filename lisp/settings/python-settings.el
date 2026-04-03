@@ -91,10 +91,16 @@ args= parser.parse_args()
               (open-line 1))))))))
 
 
-(defun python-sort-imports ()
+(defun my-python-sort-imports ()
   "Sort python imports."
   (interactive)
   (when (eq major-mode 'python-mode)
+    (or (condition-case ex
+            (progn (python-sort-imports) t))
+        (error
+         (warn "python-sort-imports failed, falling back to custom sort: %s."
+               ex)
+         nil))
     (save-excursion
       (python-space-imports)
       (goto-char (point-min))
@@ -102,7 +108,7 @@ args= parser.parse_args()
         (sort-lines nil (match-beginning 0)
                     (match-end 0))))))
 
-(add-hook 'before-save-hook 'python-sort-imports)
+(add-hook 'before-save-hook 'my-python-sort-imports)
 
 (add-hook 'python-mode-hook
           (lambda () (setq forward-sexp-function nil)))
