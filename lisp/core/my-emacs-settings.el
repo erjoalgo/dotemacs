@@ -181,5 +181,13 @@
 
 (setq auto-revert-verbose nil)
 
+(defun kill-compilation-buffers ()
+  (interactive)
+  (cl-loop for buff in (buffer-list)
+           when (and (s-matches? "[*]compilation.*[*]"
+                                 (buffer-name buff))
+                     (null (get-buffer-process buff)))
+           do (kill-buffer buff)))
+
 (provide 'my-emacs-settings)
 ;;; emacs-settings.el ends here
