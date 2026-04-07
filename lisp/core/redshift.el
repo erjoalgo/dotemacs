@@ -72,7 +72,7 @@
 
 (defun redshift-adjust-theme-from-period ()
   (let ((period (redshift-period)))
-    (if (eq period 'day)
+    (if (eq period 'daytime)
         (redshift-unload-dark-theme)
       (redshift-load-dark-theme))))
 
