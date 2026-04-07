@@ -76,8 +76,6 @@
         (redshift-unload-dark-theme)
       (redshift-load-dark-theme))))
 
-(setq redshift-load-dark-theme-disable t)
-
 (defun redshift-maybe-adjust-theme-from-period ()
   (let* ((day-seconds (* 24 60 60))
          (deadline
