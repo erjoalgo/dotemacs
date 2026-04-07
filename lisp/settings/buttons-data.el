@@ -1955,7 +1955,8 @@ server {
          ("f" (cmd-ins "function " (rec) "(" (rec) ") = " (nli)))))
        ("f" (cmd-ins "for( i = [1:{}] ) {" (nli) (rec) (nli) "}"))
        ("F" (cmd-ins "for( {} = [{}] ) {" (nli) (rec) (nli) "}"))
-       ("l" (cmd-ins "let ( " (rec) ")" (nli)))
+       ("L" (cmd-ins "let ( " (rec) ")" (nli)))
+       ("l" (cmd-ins "len(" (rec) ")"))
        ("n"
         (but
          ("v" (cmd-ins "echo(str(\"DDEBUG {(rnd)} "
@@ -1963,6 +1964,7 @@ server {
                        " VALUE OF "
                        (ins "{0}: \", {0}));" (nli?))))
          ("r" (cmd-ins "echo(\"DDEBUG TRACE: {(buf)} {(rnd)}\");"))
+         ("t" (cmd-ins "echo(str(\"{(rec)}\", {(rec)}));"))
          ))
        ("t"
         (but
@@ -1971,6 +1973,7 @@ server {
          ("u" (cmd-ins "true"))
          ("g" (cmd-ins "false"))
          ("m" (cmd-ins "use <" (rec) ">"))
+         ("M" (cmd-ins "import(" (rec) ");"))
          ("0" (cmd-ins "e = 0.01;" (nli)
                        "$fn = 300;" (nli)
                        "INCH = 25.4;"))))
@@ -1984,7 +1987,8 @@ server {
          ("r" (cmd-ins "rotate([" (rec)  "]) "))
          ("R" (cmd-ins "rotate_extrude(angle={})"))
          ("l" (cmd-ins "scale([" (rec)  "]) "))
-         ("L" (cmd-ins "linear_extrude()"))
+         ("e" (cmd-ins "linear_extrude(height={(rec)})"))
+         ("x" (cmd-ins "text(\"{(rec)}\");"))
          ("s" (cmd-ins "sphere(d=" (rec)  ");"))
          ("u" (cmd-ins "union() {" (nli) (rec) (nli) "}"))
          ("h" (cmd-ins "hull() {" (nli) (rec) (nli) "}"))
