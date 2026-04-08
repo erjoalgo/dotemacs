@@ -2010,7 +2010,22 @@ main();"))
 
 
     (defbuttons comint-buttons programming-buttons (comint-mode-map)
-      (but))))
+      (but))
+
+    (defbuttons cljs-buttons clojure-buttons (clojurescript-mode-map)
+      (but
+       ("n"
+        (but
+         ("t" (cmd-ins "(printf \"{}\\n\"{})"))
+         ("f" (cmd-ins "(gstring/format \"{}\"{})"))
+         ("g" (cmd-ins "(gstring/format \"{}\"{})"))
+         ("r" (cmd-ins "(prn \"DDEBUG " (rnd) " TRACE" "\")"))
+         ("v" (cmd-ins "(prn (gstring/format \"DDEBUG " (rnd) " {0}: %s\"" (nli?) " {0}))"))
+         ("l"
+          (but
+           ("i" (cmd-ins "(js/console.info \"" (rec) "\")"))
+           ("e" (cmd-ins "(js/console.error \"" (rec) "\")"))
+           ("w" (cmd-ins "(js/console.warn \"" (rec) "\")"))))))))))
 
 (message "buttons loaded")
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
