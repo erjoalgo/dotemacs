@@ -1952,7 +1952,12 @@ server {
        ("d"
         (but
          ("m" (cmd-ins "module " (rec) "(" (rec) ") {" (nli) (rec) (nli) "}"))
-         ("f" (cmd-ins "function " (rec) "(" (rec) ") = " (nli)))))
+         ("f" (cmd-ins "function " (rec) "(" (rec) ") = " (nli)))
+         ("SPC" (cmd-ins "module main() {
+    {}
+}
+
+main();"))))
        ("f" (cmd-ins "for( i = [1:{}] ) {" (nli) (rec) (nli) "}"))
        ("F" (cmd-ins "for( {} = [{}] ) {" (nli) (rec) (nli) "}"))
        ("L" (cmd-ins "let ( " (rec) ")" (nli)))
@@ -1973,10 +1978,7 @@ server {
          ("u" (cmd-ins "true"))
          ("g" (cmd-ins "false"))
          ("m" (cmd-ins "use <" (rec) ">"))
-         ("M" (cmd-ins "import(" (rec) ");"))
-         ("0" (cmd-ins "e = 0.01;" (nli)
-                       "$fn = 300;" (nli)
-                       "INCH = 25.4;"))))
+         ("M" (cmd-ins "import(" (rec) ");"))))
        ("g"
         (but
          ("d" (cmd-ins "difference() {" (nli) (rec) (nli) "}"))
@@ -1984,6 +1986,7 @@ server {
          ("c" (cmd-ins "cube([" (rec)  "]" ");"))
          ("y" (cmd-ins "cylinder(r=" (rec)  ", h=" (rec) ");"))
          ("t" (cmd-ins "translate([" (rec)  "]) "))
+         ("T" (cmd-ins "translate([0, 0, -e/2]) " (nli)))
          ("r" (cmd-ins "rotate([" (rec)  "]) "))
          ("R" (cmd-ins "rotate_extrude(angle={})"))
          ("l" (cmd-ins "scale([" (rec)  "]) "))
@@ -1999,11 +2002,9 @@ server {
           (but
            ("c" (cmd-ins "circle(r=" (rec) ");"))
            ("s" (cmd-ins "square([" (rec) "], center=" (rec) ")"))))))
-       ("0" (cmd-ins "module main() {
-    {}
-}
-
-main();"))
+       ("0" (cmd-ins "e = 0.01;" (nli)
+                     "$fn = 300;" (nli)
+                     "INCH = 25.4;" (nli)))
        ("z" (cmd-ins "if ({}){(cbd)}"))
        ("x" (cmd-ins " else if ({}){(cbd)}"))
        ("c" (cmd-ins " else {(cbd)}"))))
