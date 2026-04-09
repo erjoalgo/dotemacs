@@ -19,7 +19,8 @@
    ((s-contains-p "finished" status)
     ;; hide the compilation buffer on success
     (bury-buffer compilation)
-    (delete-window (get-buffer-window compilation 'visible)))
+    (ignore-errors
+      (delete-window (get-buffer-window compilation 'visible))))
 
    ((s-contains-p "exited abnormally" status)
     t)
