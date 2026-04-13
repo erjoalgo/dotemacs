@@ -1057,5 +1057,40 @@ This requires the external program `diff' to be in your `exec-path'."
            :prompt "select buffer with live process to switch to: ")))
      (switch-to-buffer buff))))
 
+(defun my/safe-rename-file (source dest ok-if-already-exists)
+  "Rename file and ignore permission errors on different filesystems."
+  ;; From Google AI Overview 2026, query:
+  ;; emacs rename-file let*: Copying permissions to: Operation not permitted
+  (condition-case err
+      (rename-file source dest ok-if-already-exists)
+    (file-error
+     (if (and (string-match "Copying permissions to" (nth 2 err))
+              (string-match "Operation not permitted" (nth 3 err)))
+         (message "File moved, but permissions could not be copied.")
+       (signal (car err) (cdr err))))))
+
+(defun files-equal-p (file-a file-b)
+  (zerop (call-process "diff" nil "*diff*" t
+                       file-a file-b)))
+
+(defun advice-rename-file--ignore-permissions
+    (old-fn source dest &optional ok-if-already-exists)
+  (message "DDEBUG yshr old-fn: %s" old-fn)
+  (condition-case err
+      (funcall old-fn source dest ok-if-already-exists)
+    (file-error
+     (if (and (string-match "Copying permissions to" (nth 1 err))
+              (string-match "Operation not permitted" (nth 2 err))
+              (let* ((dest-file (if (s-ends-with-p "/" dest)
+                                    (f-join dest (f-filename source))
+                                  dest)))
+                (files-equal-p source dest-file)))
+         (progn
+           (delete-file source)
+           (message "File moved, but permissions could not be copied."))
+       (signal (car err) (cdr err))))))
+
+(advice-add #'rename-file :around #'advice-rename-file--ignore-permissions)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; misc-utils.el ends here
