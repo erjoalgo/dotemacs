@@ -98,3 +98,5 @@
             :after
             #'advice-rename-file--maybe-refresh-dired-contents)
 
+(setq dired-listing-switches "-alt")
+
