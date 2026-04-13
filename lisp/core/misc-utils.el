@@ -740,14 +740,14 @@ This requires the external program `diff' to be in your `exec-path'."
 (defun diff-lines-set (a b)
   (interactive
    (cl-labels ((read-region-lines-interactively (region-name)
-                                                (message "select region %s, then exit recedit: "
-                                                         region-name)
-                                                (recursive-edit)
-                                                (->>
-                                                  (buffer-substring
-                                                   (region-beginning)
-                                                   (region-end))
-                                                  (s-split "\n"))))
+                 (message "select region %s, then exit recedit: "
+                          region-name)
+                 (recursive-edit)
+                 (->>
+                   (buffer-substring
+                    (region-beginning)
+                    (region-end))
+                   (s-split "\n"))))
      (list (read-region-lines-interactively "A")
            (read-region-lines-interactively "B"))))
   (let ((buffname "*A B region diff*"))
@@ -872,11 +872,11 @@ This requires the external program `diff' to be in your `exec-path'."
   (interactive)
   (cl-labels
       ((prompt-region (&optional prompt)
-                      (unless prompt
-                        (setq prompt "select region, then exit rec. edit."))
-                      (message prompt)
-                      (recursive-edit)
-                      (region)))
+         (unless prompt
+           (setq prompt "select region, then exit rec. edit."))
+         (message prompt)
+         (recursive-edit)
+         (region)))
     (diff-a-b (prompt-region) (prompt-region))))
 
 (defun eval-buffer-debug ()
