@@ -89,3 +89,12 @@
 (advice-add #'dired-sort-toggle-or-edit
             :around
             #'dired-sort-toggle--keep-cursor-position)
+
+(defun advice-rename-file--maybe-refresh-dired-contents (&rest r)
+  (when (eq major-mode 'dired-mode)
+    (revert-buffer)))
+
+(advice-add #'rename-file
+            :after
+            #'advice-rename-file--maybe-refresh-dired-contents)
+
