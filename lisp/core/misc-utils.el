@@ -929,7 +929,7 @@ This requires the external program `diff' to be in your `exec-path'."
             (emacs-fetch-c-sources))
     ((error signal) (warn "failed to fetch emacs sources: %s" ex))))
 
-(emacs-init-C-source-directory)
+(ignore-error (emacs-init-C-source-directory))
 
 (defun debug-statements-remove--next (&optional remove-all-prints)
   (cl-case major-mode
