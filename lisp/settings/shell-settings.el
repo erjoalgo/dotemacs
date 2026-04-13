@@ -1,5 +1,5 @@
 (setq sh-getopt-template
-"while getopts \"ha:\" OPT; do
+      "while getopts \"ha:\" OPT; do
     case ${OPT} in
     h)
         less \"$0\"
