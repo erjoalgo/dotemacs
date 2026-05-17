@@ -203,11 +203,18 @@ or if the command was called with a prefix argument.
 If the current buffer matches, ‘cmd-name'
 will prefer to switch to a different buffer"
 
-  `(defun ,cmd-name (arg)
-     ,(format "Switch to the buffer matching\n%s,\nor invoke\n%s if no such buffer exists.
-Buffers other than the current buffer are preferred."
-              buffer-pred-form
-              no-matches-form)
+  `(defun ,cmd-name (&optional arg)
+     ,(format
+       "Define a command ‘%s' to switch to the buffer matching
+‘%s', or calls ‘%s' if none matches
+or if the command was called with a prefix argument.
+If the current buffer matches, ‘%s'
+will prefer to switch to a different buffer"
+       cmd-name
+       buffer-pred-form
+       no-matches-form
+       cmd-name
+       )
      (interactive "P")
      (or
       (unless arg
