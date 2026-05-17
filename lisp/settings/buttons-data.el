@@ -336,6 +336,7 @@ plt.show()
          ("a" (cmd-ins "(defadvice {} ({})" (nli) "{}" (nli) ")"))
          ("A" (cmd-ins "(defalias {})"))
          ("n" (cmd-ins "(defbuttons {}" (nli) "({})" (nli) "(but" (nli) "{}))"))
+         ("b" (cmd-ins "(cl-destructuring-bind ({}){})"))
          ("k"
           (but
            ("p" (cmd-ins "(defpackage {}{(nli)}(:use :cl){})"))
@@ -357,7 +358,6 @@ plt.show()
          ("x" (cmd-ins "(lexical-let ({}){(nli)}{}){(nli)}"))
          ("X" (cmd-ins "(lexical-let* ({}){(nli)}{}){(nli)}"))
          ("m" (cmd-ins "(macrolet ({}){(nli)}{}){(nli)}"))
-         ("d" (cmd-ins "(cl-destructuring-bind ({}){})"))
          ("b" (cmd-ins "(multiple-value-bind ({}){})"))))
        ("e" (cmd-ins "(setq {})"))
        ("E" (cmd (forward-sexp)
@@ -499,10 +499,8 @@ plt.show()
                        "{(nli)}(run-package-tests :interactive t)"))
          ("l" (cmd-ins "(labels ({}){(nli)}{}){(nli)}"))
          ("a" (cmd-ins "(defalias {})"))
-         ("b"
-          (but
-           ("d" (cmd-ins "(destructuring-bind ({}){})"))
-           ("m" (cmd-ins "(multiple-value-bind ({}){})"))))))
+         ("b" (cmd-ins "(destructuring-bind ({}){})"))
+         ("m" (cmd-ins "(multiple-value-bind ({}){})"))))
        ("n"
         (but
          ("g" (cmd-ins "(format nil {})"))
