@@ -114,7 +114,7 @@
   (let* ((programs (get-file-programs filename))
          (program (if (or (null (cdr programs)) no-prompt)
                       (car (last programs))
-                    (selcand-select programs
+                    (selcand-select (reverse programs)
                                     :prompt (format "select program to open %s: " filename)
                                     :stringify-fn
                                     (lambda (program)
