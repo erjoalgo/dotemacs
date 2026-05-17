@@ -1075,7 +1075,6 @@ This requires the external program `diff' to be in your `exec-path'."
 
 (defun advice-rename-file--ignore-permissions
     (old-fn source dest &optional ok-if-already-exists)
-  (message "DDEBUG yshr old-fn: %s" old-fn)
   (condition-case err
       (funcall old-fn source dest ok-if-already-exists)
     (file-error
