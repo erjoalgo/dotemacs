@@ -45,7 +45,7 @@
     (setq *creality-print-exe*
           (car (or (file-expand-wildcards "~/bin/Creality*Print*AppImage")
                    (file-expand-wildcards "~/Downloads/Creality*Print*AppImage"))))
-  (def-open-file-program *creality-print-exe* ("stl" "3mf" "obj")))
+  (def-open-file-program *creality-print-exe* ("stl" "3mf" "obj" "gcode")))
 
 (defvar *cura-exe* nil)
 (when (setq *cura-latest-exe*
@@ -56,8 +56,11 @@
               "cura")))
   (def-open-file-program (list *cura-latest-exe* "-platformtheme" "gtk3")
                          ;; work around this bug: https://github.com/Ultimaker/Cura/issues/16815
-                         ("stl" "3mf" "obj")))
-(def-open-file-program "cura" ("stl" "3mf" "obj"))
+                         ("stl" "3mf" "obj" "gcode")))
+
+(def-open-file-program "cura" ("stl" "3mf" "obj" "gcode"))
+(def-open-file-program "prusa-slicer" ("stl" "3mf" "obj" "gcode"))
+
 (def-open-file-program "blender" ("blend" "blend1"))
 (def-open-file-program "fstl" ("stl"))
 (def-open-file-program "openscad.sh" ("scad"))
