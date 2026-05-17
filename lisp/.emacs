@@ -138,7 +138,8 @@ object."
    async
    sqlformat
    dockerfile-mode
-   scad-mode))
+   scad-mode
+   gcode-mode))
 
 (require 'f)
 
