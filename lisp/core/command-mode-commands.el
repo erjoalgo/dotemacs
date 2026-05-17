@@ -238,9 +238,9 @@ will prefer to switch to a different buffer"
        "*Apropos*" "*Help*"))
 
 (defcommand-cycle-buffer cycle-buffer
-  buff
-  (not (member buff cycle-buffer-exclude))
-  (error "no more non-excluded buffers to cycle"))
+                         buff
+                         (not (member buff cycle-buffer-exclude))
+                         (error "no more non-excluded buffers to cycle"))
 
 (defun async-shell-command-no-prompt (&rest args)
   (let* ((async-shell-command-buffer 'new-buffer))
