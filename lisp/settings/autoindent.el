@@ -6,6 +6,7 @@
                         js-mode html-mode mhtml-mode
                         css-mode
                         nxml-mode
+                        sh-mode
                         ))
 ;; "Modes on which to auto-indent after save.")
 
