@@ -896,7 +896,8 @@ plt.show()
        ("p" (cmd-ins ".prototype."))
        ("m" (cmd-ins "const {0} = require('{0}')"))
        ("[" (cmd-ins "{" (ins "{}}")))
-       ("0" (cmd-ins "window.onload = function(){" (nli) "};"))
+       ("0" (cmd-ins "async function main () {" (nli)
+                     (rec) (nli) "};" (nli) "main();"))
        ("t"
         (but
          ("a" (cmd-ins "assert({})"))
