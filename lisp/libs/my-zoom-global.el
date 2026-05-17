@@ -57,22 +57,16 @@
 (defun my-global-text-scale-lower () (interactive)
        (message "DDEBUG my-global-text-scale-lower TRACE")
        (if (not (equal major-mode 'doc-view-mode))
-	   (progn (message "DDEBUG lpwd non-doc-view modeTRACE")
-                  (my-global-text-scale-adjust -1))
-	 (progn (message "DDEBUG pj0c doc-view mode TRACE")
-                (doc-view-shrink 1.125)))
+	   (my-global-text-scale-adjust -1)
+	 (doc-view-shrink 1.125))
        '(my-global-text-scale-adjust -1))
 
 ;;;###autoload
 (defun my-global-text-scale-higher () (interactive)
        (message "DDEBUG my-global-text-scale-higher TRACE")
        (if (not (equal major-mode 'doc-view-mode))
-           (progn
-             (message "DDEBUG non-doc-view-mode TRACE")
-             (my-global-text-scale-adjust 1))
-	 (progn
-           (message "DDEBUG doc-view-mode TRACE")
-           (doc-view-enlarge 1.125)))
+           (my-global-text-scale-adjust 1)
+	 (doc-view-enlarge 1.125))
        '(my-global-text-scale-adjust 1))
 
 ;;(global-set-key (kbd "M-0") 'my-global-text-scale-reset)
