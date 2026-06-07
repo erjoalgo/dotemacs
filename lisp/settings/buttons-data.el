@@ -655,7 +655,15 @@ plt.show()
        ("t"
         (but
          ("u" (cmd-ins "true"))
-         ("g" (cmd-ins "false"))))
+         ("g" (cmd-ins "false"))
+         ("m" (cmd-ins
+               (ins "#include <stdlib.h>") (nli)
+               (ins "#include <stdio.h>") (nli)
+               (ins "#include <string.h>") (nli)
+               (ins "#include <assert.h>") (nli)
+               (ins "#define MAX(a, b) ((a)>(b)? (a):(b))") (nli)
+               (ins "#define MIN(a, b) ((a)<(b)? (a):(b))") (nli)
+               (ins "#define ABS(a) ((a)>=0? (a):-(a))") (nli)))))
        ("G" (cmd-ins "NULL"))
        ("j" (cmd-ins " || "))
        ("k" (cmd-ins " && "))
@@ -691,14 +699,6 @@ plt.show()
        ("s" (cmd-ins "sizeof({})"))
        ("S" (cmd-ins "sizeof({0})/sizeof(*{0})"))
        ("-" (cmd-ins "->"))
-       ("M" (cmd-ins
-             (ins "#include <stdlib.h>") (nli)
-             (ins "#include <stdio.h>") (nli)
-             (ins "#include <string.h>") (nli)
-             (ins "#include <assert.h>") (nli)
-             (ins "#define MAX(a, b) ((a)>(b)? (a):(b))") (nli)
-             (ins "#define MIN(a, b) ((a)<(b)? (a):(b))") (nli)
-             (ins "#define ABS(a) ((a)>=0? (a):-(a))") (nli)))
        ("r" (cmd-ins "return "))
        ("5"
         (but
@@ -1954,7 +1954,7 @@ server {
          ("v" (cmd-ins
                "print \"DDEBUG {(buf)} {(rnd)}: value of {0}: \" . {0} . \"\\n\";"))))))
 
-    (defbuttons scad-buttons programming-buttons (scad-mode-map)
+    (defbuttons scad-buttons c-buttons (scad-mode-map)
       (but
        ("d"
         (but
