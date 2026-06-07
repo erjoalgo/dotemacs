@@ -21,8 +21,8 @@
 (defvar *file-programs* nil "Alist of (PROGRAM . EXTENSIONS) pairs")
 (setq *file-programs* nil)
 
-(def-open-file-program "evince" ("ps" "eps" "pdf"))
 (def-open-file-program "zathura" ("pdf"))
+(def-open-file-program "evince" ("ps" "eps" "pdf"))
 (def-open-file-program "libreoffice" ("doc" "ppt" "odt" "docx"  "pptx" "xls" "ods"))
 (def-open-file-program "qimgv"
                        ("png" "pgm" "tif" "jpg" "jpeg" "gif" "pnm" "svg" "ico" "webp" "heic" "avif"))
