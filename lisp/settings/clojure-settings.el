@@ -59,3 +59,20 @@
   (setf cider-load-buffers nil))
 
 (add-hook 'cider-connected-hook 'cider-load-buffers)
+
+(defvar cider-post-connect-sexp nil)
+
+(defun cider-eval-post-connect-sexp ()
+  (when cider-post-connect-eval-sexp
+    (let ((cider-buffer (find-buffer-by-prefix "*cider-repl")))
+      (cl-assert cider-buffer)
+      (with-current-buffer cider-buffer
+        (message "attempting to eval %s in buffer %s"
+                 cider-post-connect-eval-sexp
+                 (buffer-name))
+        (insert cider-post-connect-eval-sexp)
+        (setq cider-post-connect-eval-sexp nil)
+        (cider-repl-return t)))))
+
+
+(add-hook 'cider-connected-hook #'cider-eval-post-connect-sexp)
