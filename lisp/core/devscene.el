@@ -25,7 +25,9 @@
 (def-scene brainink
   (
    ("/home/ealfonso/git/brainink/service/src/clj/service/core.clj"
-    cider-buffer-or-jack-in)
+    (lambda ()
+      (setq cider-post-connect-eval-sexp "(do (ns service.core) (start-app []))")
+      (call-interactively #'cider-jack-in)))
 
    ("/home/ealfonso/git/brainink/ui/" "npm run watch")
 
