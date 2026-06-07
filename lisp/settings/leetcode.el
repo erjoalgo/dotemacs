@@ -117,3 +117,15 @@
                    (file-name-directory load-file-name)
                  default-directory)
                "cpp-macro.cpp")))
+
+(defun leetcode-visualize-grid ()
+  (interactive)
+  (cl-loop for (from to) in
+           '(("]," "\n")
+             ("," " ")
+             ("[[]" ""))
+           do (save-excursion
+                (goto-char (point-min))
+                (while (re-search-forward from nil t)
+                  (replace-match to))))
+  (toggle-truncate-lines 1))
