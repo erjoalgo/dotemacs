@@ -49,19 +49,19 @@
           (when (> (length v) 10000)
             (setq v (s-replace-all '(("," . ",\n")) v)))
           (let* ((body (s-replace "]" "}"
-                                 (s-replace "[" "{" v)))
-                (dim (save-match-data
-                       (string-match "^{+" body)
-                       (length (match-string 0 body))))
-                (base-type-guess (if (save-match-data (string-match "\"" body))
-                                       "string"
-                                       "int"))
-                (vector-type
-                 (apply #'concat
-                        (append
-                         (cl-loop for _ below dim
-                                  collect "vector<")
-                         (list base-type-guess (make-string dim (string-to-char ">")))))))
+                                  (s-replace "[" "{" v)))
+                 (dim (save-match-data
+                        (string-match "^{+" body)
+                        (length (match-string 0 body))))
+                 (base-type-guess (if (save-match-data (string-match "\"" body))
+                                      "string"
+                                    "int"))
+                 (vector-type
+                  (apply #'concat
+                         (append
+                          (cl-loop for _ below dim
+                                   collect "vector<")
+                          (list base-type-guess (make-string dim (string-to-char ">")))))))
             (push (format "%s %s = %s;" vector-type k body) defs)
             (push k args))))
    finally
