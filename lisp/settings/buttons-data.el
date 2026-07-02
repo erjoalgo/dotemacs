@@ -1277,6 +1277,7 @@ plt.show()
          ("s" (cmd-ins "\\section{" (rec) "}" (nli)))
          ("c" (cmd-ins "\\clearpage" (nli)))
          ("S" (cmd-ins "\\subsection{" (rec) "}" (nli)))
+         ("u" (cmd-ins "\\url{" (rec) "}" (nli)))
          ("i"
           (but
            ("t" (cmd-ins "\\TextField[width=\\linewidth]{" (rec) "}"))
@@ -1312,7 +1313,8 @@ plt.show()
          ("g" (cmd-ins "\\gamma"))
          ("p" (cmd-ins "\\phi"))
          ("s" (cmd-ins "\\sigma"))
-         ("i" (cmd-ins "\\infty"))))))
+         ("i" (cmd-ins "\\infty"))
+         ("n" (cmd-ins "\\newcommand{\\" "{}" "}{" "{}" "}"))))))
 
     (defbuttons matlab-buttons python-buttons (matlab-mode-map)
       (but
@@ -2033,7 +2035,22 @@ main();"))))
           (but
            ("i" (cmd-ins "(js/console.info \"" (rec) "\")"))
            ("e" (cmd-ins "(js/console.error \"" (rec) "\")"))
-           ("w" (cmd-ins "(js/console.warn \"" (rec) "\")"))))))))))
+           ("w" (cmd-ins "(js/console.warn \"" (rec) "\")"))))))))
+
+    (defbuttons liquibase-buttons nil (nxml-mode-map)
+      ;; TODO create a dedicated liquibase mode
+      (but
+       ("t"
+        (but
+         ("a" (cmd-ins "<addColumn tableName=\"{}\">
+      <column name=\"{}\" type=\"{}\"/>
+    </addColumn>"))))
+       ("i"
+        (but
+         ("i" (cmd-ins "integer"))
+         ("t" (cmd-ins "text"))
+         ("j" (cmd-ins "jsonb"))))))
+    ))
 
 (message "buttons loaded")
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
