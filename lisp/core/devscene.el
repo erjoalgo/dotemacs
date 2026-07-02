@@ -22,6 +22,15 @@
                    ((stringp action) (compile action))
                    (t (funcall action)))))))
 
+(def-devscene chess
+  (
+   ("/home/ealfonso/git/chess-tactics/service/src/clj/chess/core.clj"
+    (lambda ()
+      (setq cider-post-connect-sexp "(do (ns chess.core) (start-app []))")
+      (call-interactively #'cider-jack-in)))
+
+   ("http://localhost:3000/" )))
+
 (def-devscene brainink
   (
    ("/home/ealfonso/git/brainink/service/src/clj/service/core.clj"
