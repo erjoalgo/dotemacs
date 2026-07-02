@@ -45,4 +45,16 @@
    ("http://localhost:8280/" )
    ("http://localhost:3000/" )))
 
+(def-devscene myhomedates
+  (
+   ("/home/ealfonso/git/myhomedates/service/src/clj/service/core.clj"
+    (lambda ()
+      (setq cider-post-connect-sexp "(do (ns service.core) (start-app []))")
+      (call-interactively #'cider-jack-in)))
 
+   ("/home/ealfonso/git/myhomedates/service/src/clj/service/routes/app.clj")
+   ("/home/ealfonso/git/myhomedates/ui/" "npm run dev")
+
+   ("/home/ealfonso/git/myhomedates/ui/app/page.tsx")
+
+   ("http://localhost:3000/" )))
