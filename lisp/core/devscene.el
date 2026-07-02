@@ -1,11 +1,11 @@
-(defmacro def-scene (name buffers)
+(defmacro def-devscene (name buffers)
   (declare (indent 1))
-  `(defun ,(intern (format "scene-%s" name)) ()
+  `(defun ,(intern (format "devscene-%s" name)) ()
      (interactive)
      (message "DDEBUG kwur ,buffers: %s" ',buffers)
-     (scene-load ',buffers)))
+     (devscene-load ',buffers)))
 
-(defun scene-load (buffers)
+(defun devscene-load (buffers)
   (cl-loop for spec in buffers
            do (message "DDEBUG 9clp spec: %s" spec)
            do (cl-destructuring-bind (buffer action)
@@ -22,7 +22,7 @@
                    ((stringp action) (compile action))
                    (t (funcall action)))))))
 
-(def-scene brainink
+(def-devscene brainink
   (
    ("/home/ealfonso/git/brainink/service/src/clj/service/core.clj"
     (lambda ()
