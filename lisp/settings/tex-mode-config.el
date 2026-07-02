@@ -11,14 +11,20 @@
   (let* ((tex (buffer-file-name (current-buffer)))
 	 (base-sans-ext (f-base tex))
 	 (pdf (concat base-sans-ext ".pdf"))
-	 (compile-errors-buffer "*TEX-COMPILE-ERRORS*"))
+	 (compile-errors-buffer "*TEX-COMPILE-ERRORS*")
+         (program-name "pdflatex"))
+    (save-excursion
+      (goto-char (point-min))
+      (save-match-data
+        (when (re-search-forward "% +!TEX TS-program = \\(.*\\)" nil t)
+          (setq program-name (match-string 1)))))
 
     (ispell)
     (when (get-buffer compile-errors-buffer)
       (with-current-buffer compile-errors-buffer
 	(erase-buffer)))
 
-    (call-process "pdflatex" nil compile-errors-buffer nil
+    (call-process program-name nil compile-errors-buffer nil
 		  "-halt-on-error" tex)
 
     (async-start
@@ -26,7 +32,7 @@
      `(lambda ()
         (let* ((async-shell-command-buffer 'new-buffer)
                (ret-code
-                (call-process "pdflatex" nil ,compile-errors-buffer nil
+                (call-process ,program-name nil ,compile-errors-buffer nil
 			      "-halt-on-error" ,tex)))
           ret-code))
 
