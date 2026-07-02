@@ -4,9 +4,11 @@
 (setq autoindent-modes-list
       '(emacs-lisp-mode lisp-mode clojure-mode
                         js-mode html-mode mhtml-mode
+                        typescript-mode
                         css-mode
                         nxml-mode
                         sh-mode
+                        c++-mode
                         ))
 ;; "Modes on which to auto-indent after save.")
 
