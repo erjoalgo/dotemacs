@@ -35,7 +35,7 @@
   (
    ("/home/ealfonso/git/brainink/service/src/clj/service/core.clj"
     (lambda ()
-      (setq cider-post-connect-eval-sexp "(do (ns service.core) (start-app []))")
+      (setq cider-post-connect-sexp "(do (ns service.core) (start-app []))")
       (call-interactively #'cider-jack-in)))
 
    ("/home/ealfonso/git/brainink/ui/" "npm run watch")
