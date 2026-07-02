@@ -62,15 +62,15 @@
 (defvar cider-post-connect-sexp nil)
 
 (defun cider-eval-post-connect-sexp ()
-  (when cider-post-connect-eval-sexp
+  (when cider-post-connect-sexp
     (let ((cider-buffer (find-buffer-by-prefix "*cider-repl")))
       (cl-assert cider-buffer)
       (with-current-buffer cider-buffer
         (message "attempting to eval %s in buffer %s"
-                 cider-post-connect-eval-sexp
+                 cider-post-connect-sexp
                  (buffer-name))
-        (insert cider-post-connect-eval-sexp)
-        (setq cider-post-connect-eval-sexp nil)
+        (insert cider-post-connect-sexp)
+        (setq cider-post-connect-sexp nil)
         (cider-repl-return t)))))
 
 
