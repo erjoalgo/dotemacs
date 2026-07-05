@@ -29,6 +29,8 @@
       (setq cider-post-connect-sexp "(do (ns chess.core) (start-app []))")
       (call-interactively #'cider-jack-in)))
 
+   ("/home/ealfonso/git/chess-tactics/liquibase/src/db.changelog.xml")
+
    ("http://localhost:3000/" )))
 
 (def-devscene brainink
