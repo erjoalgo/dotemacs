@@ -781,7 +781,8 @@ plt.show()
         (but
          ("u" (cmd-ins "true"))
          ("g" (cmd-ins "false"))
-         ("G" (cmd-ins "null"))))))
+         ("G" (cmd-ins "null"))
+         ("a" (cmd-ins "assert({});"))))))
 
     (defbuttons xml-buttons programming-buttons (nxml-mode-map)
       (but
