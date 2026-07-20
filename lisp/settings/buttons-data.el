@@ -842,7 +842,7 @@ plt.show()
        ("A" (cmd-ins "(async () => " (cbd) ")"))
        ("." (cmd-ins "debugger;"))
        ((kbd "M-s-f") (cmd-ins "${" (rec) "}"))
-       ("2" (cmd-ins "`{}`"))
+       ("2" (cmd-ins "\"{}\""))
        ("n"
         (but
          ("c" (cmd-ins "console.log(`{}`);"))
