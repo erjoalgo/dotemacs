@@ -202,13 +202,18 @@
 
 (setq hidden-files-regexp "^\\(.*/\\)?[.][^/]+$")
 
-(cmd-open-most-recent-file-in-directory find-last-download
-  '("~/Downloads" "~/pictures/auto-scrots" "~/git/3d/" "~/uploads/")
-  hidden-files-regexp)
-
-(cmd-open-most-recent-file-in-directory find-last-download-or-scrot
-  '("~/Downloads" "~/pictures/auto-scrots" "~/git/3d/" "~/uploads/")
-  hidden-files-regexp)
+(defun find-last-download (&optional kill open)
+  (let ((filename
+         (s-trim
+          (shell-command-to-string
+           "/home/ealfonso/.stumpwmrc.d/bin/find-last-modified-file-timestampfixer.sh"))))
+    (cl-assert (not (equal "None" filename)))
+    (when kill
+      (kill-new filename)
+      (message "killed %s" filename))
+    (when open
+      (open-file filename))
+    filename))
 
 (defalias #'sort-by #'sort-key)
 
@@ -332,7 +337,7 @@
           (message "buffer has no process: %s" buffer))))))
 
 (defun unarchive-last-download (&optional filename rm)
-  (unarchive (or filename (find-last-download nil t)) rm))
+  (unarchive (or filename (find-last-download)) rm))
 
 (defun unarchive (filename &optional rm)
   (interactive "fselect archive file: ")
@@ -369,7 +374,7 @@
 
 (defun import-3d (filename)
   (interactive
-   (let* ((last (find-last-download nil t))
+   (let* ((last (find-last-download))
           (choice (read-file-name
                    "enter the 3d printing file to import: "
                    nil
@@ -379,7 +384,7 @@
      (list (expand-file-name choice))))
   "handle the last downloaded file as a 3d print import"
   (let ((3d-imports-dir (expand-file-name "~/git/3d/imports/"))
-        (filename (or filename (find-last-download nil t))))
+        (filename (or filename (find-last-download))))
     (if (equal "zip" (f-ext filename))
         (let ((default-directory 3d-imports-dir))
           (unarchive-last-download filename t))
@@ -389,7 +394,7 @@
 (defun move-download-here (&optional prompt-filename)
   (interactive)
   (let*
-      ((last-download (find-last-download nil t))
+      ((last-download (find-last-download))
        (_ (cl-assert (not (string-empty-p last-download))))
        (dest (if prompt-filename
                  (read-file-name
@@ -544,8 +549,8 @@
        ("d"
         (but
          ("f" (cmd (doc "find and open the last download")
-                   (find-last-download-or-scrot nil nil t)))
-         ("k" (cmd (doc "kill (copy) the last download") (find-last-download-or-scrot)))
+                   (find-last-download t t)))
+         ("k" (cmd (doc "kill (copy) the last download") (find-last-download t)))
          ("m" (cmd
                (doc "move the last download to the current directory")
                (move-download-here)))
@@ -561,7 +566,7 @@
                    (find-file "~/Downloads")
                    (revert-buffer)))
          ("d" (cmd (doc "find and open the last download directory")
-                   (find-file (f-dirname (find-last-download-or-scrot)))))))
+                   (find-file (f-dirname (find-last-download t)))))))
        ("p" 'project-open)
        ("k" (file "/usr/include/X11/keysymdef.h"))))
      ("x"
