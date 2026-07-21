@@ -894,8 +894,18 @@ plt.show()
                      (ins "\");")))
        ("s" (cmd-ins "this."))
        ("i" (cmd-ins "in"))
+       ("I"
+        (but
+         ("u" (cmd-ins "/* eslint-disable-line no-unused-vars */"))
+         ("g" (cmd-ins "/* global */"))))
        ("p" (cmd-ins ".prototype."))
-       ("m" (cmd-ins "const {0} = require('{0}')"))
+       ("m"
+        (but
+         ("i" (cmd-ins "import {} from \"/js/{}.js\";"))
+         ("I" (cmd-ins "import { " (rec) " } from \"/js/{}.js\";"))
+         ("e" (cmd-ins "export default ;" (backward-char)))
+         ("x" (cmd-ins "export "))
+         ("r" (cmd-ins "const {0} = require('{0}')"))))
        ("[" (cmd-ins "{" (ins "{}}")))
        ("0" (cmd-ins "async function main () {" (nli)
                      (rec) (nli) "};" (nli) "main();"))
