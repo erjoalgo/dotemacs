@@ -31,6 +31,8 @@
 
    ("/home/ealfonso/git/chess-tactics/liquibase/src/db.changelog.xml")
 
+   ("/home/ealfonso/git/chess-tactics/service/resources/js/chess.js")
+
    ("http://localhost:3000/" )))
 
 (def-devscene brainink
