@@ -12,9 +12,11 @@
   (interactive "r")
   (my-upcase-region a b t))
 
+(defvar original-next-error-buffer nil)
 
 (defun my-next-error (&optional prev)
   (interactive)
+  (setq original-next-error-buffer (current-buffer))
   (call-interactively
    (cond
     ((get-buffer "*compilation*") (if prev 'previous-error 'next-error))

@@ -76,4 +76,31 @@
 (advice-add 'compile :around
             #'compile--remember-original-buffer)
 
+
+(defvar my-original-error-source-file nil
+  "Stores the absolute disk filename of the source buffer before jumping.")
+
+(defun my-capture-source-buffer-file (&rest _args)
+  "Captures the visited filename before next-error or previous-error hops contexts."
+  (setq my-original-error-source-file (buffer-file-name (current-buffer))))
+
+;; 1. Automatically snapshot the true buffer file before the window shifts focus
+(advice-add 'next-error :before #'my-capture-source-buffer-file)
+(advice-add 'previous-error :before #'my-capture-source-buffer-file)
+
+(defun my-compilation-find-file-default-current-buffer (orig-fun marker filename directory &rest args)
+  "Forces compilation-find-file to fall back onto the current buffer file if unknown."
+  (let ((resolved-filename filename))
+    ;; If Emacs has lost track of the file or it's nil/unknown
+    (when (or (not filename) (string= filename "") (string= filename "*unknown*"))
+      (setq resolved-filename
+            (or
+             (buffer-file-name (or original-next-error-buffer (current-buffer)))))
+      (message "DDEBUG epty original-next-error-buffer: %s" original-next-error-buffer))
+    ;; Execute the original compiled function with our dynamically injected fallback path
+    (apply orig-fun marker resolved-filename directory args)))
+
+;; Attach the wrapper cleanly to the compilation tracking subsystem
+(advice-add 'compilation-find-file :around #'my-compilation-find-file-default-current-buffer)
+
 1
