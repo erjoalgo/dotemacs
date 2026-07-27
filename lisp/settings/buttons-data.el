@@ -563,6 +563,7 @@ plt.show()
        ("\\" (cmd-ins "\\n"))
        ("l" (cmd-ins "(let [{}]{(nli)}{}){(nli)}"))
        ("X" (cmd-ins "(when-let [{}]{(nli)}{}){(nli)}"))
+       ("Z" (cmd-ins "(if-let [{}]{(nli)}{}){(nli)}"))
        ("d"
         (but
          ("f" (cmd-ins "(defn {} [{}]{(nli)}{}){(nli)}"))
@@ -843,6 +844,7 @@ plt.show()
        ("." (cmd-ins "debugger;"))
        ((kbd "M-s-f") (cmd-ins "${" (rec) "}"))
        ("2" (cmd-ins "\"{}\""))
+       ((kbd "M-s-`") (cmd-ins "`{}`"))
        ("n"
         (but
          ("c" (cmd-ins "console.log(`{}`);"))
@@ -896,6 +898,7 @@ plt.show()
        ("i" (cmd-ins "in"))
        ("I"
         (but
+         ("d" (cmd-ins "/* eslint-disable-next-line no-undef */"))
          ("u" (cmd-ins "/* eslint-disable-line no-unused-vars */"))
          ("g" (cmd-ins "/* global */"))))
        ("p" (cmd-ins ".prototype."))
@@ -903,7 +906,7 @@ plt.show()
         (but
          ("i" (cmd-ins "import {} from \"/js/{}.js\";"))
          ("I" (cmd-ins "import { " (rec) " } from \"/js/{}.js\";"))
-         ("e" (cmd-ins "export default ;" (backward-char)))
+         ("X" (cmd-ins "export default ;" (backward-char)))
          ("x" (cmd-ins "export "))
          ("r" (cmd-ins "const {0} = require('{0}')"))))
        ("[" (cmd-ins "{" (ins "{}}")))
