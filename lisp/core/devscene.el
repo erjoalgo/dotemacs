@@ -62,3 +62,14 @@
    ("/home/ealfonso/git/myhomedates/ui/app/page.tsx")
 
    ("http://localhost:3000/" )))
+
+(def-devscene grouplok
+  (
+   ("/home/ealfonso/git/grouplok/service/src/grouplok/handler.clj"
+    (lambda ()
+      (setq cider-post-connect-sexp "(do (ns grouplok.handler) (start :port 4247))")
+      (call-interactively #'cider-jack-in)))
+
+   ("/home/ealfonso/git/grouplok/service/resources/public/index.html")
+
+   ("http://localhost:4247/")))
