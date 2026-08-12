@@ -57,7 +57,7 @@
       (goto-char (point-min))
       (or
        (cl-loop with class-name-or-comment-regexp =
-                "/[*]\\|^\\(\\(public\\|static\\|final\\|abstract\\)[ \t\n]+\\)*\\(class\\|interface\\)[ \t\n]+\\([^ \t\n]+\\)[^{]*{"
+                "/[*]\\|^\\(\\(public\\|static\\|final\\|abstract\\)[ \t\n]+\\)*\\(class\\|interface\\|enum\\)[ \t\n]+\\([^ \t\n]+\\)[^{]*{"
                 with class-name = nil
                 as has-match-p =
                 (re-search-forward class-name-or-comment-regexp nil t)
@@ -74,11 +74,11 @@
 (ert-deftest test-java-find-class-name ()
   (cl-labels
       ((test-find-class-name
-        (java-code expected-class-name)
-        (with-temp-buffer
-          (java-mode)
-          (insert java-code)
-          (should (equal (java-find-class-name) expected-class-name)))))
+         (java-code expected-class-name)
+         (with-temp-buffer
+           (java-mode)
+           (insert java-code)
+           (should (equal (java-find-class-name) expected-class-name)))))
     (test-find-class-name "public class FooNameService {" "FooNameService")
     (test-find-class-name "/*\npublic class caca*/\npublic class FooNameService {" "FooNameService")
     (test-find-class-name "\npublic class caca\npublic class FooNameService {" "caca")))
