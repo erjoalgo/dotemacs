@@ -26,7 +26,9 @@
   (
    ("/home/ealfonso/git/chess-tactics/service/src/clj/chess/core.clj"
     (lambda ()
-      (setq cider-post-connect-sexp "(do (ns chess.core) (start-app []))")
+      (setq
+       cider-post-connect-sexp
+       "(do (ns chess.const) (def is-dev true) (ns chess.core) (require 'chess.core :reload) (start-app []))")
       (call-interactively #'cider-jack-in)))
 
    ("/home/ealfonso/git/chess-tactics/liquibase/src/db.changelog.xml")
@@ -39,6 +41,7 @@
   (
    ("/home/ealfonso/git/brainink/service/src/clj/service/core.clj"
     (lambda ()
+      (setenv "SKIP_BLUNDERMON" "true")
       (setq cider-post-connect-sexp "(do (ns service.core) (start-app []))")
       (call-interactively #'cider-jack-in)))
 
