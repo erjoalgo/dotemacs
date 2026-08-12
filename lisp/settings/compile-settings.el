@@ -103,4 +103,23 @@
 ;; Attach the wrapper cleanly to the compilation tracking subsystem
 (advice-add 'compilation-find-file :around #'my-compilation-find-file-default-current-buffer)
 
-1
+(with-eval-after-load 'compile
+  (add-to-list 'compilation-error-regexp-alist-alist
+               '(spotbugs
+                 ;; Regex matching: Package, Class, Filename, and Line Numbers
+                 "^[HML] [A-Z] [A-Z]+: \\([a-z0-9.]+\\)\\.[A-Za-z0-9_$]+\\(?:\\.[a-z0-9_$]+\\)*([^)]*).*?At \\([A-Za-z0-9_$]+\\.java\\):\\[lines? \\([0-9]+\\)\\(?:-[0-9]+\\)?\\]"
+                 ;; Function to dynamically locate the file on disk using package directories
+                 (lambda ()
+                   (let* ((package (match-string 1))
+                          (filename (match-string 2))
+                          ;; Convert package structures (io.github.wolfraam) to directory paths
+                          (package-dir (replace-regexp-in-string "\\." "/" package))
+                          ;; Construct standard Maven/Gradle source tree structure locations
+                          (inferred-path (concat "src/main/java/" package-dir "/" filename)))
+                     (list inferred-path)))
+                 3 ;; Line number match group
+                 nil
+                 nil
+                 2)) ;; File name match group highlighting reference
+
+  (add-to-list 'compilation-error-regexp-alist 'spotbugs))
