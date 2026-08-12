@@ -37,3 +37,9 @@
                        t
                        url "-Lo" local))
                     (replace-match local t t nil 1))))))
+
+(defun js-fix-single-quotes ()
+  (interactive)
+  (query-replace-regexp
+   "'\\(.*?\\)'"
+   "\"\\1\"" nil (point-min) (point-max)))
