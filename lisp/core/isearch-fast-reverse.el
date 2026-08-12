@@ -106,8 +106,8 @@
   "Maybe re-issue the RET key used to stop an isearch onto the major mode map."
   (when (member (this-command-keys) '([return] ""))
     (cl-case major-mode
-      ('dired-mode (dired-find-file))
-      ('gnus-summary-mode (gnus-summary-scroll-up nil)))))
+      (dired-mode (dired-find-file))
+      (gnus-summary-mode (gnus-summary-scroll-up nil)))))
 
 
 (provide 'isearch-fast-reverse)
