@@ -36,10 +36,10 @@
 (require 'buttons)
 
 (defbuttons isearch-mode-buttons nil
-  (isearch-mode-map)
+            (isearch-mode-map)
   (buttons-make
-   ([f3] 'isearch-forward-or-backward)
-   ([M-f3] 'isearch-reverse-search-and-search)
+   ((kbd "s-<insert>") 'isearch-forward-or-backward)
+   ((kbd "S-s-<insert>") 'isearch-reverse-search-and-search)
    ([f51] 'isearch-reverse-search-and-search)
    ([escape] 'isearch-exit)
    ([f4] 'isearch-abort)))
@@ -50,11 +50,10 @@
     (isearch-backward-regexp)))
 
 (defbuttons isearch-mode-global-buttons nil
-  (global-map)
+            (global-map)
   (buttons-make
-   ([f3] 'isearch-forward-regexp)
-   ;;should work because it is a recedit
-   ([M-f3] 'isearch-backward-regexp-fast)
+   ((kbd "s-<insert>") 'isearch-forward-regexp)
+   ((kbd "S-s-<insert>") 'isearch-backward-regexp-fast)
    ([f51] 'isearch-backward-regexp-fast)))
 
 (defvar isearch-backwards-p nil)
