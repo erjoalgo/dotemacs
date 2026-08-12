@@ -153,18 +153,18 @@ q: Don't fix\n" func file))
        ,new-body)))
 
 (def-region-regexp-cmd underscore-to-camel-case
-  "[-_]\\([a-z]\\)"
-  (upcase (match-string 1))
+                       "[-_]\\([a-z]\\)"
+                       (upcase (match-string 1))
 
-  (progn
-    (downcase-region (region-beginning) (region-end))
-    DO-REPLACEMENT))
+                       (progn
+                         (downcase-region (region-beginning) (region-end))
+                         DO-REPLACEMENT))
 
 (def-region-regexp-cmd underscore-to-dash
-  "_" "-")
+                       "_" "-")
 
 (def-region-regexp-cmd dash-to-underscore
-  "-" "_")
+                       "-" "_")
 
 (defun camel-case-to-underscore (a b &optional use-dash)
   (interactive (list (region-beginning)
