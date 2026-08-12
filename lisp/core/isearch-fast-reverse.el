@@ -39,7 +39,9 @@
             (isearch-mode-map)
   (buttons-make
    ((kbd "s-<insert>") 'isearch-forward-or-backward)
+   ((kbd "s-<insertchar>") 'isearch-forward-or-backward)
    ((kbd "S-s-<insert>") 'isearch-reverse-search-and-search)
+   ((kbd "S-s-<insertchar>") 'isearch-reverse-search-and-search)
    ([f51] 'isearch-reverse-search-and-search)
    ([escape] 'isearch-exit)
    ([f4] 'isearch-abort)))
@@ -53,7 +55,9 @@
             (global-map)
   (buttons-make
    ((kbd "s-<insert>") 'isearch-forward-regexp)
+   ((kbd "s-<insertchar>") 'isearch-forward-regexp)
    ((kbd "S-s-<insert>") 'isearch-backward-regexp-fast)
+   ((kbd "S-s-<insertchar>") 'isearch-backward-regexp-fast)
    ([f51] 'isearch-backward-regexp-fast)))
 
 (defvar isearch-backwards-p nil)

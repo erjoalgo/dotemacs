@@ -457,6 +457,7 @@
      ((kbd "M-3") 'my-split-window-right);;originally C-x 3
      ((kbd "M-q") #'sticky-window-delete-window);;originally C-x 0
      ((kbd "S-<insert>") 'other-window);;originally C-x o
+     ((kbd "S-<insertchar>") 'other-window);;originally C-x o
      ([f2] nil);;originally C-x o
      ((kbd "<S-f2>") (cmd (other-window -1)));;originally C-x o
      ("c" 'cycle-buffer);; cycle buffers
@@ -501,6 +502,7 @@
      ([f1] 'global-erjoalgo-command-mode-toggle);; f1 toggle command mode
      ([f13] 'global-erjoalgo-command-mode-toggle);; f13 toggle command mode
      ((kbd "<insert>") 'global-erjoalgo-command-mode-toggle);; f13 toggle command mode
+     ((kbd "<insertchar>") 'global-erjoalgo-command-mode-toggle);; f13 toggle command mode
      ([s-f11] 'global-erjoalgo-command-mode-toggle);; f1 toggle command mode
      ([ë] 'global-erjoalgo-command-mode-toggle);; f1 toggle command mode
      ((kbd "H-SPC") 'global-erjoalgo-command-mode-toggle);; f1 toggle command mode
@@ -678,6 +680,7 @@
   ;; suppress warning about overriding target keymap
   (define-key global-map [f1] nil)
   (define-key global-map (kbd "<insert>") nil)
+  (define-key global-map (kbd "<insertchar>") nil)
   (define-key global-map [f2] nil)
   (define-key global-map [f13] nil)
   (defbuttons command-mode-global-buttons
@@ -686,11 +689,13 @@
     (but
      ;; ([f1] 'global-erjoalgo-command-mode-toggle)
      ((kbd "<insert>") 'global-erjoalgo-command-mode-toggle)
+     ((kbd "<insertchar>") 'global-erjoalgo-command-mode-toggle)
      ([f13] 'global-erjoalgo-command-mode-toggle)
      ((kbd "<s-f11>") 'global-erjoalgo-command-mode-toggle)
      ((kbd "ë") 'global-erjoalgo-command-mode-toggle)
      ((kbd "H-SPC") 'global-erjoalgo-command-mode-toggle)
      ((kbd "S-<insert>") 'other-window)
+     ((kbd "S-<insertchar>") 'other-window)
      ((kbd "<s-f12>") (lambda () (interactive)
                         (save-buffer)
                         (erjoalgo-command-mode 1)))
