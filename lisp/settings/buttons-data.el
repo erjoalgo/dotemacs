@@ -1253,7 +1253,7 @@ plt.show()
                      (ins "% q#{}{(nli)}{}{(nli)}")
                      (insert "\\end{numedquestion}")
                      (ins "{(idt)}{(nli)}")))
-       ("P" (cmd-ins "\\begin{part}"
+       ("p" (cmd-ins "\\begin{part}"
                      (ins "% ({}){(nli)}{}{(nli)}")
                      (insert "\\end{part}")
                      (ins "{(idt)}{(nli)}")))
@@ -1273,6 +1273,11 @@ plt.show()
        ("G" (cmd-ins "\\includegraphics[width=\\linewidth]{"
                      (read-file-name "select image: ")
                      "}"))
+       ("P" (cmd-ins
+             "\\includepdf[pages=-]{"
+             (expand-file-name
+              (read-file-name "enter pdf: " nil nil nil (find-last-download nil t)))
+             "}" (nli)))
        ("(" (cmd-ins "P({})"))
        ("8" (cmd-ins "P({})"))
        (")" (cmd-ins " + "))
@@ -1306,11 +1311,6 @@ plt.show()
        ("-" (cmd-ins "(1-p)^{(inm)}"))
        ("_" (cmd-ins "_{" (rec) "}"))
        ("^" (cmd-ins "^{" (rec) "}"))
-       ("p" (cmd-ins
-             "\\includepdf[pages=-]{"
-             (expand-file-name
-              (read-file-name "enter pdf: " nil nil nil (find-last-download nil t)))
-             "}" (nli)))
        ("=" (cmd-ins " + "))
        ("E" (cmd-ins "E[{}]"))
        ("]" (cmd-ins "^"))
