@@ -75,3 +75,7 @@
 
 
 (add-hook 'cider-connected-hook #'cider-eval-post-connect-sexp)
+
+(with-eval-after-load 'cider
+  (add-to-list 'cider-repl-init-code
+               "(set! nrepl.middleware.caught/*caught-fn* clojure.repl/pst)"))
