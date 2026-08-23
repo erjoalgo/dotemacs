@@ -567,7 +567,10 @@ plt.show()
        ("d"
         (but
          ("f" (cmd-ins "(defn {} [{}]{(nli)}{}){(nli)}"))
-         ("e" (cmd-ins "(def {})"))))
+         ("e" (cmd-ins "(def {})"))
+         ("k"
+          (but
+           ("y" (cmd-ins "{:keys [{}] :as {}}"))))))
        ("n"
         (but
          ("t" (cmd-ins "(printf \"{}\\n\"{})"))
