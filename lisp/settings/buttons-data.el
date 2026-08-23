@@ -117,7 +117,8 @@
        ((kbd "M-,") 'my-prev-error)
        ("R" (cmd-ins "***REMOVED***"))
        ;; ([?\s-\t] #'company-complete)
-       ((kbd "<s-tab>") #'company-complete)))
+       ((kbd "<s-tab>") #'company-complete)
+       (";" (cmd-ins "-"))))
 
     (defbuttons python-buttons programming-buttons (python-mode-map)
       (but
@@ -528,7 +529,6 @@ plt.show()
          ("c" (cmd-ins "~C"))))
        ("|" (cmd-ins "#\\Newline"))
        ("\\" (cmd-ins "~%"))
-       (";" (cmd-ins ":"))
        (":" (cmd-ins "::"))
        ("h"
         (but
@@ -580,7 +580,6 @@ plt.show()
            ("i" (cmd-ins "(log/infof \"" (rec) "\")"))
            ("e" (cmd-ins "(log/errorf \"" (rec) "\")"))
            ("w" (cmd-ins "(log/warnf \"" (rec) "\")"))))))
-       (";" (cmd-ins ": "))
        ("[" (cmd-ins "{"
                      (ins "{}}")))
        ("c" (cmd-ins "(when-not  {})"))
@@ -883,7 +882,6 @@ plt.show()
        ("]" (cmd-ins ".format({})"))
        ("{" (cmd-ins "{"
                      (ins "{(nli)}{}{(nli)}}{(idt)}")))
-       (";" (cmd-ins ": "))
        (":" (cmd-ins ": "))
        ("_" (cmd-ins ",{(nli)}{(inm)}"))
        ("L" (cmd-ins "let { "
@@ -1310,13 +1308,12 @@ plt.show()
              (expand-file-name
               (read-file-name "enter pdf: " nil nil nil (find-last-download nil t)))
              "}" (nli)))
-       (";" (cmd-ins "P(\\{X="
-                     (ins "{}\\})")))
        ("=" (cmd-ins " + "))
        ("E" (cmd-ins "E[{}]"))
        ("]" (cmd-ins "^"))
        ("+" (cmd-ins "+"))
        ("7" (cmd-ins " &= "))
+       ;; ("P" (cmd-ins "P(\\{X=" "{}\\})"))
        (";" (cmd-ins "\\;"))
        ("/" 'my-comment-out)
        ("v"
