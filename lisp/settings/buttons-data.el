@@ -609,7 +609,7 @@ plt.show()
           (but
            ("t" (cmd-ins "(list {})"))
            ("s" (cmd-ins "(.size {})"))))))
-       ("T" (cmd-ins "(try" (nli) (rec) (nli) "(catch Exception ex " (rec) "))" (nli)))
+       ("T" (cmd-ins "(try" (nli) (rec) (nli) "(catch Exception ex" (nli) "))" (nli)))
        ("5"
         (but
          ("s" (cmd-ins "%s"))
