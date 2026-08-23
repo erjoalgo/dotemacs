@@ -17,7 +17,9 @@
                  ((s-starts-with-p "http" url)
                   (browse-url url))
 
-                 (t (find-file buffer)))
+                 (t (cl-loop for file in (file-expand-wildcards url)
+                             do (find-file file))))
+
                 (when action
                   (cond
                    ((stringp action) (compile action))
