@@ -499,7 +499,7 @@
                         global-erjoalgo-command-mode)
               (global-erjoalgo-command-mode 0))))
      ;; ([f1] nil);; f1 toggle command mode
-     ([f1] 'global-erjoalgo-command-mode-toggle);; f1 toggle command mode
+     ([f1] nil);; f1 toggle command mode
      ([f13] 'global-erjoalgo-command-mode-toggle);; f13 toggle command mode
      ((kbd "<insert>") 'global-erjoalgo-command-mode-toggle);; f13 toggle command mode
      ((kbd "<insertchar>") 'global-erjoalgo-command-mode-toggle);; f13 toggle command mode
