@@ -96,15 +96,15 @@
       (set result-was-error-sym nil)
       (set-process-sentinel proc
                             `(lambda (proc change)
-                                (let ((output (with-current-buffer ,proc-name
-                                                (buffer-substring ,old-max-point (point-max)))))
+                               (let ((output (with-current-buffer ,proc-name
+                                               (buffer-substring ,old-max-point (point-max)))))
                                  (setf ,result-sym output)
-                                  (when (s-starts-with-p "exited abnormally" change)
+                                 (when (s-starts-with-p "exited abnormally" change)
                                    (setf ,result-was-error-sym t)
-                                    (unless ,sync
+                                   (unless ,sync
                                      (if (not ,on-error)
-                                          (warn "x-service failed for request %s: %s %s"
-                                                ,path change output)
+                                         (warn "x-service failed for request %s: %s %s"
+                                               ,path change output)
                                        (funcall ,on-error output)))))))
       (when (and data use-stdin)
         (process-send-string proc data)
