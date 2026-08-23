@@ -27,6 +27,22 @@
 
 (def-devscene chess
   (
+   ("/home/ealfonso/git/chess-tactics/service/src/clj/chess/*.clj")
+
+   ("/home/ealfonso/git/chess-tactics/service/src/clj/chess/routes/*.clj")
+
+   ("/home/ealfonso/git/chess-tactics/service/test/clj/chess/*.clj")
+
+   ("/home/ealfonso/git/chess-tactics/service/resources/html/*.html")
+
+   ("/home/ealfonso/git/chess-tactics/service/resources/public/js/*.js")
+
+   ("/home/ealfonso/git/chess-tactics/liquibase/src/db.changelog.xml")
+
+   ("/home/ealfonso/git/chess-tactics/service/resources/public/js/chess.js")
+
+   ("/home/ealfonso/git/chess-tactics/service/project.clj")
+
    ("/home/ealfonso/git/chess-tactics/service/src/clj/chess/core.clj"
     (lambda ()
       (setq
