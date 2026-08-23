@@ -72,8 +72,8 @@
 
    ("/home/ealfonso/git/brainink/ui/src/ink/core.cljs")
 
-   ("http://localhost:8280/" )
-   ("http://localhost:3000/" )))
+   ("http://localhost:8280/")
+   ("http://localhost:3000/")))
 
 (def-devscene myhomedates
   (
