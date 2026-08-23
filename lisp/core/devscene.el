@@ -8,14 +8,15 @@
 (defun devscene-load (buffers)
   (cl-loop for spec in buffers
            do (message "DDEBUG 9clp spec: %s" spec)
-           do (cl-destructuring-bind (buffer action)
+           do (cl-destructuring-bind (url action)
                   (cond
                    ((atom spec) (list spec nil))
                    ((null (cdr spec)) (list (car spec) nil))
                    (t spec))
                 (cond
-                 ((s-starts-with-p "http" buffer)
-                  (browse-url buffer))
+                 ((s-starts-with-p "http" url)
+                  (browse-url url))
+
                  (t (find-file buffer)))
                 (when action
                   (cond
