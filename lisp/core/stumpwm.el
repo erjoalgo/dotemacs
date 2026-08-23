@@ -95,19 +95,17 @@
           (result-was-error-sym (gensym "stumpwm-result-was-error")))
       (set result-was-error-sym nil)
       (set-process-sentinel proc
-                            (apply-partially
-                             `(lambda (on-error result-sym result-was-error-sym proc change)
+                            `(lambda (proc change)
                                 (let ((output (with-current-buffer ,proc-name
                                                 (buffer-substring ,old-max-point (point-max)))))
-                                  (set result-sym output)
+                                 (setf ,result-sym output)
                                   (when (s-starts-with-p "exited abnormally" change)
-                                    (set result-was-error-sym t)
+                                   (setf ,result-was-error-sym t)
                                     (unless ,sync
-                                      (if (not on-error)
+                                     (if (not ,on-error)
                                           (warn "x-service failed for request %s: %s %s"
                                                 ,path change output)
-                                        (funcall on-error output))))))
-                             on-error result-sym result-was-error-sym))
+                                       (funcall ,on-error output)))))))
       (when (and data use-stdin)
         (process-send-string proc data)
         (process-send-eof proc))
