@@ -47,14 +47,18 @@
     (lambda ()
       (setq
        cider-post-connect-sexp
-       "(do (ns chess.const) (def is-dev true) (ns chess.core) (require 'chess.core :reload) (start-app []))")
+       "(do
+
+(require 'chess.const)
+(ns chess.const)
+(def is-dev true)
+
+(require 'chess.core)
+(chess.core/start-app []))")
+      (setenv "IS_DEV" "true")
       (call-interactively #'cider-jack-in)))
 
-   ("/home/ealfonso/git/chess-tactics/liquibase/src/db.changelog.xml")
-
-   ("/home/ealfonso/git/chess-tactics/service/resources/js/chess.js")
-
-   ("http://localhost:3000/" )))
+   ("http://localhost:3000/")))
 
 (def-devscene brainink
   (
