@@ -43,6 +43,8 @@
 
    ("/home/ealfonso/git/chess-tactics/service/project.clj")
 
+   ("/home/ealfonso/git/chess-tactics/ui-test/tests/chess.spec.ts")
+
    ("/home/ealfonso/git/chess-tactics/service/src/clj/chess/core.clj"
     (lambda ()
       (setq
@@ -54,11 +56,15 @@
 (def is-dev true)
 
 (require 'chess.core)
-(chess.core/start-app []))")
+(chess.core/start-app [])
+(ns chess.core))")
       (setenv "IS_DEV" "true")
+      (setenv "SKIP_BLUNDERMON" "true")
+      (setq cider-lein-parameters
+            "with-profile +dev repl :headless :host localhost")
       (call-interactively #'cider-jack-in)))
 
-   ("http://localhost:3000/")))
+   ))
 
 (def-devscene brainink
   (
