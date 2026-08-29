@@ -501,7 +501,7 @@ plt.show()
          ("l" (cmd-ins "(labels ({}){(nli)}{}){(nli)}"))
          ("a" (cmd-ins "(defalias {})"))
          ("b" (cmd-ins "(destructuring-bind ({}){})"))
-         ("m" (cmd-ins "(multiple-value-bind ({}){})"))))
+         ("v" (cmd-ins "(multiple-value-bind ({}){})"))))
        ("n"
         (but
          ("g" (cmd-ins "(format nil {})"))
@@ -570,7 +570,7 @@ plt.show()
          ("e" (cmd-ins "(def {})"))
          ("k"
           (but
-           ("y" (cmd-ins "{:keys [{}] :as {}}"))))))
+           ("y" (cmd-ins "{" ":keys [{}] :as {}" "}"))))))
        ("n"
         (but
          ("t" (cmd-ins "(printf \"{}\\n\"{})"))
@@ -580,12 +580,12 @@ plt.show()
          ("v" (cmd-ins "(log/infof \"DDEBUG " (rnd) " {0}: %s\"" (nli?) " {0})"))
          ("l"
           (but
-           ("i" (cmd-ins "(log/infof \"" (rec) "\")"))
-           ("e" (cmd-ins "(log/errorf \"" (rec) "\")"))
-           ("w" (cmd-ins "(log/warnf \"" (rec) "\")"))))))
+           ("i" (cmd-ins "(log/infof \"" (rec) "\"{})"))
+           ("e" (cmd-ins "(log/errorf \"" (rec) "\"{})"))
+           ("w" (cmd-ins "(log/warnf \"" (rec) "\"{})"))))))
        ("[" (cmd-ins "{"
                      (ins "{}}")))
-       ("c" (cmd-ins "(when-not  {})"))
+       ("c" (cmd-ins "(when-not {})"))
        ("h" (buttons-make
              ("d" 'cider-doc)
              ("a" 'cider-apropos-select)
@@ -596,7 +596,7 @@ plt.show()
        ("{" (cmd-ins "{:keys [{}]" (nli) "{}}}"))
        ("a" (cmd-ins "(fn [{}]{(nli)}{})"))
        ("e" (cmd-ins "(def {})"))
-       ("R"  (cmd-ins "(throw (Exception. \"{}\"))"))
+       ("R"  (cmd-ins "(throw (Exception. (format \"{" "}\"{})))"))
        ("t"
         (but
          ("R" #'cider-restart)
