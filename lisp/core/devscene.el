@@ -70,7 +70,6 @@
   (
    ("/home/ealfonso/git/brainink/service/src/clj/service/core.clj"
     (lambda ()
-      (setenv "SKIP_BLUNDERMON" "true")
       (setq cider-post-connect-sexp "(do (ns service.core) (start-app []))")
       (call-interactively #'cider-jack-in)))
 
