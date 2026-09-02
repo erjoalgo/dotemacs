@@ -27,6 +27,3 @@
                (cider-repl-return))
       (cider-interactive-eval ns-form))))
 
-(add-hook 'cider-connected-hook #'cider-maybe-switch-to-current-ns)
-
-(add-hook 'cider-repl-mode-hook #'cider-maybe-switch-to-current-ns)
