@@ -596,7 +596,7 @@ plt.show()
        ("{" (cmd-ins "{:keys [{}]" (nli) "{}}}"))
        ("a" (cmd-ins "(fn [{}]{(nli)}{})"))
        ("e" (cmd-ins "(def {})"))
-       ("R"  (cmd-ins "(throw (Exception. (format \"{" "}\"{})))"))
+       ("R"  (cmd-ins "(throw (Exception. (format \"{}\"{})))"))
        ("t"
         (but
          ("R" #'cider-restart)
