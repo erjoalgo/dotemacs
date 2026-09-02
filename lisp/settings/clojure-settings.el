@@ -81,3 +81,18 @@
 (with-eval-after-load 'cider
   (add-to-list 'cider-repl-init-code
                "(set! nrepl.middleware.caught/*caught-fn* clojure.repl/pst)"))
+
+(defun clojure-humanize-log-timestamps ()
+  (interactive)
+  (save-excursion
+    (goto-char (point-min))
+    (cl-loop
+     with first = nil
+     as has-match = (re-search-forward
+                     "^[^|]+| *\\([0-9]+\\)" nil t)
+     while has-match
+     as match = (match-string 1)
+     as time = (string-to-number match)
+     as first = (or first time)
+     as readable = (/ (- time first) 1000)
+     do (replace-match (number-to-string readable) nil nil nil 1))))
