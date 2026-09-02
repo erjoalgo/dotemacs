@@ -189,5 +189,13 @@
                      (null (get-buffer-process buff)))
            do (kill-buffer buff)))
 
+(defun reset-debug-on-quit ()
+  "Reset debug-on-quit to nil."
+  (message "resetting debug-on-quit to nil")
+  (setq debug-on-quit nil))
+
+(add-hook 'debugger-mode-hook
+          #'my-reset-debug-on-quit-if-quit)
+
 (provide 'my-emacs-settings)
 ;;; emacs-settings.el ends here
