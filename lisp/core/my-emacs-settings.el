@@ -63,8 +63,6 @@
 (setf next-error-highlight-no-select t)
 ;;TODO the same for async-shell-command file names
 
-;(setq split-window-preferred-function 'split-window-vertically) doesn't work
-;(setq split-height-threshold 0)
 
 (setq inhibit-startup-screen t)
 
@@ -125,7 +123,7 @@
     (process-send-string proc payload)
     (sit-for 10)
     (delete-process proc)
-     (message "opened %s" url)))
+    (message "opened %s" url)))
 
 (defun which (&rest names)
   (let* ((cmd (format "which %s 2> /dev/null" (s-join " " names) ))
