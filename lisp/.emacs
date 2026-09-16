@@ -139,7 +139,8 @@ object."
    sqlformat
    dockerfile-mode
    scad-mode
-   gcode-mode))
+   gcode-mode
+   markdown-mode))
 
 (require 'f)
 
