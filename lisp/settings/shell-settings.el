@@ -8,6 +8,10 @@
     *)
         echo \"unrecognized flag: ${OPT}\" && exit ${LINENO}
         ;;
+    \?)
+        echo \"Error: Invalid option or missing argument.\" >&2
+        exit 1
+        ;;
     esac
 done
 shift $((OPTIND -1))
