@@ -192,8 +192,7 @@
   (message "resetting debug-on-quit to nil")
   (setq debug-on-quit nil))
 
-(add-hook 'debugger-mode-hook
-          #'my-reset-debug-on-quit-if-quit)
+(add-hook 'debugger-mode-hook #'reset-debug-on-quit)
 
 (provide 'my-emacs-settings)
 ;;; emacs-settings.el ends here
