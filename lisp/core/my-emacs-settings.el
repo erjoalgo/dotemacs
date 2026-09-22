@@ -90,6 +90,7 @@
 (add-to-list 'auto-mode-alist '("[.]ya?ml$" . conf-colon-mode))
 (add-to-list 'auto-mode-alist '("[.]log$" . auto-revert-mode));;auto tail file
 (add-to-list 'auto-mode-alist '("syslog$" . auto-revert-mode));;auto tail file
+(add-to-list 'auto-mode-alist '(".tf" . conf-mode))
 
 (when (get-buffer "*scratch*") (kill-buffer "*scratch*"))
 
